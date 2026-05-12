@@ -9,6 +9,7 @@ export const ROUTES = {
     MYPAGE: '/mypage',
     ROLLING_PAPER: 'https://r-paper-web.haroo.site/',
     HTSM: '/htsm',
+    U_KNOW: '/u-know',
     TOBY: '/toby',
     TERMS: '/terms',
     PRIVACY: '/privacy',

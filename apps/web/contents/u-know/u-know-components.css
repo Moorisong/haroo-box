@@ -1,0 +1,122 @@
+/* 너잘알 - 컴포넌트별 스타일 (배지, 오버레이, 카드 뒤집기 등) */
+
+/* 배지/태그 */
+.uknow-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-weight: 900;
+  transform: rotate(-2deg);
+  border: 2px solid #1a1a1a;
+}
+
+.uknow-badge--accent { background: #00D9FF; color: #1a1a1a; }
+
+/* 질문 하이라이트 박스 */
+.uknow-question-box {
+  background: rgba(255, 107, 53, 0.1);
+  border: 2px solid #FF6B35;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+/* 오버레이 모달 (병맛 리액션) */
+.uknow-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-modal);
+}
+
+.uknow-overlay__card {
+  background: #ffffff;
+  border: 4px solid #1a1a1a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transform: rotate(3deg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.uknow-overlay__text { font-size: var(--font-size-2xl); font-weight: 900; }
+
+/* 뒤집기 카드 */
+.uknow-flip-card { cursor: pointer; perspective: 1000px; }
+
+.uknow-flip-card__back {
+  background: #00D9FF;
+  border: 4px solid #1a1a1a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(-1deg);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+}
+
+.uknow-flip-card__front {
+  background: rgba(0, 217, 255, 0.2);
+  border: 4px solid #00D9FF;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(1deg);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+}
+
+.uknow-flip-card__mystery {
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+  font-weight: 900;
+}
+
+/* 예상 답변 박스 */
+.uknow-prediction-box {
+  background: rgba(255, 210, 63, 0.2);
+  border: 4px solid #FFD23F;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(1deg);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+}
+
+/* 리액션 카드 */
+.uknow-reaction-card {
+  background: #ffffff;
+  border: 4px solid #1a1a1a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+  text-align: center;
+}
+
+/* TTL 안내 */
+.uknow-ttl-notice {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+  color: #666666;
+  padding: var(--space-md);
+  background: rgba(255, 210, 63, 0.2);
+  border: 2px solid #FFD23F;
+  border-radius: var(--radius-md);
+  transform: rotate(-1deg);
+}
+
+/* 힌트 박스 */
+.uknow-hint-box {
+  background: rgba(255, 210, 63, 0.2);
+  border: 2px solid #FFD23F;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transform: rotate(-1deg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+}
+
+/* 플로팅 이모지 */
+.uknow-emoji { position: absolute; font-size: var(--font-size-4xl); opacity: 0.2; }

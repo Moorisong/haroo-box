@@ -1,0 +1,112 @@
+/* 너잘알 - 페이지 레이아웃 & 기본 스타일 */
+
+.uknow-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  background: #FFF8E7;
+}
+
+.uknow-form-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  max-width: 640px;
+  margin: 0 auto;
+  background: #FFF8E7;
+}
+
+/* 카드 공통 */
+.uknow-card {
+  background: #ffffff;
+  border: 4px solid #1a1a1a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+  transition: box-shadow var(--transition-fast);
+}
+
+.uknow-card:hover {
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+}
+
+.uknow-card--tilted-left { transform: rotate(-1deg); }
+.uknow-card--tilted-right { transform: rotate(1deg); }
+
+/* CTA 버튼 공통 */
+.uknow-btn {
+  width: 100%;
+  padding: var(--space-lg) var(--space-xl);
+  border-radius: var(--radius-lg);
+  border: 4px solid #1a1a1a;
+  font-weight: 900;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.uknow-btn:hover {
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transform: translateY(2px);
+}
+
+.uknow-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.uknow-btn--primary { background: #FF6B35; color: #ffffff; }
+.uknow-btn--secondary { background: #FFD23F; color: #1a1a1a; }
+.uknow-btn--kakao { background: #FEE500; color: #3C1E1E; }
+.uknow-btn--outline { background: #ffffff; color: #1a1a1a; }
+
+/* 텍스트 입력 */
+.uknow-textarea {
+  width: 100%;
+  min-height: 128px;
+  padding: var(--space-md);
+  border: 2px solid #1a1a1a;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  resize: none;
+  font-weight: 900;
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  outline: none;
+  transition: box-shadow var(--transition-fast);
+}
+
+.uknow-textarea:focus { box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.4); }
+.uknow-textarea::placeholder { font-weight: 400; color: #666666; }
+
+/* 이름 인풋 */
+.uknow-input {
+  width: 100%;
+  padding: var(--space-md);
+  border: 2px solid #1a1a1a;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  font-weight: 900;
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  outline: none;
+  transition: box-shadow var(--transition-fast);
+}
+
+.uknow-input:focus { box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.4); }
+.uknow-input::placeholder { font-weight: 400; color: #666666; }
+
+/* 병맛 텍스트 */
+.uknow-title { font-size: var(--font-size-3xl); font-weight: 900; color: #1a1a1a; line-height: 1.2; }
+.uknow-subtitle { font-size: var(--font-size-lg); font-weight: 900; color: #666666; }
+.uknow-label { font-size: var(--font-size-lg); font-weight: 900; color: #1a1a1a; display: block; margin-bottom: var(--space-sm); }
+.uknow-char-count { text-align: right; font-size: var(--font-size-sm); font-weight: 900; color: #666666; margin-top: var(--space-xs); }

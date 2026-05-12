@@ -68,6 +68,16 @@ export default function Home() {
             active: true,
         },
         {
+            id: 'u-know',
+            title: '너잘알',
+            description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
+            image: '/u-know-logo.png',
+            link: ROUTES.U_KNOW,
+            badge: 'New',
+            badgeType: styles.badgeNew,
+            active: true,
+        },
+        {
             id: 'rolling-paper',
             title: '롤링페이퍼',
             description: '친구들과 추억을 나누는 익명 롤링페이퍼.\n마음을 전하는 따뜻한 시간!',
