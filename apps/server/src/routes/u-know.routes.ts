@@ -1,0 +1,62 @@
+import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
+import { createTest, submitAnswer, getResult } from '../controllers/u-know.controller';
+
+const router = Router();
+
+// --- Rate Limiters (서브에이전트 문서 스펙 기반) ---
+
+/** 생성 API: IP당 5회/분 */
+const createMinuteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: {
+    success: false,
+    error: '테스트 생성 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/** 생성 API: IP당 20회/시간 */
+const createHourLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  message: {
+    success: false,
+    error: '테스트 생성 한도를 초과했습니다. 1시간 후 다시 시도해주세요.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/** 답변 API: IP당 15회/분 */
+const submitMinuteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 15,
+  message: {
+    success: false,
+    error: '답변 제출 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/** 결과 조회: IP당 60회/분 */
+const viewLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  message: {
+    success: false,
+    error: '조회 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// --- Routes ---
+router.post('/create', createMinuteLimiter, createHourLimiter, createTest);
+router.post('/submit', submitMinuteLimiter, submitAnswer);
+router.get('/result/:token', viewLimiter, getResult);
+
+export default router;
