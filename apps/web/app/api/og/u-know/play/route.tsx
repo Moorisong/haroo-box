@@ -3,14 +3,12 @@ import { NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// TTF 폰트 파일 로드 (Edge 환경을 고려해 전체 폰트 대신 필요한 글자만 서브셋으로 로드)
 async function getFont(text: string) {
   try {
-    // User-Agent를 조작하여 WOFF2 대신 TTF를 반환받도록 유도
     const css = await fetch(`https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&text=${encodeURIComponent(text)}`, {
       headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1' }
     }).then(res => res.text());
-    
+
     const resource = css.match(/src: url\((.+)\) format\('(truetype|opentype)'\)/);
     if (resource) {
       return await fetch(resource[1]).then(res => res.arrayBuffer());
@@ -21,17 +19,27 @@ async function getFont(text: string) {
   return null;
 }
 
+// 질문 길이에 따라 동적으로 폰트 크기 결정
+function getQuestionFontSize(text: string): number {
+  const len = text.length;
+  if (len <= 15) return 56;
+  if (len <= 25) return 46;
+  if (len <= 40) return 38;
+  if (len <= 55) return 32;
+  return 26;
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const question = searchParams.get('q') || '내가 뭐라고 답할까?';
+    const question = searchParams.get('q') || '친구가 보낸 질문이 있어!';
 
     const bgPath = path.join(process.cwd(), 'public', 'images', 'u-know', 'og-play-bg.png');
     const bgData = fs.readFileSync(bgPath).toString('base64');
     const bgSrc = `data:image/png;base64,${bgData}`;
 
-    // 폰트 로드할 텍스트 추출
-    const textToLoad = `Q.${question}내대답을맞춰봐!🎯`;
+    const questionFontSize = getQuestionFontSize(question);
+    const textToLoad = `너잘알${question}친구가너한테질문을던졌어나도답변하러가기`;
     const fontData = await getFont(textToLoad);
 
     return new ImageResponse(
@@ -44,19 +52,10 @@ export async function GET(req: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
+            backgroundColor: '#FFF8F0', // 베이지색 배경 최대로 적용 (이미지 제거)
           }}
         >
-          <img
-            src={bgSrc}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '1200px',
-              height: '630px',
-              objectFit: 'cover',
-            }}
-          />
+          {/* 메인 카드 */}
           <div
             style={{
               display: 'flex',
@@ -64,20 +63,65 @@ export async function GET(req: NextRequest) {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#ffffff',
-              border: '8px solid #1E293B',
-              boxShadow: '16px 16px 0 0 rgba(30, 41, 59, 1)',
-              borderRadius: '32px',
+              border: '6px solid #1E293B',
+              boxShadow: '12px 12px 0 0 #1E293B',
+              borderRadius: '28px',
               padding: '60px 80px',
               maxWidth: '900px',
+              width: '900px',
               textAlign: 'center',
               position: 'relative',
             }}
           >
-            <div style={{ display: 'flex', fontSize: '64px', color: '#1E293B', marginBottom: '24px', textAlign: 'center', whiteSpace: 'pre-wrap' }}>
-              Q. {question}
+            {/* 너잘알 타이틀 (배경 없이 폰트 강조) */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '48px',
+                color: '#6C5CE7',
+                fontWeight: 900,
+                letterSpacing: '-1px',
+                marginBottom: '20px',
+                textShadow: '3px 3px 0px rgba(108, 92, 231, 0.2)', // 폰트 효과
+              }}
+            >
+              너잘알 👀
             </div>
-            <div style={{ display: 'flex', fontSize: '40px', color: '#FD79A8' }}>
-              내 대답을 맞춰봐! 🎯
+
+            {/* 서브 타이틀 */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '32px',
+                color: '#64748B',
+                marginBottom: '24px',
+                fontWeight: 900,
+              }}
+            >
+              친구가 너한테 질문을 던졌어!
+            </div>
+
+            {/* 질문 텍스트 박스 */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#F8F6FF',
+                border: '4px solid #6C5CE7',
+                borderRadius: '20px',
+                padding: '40px 48px',
+                fontSize: `${questionFontSize}px`,
+                color: '#1E293B',
+                fontWeight: 900,
+                lineHeight: 1.4,
+                textAlign: 'center',
+                width: '100%',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'keep-all',
+              }}
+            >
+              {question}
             </div>
           </div>
         </div>
