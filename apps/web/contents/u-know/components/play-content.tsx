@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { UKNOW_ROUTES, UKNOW_LIMITS } from '../constants';
+import { submitAnswer } from '../api';
 import ReactionOverlay from './reaction-overlay';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
@@ -23,20 +24,39 @@ export default function PlayContent({ token }: PlayContentProps) {
 
   const isValid = friendAnswer.trim().length > 0 && responderName.trim().length > 0;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isValid) return;
 
     setShowReaction(true);
-    setTimeout(() => {
-      // 결과 페이지로 모든 데이터 전달: q(질문), p(예상답변), fa(친구실제답변), name(친구이름)
-      const resultParams = new URLSearchParams({
-        q: question,
-        p: prediction,
-        fa: friendAnswer,
-        name: responderName,
-      });
-      router.push(`${UKNOW_ROUTES.RESULT(token)}?${resultParams.toString()}`);
-    }, 750);
+
+    const res = await submitAnswer({
+      token,
+      responderName,
+      answers: [
+        {
+          questionIndex: 0,
+          actualAnswer: friendAnswer,
+        },
+      ],
+      security: {
+        fingerprintHash: 'dummy',
+        ipHash: 'dummy',
+      },
+    });
+
+    if (res.success) {
+      setTimeout(() => {
+        const params = new URLSearchParams();
+        params.set('q', question);
+        params.set('p', prediction);
+        params.set('fa', friendAnswer);
+        params.set('name', responderName);
+        router.push(`${UKNOW_ROUTES.RESULT(token)}?${params.toString()}`);
+      }, 750);
+    } else {
+      setShowReaction(false);
+      alert(res.error || '답변 제출 중 오류가 발생했습니다.');
+    }
   };
 
   return (
