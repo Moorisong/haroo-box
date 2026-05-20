@@ -1,5 +1,5 @@
-import HomeContent from '@/contents/u-know/components/home-content';
+import CreateContent from '@/contents/u-know/components/create-content';
 
 export default function UKnowPage() {
-  return <HomeContent />;
+  return <CreateContent />;
 }

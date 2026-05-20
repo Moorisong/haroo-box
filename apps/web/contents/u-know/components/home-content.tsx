@@ -35,13 +35,6 @@ export default function HomeContent() {
         >
           <span>친구 긁으러 가기</span>
         </button>
-        <p style={{ marginTop: '8px', fontWeight: 900, fontSize: 'var(--font-size-sm)', opacity: 0.6 }}>
-          ㄱㄱ
-        </p>
-
-        <p className="uknow-subtitle" style={{ marginTop: '24px' }}>
-          👇 눌러봐
-        </p>
       </div>
 
       <span className="uknow-emoji" style={{ top: 40, left: 40, transform: 'rotate(-12deg)' }}>😏</span>
