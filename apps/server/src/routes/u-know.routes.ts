@@ -7,9 +7,10 @@ const router = Router();
 
 // --- Rate Limiters (서브에이전트 문서 스펙 기반) ---
 
-/** 생성 API: IP당 5회/분 */
-const createMinuteLimiter = rateLimit({
-  windowMs: 60 * 1000,
+/** 생성 API: IP당 5회/10분 */
+const createTenMinuteLimiter = rateLimit({
+  store: createMongoStore('rate-limits', 10 * 60 * 1000),
+  windowMs: 10 * 60 * 1000,
   max: 5,
   message: {
     success: false,
@@ -21,6 +22,7 @@ const createMinuteLimiter = rateLimit({
 
 /** 생성 API: IP당 20회/시간 */
 const createHourLimiter = rateLimit({
+  store: createMongoStore('rate-limits', 60 * 60 * 1000),
   windowMs: 60 * 60 * 1000,
   max: 20,
   message: {
@@ -33,6 +35,7 @@ const createHourLimiter = rateLimit({
 
 /** 답변 API: IP당 15회/분 */
 const submitMinuteLimiter = rateLimit({
+  store: createMongoStore('rate-limits', 60 * 1000),
   windowMs: 60 * 1000,
   max: 15,
   message: {
@@ -45,6 +48,7 @@ const submitMinuteLimiter = rateLimit({
 
 /** 결과 조회: IP당 60회/분 */
 const viewLimiter = rateLimit({
+  store: createMongoStore('rate-limits', 60 * 1000),
   windowMs: 60 * 1000,
   max: 60,
   message: {
@@ -56,7 +60,7 @@ const viewLimiter = rateLimit({
 });
 
 // --- Routes ---
-router.post('/create', createMinuteLimiter, createHourLimiter, createTest);
+router.post('/create', createTenMinuteLimiter, createHourLimiter, createTest);
 router.post('/submit', submitMinuteLimiter, submitAnswer);
 router.get('/result/:token', viewLimiter, getResult);
 
