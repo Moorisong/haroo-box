@@ -74,6 +74,7 @@ export const submitAnswer = async (input: SubmitAnswerInput) => {
     responderName,
     answers,
     security,
+    expiresAt: test.expiresAt,
   });
 
   return { responseId: response._id };

@@ -13,6 +13,7 @@ export interface IUKnowResponse extends Document {
   answers: IAnswer[];
   security: ISecurity;
   createdAt: Date;
+  expiresAt: Date;
 }
 
 const answerSchema = new Schema<IAnswer>(
@@ -49,9 +50,13 @@ const uKnowResponseSchema = new Schema<IUKnowResponse>(
       required: true,
     },
     security: { type: securitySchema, required: true },
+    expiresAt: { type: Date, required: true },
   },
   { timestamps: true }
 );
+
+// TTL: expiresAt 필드 기반 자동 삭제
+uKnowResponseSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export const getUKnowResponseModel = () => {
   const conn = getUKnowConnection();
