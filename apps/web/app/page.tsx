@@ -46,45 +46,40 @@ export const metadata: Metadata = {
 export default function Home() {
     const contents = [
         {
-            id: 'toby',
-            title: 'TOBY',
-            description: '학교 선생님들을 위한 서비스 툴 모음.\n수업과 학급 관리에 유용한 도구들!',
-            image: '/sample/toby-logo.png',
-            link: '/toby',
-            newTab: true,
-            badge: 'New',
-            badgeType: styles.badgeNew,
-            active: true,
-        },
-
-        {
-            id: 'htsm',
-            title: '자아탐험',
-            description: '친구들의 익명 평가로 발견하는 나.\nJohari Window 기반 심리 분석!',
-            image: '/htsm-logo-v6.png',
-            link: '/htsm',
-            badge: 'Hot',
-            badgeType: styles.badgeHot,
-            active: true,
-        },
-        /*
-        {
             id: 'u-know',
             title: '너잘알',
             description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
-            image: '/u-know-logo.png',
+            image: '/u-know-logo-v2.png',
             link: ROUTES.U_KNOW,
             badge: 'New',
             badgeType: styles.badgeNew,
             active: true,
         },
-        */
         {
             id: 'rolling-paper',
             title: '롤링페이퍼',
             description: '친구들과 추억을 나누는 익명 롤링페이퍼.\n마음을 전하는 따뜻한 시간!',
             image: '/sample/r-paper-logo.png',
             link: 'https://r-paper-web.haroo.site',
+            badge: 'Hot',
+            badgeType: styles.badgeHot,
+            active: true,
+        },
+        {
+            id: 'toby',
+            title: 'TOBY',
+            description: '학교 선생님들을 위한 서비스 툴 모음.\n수업과 학급 관리에 유용한 도구들!',
+            image: '/sample/toby-logo.png',
+            link: '/toby',
+            newTab: true,
+            active: true,
+        },
+        {
+            id: 'htsm',
+            title: '자아탐험',
+            description: '친구들의 익명 평가로 발견하는 나.\nJohari Window 기반 심리 분석!',
+            image: '/htsm-logo-v6.png',
+            link: '/htsm',
             active: true,
         },
     ];
