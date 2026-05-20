@@ -56,7 +56,7 @@ export default function PlayContent({ token }: PlayContentProps) {
             <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '8px' }}>
               질문
             </p>
-            <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)' }}>
+            <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)', whiteSpace: 'pre-wrap' }}>
               {question}
             </p>
           </div>

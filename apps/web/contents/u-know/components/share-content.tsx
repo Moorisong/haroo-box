@@ -86,7 +86,7 @@ export default function ShareContent({ token, question: questionProp, myAnswer: 
               <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '8px' }}>
                 내가 만든 질문
               </p>
-              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-lg)' }}>
+              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-lg)', whiteSpace: 'pre-wrap' }}>
                 {question}
               </p>
             </div>
@@ -96,7 +96,7 @@ export default function ShareContent({ token, question: questionProp, myAnswer: 
               <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#E67E22', marginBottom: '8px' }}>
                 친구가 이렇게 답할 것 같음
               </p>
-              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-lg)' }}>
+              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-lg)', whiteSpace: 'pre-wrap' }}>
                 {myAnswer}
               </p>
             </div>
