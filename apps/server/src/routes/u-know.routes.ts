@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { createTest, submitAnswer, getResult } from '../controllers/u-know.controller';
+import { createMongoStore } from '../utils/rate-limit.store';
 
 const router = Router();
 

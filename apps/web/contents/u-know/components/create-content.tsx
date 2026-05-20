@@ -8,6 +8,7 @@ import {
   EXAMPLE_QUESTIONS,
   TTL_NOTICE,
 } from '../constants';
+import { createTest } from '../api';
 import ReactionOverlay from './reaction-overlay';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
@@ -34,16 +35,52 @@ export default function CreateContent() {
 
   const isValid = question.trim().length > 0 && myAnswer.trim().length > 0;
 
-  const handleSubmit = () => {
+  const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+
+  const handleRateLimitTest = async () => {
+    alert('Rate Limit 테스트를 시작합니다. (API 6회 연속 호출)');
+    for (let i = 0; i < 6; i++) {
+      const res = await createTest({
+        questions: [{ question: `test ${i}`, predictedAnswer: `test ${i}` }],
+        security: { fingerprintHash: 'dummy', ipHash: 'dummy' },
+      });
+      if (!res.success) {
+        alert(`${i + 1}번째 요청 차단됨!\n\n에러 메시지: ${res.error}`);
+        return;
+      }
+    }
+    alert('6회 요청이 모두 성공했습니다. (Rate limit이 동작하지 않음)');
+  };
+
+  const handleSubmit = async () => {
     if (!isValid) return;
 
     setShowReaction(true);
-    setTimeout(() => {
-      const testId = Math.random().toString(36).substring(7);
-      router.push(
-        `${UKNOW_ROUTES.SHARE(testId)}?q=${encodeURIComponent(question)}&a=${encodeURIComponent(myAnswer)}`
-      );
-    }, 750);
+
+    const res = await createTest({
+      questions: [
+        {
+          question,
+          predictedAnswer: myAnswer,
+        },
+      ],
+      security: {
+        fingerprintHash: 'dummy',
+        ipHash: 'dummy',
+      },
+    });
+
+    if (res.success && res.data) {
+      setTimeout(() => {
+        const params = new URLSearchParams();
+        params.set('q', question);
+        params.set('a', myAnswer);
+        router.push(`${UKNOW_ROUTES.SHARE(res.data!.token)}?${params.toString()}`);
+      }, 750);
+    } else {
+      setShowReaction(false);
+      setTimeout(() => alert(res.error || '생성 중 오류가 발생했습니다.'), 50);
+    }
   };
 
   return (
@@ -230,6 +267,22 @@ export default function CreateContent() {
         </div>
 
         <p className="uknow-ttl-notice">{TTL_NOTICE}</p>
+
+        {isDev && (
+          <button
+            className="uknow-btn uknow-card--tilted-right"
+            onClick={handleRateLimitTest}
+            style={{
+              marginTop: '16px',
+              background: '#ef4444',
+              color: '#fff',
+              fontSize: '14px',
+              padding: '12px',
+            }}
+          >
+            🚧 [Dev] Rate Limit 5회 초과 테스트
+          </button>
+        )}
       </div>
 
       {showReaction && (
