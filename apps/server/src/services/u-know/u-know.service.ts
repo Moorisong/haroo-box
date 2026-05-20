@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
-import UKnowTest, { IQuestion, ISecurity } from '../../models/u-know-test.model';
-import UKnowResponse, { IAnswer } from '../../models/u-know-response.model';
+import { getUKnowTestModel, IQuestion, ISecurity } from '../../models/u-know-test.model';
+import { getUKnowResponseModel, IAnswer } from '../../models/u-know-response.model';
 import {
   TTL_MS,
   TOKEN_LENGTH,
@@ -36,6 +36,7 @@ export const createTest = async (input: CreateTestInput) => {
   const token = nanoid(TOKEN_LENGTH);
   const expiresAt = new Date(Date.now() + TTL_MS);
 
+  const UKnowTest = getUKnowTestModel();
   const test = await UKnowTest.create({
     token,
     questions,
@@ -58,6 +59,9 @@ export const submitAnswer = async (input: SubmitAnswerInput) => {
 
   validateSecurity(security);
 
+  const UKnowTest = getUKnowTestModel();
+  const UKnowResponse = getUKnowResponseModel();
+
   const test = await UKnowTest.findOne({ token });
   if (!test) {
     throw new NotFoundError(ERROR_MESSAGES.TEST_NOT_FOUND);
@@ -79,6 +83,9 @@ export const submitAnswer = async (input: SubmitAnswerInput) => {
  * 결과 조회
  */
 export const getResult = async (token: string) => {
+  const UKnowTest = getUKnowTestModel();
+  const UKnowResponse = getUKnowResponseModel();
+
   const test = await UKnowTest.findOne({ token });
   if (!test) {
     throw new NotFoundError(ERROR_MESSAGES.TEST_NOT_FOUND);

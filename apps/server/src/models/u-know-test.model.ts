@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document } from 'mongoose';
+import { getUKnowConnection } from '../config/database';
 
 export interface IQuestion {
   question: string;
@@ -59,4 +60,7 @@ const uKnowTestSchema = new Schema<IUKnowTest>(
 // TTL: expiresAt 필드 기반 자동 삭제
 uKnowTestSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-export default mongoose.model<IUKnowTest>('UKnowTest', uKnowTestSchema);
+export const getUKnowTestModel = () => {
+  const conn = getUKnowConnection();
+  return conn.models.UKnowTest || conn.model<IUKnowTest>('UKnowTest', uKnowTestSchema);
+};

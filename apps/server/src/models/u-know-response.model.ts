@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import { Schema, Document, Types } from 'mongoose';
+import { getUKnowConnection } from '../config/database';
 import { ISecurity } from './u-know-test.model';
 
 export interface IAnswer {
@@ -52,4 +53,7 @@ const uKnowResponseSchema = new Schema<IUKnowResponse>(
   { timestamps: true }
 );
 
-export default mongoose.model<IUKnowResponse>('UKnowResponse', uKnowResponseSchema);
+export const getUKnowResponseModel = () => {
+  const conn = getUKnowConnection();
+  return conn.models.UKnowResponse || conn.model<IUKnowResponse>('UKnowResponse', uKnowResponseSchema);
+};
