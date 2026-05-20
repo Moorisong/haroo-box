@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
-
-export const runtime = 'edge';
+import fs from 'fs';
+import path from 'path';
 
 // TTF 폰트 파일 로드 (Edge 환경을 고려해 전체 폰트 대신 필요한 글자만 서브셋으로 로드)
 async function getFont(text: string) {
@@ -26,7 +26,9 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const question = searchParams.get('q') || '내가 뭐라고 답할까?';
 
-    const bgUrl = new URL('/images/u-know/og-play-bg.png', req.url).toString();
+    const bgPath = path.join(process.cwd(), 'public', 'images', 'u-know', 'og-play-bg.png');
+    const bgData = fs.readFileSync(bgPath).toString('base64');
+    const bgSrc = `data:image/png;base64,${bgData}`;
 
     // 폰트 로드할 텍스트 추출
     const textToLoad = `Q.${question}내대답을맞춰봐!🎯`;
@@ -45,7 +47,7 @@ export async function GET(req: NextRequest) {
           }}
         >
           <img
-            src={bgUrl}
+            src={bgSrc}
             style={{
               position: 'absolute',
               top: 0,

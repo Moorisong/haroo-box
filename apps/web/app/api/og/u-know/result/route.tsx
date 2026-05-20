@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
-
-export const runtime = 'edge';
+import fs from 'fs';
+import path from 'path';
 
 async function getFont(text: string) {
   try {
@@ -25,7 +25,9 @@ export async function GET(req: NextRequest) {
     const question = searchParams.get('q') || '질문';
     const name = searchParams.get('name') || '친구';
 
-    const bgUrl = new URL('/images/u-know/og-result-bg.png', req.url).toString();
+    const bgPath = path.join(process.cwd(), 'public', 'images', 'u-know', 'og-result-bg.png');
+    const bgData = fs.readFileSync(bgPath).toString('base64');
+    const bgSrc = `data:image/png;base64,${bgData}`;
 
     const textToLoad = `Q.${question}과연의대답은?!😲결과확인하기${name}`;
     const fontData = await getFont(textToLoad);
@@ -43,7 +45,7 @@ export async function GET(req: NextRequest) {
           }}
         >
           <img
-            src={bgUrl}
+            src={bgSrc}
             style={{
               position: 'absolute',
               top: 0,
