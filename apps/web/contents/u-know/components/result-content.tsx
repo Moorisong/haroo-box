@@ -1,31 +1,33 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { UKNOW_ROUTES, RESULT_REACTIONS } from '../constants';
 
 interface ResultContentProps {
   token: string;
 }
 
-const MOCK_QUESTION = '내가 새벽 4시에 전화하면?';
-const MOCK_PREDICTION = '분명 욕할 듯 ㅋㅋㅋ';
-const MOCK_ACTUAL = '받을 거 같은데? 급하면';
-
 export default function ResultContent({ token }: ResultContentProps) {
   const router = useRouter();
-  const [flipped, setFlipped] = useState(false);
-  const [showReaction, setShowReaction] = useState(false);
+  const searchParams = useSearchParams();
+  const [revealed, setRevealed] = useState(false);
+
+  // query params에서 실제 데이터 읽기
+  const question = searchParams.get('q') || '질문을 불러올 수 없어요';
+  const prediction = searchParams.get('p') || '예상 답변을 불러올 수 없어요';
+  const friendAnswer = searchParams.get('fa') || '친구 답변을 불러올 수 없어요';
+  const friendName = searchParams.get('name') || '친구';
+
 
   const reaction = useMemo(
     () => RESULT_REACTIONS[Math.floor(Math.random() * RESULT_REACTIONS.length)],
     []
   );
 
-  const handleFlip = () => {
-    if (flipped) return;
-    setFlipped(true);
-    setTimeout(() => setShowReaction(true), 800);
+  const handleReveal = () => {
+    if (revealed) return;
+    setRevealed(true);
   };
 
   const handleShareKakao = () => {
@@ -39,59 +41,70 @@ export default function ResultContent({ token }: ResultContentProps) {
           <h1 className="uknow-title" style={{ fontSize: 'var(--font-size-2xl)' }}>
             결과 공개! 🎊
           </h1>
-          <p className="uknow-subtitle">친구 진짜 잘 알았나?</p>
+          <p className="uknow-subtitle">
+            과연 답이 맞았을까?
+          </p>
         </header>
 
-        {/* 질문 */}
+        {/* 질문 카드 */}
         <div className="uknow-card uknow-card--tilted-left">
           <div className="uknow-question-box">
-            <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '8px' }}>
+            <p className="uknow-result-label">
               질문
             </p>
-            <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)' }}>
-              {MOCK_QUESTION}
+            <p className="uknow-result-text">
+              &ldquo;{question}&rdquo;
             </p>
           </div>
         </div>
 
-        {/* 예상 답변 */}
-        <div className="uknow-prediction-box">
-          <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '12px' }}>
-            내 예상 답변
-          </p>
-          <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)' }}>
-            {MOCK_PREDICTION}
-          </p>
-        </div>
-
-        {/* 뒤집기 안내 */}
-        <p style={{ textAlign: 'center', fontSize: 'var(--font-size-xl)', fontWeight: 900 }}>
-          {!flipped ? '👇 클릭해서 뒤집기 👇' : 'VS'}
-        </p>
-
-        {/* 카드 뒤집기 */}
-        <div className="uknow-flip-card" onClick={handleFlip}>
-          {!flipped ? (
-            <div className="uknow-flip-card__back">
-              <div className="uknow-flip-card__mystery">???</div>
-              <p style={{ textAlign: 'center', fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginTop: '16px' }}>
-                친구 실제 답변
-              </p>
+        {/* 답변 비교 영역 */}
+        <div className="uknow-compare-section">
+          {/* 내 예상 */}
+          <div className="uknow-compare-card uknow-compare-card--mine">
+            <div className="uknow-compare-header">
+              <span className="uknow-compare-emoji">🤔</span>
+              <span className="uknow-compare-who">출제자의 예상</span>
             </div>
-          ) : (
-            <div className="uknow-flip-card__front">
-              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '12px' }}>
-                친구 실제 답변
-              </p>
-              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)' }}>
-                {MOCK_ACTUAL}
-              </p>
+            <p className="uknow-compare-answer">
+              {prediction}
+            </p>
+          </div>
+
+          {/* 가운데 공개 버튼 */}
+          {!revealed && (
+            <div className="uknow-compare-divider">
+              <button
+                className="uknow-reveal-btn"
+                onClick={handleReveal}
+                aria-label="친구 답변 공개하기"
+              >
+                <span className="uknow-reveal-btn__text">👇 터치해서 공개</span>
+              </button>
             </div>
           )}
+
+          {/* 친구 실제 답변 */}
+          <div className={`uknow-compare-card uknow-compare-card--friend ${revealed ? 'uknow-compare-card--revealed' : ''}`}>
+            <div className="uknow-compare-header">
+              <span className="uknow-compare-emoji">💬</span>
+              <span className="uknow-compare-who">{friendName}의 실제 답변</span>
+            </div>
+            {revealed ? (
+              <p className="uknow-compare-answer">
+                {friendAnswer}
+              </p>
+            ) : (
+              <div className="uknow-compare-hidden">
+                <span>???</span>
+                <p className="uknow-compare-hidden-hint">위 버튼을 눌러서 확인해봐</p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* 리액션 */}
-        {showReaction && (
+        {revealed && (
           <div className="uknow-reaction-card" style={{ transform: 'rotate(2deg)' }}>
             <p style={{ fontSize: 'var(--font-size-xl)', fontWeight: 900 }}>
               {reaction}
@@ -103,7 +116,7 @@ export default function ResultContent({ token }: ResultContentProps) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '16px' }}>
           <button
             className="uknow-btn uknow-btn--primary uknow-card--tilted-left"
-            onClick={() => router.push(UKNOW_ROUTES.HOME)}
+            onClick={() => router.push(UKNOW_ROUTES.CREATE)}
           >
             🔄 나도 만들기
           </button>
