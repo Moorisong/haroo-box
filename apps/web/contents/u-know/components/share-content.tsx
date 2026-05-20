@@ -63,8 +63,8 @@ export default function ShareContent({ token, question: questionProp, myAnswer: 
             </div>
           )}
           {myAnswer && (
-            <div className="uknow-prediction-box" style={{ transform: 'none' }}>
-              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#666', marginBottom: '8px' }}>
+            <div className="uknow-prediction-box" style={{ transform: 'none', background: '#FFFAED', borderColor: '#FAD7A1', boxShadow: '3px 3px 0 0 #FAD7A1' }}>
+              <p style={{ fontWeight: 900, fontSize: 'var(--font-size-sm)', color: '#E67E22', marginBottom: '8px' }}>
                 친구가 이렇게 답할 것 같음
               </p>
               <p style={{ fontWeight: 900, fontSize: 'var(--font-size-lg)' }}>
