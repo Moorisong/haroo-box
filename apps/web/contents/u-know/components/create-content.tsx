@@ -13,7 +13,7 @@ import ReactionOverlay from './reaction-overlay';
 const BADGE_TEXTS = [
   '나 너 꿰뚫고 있음 (진심) 🫵',
   '너 속 다 보임 솔직히 🫵',
-  '나 너 읽힘 (항상) 🫠',
+  '너 나한테 읽힘 (항상) 🫠',
   '니 생각 이미 파악함ㅋ 🧐',
   '너 뭐라 할지 딱 알겠음 👁️',
 ];

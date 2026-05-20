@@ -41,12 +41,20 @@ export default function ResultContent({ token }: ResultContentProps) {
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
     }
     const shareUrl = window.location.href;
+    const resultDescriptions = [
+      `${friendName} 답변 실화..? 아무도 예상 못한 결과 나옴 ㄷㄷ`,
+      `출제자 예상 vs ${friendName} 실제 답변, 텔레파시 터졌을까? 👀`,
+      `${friendName}의 답변에 다들 빵 터짐 ㅋㅋㅋ 직접 확인해봐`,
+      `이 조합 레전드임... ${friendName} 답변 꼭 봐야 함`,
+      `${friendName} 속마음 들킨 거 실화? 결과 보면 소름 돋음`,
+    ];
+    const resultDesc = resultDescriptions[Math.floor(Math.random() * resultDescriptions.length)];
     const ogImageUrl = `${window.location.origin}/api/og/u-know/result?q=${encodeURIComponent(question)}&name=${encodeURIComponent(friendName)}&t=${Date.now()}`;
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: '우리의 텔레파시 결과는?! 🔮',
-        description: `"${question}"\n출제자의 예상과 ${friendName}의 실제 답변 결과를 확인해보세요!`,
+        title: '너잘알 결과 공개 🔮',
+        description: resultDesc,
         imageUrl: ogImageUrl,
         imageWidth: 800,
         imageHeight: 400,
@@ -79,7 +87,7 @@ export default function ResultContent({ token }: ResultContentProps) {
             <p className="uknow-result-label">
               질문
             </p>
-            <p className="uknow-result-text">
+            <p className="uknow-result-text" style={{ whiteSpace: 'pre-wrap' }}>
               &ldquo;{question}&rdquo;
             </p>
           </div>
@@ -93,7 +101,7 @@ export default function ResultContent({ token }: ResultContentProps) {
               <span className="uknow-compare-emoji">🤔</span>
               <span className="uknow-compare-who">출제자의 예상</span>
             </div>
-            <p className="uknow-compare-answer">
+            <p className="uknow-compare-answer" style={{ whiteSpace: 'pre-wrap' }}>
               {prediction}
             </p>
           </div>
@@ -121,7 +129,7 @@ export default function ResultContent({ token }: ResultContentProps) {
               <span className="uknow-compare-who">{friendName}의 실제 답변</span>
             </div>
             {revealed ? (
-              <p className="uknow-compare-answer">
+              <p className="uknow-compare-answer" style={{ whiteSpace: 'pre-wrap' }}>
                 {friendAnswer}
               </p>
             ) : (
