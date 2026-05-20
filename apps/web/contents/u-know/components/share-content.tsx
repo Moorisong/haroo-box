@@ -19,8 +19,12 @@ export default function ShareContent({ token, question: questionProp, myAnswer: 
   const question = questionProp ?? searchParams.get('q') ?? undefined;
   const myAnswer = myAnswerProp ?? searchParams.get('a') ?? undefined;
 
+  // play 링크에 질문과 예상 답변을 query param으로 포함 (친구에게는 prediction이 보이지 않음)
+  const playParams = new URLSearchParams();
+  if (question) playParams.set('q', question);
+  if (myAnswer) playParams.set('p', myAnswer);
   const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${UKNOW_ROUTES.PLAY(token)}`
+    ? `${window.location.origin}${UKNOW_ROUTES.PLAY(token)}?${playParams.toString()}`
     : '';
 
   const handleCopy = async () => {
@@ -86,24 +90,7 @@ export default function ShareContent({ token, question: questionProp, myAnswer: 
           </button>
         </div>
 
-        <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={() => router.push(UKNOW_ROUTES.RESULT(token))}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#666',
-              textDecoration: 'underline',
-              fontWeight: 900,
-              cursor: 'pointer',
-              fontSize: 'var(--font-size-sm)',
-            }}
-          >
-            결과 미리보기 (테스트용)
-          </button>
-        </div>
 
-        <p style={{ textAlign: 'center', fontSize: 'var(--font-size-4xl)' }}>👆</p>
       </div>
     </main>
   );

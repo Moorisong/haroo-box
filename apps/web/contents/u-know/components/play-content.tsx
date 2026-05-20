@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { UKNOW_ROUTES, UKNOW_LIMITS } from '../constants';
 import ReactionOverlay from './reaction-overlay';
 
@@ -9,13 +9,16 @@ interface PlayContentProps {
   token: string;
 }
 
-const MOCK_QUESTION = '내가 새벽 4시에 전화하면?';
-
 export default function PlayContent({ token }: PlayContentProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [friendAnswer, setFriendAnswer] = useState('');
   const [responderName, setResponderName] = useState('');
   const [showReaction, setShowReaction] = useState(false);
+
+  // 질문 데이터를 query param에서 가져오기
+  const question = searchParams.get('q') || '질문을 불러올 수 없어요';
+  const prediction = searchParams.get('p') || '';
 
   const isValid = friendAnswer.trim().length > 0 && responderName.trim().length > 0;
 
@@ -24,8 +27,15 @@ export default function PlayContent({ token }: PlayContentProps) {
 
     setShowReaction(true);
     setTimeout(() => {
-      router.push(UKNOW_ROUTES.RESULT(token));
-    }, 1500);
+      // 결과 페이지로 모든 데이터 전달: q(질문), p(예상답변), fa(친구실제답변), name(친구이름)
+      const resultParams = new URLSearchParams({
+        q: question,
+        p: prediction,
+        fa: friendAnswer,
+        name: responderName,
+      });
+      router.push(`${UKNOW_ROUTES.RESULT(token)}?${resultParams.toString()}`);
+    }, 750);
   };
 
   return (
@@ -34,8 +44,8 @@ export default function PlayContent({ token }: PlayContentProps) {
         <h1 className="uknow-title" style={{ fontSize: 'var(--font-size-2xl)' }}>
           친구가 보낸<br />질문이야 🎯
         </h1>
-        <span className="uknow-badge uknow-badge--accent">
-          뭐라고 답해야 웃기지?
+        <span className="uknow-badge uknow-badge--accent" style={{ marginTop: '12px' }}>
+          네 답을 어떻게 예상했을까? 👀
         </span>
       </header>
 
@@ -46,7 +56,7 @@ export default function PlayContent({ token }: PlayContentProps) {
               질문
             </p>
             <p style={{ fontWeight: 900, fontSize: 'var(--font-size-xl)' }}>
-              {MOCK_QUESTION}
+              {question}
             </p>
           </div>
 
@@ -85,7 +95,7 @@ export default function PlayContent({ token }: PlayContentProps) {
           onClick={handleSubmit}
           disabled={!isValid}
         >
-          답변 완료!
+          답변 제출!
         </button>
 
         <div className="uknow-hint-box">
