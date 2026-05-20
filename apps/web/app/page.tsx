@@ -67,6 +67,7 @@ export default function Home() {
             badgeType: styles.badgeHot,
             active: true,
         },
+        /*
         {
             id: 'u-know',
             title: '너잘알',
@@ -77,6 +78,7 @@ export default function Home() {
             badgeType: styles.badgeNew,
             active: true,
         },
+        */
         {
             id: 'rolling-paper',
             title: '롤링페이퍼',

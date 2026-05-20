@@ -39,8 +39,9 @@ export default function PlayContent({ token }: PlayContentProps) {
   };
 
   return (
-    <div className="uknow-form-page">
-      <header style={{ textAlign: 'center', marginBottom: '32px' }}>
+    <main className="uknow-page">
+      <div style={{ maxWidth: '400px', width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <header style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 className="uknow-title" style={{ fontSize: 'var(--font-size-2xl)' }}>
           친구가 보낸<br />질문이야
         </h1>
@@ -107,6 +108,7 @@ export default function PlayContent({ token }: PlayContentProps) {
       {showReaction && (
         <ReactionOverlay text={'보내는 중...\n두근두근 😎'} />
       )}
-    </div>
+      </div>
+    </main>
   );
 }

@@ -46,8 +46,9 @@ export default function CreateContent() {
   };
 
   return (
-    <div className="uknow-form-page">
-      <header style={{ textAlign: 'center', marginBottom: '32px' }}>
+    <main className="uknow-page">
+      <div style={{ maxWidth: '400px', width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <header style={{ textAlign: 'center', marginBottom: '32px' }}>
         <style>{`
           @keyframes sparkle-pulse {
             0%, 100% { transform: rotate(-2deg) scale(1); box-shadow: 0 8px 16px rgba(255, 107, 129, 0.4); }
@@ -229,6 +230,7 @@ export default function CreateContent() {
       {showReaction && (
         <ReactionOverlay text={'ㅋㅋㅋㅋㅋ\n개웃기겠다'} />
       )}
-    </div>
+      </div>
+    </main>
   );
 }
