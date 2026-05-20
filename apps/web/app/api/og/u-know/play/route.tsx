@@ -22,11 +22,11 @@ async function getFont(text: string) {
 // 질문 길이에 따라 동적으로 폰트 크기 결정
 function getQuestionFontSize(text: string): number {
   const len = text.length;
-  if (len <= 15) return 36;
-  if (len <= 25) return 30;
-  if (len <= 40) return 26;
-  if (len <= 55) return 22;
-  return 18;
+  if (len <= 15) return 48;
+  if (len <= 25) return 40;
+  if (len <= 40) return 34;
+  if (len <= 55) return 28;
+  return 24;
 }
 
 export async function GET(req: NextRequest) {
@@ -49,80 +49,64 @@ export async function GET(req: NextRequest) {
             height: '100%',
             width: '100%',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            backgroundColor: '#ffffff',
+            padding: '40px 60px',
+            border: '12px solid #1E293B', // 꽉 차는 카드 느낌의 굵은 테두리
             position: 'relative',
-            backgroundColor: '#FFF8F0', // 베이지색 배경 최대로 적용 (이미지 제거)
           }}
         >
-          {/* 메인 카드 */}
+          {/* 너잘알 타이틀 (배경 없이 폰트 강조) */}
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#ffffff',
-              border: '4px solid #1E293B',
-              boxShadow: '8px 8px 0 0 #1E293B',
-              borderRadius: '20px',
-              padding: '40px 50px',
-              maxWidth: '640px',
-              width: '640px',
-              textAlign: 'center',
-              position: 'relative',
+              fontSize: '42px',
+              color: '#6C5CE7',
+              fontWeight: 900,
+              letterSpacing: '-1px',
+              marginBottom: '20px',
+              textShadow: '3px 3px 0px rgba(108, 92, 231, 0.2)', // 폰트 효과
             }}
           >
-            {/* 너잘알 타이틀 (배경 없이 폰트 강조) */}
-            <div
-              style={{
-                display: 'flex',
-                fontSize: '32px',
-                color: '#6C5CE7',
-                fontWeight: 900,
-                letterSpacing: '-1px',
-                marginBottom: '16px',
-                textShadow: '2px 2px 0px rgba(108, 92, 231, 0.2)', // 폰트 효과
-              }}
-            >
-              너잘알 👀
-            </div>
+            너잘알 👀
+          </div>
 
-            {/* 서브 타이틀 */}
-            <div
-              style={{
-                display: 'flex',
-                fontSize: '22px',
-                color: '#64748B',
-                marginBottom: '20px',
-                fontWeight: 900,
-              }}
-            >
-              친구가 너한테 질문을 던졌어!
-            </div>
+          {/* 서브 타이틀 */}
+          <div
+            style={{
+              display: 'flex',
+              fontSize: '28px',
+              color: '#64748B',
+              marginBottom: '24px',
+              fontWeight: 900,
+            }}
+          >
+            친구가 너한테 질문을 던졌어!
+          </div>
 
-            {/* 질문 텍스트 박스 */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#F8F6FF',
-                border: '3px solid #6C5CE7',
-                borderRadius: '16px',
-                padding: '24px 32px',
-                fontSize: `${questionFontSize}px`,
-                color: '#1E293B',
-                fontWeight: 900,
-                lineHeight: 1.4,
-                textAlign: 'center',
-                width: '100%',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'keep-all',
-              }}
-            >
-              {question}
-            </div>
+          {/* 질문 텍스트 박스 */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#F8F6FF',
+              border: '4px solid #6C5CE7',
+              borderRadius: '20px',
+              padding: '36px 48px',
+              fontSize: `${questionFontSize}px`,
+              color: '#1E293B',
+              fontWeight: 900,
+              lineHeight: 1.4,
+              textAlign: 'center',
+              width: '100%',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'keep-all',
+            }}
+          >
+            {question}
           </div>
         </div>
       ),
