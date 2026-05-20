@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 import {
     getProofToken,
     createTest,
@@ -9,6 +9,7 @@ import {
     getMyTest,
     getStats,
 } from '../controllers/htsm.controller';
+import { createMongoStore } from '../utils/rate-limit.store';
 
 const router = Router();
 
@@ -54,7 +55,7 @@ const answerIpLimiter = rateLimit({
 const answerShareIdLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 3,
-    keyGenerator: (req) => req.body.shareId || req.ip, // Fallback to IP if shareId missing
+    keyGenerator: (req) => req.body.shareId || (req.ip ? ipKeyGenerator(req.ip) : 'unknown'),
     message: {
         success: false,
         error: '해당 테스트에 대한 응답 제출이 너무 많습니다. 잠시 후 다시 시도해주세요.',

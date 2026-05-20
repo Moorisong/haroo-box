@@ -22,7 +22,8 @@
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "mongoose": "^9.1.4",
-    "nanoid": "^3.3.11"
+    "nanoid": "^3.3.11",
+    "rate-limit-mongo": "^2.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
