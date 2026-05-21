@@ -12,6 +12,7 @@ const createTenMinuteLimiter = rateLimit({
   store: createMongoStore('rate-limits', 10 * 60 * 1000),
   windowMs: 10 * 60 * 1000,
   max: 5,
+  keyGenerator: (req) => `create-10min::${req.ip}`,
   message: {
     success: false,
     error: '테스트 생성 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
@@ -25,6 +26,7 @@ const createHourLimiter = rateLimit({
   store: createMongoStore('rate-limits', 60 * 60 * 1000),
   windowMs: 60 * 60 * 1000,
   max: 20,
+  keyGenerator: (req) => `create-1hour::${req.ip}`,
   message: {
     success: false,
     error: '테스트 생성 한도를 초과했습니다. 1시간 후 다시 시도해주세요.',
@@ -38,6 +40,7 @@ const submitMinuteLimiter = rateLimit({
   store: createMongoStore('rate-limits', 60 * 1000),
   windowMs: 60 * 1000,
   max: 15,
+  keyGenerator: (req) => `submit-1min::${req.ip}`,
   message: {
     success: false,
     error: '답변 제출 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
@@ -51,6 +54,7 @@ const viewLimiter = rateLimit({
   store: createMongoStore('rate-limits', 60 * 1000),
   windowMs: 60 * 1000,
   max: 60,
+  keyGenerator: (req) => `view-1min::${req.ip}`,
   message: {
     success: false,
     error: '조회 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
