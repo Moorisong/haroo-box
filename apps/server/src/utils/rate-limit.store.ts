@@ -37,12 +37,26 @@ export class MongoRateLimitStore implements Store {
     try {
       const model = getRateLimitModel(this.collectionName);
       const now = new Date();
-      
+      const newExpiresAt = new Date(now.getTime() + this.windowMs);
+
+      // 만료된 문서가 TTL에 의해 아직 삭제되지 않았을 수 있으므로,
+      // 만료 시점이 지난 문서는 hits를 1로 리셋한다.
+      const expired = await model.findOneAndUpdate(
+        { key, expiresAt: { $lte: now } },
+        { $set: { hits: 1, expiresAt: newExpiresAt } },
+        { new: true }
+      );
+
+      if (expired) {
+        return { totalHits: expired.hits, resetTime: expired.expiresAt };
+      }
+
+      // 만료되지 않은 기존 문서이거나 새 문서인 경우
       const result = await model.findOneAndUpdate(
         { key },
         {
           $inc: { hits: 1 },
-          $setOnInsert: { expiresAt: new Date(now.getTime() + this.windowMs) }
+          $setOnInsert: { expiresAt: newExpiresAt }
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
