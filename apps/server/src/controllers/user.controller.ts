@@ -77,7 +77,7 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
       success: true,
       data: {
         profile: {
-          nickname: user.nickname,
+          nickname: user.nickname || user.name || '사용자',
           profileImage: user.profileImage,
           createdAt: user.createdAt
         },

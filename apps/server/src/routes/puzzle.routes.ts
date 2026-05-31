@@ -8,10 +8,9 @@ import { getMyProfile, deleteUserAccount } from '../controllers/user.controller'
 
 const router = Router();
 
-// 1. 퍼즐 관련 API (공개)
+// 1. 퍼즐 관련 API (공개) - 정적 경로 먼저
 router.get('/current', getCurrentPuzzle);
 router.get('/archive', getArchivePuzzles);
-router.get('/:id', getPuzzleById);
 
 // 2. 랭킹 관련 API (공개 / 인증)
 router.get('/rankings/current', getCurrentRankings);
@@ -28,5 +27,8 @@ router.get('/progress', puzzleAuth, getMyProgress);
 // 5. 사용자 관련 API (인증 필요)
 router.get('/users/me', puzzleAuth, getMyProfile);
 router.delete('/users/me', puzzleAuth, deleteUserAccount);
+
+// 6. 퍼즐 단건 조회 (동적 경로 - 반드시 정적 경로들 아래에 위치)
+router.get('/:id', getPuzzleById);
 
 export default router;

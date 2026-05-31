@@ -66,13 +66,13 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
               className="text-2xl font-black"
               style={{ color: 'var(--puzzle-primary)' }}
             >
-              {profile.nickname[0].toUpperCase()}
+              {profile.nickname?.[0]?.toUpperCase() ?? '?'}
             </span>
           </div>
         )}
 
         <span className="text-lg font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          {profile.nickname}
+          {profile.nickname || '사용자'}
         </span>
         <span className="text-xs mt-1 font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
           {getFormatDate(profile.createdAt)}
