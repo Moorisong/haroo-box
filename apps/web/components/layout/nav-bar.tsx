@@ -33,8 +33,8 @@ export default function NavBar() {
     signOut({ callbackUrl: redirectUrl });
   };
 
-  // Toby 서비스에서는 헤더를 보이지 않게 처리
-  if (pathname.startsWith('/toby')) {
+  // Toby 및 puzzle 서비스에서는 헤더를 보이지 않게 처리
+  if (pathname.startsWith('/toby') || pathname.startsWith('/puzzle')) {
     return null;
   }
 
