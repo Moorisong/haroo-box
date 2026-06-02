@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, EyeOff, Shuffle, ZoomIn, ZoomOut, Save } from 'lucide-react';
+import { Eye, EyeOff, Shuffle, ZoomIn, ZoomOut, Save, Check } from 'lucide-react';
 
 interface FloatingToolbarProps {
   onOriginalToggle: () => void;
@@ -10,6 +10,7 @@ interface FloatingToolbarProps {
   onSave: () => void;
   showOriginal: boolean;
   zoom: number;
+  saveStatus?: 'idle' | 'saving' | 'saved';
 }
 
 export default function FloatingToolbar({
@@ -20,6 +21,7 @@ export default function FloatingToolbar({
   onSave,
   showOriginal,
   zoom,
+  saveStatus = 'idle',
 }: FloatingToolbarProps) {
   const roundedZoom = Math.round(zoom * 10) / 10;
 
@@ -91,11 +93,27 @@ export default function FloatingToolbar({
         {/* 즉시 저장 */}
         <button
           onClick={onSave}
-          className="flex items-center gap-1 px-2 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold text-white transition-all duration-150 hover:scale-[1.01]"
-          style={{ backgroundColor: 'var(--puzzle-primary)' }}
+          disabled={saveStatus === 'saving'}
+          className="flex items-center gap-1 px-2 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold text-white transition-all duration-150 disabled:opacity-85 hover:scale-[1.01]"
+          style={{ 
+            backgroundColor: 
+              saveStatus === 'saved' 
+                ? '#10B981' 
+                : saveStatus === 'saving'
+                  ? 'var(--puzzle-primary-hover)' 
+                  : 'var(--puzzle-primary)'
+          }}
         >
-          <Save size={15} />
-          <span className="hidden sm:inline">수동 저장</span>
+          {saveStatus === 'saving' ? (
+            <div className="w-3.5 h-3.5 border-2 border-t-transparent border-white rounded-full animate-spin mr-0.5" />
+          ) : saveStatus === 'saved' ? (
+            <Check size={15} />
+          ) : (
+            <Save size={15} />
+          )}
+          <span className="hidden sm:inline">
+            {saveStatus === 'saving' ? '저장 중...' : saveStatus === 'saved' ? '저장 완료!' : '저장하기'}
+          </span>
         </button>
       </div>
     </div>

@@ -12,7 +12,8 @@ import {
   startChallenge, 
   submitResult, 
   saveProgress as saveProgressApi,
-  fetchMyRanking
+  fetchMyRanking,
+  fetchMyProgress
 } from '@/lib/puzzle-api';
 import PuzzleBoard from '@/components/puzzle/puzzle-board';
 import PieceTray from '@/components/puzzle/piece-tray';
@@ -69,6 +70,7 @@ export default function PlayPage({ params }: PlayPageProps) {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [manualSaveStatus, setManualSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
 
   // 1. 초기 마운트 시 퍼즐 메타데이터 로드 및 게임 시작/이어하기 분기
@@ -89,19 +91,60 @@ export default function PlayPage({ params }: PlayPageProps) {
         const diffParam = (searchParams.get('diff') as 'beginner' | 'expert') || 'beginner';
         const modeParam = (searchParams.get('mode') as 'ranked' | 'solo') || 'solo';
 
+        let savedState: any = null;
+
         if (isResume) {
           // 이어하기 시 로컬 IndexedDB에서 상태 복원
-          const saved = await loadPuzzleState(puzzleId);
-          if (saved) {
-            initializePuzzle(puzzleId, res.data.imageUrl, saved.difficulty, saved.mode || 'solo');
+          savedState = await loadPuzzleState(puzzleId);
+
+          if (!savedState && token) {
+            // 로컬에 없는데 로그인된 상태면 서버에서 불러와 복구 시도
+            try {
+              const serverProgressRes = await fetchMyProgress(puzzleId, token);
+              if (serverProgressRes.success && serverProgressRes.data?.detailState) {
+                const s = serverProgressRes.data.detailState;
+                savedState = {
+                  puzzleId,
+                  difficulty: s.difficulty,
+                  mode: s.mode || 'solo',
+                  timerSeconds: s.timerSeconds,
+                  pieces: s.pieces || [],
+                  board: s.board,
+                  trayPieces: s.trayPieces,
+                  progress: serverProgressRes.data.progress,
+                  completed: false,
+                  startedAt: s.startedAt || new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                };
+
+                // 이후 로컬 자동저장을 위해 IndexedDB에도 즉시 써줌
+                await savePuzzleState(puzzleId, {
+                  difficulty: savedState.difficulty,
+                  mode: savedState.mode,
+                  timerSeconds: savedState.timerSeconds,
+                  pieces: savedState.pieces,
+                  board: savedState.board,
+                  trayPieces: savedState.trayPieces,
+                  progress: savedState.progress,
+                  completed: savedState.completed,
+                  startedAt: savedState.startedAt,
+                }, true);
+              }
+            } catch (err) {
+              console.error('Failed to restore progress from server:', err);
+            }
+          }
+
+          if (savedState) {
+            initializePuzzle(puzzleId, res.data.imageUrl, savedState.difficulty, savedState.mode || 'solo');
             resumePuzzle({
-              difficulty: saved.difficulty,
-              mode: saved.mode || 'solo',
-              timerSeconds: saved.timerSeconds,
-              board: saved.board || Array(totalPieces).fill(null),
-              trayPieces: saved.trayPieces || saved.pieces.map((p: any) => p.id),
-              startedAt: saved.startedAt,
-              completed: saved.completed,
+              difficulty: savedState.difficulty,
+              mode: savedState.mode || 'solo',
+              timerSeconds: savedState.timerSeconds,
+              board: savedState.board || Array(totalPieces).fill(null),
+              trayPieces: savedState.trayPieces || savedState.pieces.map((p: any) => p.id),
+              startedAt: savedState.startedAt,
+              completed: savedState.completed,
             });
           } else {
             initializePuzzle(puzzleId, res.data.imageUrl, diffParam, modeParam, pageEnterTime);
@@ -113,7 +156,7 @@ export default function PlayPage({ params }: PlayPageProps) {
 
         // 로그인된 상태이고 이번주 퍼즐을 랭킹 모드로 플레이 시 보안 챌린지 시작 (랭킹 모드)
         const isCurrentPuzzle = !res.data.archived;
-        const currentMode = isResume ? (await loadPuzzleState(puzzleId))?.mode || 'solo' : modeParam;
+        const currentMode = isResume ? savedState?.mode || 'solo' : modeParam;
         if (token && currentMode === 'ranked' && isCurrentPuzzle) {
           const challengeRes = await startChallenge(puzzleId, token);
           if (challengeRes.success && challengeRes.data?.challengeToken) {
@@ -229,8 +272,66 @@ export default function PlayPage({ params }: PlayPageProps) {
   };
 
   const handleSaveManual = async () => {
-    // 수동 저장 트리거 시 알림
-    alert('게임 진행상황이 로컬 디스크 및 클라우드 서버에 안전하게 자동 저장되었습니다.');
+    if (manualSaveStatus !== 'idle') return;
+
+    setManualSaveStatus('saving');
+
+    try {
+      // 올바르게 맞춘 조각(제자리) 개수 계산
+      const correctCount = board.filter((cell, idx) => cell === idx).length;
+      const progress = Math.round((correctCount / totalPieces) * 100);
+
+      const piecesData = board.map((pieceId, idx) => ({
+        id: pieceId !== null ? pieceId : idx,
+        correctX: 0,
+        correctY: 0,
+        currentX: 0,
+        currentY: 0,
+        width: 0,
+        height: 0,
+        locked: pieceId === idx,
+      }));
+
+      const saveStateData = {
+        difficulty,
+        mode,
+        timerSeconds,
+        pieces: piecesData as any,
+        board,
+        trayPieces,
+        progress,
+        completed: isCompleted,
+        startedAt: startedAt || new Date().toISOString(),
+      };
+
+      // 1. IndexedDB 로컬 수동 저장 (force = true로 즉시 플러시)
+      await savePuzzleState(puzzleId, saveStateData, true);
+
+      // 2. 로그인된 상태 시 서버 진행률 즉시 저장 (전체 세부 상태 함께 저장)
+      if (token) {
+        await saveProgressApi(puzzleId, progress, token, {
+          difficulty,
+          mode,
+          timerSeconds,
+          board,
+          trayPieces,
+          startedAt: startedAt || new Date().toISOString(),
+        });
+      }
+
+      // UX 시각 효과를 위해 최소 600ms 대기
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
+      setManualSaveStatus('saved');
+
+      // 2초 후 원래대로 복원
+      setTimeout(() => {
+        setManualSaveStatus('idle');
+      }, 2000);
+    } catch (e) {
+      console.error('Manual save error:', e);
+      setManualSaveStatus('idle');
+    }
   };
 
   // 5. 완료 시 기록 제출 처리
@@ -426,6 +527,7 @@ export default function PlayPage({ params }: PlayPageProps) {
           onSave={handleSaveManual}
           showOriginal={showOriginal}
           zoom={zoom}
+          saveStatus={manualSaveStatus}
         />
 
         <PieceTray
