@@ -13,11 +13,19 @@ export default function PuzzleLayout({
   const pathname = usePathname();
   const isPlayPage = pathname.includes('/play/');
 
+  if (isPlayPage) {
+    return (
+      <div className="puzzle-page h-screen h-[100dvh] overflow-hidden flex flex-col">
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div className="puzzle-page">
-      {!isPlayPage && <Header />}
+      <Header />
       <div style={{ minHeight: 'calc(100vh - 140px)' }}>{children}</div>
-      {!isPlayPage && <Footer />}
+      <Footer />
     </div>
   );
 }

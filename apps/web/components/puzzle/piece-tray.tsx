@@ -29,9 +29,15 @@ export default function PieceTray({
         width: '100%',
       }}
     >
-      <div className="text-xs font-bold mb-2 flex justify-between items-center" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        <span>미배치 조각 보관함 ({trayPieces.length}개 남음)</span>
-        {trayPieces.length > 0 && <span className="text-[10px] animate-pulse" style={{ color: 'var(--puzzle-primary)' }}>● 아래 조각을 선택한 후 빈 보드 격자를 클릭하세요</span>}
+      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline mb-2 select-none">
+        <span className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+          미배치 조각 보관함 ({trayPieces.length}개 남음)
+        </span>
+        {trayPieces.length > 0 && (
+          <span className="text-[10px] sm:text-xs font-bold animate-pulse" style={{ color: 'var(--puzzle-primary)' }}>
+            ● 아래 조각을 선택한 후 빈 보드 격자를 클릭하세요
+          </span>
+        )}
       </div>
 
       <div 

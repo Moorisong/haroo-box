@@ -20,7 +20,7 @@ export default function CursorFollower({
   useEffect(() => {
     const trackMouse = (e: MouseEvent) => {
       lastCoords.current = { x: e.clientX, y: e.clientY };
-      if (selectedPieceId !== null && followerRef.current) {
+      if (followerRef.current) {
         const size = 50;
         const x = e.clientX - size / 2;
         const y = e.clientY - size / 2;
@@ -32,7 +32,7 @@ export default function CursorFollower({
       if (e.touches.length > 0) {
         const t = e.touches[0];
         lastCoords.current = { x: t.clientX, y: t.clientY };
-        if (selectedPieceId !== null && followerRef.current) {
+        if (followerRef.current) {
           const size = 50;
           const x = t.clientX - size / 2;
           const y = t.clientY - size / 2;
@@ -42,23 +42,21 @@ export default function CursorFollower({
     };
 
     window.addEventListener('mousemove', trackMouse);
+    window.addEventListener('mousedown', trackMouse);
     window.addEventListener('touchmove', trackTouch, { passive: true });
-
-    // 즉각적인 위치 동기화
-    if (selectedPieceId !== null && followerRef.current && lastCoords.current.x !== -100) {
-      const size = 50;
-      const x = lastCoords.current.x - size / 2;
-      const y = lastCoords.current.y - size / 2;
-      followerRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
+    window.addEventListener('touchstart', trackTouch, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', trackMouse);
+      window.removeEventListener('mousedown', trackMouse);
       window.removeEventListener('touchmove', trackTouch);
+      window.removeEventListener('touchstart', trackTouch);
     };
-  }, [selectedPieceId]);
+  }, []); // 빈 배열로 마운트 시 1회만 리스너를 등록하여 중단 없는 포인터 트래킹 보장
 
-  if (selectedPieceId === null) return null;
+  const initialTransform = lastCoords.current.x !== -100
+    ? `translate3d(${lastCoords.current.x - 25}px, ${lastCoords.current.y - 25}px, 0)`
+    : 'translate3d(-100px, -100px, 0)';
 
   return (
     <div
@@ -68,7 +66,8 @@ export default function CursorFollower({
         width: 50,
         height: 50,
         willChange: 'transform',
-        transform: 'translate3d(-100px, -100px, 0)',
+        transform: initialTransform,
+        display: selectedPieceId === null ? 'none' : 'block',
       }}
     >
       <div 
@@ -80,12 +79,14 @@ export default function CursorFollower({
           opacity: 0.85,
         }}
       >
-        <PieceCell
-          pieceIdx={selectedPieceId}
-          image={image}
-          size={50}
-          gridSize={gridSize}
-        />
+        {selectedPieceId !== null && (
+          <PieceCell
+            pieceIdx={selectedPieceId}
+            image={image}
+            size={50}
+            gridSize={gridSize}
+          />
+        )}
       </div>
     </div>
   );
