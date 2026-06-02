@@ -4,6 +4,7 @@ import { getPuzzleResultModel } from '../models/puzzle-result.model';
 import { getPuzzleModel } from '../models/puzzle.model';
 import { getUserModel } from '../models/user.model';
 import { getChallengeTokenModel } from '../models/challenge-token.model';
+import { getPuzzleProgressModel } from '../models/puzzle-progress.model';
 import crypto from 'crypto';
 
 /**
@@ -183,6 +184,9 @@ export const submitResult = async (req: Request, res: Response, next: NextFuncti
       savedAt: new Date(),
       completed: true
     });
+
+    // 2.5. 실시간 진행도 데이터는 더 이상 필요 없으므로 DB에서 제거
+    await getPuzzleProgressModel().deleteOne({ userId: user._id, puzzleId });
 
     // 3. 최초 완성인 경우 퍼즐 참여자 수 (participantCount) 1 증가
     if (!priorResult) {

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { getPuzzleProgressModel } from '../models/puzzle-progress.model';
+import { getPuzzleModel } from '../models/puzzle.model';
 
 /**
  * POST /api/puzzle/progress
@@ -21,6 +22,13 @@ export const saveProgress = async (req: Request, res: Response, next: NextFuncti
     }
 
     const PuzzleProgress = getPuzzleProgressModel();
+
+    // 1. 첫 세션 시작 시 Puzzle의 누적 플레이 수 (playCount) 1 증가
+    const existing = await PuzzleProgress.findOne({ userId: user._id, puzzleId });
+    if (!existing) {
+      const Puzzle = getPuzzleModel();
+      await Puzzle.findByIdAndUpdate(puzzleId, { $inc: { playCount: 1 } });
+    }
 
     const updateData: any = {
       progress,

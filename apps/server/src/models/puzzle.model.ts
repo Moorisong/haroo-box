@@ -8,6 +8,7 @@ export interface IPuzzle extends Document {
   startDate: Date;
   endDate: Date;
   participantCount: number;
+  playCount: number;
   archived: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -21,6 +22,7 @@ const puzzleSchema = new Schema<IPuzzle>(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     participantCount: { type: Number, default: 0 },
+    playCount: { type: Number, default: 0 },
     archived: { type: Boolean, default: false, index: true },
   },
   {

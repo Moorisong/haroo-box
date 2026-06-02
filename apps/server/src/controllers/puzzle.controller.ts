@@ -100,18 +100,21 @@ export const getPuzzleById = async (req: Request, res: Response, next: NextFunct
 export const getServiceStats = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const PuzzleResult = getPuzzleResultModel();
-    const PuzzleProgress = getPuzzleProgressModel();
+    const Puzzle = getPuzzleModel();
 
     // 1. 완주된 기록 개수
     const completedCount = await PuzzleResult.countDocuments({ completed: true });
 
-    // 2. 진행 중인 기록 개수
-    const ongoingCount = await PuzzleProgress.countDocuments();
+    // 2. 각 퍼즐 도큐먼트의 playCount 누적 합산으로 누적 플레이 수 계산
+    const puzzles = await Puzzle.find({});
+    let totalPlayCount = puzzles.reduce((sum, p) => sum + (p.playCount || 0), 0);
 
-    // 3. 누적 플레이 수 = 완주 수 + 진행 중 수
-    const totalPlayCount = completedCount + ongoingCount;
+    // 데이터 불일치 및 예외 방지를 위해 최솟값을 완주 수로 보정
+    if (totalPlayCount < completedCount) {
+      totalPlayCount = completedCount;
+    }
 
-    // 4. 평균 완성률 = 완주 수 / 누적 플레이 수
+    // 3. 평균 완성률 = 완주 수 / 누적 플레이 수
     let completionRate = 0;
     if (totalPlayCount > 0) {
       completionRate = Math.round((completedCount / totalPlayCount) * 100);
