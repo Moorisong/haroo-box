@@ -308,7 +308,7 @@ export default function PlayPage({ params }: PlayPageProps) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen select-none" style={{ backgroundColor: 'var(--puzzle-background)' }}>
+    <div className="flex flex-col h-screen h-[100dvh] overflow-hidden select-none" style={{ backgroundColor: 'var(--puzzle-background)' }}>
       {/* Play GNB Header */}
       <div 
         className="flex items-center justify-between px-4 py-3 border-b"
@@ -380,7 +380,7 @@ export default function PlayPage({ params }: PlayPageProps) {
       </div>
 
       {/* Controls & Piece Tray Drawer */}
-      <div className="p-4 flex flex-col gap-4 mt-auto">
+      <div className="p-2 sm:p-4 flex flex-col gap-2 sm:gap-4 mt-auto">
         <FloatingToolbar
           onOriginalToggle={() => setShowOriginal(!showOriginal)}
           onShuffle={handleShuffle}

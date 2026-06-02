@@ -21,7 +21,7 @@ export default function PieceTray({
 
   return (
     <div
-      className="rounded-2xl border p-4 shadow-inner"
+      className="rounded-2xl border p-3 sm:p-4 shadow-inner"
       style={{
         backgroundColor: 'var(--puzzle-glass-bg)',
         backdropFilter: 'var(--puzzle-glass-blur)',
