@@ -72,7 +72,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.origin + '/puzzle');
-      showToast('하루퍼즐 공유 링크가 클립보드에 복사되었습니다! 친구들에게 보내보세요.', 'success');
+      showToast('링크가 복사되었습니다.', 'success', 1500);
     }
   };
 

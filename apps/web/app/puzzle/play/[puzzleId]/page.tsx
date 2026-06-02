@@ -317,7 +317,7 @@ export default function PlayPage({ params }: PlayPageProps) {
         }
       }
       navigator.clipboard.writeText(window.location.origin + '/puzzle');
-      showToast('공유용 하루퍼즐 링크가 성공적으로 클립보드에 복사되었습니다!', 'success');
+      showToast('링크가 복사되었습니다.', 'success', 1500);
     }
   };
 
