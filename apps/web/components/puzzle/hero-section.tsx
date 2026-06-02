@@ -244,21 +244,22 @@ export default function HeroSection({
                 {/* Beginner Card */}
                 <button
                   onClick={() => setTempDiff('beginner')}
-                  className="flex flex-col text-left p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95"
+                  className="flex flex-col text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'beginner' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full mb-1">
-                    <span className="text-base font-black" style={{ color: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex items-center justify-between w-full mb-1 gap-1 min-w-0">
+                    <span className="text-sm sm:text-base font-black truncate" style={{ color: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       Beginner
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
-                      100조각
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span className="hidden sm:inline">100조각</span>
+                      <span className="inline sm:hidden">100</span>
                     </span>
                   </div>
-                  <p className="text-xs font-medium leading-relaxed mt-1 whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                  <p className="text-xs font-medium leading-relaxed mt-1 whitespace-nowrap overflow-hidden text-ellipsis w-full" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     편안하게 완성하기
                   </p>
                 </button>
@@ -266,21 +267,22 @@ export default function HeroSection({
                 {/* Expert Card */}
                 <button
                   onClick={() => setTempDiff('expert')}
-                  className="flex flex-col text-left p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95"
+                  className="flex flex-col text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'expert' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full mb-1">
-                    <span className="text-base font-black" style={{ color: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex items-center justify-between w-full mb-1 gap-1 min-w-0">
+                    <span className="text-sm sm:text-base font-black truncate" style={{ color: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       Expert
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600">
-                      256조각
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span className="hidden sm:inline">256조각</span>
+                      <span className="inline sm:hidden">256</span>
                     </span>
                   </div>
-                  <p className="text-xs font-medium leading-relaxed mt-1 whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                  <p className="text-xs font-medium leading-relaxed mt-1 whitespace-nowrap overflow-hidden text-ellipsis w-full" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     고도의 집중과 몰입
                   </p>
                 </button>
@@ -312,10 +314,12 @@ export default function HeroSection({
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        🏆 랭킹 도전 모드
+                        🏆 <span className="hidden sm:inline">랭킹 도전 모드</span>
+                        <span className="inline sm:hidden">랭킹 도전</span>
                       </span>
                       <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">
-                        기록 측정
+                        <span className="hidden sm:inline">기록 측정</span>
+                        <span className="inline sm:hidden">기록</span>
                       </span>
                     </div>
                     <p className="text-xs font-medium mt-1 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
@@ -342,10 +346,12 @@ export default function HeroSection({
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        🧘 힐링 플레이 모드
+                        🧘 <span className="hidden sm:inline">힐링 플레이 모드</span>
+                        <span className="inline sm:hidden">힐링 플레이</span>
                       </span>
                       <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600">
-                        연습 & 힐링
+                        <span className="hidden sm:inline">연습 & 힐링</span>
+                        <span className="inline sm:hidden">힐링</span>
                       </span>
                     </div>
                     <p className="text-xs font-medium mt-1 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
