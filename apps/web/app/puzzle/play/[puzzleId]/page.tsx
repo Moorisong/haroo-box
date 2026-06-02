@@ -137,9 +137,9 @@ export default function PlayPage({ params }: PlayPageProps) {
   useEffect(() => {
     if (isPageLoading || !puzzleId || board.length === 0) return;
 
-    // 조각 배치 현황 계산
-    const placedCount = board.filter((cell) => cell !== null).length;
-    const progress = Math.round((placedCount / totalPieces) * 100);
+    // 올바르게 맞춘 조각(제자리) 개수 계산
+    const correctCount = board.filter((cell, idx) => cell === idx).length;
+    const progress = Math.round((correctCount / totalPieces) * 100);
 
     const piecesData = board.map((pieceId, idx) => ({
       id: pieceId !== null ? pieceId : idx,
@@ -172,8 +172,8 @@ export default function PlayPage({ params }: PlayPageProps) {
 
   // 4. 모드 판정
   const gridSize = difficulty === 'beginner' ? 10 : 16;
-  const placedCount = board.filter((cell) => cell !== null).length;
-  const progressPercent = Math.round((placedCount / totalPieces) * 100);
+  const correctCount = board.filter((cell, idx) => cell === idx).length;
+  const progressPercent = Math.round((correctCount / totalPieces) * 100);
 
   // 시간 포맷 포매터 (mm:ss)
   const formatTime = (seconds: number) => {
