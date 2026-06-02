@@ -184,9 +184,12 @@ export async function deleteMyAccount(token: string): Promise<ApiResponse<void>>
   }
 }
 
-export async function clearMyProgress(token: string): Promise<ApiResponse<void>> {
+export async function clearMyProgress(token: string, puzzleId?: string): Promise<ApiResponse<void>> {
   try {
-    const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.PROGRESS}`, {
+    const url = puzzleId
+      ? `${API_BASE_URL}/api${API_PUZZLE.PROGRESS}?puzzleId=${puzzleId}`
+      : `${API_BASE_URL}/api${API_PUZZLE.PROGRESS}`;
+    const res = await fetch(url, {
       method: 'DELETE',
       headers: getHeaders(token),
     });

@@ -13,7 +13,8 @@ import {
   submitResult, 
   saveProgress as saveProgressApi,
   fetchMyRanking,
-  fetchMyProgress
+  fetchMyProgress,
+  clearMyProgress
 } from '@/lib/puzzle-api';
 import PuzzleBoard from '@/components/puzzle/puzzle-board';
 import PieceTray from '@/components/puzzle/piece-tray';
@@ -148,10 +149,16 @@ export default function PlayPage({ params }: PlayPageProps) {
             });
           } else {
             initializePuzzle(puzzleId, res.data.imageUrl, diffParam, modeParam, pageEnterTime);
+            if (token) {
+              clearMyProgress(token, puzzleId).catch(console.error);
+            }
           }
         } else {
           // 새로하기
           initializePuzzle(puzzleId, res.data.imageUrl, diffParam, modeParam, pageEnterTime);
+          if (token) {
+            clearMyProgress(token, puzzleId).catch(console.error);
+          }
         }
 
         // 로그인된 상태이고 이번주 퍼즐을 랭킹 모드로 플레이 시 보안 챌린지 시작 (랭킹 모드)
