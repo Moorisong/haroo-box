@@ -20,8 +20,6 @@ import FloatingToolbar from '@/components/puzzle/floating-toolbar';
 import CompletionModal from '@/components/puzzle/completion-modal';
 import CursorFollower from '@/components/puzzle/cursor-follower';
 import { MyRanking, Puzzle } from '@/types/puzzle';
-import { useToast } from '@/lib/hooks/use-toast';
-import Toast from '@/components/ui/toast';
 
 // Next.js 16 App Router Dynamic Route Params 대응
 interface PlayPageProps {
@@ -72,7 +70,6 @@ export default function PlayPage({ params }: PlayPageProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
-  const { toast: toastState, showToast, hideToast } = useToast();
 
   // 1. 초기 마운트 시 퍼즐 메타데이터 로드 및 게임 시작/이어하기 분기
   useEffect(() => {
@@ -317,7 +314,7 @@ export default function PlayPage({ params }: PlayPageProps) {
         }
       }
       navigator.clipboard.writeText(window.location.origin + '/puzzle');
-      showToast('링크가 복사되었습니다.', 'success', 1500);
+      alert('공유용 하루퍼즐 링크가 클립보드에 복사되었습니다!');
     }
   };
 
@@ -462,9 +459,6 @@ export default function PlayPage({ params }: PlayPageProps) {
         image={puzzle.imageUrl}
         gridSize={gridSize}
       />
-
-      {/* Toast Notification */}
-      <Toast toast={toastState} onHide={hideToast} />
     </div>
   );
 }

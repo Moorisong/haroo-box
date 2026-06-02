@@ -1,16 +1,15 @@
 'use client';
 
-import { Share2, Link2 } from 'lucide-react';
+import { useState } from 'react';
+import { Share2, Link2, Check } from 'lucide-react';
 import { Puzzle } from '@/types/puzzle';
-import { useToast } from '@/lib/hooks/use-toast';
-import Toast from '@/components/ui/toast';
 
 interface ShareCardProps {
   puzzle: Puzzle;
 }
 
 export default function ShareCard({ puzzle }: ShareCardProps) {
-  const { toast, showToast, hideToast } = useToast();
+  const [isCopied, setIsCopied] = useState(false);
 
   const getAbsoluteImageUrl = (url: string) => {
     if (!url) return '';
@@ -72,7 +71,10 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.origin + '/puzzle');
-      showToast('링크가 복사되었습니다.', 'success', 1500);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
     }
   };
 
@@ -117,26 +119,33 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
 
         <button
           onClick={handleCopyLink}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 text-xs font-extrabold"
+          disabled={isCopied}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 text-xs font-extrabold disabled:pointer-events-none"
           style={{
-            backgroundColor: 'var(--puzzle-glass-bg)',
-            color: 'var(--puzzle-foreground)',
-            borderColor: 'var(--puzzle-border)',
+            backgroundColor: isCopied ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
+            color: isCopied ? 'var(--puzzle-primary)' : 'var(--puzzle-foreground)',
+            borderColor: isCopied ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = 'var(--puzzle-primary)';
+            if (!isCopied) e.currentTarget.style.borderColor = 'var(--puzzle-primary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = 'var(--puzzle-border)';
+            if (!isCopied) e.currentTarget.style.borderColor = 'var(--puzzle-border)';
           }}
         >
-          <Link2 size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-          공유 링크 복사하기
+          {isCopied ? (
+            <>
+              <Check size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
+              링크 복사 완료
+            </>
+          ) : (
+            <>
+              <Link2 size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
+              공유 링크 복사하기
+            </>
+          )}
         </button>
       </div>
-
-      {/* Toast Notification */}
-      <Toast toast={toast} onHide={hideToast} />
     </div>
   );
 }
