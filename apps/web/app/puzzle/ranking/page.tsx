@@ -152,19 +152,10 @@ export default function RankingPage() {
             style={{
               backgroundColor: selectedDifficulty === 'expert' ? 'var(--puzzle-primary)' : 'transparent',
               color: selectedDifficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
-              boxShadow: selectedDifficulty === 'expert' ? 'var(--puzzle-shadow-sm)' : 'none',
-            }}
-          >
-            Expert (256조각)
-          </button>
-        </div>
-      </div>
-
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left: Table and Preview banner */}
-        <div className="lg:col-span-2 flex flex-col gap-5">
-          {/* Puzzle Info Preview Banner */}
+                {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Puzzle Info Preview Banner */}
+        <div className="lg:col-span-2 lg:row-start-1 lg:col-start-1 order-1 lg:order-none">
           <Link
             href="/puzzle"
             className="flex flex-wrap sm:flex-nowrap items-center gap-3 p-4 rounded-2xl border overflow-hidden transition-all duration-200 group"
@@ -209,8 +200,19 @@ export default function RankingPage() {
               </div>
             </div>
           </Link>
+        </div>
 
-          {/* Leaderboard Board */}
+        {/* 1. 내 최고 기록 (MyRankingCard) */}
+        <div className="lg:col-span-1 lg:row-start-1 lg:col-start-3 order-2 lg:order-none">
+          <MyRankingCard
+            myRanking={myRanking}
+            isLoggedIn={!!token}
+            onRankClick={handleScrollToMyRank}
+          />
+        </div>
+
+        {/* 2. 랭킹 (Leaderboard: RankingTable + 더보기) */}
+        <div className="lg:col-span-2 lg:row-start-2 lg:col-start-1 order-3 lg:order-none flex flex-col gap-5">
           <RankingTable
             rankings={rankings.slice(0, visibleCount)}
             myNickname={session?.user?.nickname || session?.user?.name || undefined}
@@ -235,14 +237,8 @@ export default function RankingPage() {
           )}
         </div>
 
-        {/* Right side: Personal record stats & charts */}
-        <div className="flex flex-col gap-4">
-          <MyRankingCard
-            myRanking={myRanking}
-            isLoggedIn={!!token}
-            onRankClick={handleScrollToMyRank}
-          />
-
+        {/* 3. 성적 분포 분석 (PercentileChart) */}
+        <div className="lg:col-span-1 lg:row-start-2 lg:col-start-3 order-4 lg:order-none">
           <PercentileChart
             topPercent={myRanking ? myRanking.topPercent : null}
             totalParticipants={myRanking ? myRanking.totalParticipants : 0}
