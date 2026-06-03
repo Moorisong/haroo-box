@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRankingStore } from '@/lib/stores/ranking-store';
-import { fetchCurrentPuzzle, fetchArchivePuzzles, fetchServiceStats } from '@/lib/puzzle-api';
+import { fetchCurrentPuzzle, fetchArchivePuzzles, fetchServiceStats, fetchMyProgress } from '@/lib/puzzle-api';
 import { loadPuzzleState } from '@/lib/puzzle-db';
 import { Puzzle } from '@/types/puzzle';
 import HeroSection from '@/components/puzzle/hero-section';
@@ -67,6 +67,30 @@ export default function PuzzlePage() {
 
     loadData();
   }, []);
+
+  // 서버로부터 진행 중인 기록 동기화 (로컬 IndexedDB에 없는 경우)
+  useEffect(() => {
+    if (!currentPuzzle || !token || hasSavedGame) return;
+
+    async function syncServerProgress() {
+      try {
+        const serverProgressRes = await fetchMyProgress(currentPuzzle._id, token);
+        if (serverProgressRes.success && serverProgressRes.data) {
+          const p = serverProgressRes.data.progress;
+          const diff = serverProgressRes.data.detailState?.difficulty || 'beginner';
+          if (p > 0 && p < 100) {
+            setHasSavedGame(true);
+            setSavedProgress(p);
+            setSavedDifficulty(diff);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to sync server progress:', e);
+      }
+    }
+
+    syncServerProgress();
+  }, [currentPuzzle, token, hasSavedGame]);
 
   useEffect(() => {
     if (currentPuzzle) {
