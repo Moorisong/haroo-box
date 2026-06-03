@@ -568,7 +568,7 @@ export default function PlayPage({ params }: PlayPageProps) {
       {/* Completion Modal Ceremony */}
       {isCompleted && (
         <CompletionModal
-          onClose={() => setCompleted(false)}
+          onClose={handleGoHome}
           onGoHome={handleGoHome}
           onSaveRecord={handleSaveRecord}
           onShare={handleShare}

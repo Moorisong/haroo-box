@@ -83,6 +83,7 @@ export default function RankingTable({
           return (
             <div
               key={idx}
+              id={isMe ? 'my-ranking-row' : undefined}
               className="flex items-center gap-3 px-5 py-4 border-b last:border-0 transition-colors"
               style={{
                 borderColor: 'var(--puzzle-border)',

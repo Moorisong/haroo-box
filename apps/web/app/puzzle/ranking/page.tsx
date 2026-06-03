@@ -20,10 +20,12 @@ export default function RankingPage() {
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<'beginner' | 'expert'>('beginner');
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(20);
 
   useEffect(() => {
     async function loadRankings() {
       setIsLoading(true);
+      setVisibleCount(20);
       try {
         // 1. 현재 활성 퍼즐 조회
         const res = await fetchCurrentPuzzle();
@@ -60,6 +62,23 @@ export default function RankingPage() {
 
     loadRankings();
   }, [token, selectedDifficulty]);
+
+  const handleScrollToMyRank = () => {
+    if (!myRanking || myRanking.myRank === null) return;
+    
+    // 1. Ensure the user's rank is visible in the list
+    if (myRanking.myRank > visibleCount) {
+      setVisibleCount(myRanking.myRank);
+    }
+    
+    // 2. Wait for the list to render, then scroll to the row
+    setTimeout(() => {
+      const element = document.getElementById('my-ranking-row');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
 
   const getDaysLeft = (endDateStr: string) => {
     try {
@@ -193,10 +212,27 @@ export default function RankingPage() {
 
           {/* Leaderboard Board */}
           <RankingTable
-            rankings={rankings}
+            rankings={rankings.slice(0, visibleCount)}
             myNickname={session?.user?.nickname || session?.user?.name || undefined}
             totalParticipants={rankings.length}
           />
+
+          {rankings.length > visibleCount && (
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 20)}
+              className="w-full py-3.5 rounded-2xl border font-bold text-xs transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
+              style={{
+                backgroundColor: 'var(--puzzle-glass-bg)',
+                color: 'var(--puzzle-foreground)',
+                borderColor: 'var(--puzzle-border)',
+                boxShadow: 'var(--puzzle-shadow-sm)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-glass-bg)'; }}
+            >
+              더보기 ({visibleCount}/{rankings.length})
+            </button>
+          )}
         </div>
 
         {/* Right side: Personal record stats & charts */}
@@ -204,6 +240,7 @@ export default function RankingPage() {
           <MyRankingCard
             myRanking={myRanking}
             isLoggedIn={!!token}
+            onRankClick={handleScrollToMyRank}
           />
 
           <PercentileChart

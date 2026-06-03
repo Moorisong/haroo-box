@@ -146,7 +146,7 @@ export default function CompletionModal({
         {/* 랭킹 반영 수치 표시 (기록이 저장되었거나 로그인된 상태에서 랭킹 모드일 시) */}
         {myRanking && myRanking.myRank !== null && (
           <div
-            className="flex items-center justify-center gap-6 mb-8 py-4 rounded-2xl border"
+            className="flex items-center justify-center gap-6 mb-8 py-4 rounded-2xl border md:max-w-[280px] md:mx-auto"
             style={{ backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}
           >
             <div className="text-center">

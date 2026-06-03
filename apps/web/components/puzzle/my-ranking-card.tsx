@@ -5,9 +5,10 @@ import { MyRanking } from '@/types/puzzle';
 interface MyRankingCardProps {
   myRanking: MyRanking | null;
   isLoggedIn: boolean;
+  onRankClick?: () => void;
 }
 
-export default function MyRankingCard({ myRanking, isLoggedIn }: MyRankingCardProps) {
+export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: MyRankingCardProps) {
   const formatDuration = (seconds: number | null) => {
     if (seconds === null) return '-';
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -59,25 +60,42 @@ export default function MyRankingCard({ myRanking, isLoggedIn }: MyRankingCardPr
         </div>
       ) : myRanking && myRanking.myRank !== null ? (
         <div className="flex flex-col gap-3 mt-4">
-          {stats.map(({ label, value, highlight }) => (
-            <div
-              key={label}
-              className="flex items-center justify-between py-2 border-b last:border-0"
-              style={{ borderColor: 'var(--puzzle-border)' }}
-            >
-              <span className="text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                {label}
-              </span>
-              <span
-                className="text-sm font-black tabular-nums"
-                style={{
-                  color: highlight ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)',
-                }}
+          {stats.map(({ label, value, highlight }) => {
+            const isRank = label === '현재 내 순위';
+            return (
+              <div
+                key={label}
+                className="flex items-center justify-between py-2 border-b last:border-0"
+                style={{ borderColor: 'var(--puzzle-border)' }}
               >
-                {value}
-              </span>
-            </div>
-          ))}
+                <span className="text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                  {label}
+                </span>
+                {isRank && onRankClick ? (
+                  <button
+                    onClick={onRankClick}
+                    className="px-2.5 py-1 text-xs font-black rounded-full border transition-all duration-200 hover:bg-[var(--puzzle-primary)] hover:text-white hover:border-transparent active:scale-95 flex items-center gap-1 shadow-sm"
+                    style={{
+                      backgroundColor: 'var(--puzzle-muted)',
+                      color: 'var(--puzzle-primary)',
+                      borderColor: 'var(--puzzle-border)',
+                    }}
+                  >
+                    {value}
+                  </button>
+                ) : (
+                  <span
+                    className="text-sm font-black tabular-nums"
+                    style={{
+                      color: highlight ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)',
+                    }}
+                  >
+                    {value}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="py-6 text-center">
