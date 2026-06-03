@@ -152,7 +152,15 @@ export default function RankingPage() {
             style={{
               backgroundColor: selectedDifficulty === 'expert' ? 'var(--puzzle-primary)' : 'transparent',
               color: selectedDifficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
-                {/* Main Grid */}
+              boxShadow: selectedDifficulty === 'expert' ? 'var(--puzzle-shadow-sm)' : 'none',
+            }}
+          >
+            Expert (256조각)
+          </button>
+        </div>
+      </div>
+
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* Puzzle Info Preview Banner */}
         <div className="lg:col-span-2 lg:row-start-1 lg:col-start-1 order-1 lg:order-none">
