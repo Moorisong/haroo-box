@@ -535,6 +535,7 @@ export default function PlayPage({ params }: PlayPageProps) {
           showOriginal={showOriginal}
           zoom={zoom}
           saveStatus={manualSaveStatus}
+          mode={mode}
         />
 
         <PieceTray

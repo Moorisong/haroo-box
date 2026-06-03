@@ -75,7 +75,6 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
     for (const prog of rawProgresses) {
       const pIdStr = prog.puzzleId.toString();
       if (completedPuzzleIds.includes(pIdStr)) continue;
-      if (prog.progress <= 0) continue;
 
       const p = puzzleMap.get(pIdStr);
       if (!p) continue;
@@ -93,7 +92,7 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
     }
 
     // 3. 통계 계산
-    const totalCompleted = history.length;
+    const totalCompleted = rawResults.length;
 
     // Beginner 모드의 최고 기록
     const beginnerResults = rawResults.filter(r => r.difficulty === 'beginner');

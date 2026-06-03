@@ -178,10 +178,10 @@ export default function CompletionModal({
                 <Save size={16} strokeWidth={2.5} />
                 <span>
                   {isSaved 
-                    ? (mode === 'solo' ? '기록 저장 완료! 💾' : '기록 저장 완료! 🏆') 
+                    ? (mode === 'solo' ? '저장 완료' : '저장/제출 완료') 
                     : isSaving 
-                      ? '기록을 업로드하는 중...' 
-                      : (mode === 'solo' ? '내 기록실에 저장하기' : '공식 랭킹에 기록 등록하기')}
+                      ? (mode === 'solo' ? '저장 중...' : '저장/제출 중...') 
+                      : (mode === 'solo' ? '저장하기' : '저장/제출')}
                 </span>
               </button>
             )
@@ -192,7 +192,7 @@ export default function CompletionModal({
               style={{ backgroundColor: '#EF4444' }}
             >
               <LogIn size={16} strokeWidth={2.5} />
-              <span>{mode === 'solo' ? '로그인하고 기록 저장하기 💾' : '로그인하고 랭킹 등록하기 🏆'}</span>
+              <span>{mode === 'solo' ? '로그인하고 저장하기' : '로그인하고 저장/제출'}</span>
             </button>
           )}
 
