@@ -168,23 +168,16 @@ export default function CompletionModal({
         {/* Buttons / Actions */}
         <div className="flex flex-col gap-3">
           {isLoggedIn ? (
-            onSaveRecord && (
-              <button
-                onClick={onSaveRecord}
-                disabled={isSaving || isSaved}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-extrabold text-sm text-white transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
-                style={{ backgroundColor: isSaved ? '#22C55E' : 'var(--puzzle-primary)' }}
-              >
-                <Save size={16} strokeWidth={2.5} />
-                <span>
-                  {isSaved 
-                    ? (mode === 'solo' ? '저장 완료' : '저장/제출 완료') 
-                    : isSaving 
-                      ? (mode === 'solo' ? '저장 중...' : '저장/제출 중...') 
-                      : (mode === 'solo' ? '저장하기' : '저장/제출')}
-                </span>
-              </button>
-            )
+            <div className="text-xs font-bold py-2 select-none flex items-center justify-center gap-1.5" style={{ color: isSaved ? '#22C55E' : 'var(--puzzle-muted-foreground)' }}>
+              {isSaving ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) transparent' }} />
+                  <span>{mode === 'solo' ? '기록 저장 중...' : '기록 저장/제출 중...'}</span>
+                </>
+              ) : isSaved ? (
+                <span>{mode === 'solo' ? '✓ 저장 완료' : '✓ 저장/제출 완료'}</span>
+              ) : null}
+            </div>
           ) : (
             <button
               onClick={onSaveRecord} // 바깥에서 로그인 가이드를 띄우거나 로그인 페이지로 보냄

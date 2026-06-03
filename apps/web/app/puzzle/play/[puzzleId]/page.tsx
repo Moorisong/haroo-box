@@ -386,6 +386,13 @@ export default function PlayPage({ params }: PlayPageProps) {
     }
   };
 
+  // 완료 시 자동으로 저장/제출 실행
+  useEffect(() => {
+    if (isCompleted && token && !isSaved && !isSubmitting) {
+      handleSaveRecord();
+    }
+  }, [isCompleted, token, isSaved, isSubmitting]);
+
   const handleShare = () => {
     if (typeof window !== 'undefined') {
       const Kakao = (window as any).Kakao;
