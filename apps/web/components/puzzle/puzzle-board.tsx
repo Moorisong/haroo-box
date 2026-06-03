@@ -24,7 +24,7 @@ export default function PuzzleBoard({
   const cellSize = Math.floor(baseSize * zoom);
 
   return (
-    <div className="flex items-center justify-center p-4 overflow-auto max-h-full max-w-full scrollbar-hide select-none">
+    <div className="flex p-4 overflow-auto max-h-full max-w-full scrollbar-hide select-none">
       <div
         className="grid border rounded-xl overflow-hidden shadow-2xl transition-all duration-200"
         style={{
@@ -33,6 +33,7 @@ export default function PuzzleBoard({
           borderColor: 'var(--puzzle-border)',
           backgroundColor: 'rgba(255, 255, 255, 0.05)',
           boxShadow: 'var(--puzzle-shadow-lg)',
+          margin: 'auto',
         }}
       >
         {board.map((pieceId, slotIdx) => {
