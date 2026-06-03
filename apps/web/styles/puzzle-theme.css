@@ -165,3 +165,29 @@
   box-shadow: var(--puzzle-shadow-lg);
   transform: translateY(-2px);
 }
+
+/* 💎 프리미엄 미세 스크롤바 디자인 (기본 브라우저 스크롤바보다 얇고 세련됨) */
+.puzzle-page ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.puzzle-page ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.puzzle-page ::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+.puzzle-page ::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 142, 247, 0.5);
+}
+
+/* 🙈 특정 컴포넌트 스크롤바 숨김 유틸리티 */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+

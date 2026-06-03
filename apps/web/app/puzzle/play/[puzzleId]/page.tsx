@@ -515,7 +515,7 @@ export default function PlayPage({ params }: PlayPageProps) {
       )}
 
       {/* Play Canvas / Board Area */}
-      <div className="flex-1 min-h-0 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <div className="w-full flex-1 min-h-0 flex flex-col items-center justify-center p-4 relative overflow-hidden">
         {/* Original guide overlay */}
         {showOriginal && (
           <div 

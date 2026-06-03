@@ -243,7 +243,7 @@ export default function HeroSection({
                     <span>완료됨 ({completedDifficulty === 'expert' ? 'Expert' : 'Beginner'})</span>
                   </div>
                   <p className="mt-0.5 text-sm font-extrabold text-emerald-700">
-                    명예의 전당 등록 완료! 🏅
+                    랭킹 등록 완료! 🏅
                   </p>
                 </>
               ) : hasSavedGame && savedDifficulty ? (

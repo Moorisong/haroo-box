@@ -25,8 +25,8 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
     return `${min}:${sec}`;
   };
 
-  // 최대 5명만 노출
-  const displayRankings = rankings.slice(0, 5);
+  // 최대 7명만 노출
+  const displayRankings = rankings.slice(0, 7);
 
   return (
     <div className="flex flex-col h-full">
@@ -34,7 +34,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Trophy size={18} style={{ color: 'var(--puzzle-primary)' }} />
-            이번 주 랭킹 TOP 5
+            랭킹 TOP 7
           </h2>
           
           {/* Difficulty pills */}
@@ -81,7 +81,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
       >
         {isLoading ? (
           // Shimmer loading
-          Array.from({ length: 5 }).map((_, idx) => (
+          Array.from({ length: 7 }).map((_, idx) => (
             <div 
               key={idx} 
               className="flex items-center gap-4 px-5 py-4 border-b last:border-0"
@@ -105,8 +105,8 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         ) : (
           displayRankings.map((item, idx) => {
             const medal = getMedal(item.rank);
-            const avatarColor = ['#EBF2FF', '#FFF3E0', '#E8F5E9', '#F3E8FF', '#FEF3C7'][idx] || '#F1F5F9';
-            const textColor = ['#4F8EF7', '#F59E0B', '#22C55E', '#8B5CF6', '#F59E0B'][idx] || '#64748B';
+            const avatarColor = ['#EBF2FF', '#FFF3E0', '#E8F5E9', '#F3E8FF', '#FEF3C7', '#FFE4E6', '#ECFDF5'][idx] || '#F1F5F9';
+            const textColor = ['#4F8EF7', '#F59E0B', '#22C55E', '#8B5CF6', '#F59E0B', '#E11D48', '#059669'][idx] || '#64748B';
             
             return (
               <div
