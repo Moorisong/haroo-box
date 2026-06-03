@@ -49,17 +49,19 @@ export const verifyChallenge = async (req: Request, res: Response, next: NextFun
     }
 
     // 3. 플레이 경과 시간 무결성 검증
-    const startMs = new Date(startedAt).getTime();
-    const completeMs = new Date(completedAt).getTime();
-    const calculatedDurationSeconds = Math.round((completeMs - startMs) / 1000);
-    const timeDiff = Math.abs(calculatedDurationSeconds - completionTime);
+    if (mode === 'ranked') {
+      const startMs = new Date(startedAt).getTime();
+      const completeMs = new Date(completedAt).getTime();
+      const calculatedDurationSeconds = Math.round((completeMs - startMs) / 1000);
+      const timeDiff = Math.abs(calculatedDurationSeconds - completionTime);
 
-    if (timeDiff > 5) { // 5초 오차까지는 관용 (네트워크 딜레이 등)
-      res.status(400).json({ 
-        success: false, 
-        error: `플레이 시간 무결성 검증 실패 (오차: ${timeDiff}초)` 
-      });
-      return;
+      if (timeDiff > 5) { // 5초 오차까지는 관용 (네트워크 딜레이 등)
+        res.status(400).json({ 
+          success: false, 
+          error: `플레이 시간 무결성 검증 실패 (오차: ${timeDiff}초)` 
+        });
+        return;
+      }
     }
 
     // 4. 비정상 기록 자동 필터링 (30초 미만 스피드핵 차단)
