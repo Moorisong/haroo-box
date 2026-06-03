@@ -116,15 +116,52 @@ export default function ArchivePuzzleCard({
             </div>
           )}
 
-          {/* Action Button */}
-          <Link
-            href={`/puzzle/play/${puzzle._id}`}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200"
-            style={{ backgroundColor: 'var(--puzzle-primary)' }}
-          >
-            <Play size={13} strokeWidth={2.5} />
-            <span>퍼즐 플레이</span>
-          </Link>
+          {/* Action Button(s) based on status */}
+          {status === 'completed' ? (
+            <Link
+              href={`/puzzle/play/${puzzle._id}`}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200 hover:scale-[1.01]"
+              style={{ backgroundColor: 'var(--puzzle-primary)' }}
+            >
+              <Play size={13} strokeWidth={2.5} />
+              <span>재도전</span>
+            </Link>
+          ) : status === 'current' ? (
+            <div className="flex gap-2 w-full">
+              <Link
+                href={`/puzzle/play/${puzzle._id}?resume=true`}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200 hover:scale-[1.01]"
+                style={{ backgroundColor: 'var(--puzzle-primary)' }}
+              >
+                <span>이어서 하기</span>
+              </Link>
+              <Link
+                href={`/puzzle/play/${puzzle._id}`}
+                onClick={(e) => {
+                  if (!confirm('새로 시작하면 기존 진행도(퍼즐판 상태)가 완전히 초기화됩니다. 계속하시겠습니까?')) {
+                    e.preventDefault();
+                  }
+                }}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-extrabold border transition-all duration-200 hover:bg-[var(--puzzle-muted)]"
+                style={{ 
+                  borderColor: 'var(--puzzle-border)',
+                  backgroundColor: 'var(--puzzle-glass-bg)',
+                  color: 'var(--puzzle-card-foreground)'
+                }}
+              >
+                <span>새로 시작</span>
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href={`/puzzle/play/${puzzle._id}`}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200 hover:scale-[1.01]"
+              style={{ backgroundColor: 'var(--puzzle-primary)' }}
+            >
+              <Play size={13} strokeWidth={2.5} />
+              <span>퍼즐 플레이</span>
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function ArchivePage() {
   const [bestRank, setBestRank] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   useEffect(() => {
     async function loadArchiveData() {
@@ -61,6 +62,24 @@ export default function ArchivePage() {
     );
   }
 
+  // 퍼즐 데이터가 존재하는 월(1~12월) 목록 구하기 (1-indexed)
+  const availableMonths = Array.from(
+    new Set(
+      puzzles.map((p) => {
+        const d = new Date(p.startDate);
+        return d.getMonth() + 1;
+      })
+    )
+  ).sort((a, b) => a - b);
+
+  // 선택된 월에 따라 퍼즐 필터링
+  const filteredPuzzles = selectedMonth
+    ? puzzles.filter((p) => {
+        const d = new Date(p.startDate);
+        return d.getMonth() + 1 === selectedMonth;
+      })
+    : puzzles;
+
   return (
     <div className={`${styles.container} puzzle-animate-fade-in-up`}>
       {/* Page Header */}
@@ -68,9 +87,12 @@ export default function ArchivePage() {
         <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
           퍼즐 아카이브
         </h1>
-        <p className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+        <p className="text-sm font-semibold mb-3.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
           지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 힐링을 이어나가 보세요.
         </p>
+        <span className="inline-block text-[11px] font-extrabold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--puzzle-border)', color: 'var(--puzzle-primary)', backgroundColor: 'var(--puzzle-glass-bg)' }}>
+          ℹ️ 올해 출시된 아카이브 퍼즐만 표시됩니다.
+        </span>
       </div>
 
       {/* Stats Summary row */}
@@ -100,13 +122,65 @@ export default function ArchivePage() {
         ))}
       </div>
 
+      {/* Monthly Filter Buttons Row */}
+      {puzzles.length > 0 && (
+        <div 
+          className="mb-8 flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl border overflow-x-auto" 
+          style={{ 
+            backgroundColor: 'var(--puzzle-glass-bg)', 
+            borderColor: 'var(--puzzle-border)' 
+          }}
+        >
+          <button
+            onClick={() => setSelectedMonth(null)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] ${
+              selectedMonth === null
+                ? 'text-white'
+                : 'hover:text-[var(--puzzle-card-foreground)]'
+            }`}
+            style={
+              selectedMonth === null 
+                ? { backgroundColor: 'var(--puzzle-primary)' } 
+                : { color: 'var(--puzzle-muted-foreground)' }
+            }
+          >
+            전체
+          </button>
+          {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
+            const isAvailable = availableMonths.includes(m);
+            const isSelected = selectedMonth === m;
+            return (
+              <button
+                key={m}
+                disabled={!isAvailable}
+                onClick={() => setSelectedMonth(m)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] ${
+                  isSelected
+                    ? 'text-white'
+                    : isAvailable
+                    ? 'hover:text-[var(--puzzle-card-foreground)]'
+                    : 'opacity-20 cursor-not-allowed'
+                }`}
+                style={
+                  isSelected 
+                    ? { backgroundColor: 'var(--puzzle-primary)' } 
+                    : { color: 'var(--puzzle-muted-foreground)' }
+                }
+              >
+                {m}월
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       {/* Archive Grid */}
-      {puzzles.length === 0 ? (
-        <div className="py-20 text-center font-bold text-sm" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          아직 발행된 아카이브 퍼즐이 존재하지 않습니다.
+      {filteredPuzzles.length === 0 ? (
+        <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
+          {selectedMonth ? `${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.` : '아직 발행된 아카이브 퍼즐이 존재하지 않습니다.'}
         </div>
       ) : (
-        <ArchiveGrid puzzles={puzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
+        <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
       )}
     </div>
   );
