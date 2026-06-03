@@ -7,7 +7,6 @@ import { fetchMyProfile, deleteMyAccount, clearMyProgress } from '@/lib/puzzle-a
 import { clearAllPuzzleState } from '@/lib/puzzle-db';
 import ProfileCard from '@/components/puzzle/profile-card';
 import HistoryList from '@/components/puzzle/history-list';
-import RecordChart from '@/components/puzzle/record-chart';
 import SettingsPanel from '@/components/puzzle/settings-panel';
 import Link from 'next/link';
 import { TrendingUp, Award, ArrowLeft } from 'lucide-react';
@@ -22,6 +21,7 @@ export default function MyPage() {
   const [statistics, setStatistics] = useState<any>(null);
   const [history, setHistory] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -111,6 +111,9 @@ export default function MyPage() {
     );
   }
 
+  const completedHistory = history.filter((item) => item.completed);
+  const slicedHistory = completedHistory.slice(0, visibleCount);
+
   return (
     <div className={`${styles.container} puzzle-animate-fade-in-up`}>
       {/* Page Header Title */}
@@ -182,7 +185,7 @@ export default function MyPage() {
                   🎯 TOP 10 랭커
                 </span>
               )}
-              {history.length === 0 && (
+              {completedHistory.length === 0 && (
                 <span className="text-xs font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   아직 획득한 훈장이 없습니다. 퍼즐을 풀고 첫 훈장을 획득하세요!
                 </span>
@@ -207,16 +210,28 @@ export default function MyPage() {
               style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-muted-foreground)' }}
             >
               <TrendingUp size={12} />
-              <span>{history.length}개 완주</span>
+              <span>{completedHistory.length}개 완주</span>
             </div>
           </div>
 
           {/* History List */}
-          <HistoryList history={history} />
+          <HistoryList history={slicedHistory} />
 
-          {/* Record trend chart */}
-          {history.length > 1 && (
-            <RecordChart history={history} />
+          {/* Load More Button */}
+          {completedHistory.length > visibleCount && (
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 5)}
+              className="w-full py-3.5 mt-2 rounded-2xl border text-xs font-extrabold transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] hover:border-[var(--puzzle-primary)] hover:text-[var(--puzzle-primary)] select-none"
+              style={{
+                backgroundColor: 'var(--puzzle-glass-bg)',
+                backdropFilter: 'var(--puzzle-glass-blur)',
+                borderColor: 'var(--puzzle-border)',
+                color: 'var(--puzzle-muted-foreground)',
+                boxShadow: 'var(--puzzle-shadow-sm)',
+              }}
+            >
+              더보기 ⬇️
+            </button>
           )}
         </div>
       </div>

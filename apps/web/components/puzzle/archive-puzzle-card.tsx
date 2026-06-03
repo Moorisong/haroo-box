@@ -15,7 +15,7 @@ interface ArchivePuzzleCardProps {
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
   current: { label: '도전 중', color: '#4F8EF7', bg: '#EBF2FF' },
-  completed: { label: '완주 완료', color: '#22C55E', bg: '#E8F5E9' },
+  completed: { label: '완료', color: '#22C55E', bg: '#E8F5E9' },
   missed: { label: '미참여', color: '#777777', bg: '#F5F5F7' },
 };
 
