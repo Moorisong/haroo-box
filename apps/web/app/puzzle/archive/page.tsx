@@ -23,18 +23,28 @@ export default function ArchivePage() {
   useEffect(() => {
     async function loadArchiveData() {
       try {
+        let archivePuzzles: Puzzle[] = [];
         // 1. 아카이브 퍼즐 조회
         const res = await fetchArchivePuzzles();
         if (res.success && res.data) {
-          setPuzzles(res.data);
+          archivePuzzles = res.data;
+          setPuzzles(archivePuzzles);
         }
 
         // 2. 내 완주 기록 조회 (로그인 시)
         if (sessionStatus === 'authenticated' && token) {
           const profileRes = await fetchMyProfile(token);
           if (profileRes.success && profileRes.data) {
-            setMyHistory(profileRes.data.history || []);
-            setTotalCompleted(profileRes.data.statistics.totalCompleted);
+            const historyList = profileRes.data.history || [];
+            setMyHistory(historyList);
+            
+            // 현재 아카이브 목록에 존재하는 퍼즐 중에서 완주한 개수만 필터링하여 계산
+            const archiveIds = new Set(archivePuzzles.map((p) => p._id));
+            const completedInArchive = historyList.filter(
+              (h: any) => h.completed && archiveIds.has(h.puzzleId)
+            ).length;
+            
+            setTotalCompleted(completedInArchive);
             setBestRank(profileRes.data.statistics.bestRank);
           }
           setIsHistoryLoaded(true);

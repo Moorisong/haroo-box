@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
 import { getPuzzleResultModel } from '../models/puzzle-result.model';
 import { getPuzzleProgressModel } from '../models/puzzle-progress.model';
 import { getPuzzleModel } from '../models/puzzle.model';
@@ -43,19 +44,32 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
       const p = puzzleMap.get(result.puzzleId.toString());
       if (!p) continue;
 
-      // 동적 랭킹 순위 계산 (나보다 빠른 사람 수 + 1)
+      // 동적 랭킹 순위 계산
       let myRank = undefined;
-      if (result.mode === 'ranked' && result.difficulty === 'beginner') {
-        const betterCount = await PuzzleResult.countDocuments({
-          puzzleId: result.puzzleId,
-          mode: 'ranked',
-          difficulty: 'beginner',
-          completionTime: { $lt: result.completionTime }
-        });
-        myRank = betterCount + 1;
+      if (result.mode === 'ranked') {
+        const allRankings = await PuzzleResult.aggregate([
+          { 
+            $match: { 
+              puzzleId: new Types.ObjectId(result.puzzleId.toString()), 
+              mode: 'ranked',
+              difficulty: result.difficulty
+            } 
+          },
+          {
+            $group: {
+              _id: '$userId',
+              bestTime: { $min: '$completionTime' }
+            }
+          },
+          { $sort: { bestTime: 1 } }
+        ]);
 
-        if (bestRank === null || myRank < bestRank) {
-          bestRank = myRank;
+        const myIndex = allRankings.findIndex(r => r._id.toString() === user._id.toString());
+        if (myIndex !== -1) {
+          myRank = myIndex + 1;
+          if (bestRank === null || myRank < bestRank) {
+            bestRank = myRank;
+          }
         }
       }
 
@@ -92,7 +106,12 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
     }
 
     // 3. 통계 계산
-    const totalCompleted = rawResults.length;
+    const completedPuzzleIdsSet = new Set(
+      rawResults
+        .filter(r => puzzleMap.has(r.puzzleId.toString()))
+        .map(r => r.puzzleId.toString())
+    );
+    const totalCompleted = completedPuzzleIdsSet.size;
 
     // Beginner 모드의 최고 기록
     const beginnerResults = rawResults.filter(r => r.difficulty === 'beginner');
