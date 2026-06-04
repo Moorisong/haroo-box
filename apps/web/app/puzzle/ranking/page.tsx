@@ -212,30 +212,15 @@ export default function RankingPage() {
             </Link>
           </div>
 
-          {/* Leaderboard Table + 더보기 */}
+          {/* Leaderboard Table */}
           <div className="order-3 lg:order-none flex flex-col gap-5">
             <RankingTable
               rankings={rankings.slice(0, visibleCount)}
               myNickname={session?.user?.nickname || session?.user?.name || undefined}
               totalParticipants={rankings.length}
+              hasMore={rankings.length > visibleCount}
+              onShowMore={() => setVisibleCount((prev) => prev + 20)}
             />
-
-            {rankings.length > visibleCount && (
-              <button
-                onClick={() => setVisibleCount((prev) => prev + 20)}
-                className="w-full py-3.5 rounded-2xl border font-bold text-xs transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
-                style={{
-                  backgroundColor: 'var(--puzzle-glass-bg)',
-                  color: 'var(--puzzle-foreground)',
-                  borderColor: 'var(--puzzle-border)',
-                  boxShadow: 'var(--puzzle-shadow-sm)',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-glass-bg)'; }}
-              >
-                더보기 ({visibleCount}/{rankings.length})
-              </button>
-            )}
           </div>
         </div>
 

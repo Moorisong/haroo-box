@@ -6,12 +6,16 @@ interface RankingTableProps {
   rankings: RankingEntry[];
   myNickname?: string;
   totalParticipants: number;
+  hasMore?: boolean;
+  onShowMore?: () => void;
 }
 
 export default function RankingTable({
   rankings,
   myNickname,
   totalParticipants,
+  hasMore,
+  onShowMore,
 }: RankingTableProps) {
   const getMedal = (rank: number) => {
     if (rank === 1) return '🥇';
@@ -145,6 +149,23 @@ export default function RankingTable({
             </div>
           );
         })
+      )}
+
+      {/* Show More Button inside the card */}
+      {hasMore && onShowMore && (
+        <button
+          onClick={onShowMore}
+          className="w-full py-4 text-xs font-black transition-all border-t flex items-center justify-center gap-1.5 cursor-pointer"
+          style={{
+            borderColor: 'var(--puzzle-border)',
+            backgroundColor: 'transparent',
+            color: 'var(--puzzle-foreground)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+        >
+          더보기 ({rankings.length}/{totalParticipants})
+        </button>
       )}
 
       {/* Footer Stat Row */}
