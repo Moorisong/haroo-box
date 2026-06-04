@@ -5,7 +5,7 @@ export interface IPuzzleResult extends Document {
   userId: Types.ObjectId;
   puzzleId: Types.ObjectId;
   mode: 'solo' | 'ranked';
-  difficulty: 'beginner' | 'expert';
+  difficulty: 'novice' | 'beginner' | 'expert';
   completionTime: number;
   challengeToken: string;
   startedAt: Date;
@@ -21,7 +21,7 @@ const puzzleResultSchema = new Schema<IPuzzleResult>(
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     puzzleId: { type: Schema.Types.ObjectId, ref: 'Puzzle', required: true, index: true },
     mode: { type: String, enum: ['solo', 'ranked'], required: true },
-    difficulty: { type: String, enum: ['beginner', 'expert'], required: true },
+    difficulty: { type: String, enum: ['novice', 'beginner', 'expert'], required: true },
     completionTime: { type: Number, required: true },
     challengeToken: { type: String, required: true },
     startedAt: { type: Date, required: true },
