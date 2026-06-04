@@ -46,12 +46,22 @@ export default function HeroSection({
     setDaysLeft(days > 0 ? `${days}일` : '마감 임박');
   }, [puzzle.endDate]);
 
+  const handleOpenModal = () => {
+    // 이미 완료한 경우 재도전은 솔로 모드로 고정
+    if (hasCompleted) {
+      setTempMode('solo');
+    }
+    setShowDiffSelect(true);
+  };
+
   const handleLaunchGame = () => {
     if (hasSavedGame) {
       const confirmRestart = window.confirm('이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시겠습니까? (기존 진행 데이터는 삭제됩니다.)');
       if (!confirmRestart) return;
     }
-    onStart(tempDiff, tempMode);
+    // 이미 완료한 경우 무조건 solo 모드로 강제
+    const finalMode = hasCompleted ? 'solo' : tempMode;
+    onStart(tempDiff, finalMode);
     setShowDiffSelect(false);
   };
 
@@ -135,7 +145,7 @@ export default function HeroSection({
                   </button>
 
                   <button
-                    onClick={() => setShowDiffSelect(true)}
+                    onClick={handleOpenModal}
                     className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border transition-all duration-200 hover:scale-[1.02] active:scale-95"
                     style={{
                       backgroundColor: 'var(--puzzle-glass-bg)',
@@ -164,7 +174,7 @@ export default function HeroSection({
                   </Link>
 
                   <button
-                    onClick={() => setShowDiffSelect(true)}
+                    onClick={handleOpenModal}
                     className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border transition-all duration-200 hover:scale-[1.02] active:scale-95"
                     style={{
                       backgroundColor: 'var(--puzzle-glass-bg)',
@@ -179,7 +189,7 @@ export default function HeroSection({
                 </>
               ) : (
                 <button
-                  onClick={() => setShowDiffSelect(true)}
+                  onClick={handleOpenModal}
                   className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95 text-white puzzle-animate-pulse-glow"
                   style={{
                     backgroundColor: 'var(--puzzle-primary)',
@@ -371,12 +381,13 @@ export default function HeroSection({
               <div className="flex flex-col gap-3">
                 {/* Ranked Mode Button */}
                 <button
-                  onClick={() => setTempMode('ranked')}
-                  className="flex items-start gap-3.5 text-left p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.005] active:scale-95"
+                  onClick={() => !hasCompleted && setTempMode('ranked')}
+                  className={`flex items-start gap-3.5 text-left p-4 rounded-2xl border transition-all duration-200 ${hasCompleted ? 'opacity-40 cursor-not-allowed' : 'hover:scale-[1.005] active:scale-95'}`}
                   style={{
                     backgroundColor: tempMode === 'ranked' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempMode === 'ranked' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
+                  disabled={hasCompleted}
                 >
                   <div 
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
@@ -390,13 +401,17 @@ export default function HeroSection({
                         🏆 <span className="hidden sm:inline">랭킹 도전 모드</span>
                         <span className="inline sm:hidden">랭킹 도전</span>
                       </span>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">
-                        <span className="hidden sm:inline">기록 측정</span>
-                        <span className="inline sm:hidden">기록</span>
-                      </span>
+                      {hasCompleted ? (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600">등록 완료</span>
+                      ) : (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">
+                          <span className="hidden sm:inline">기록 측정</span>
+                          <span className="inline sm:hidden">기록</span>
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs font-medium mt-1 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                      완성 기록으로 주간 랭킹 도전
+                      {hasCompleted ? '이미 랭킹에 최고 기록이 등록되어 있습니다' : '완성 기록으로 주간 랭킹 도전'}
                     </p>
                   </div>
                 </button>
@@ -435,8 +450,21 @@ export default function HeroSection({
               </div>
             </div>
 
+            {/* Re-attempt notice for completed puzzle */}
+            {hasCompleted && (
+              <div 
+                className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2"
+                style={{ backgroundColor: '#F0F9FF', borderColor: '#BAE6FD', color: '#0369A1' }}
+              >
+                <HelpCircle size={16} className="flex-shrink-0 mt-0.5" />
+                <span>
+                  이미 랭킹 기록이 등록된 퍼즐이에요. 재도전은 힐링 모드(솔로)로만 플레이 가능하며, 기존 랭킹 기록에는 영향을 주지 않습니다.
+                </span>
+              </div>
+            )}
+
             {/* Warning for unauthenticated user choosing Ranked */}
-            {!isLoggedIn && tempMode === 'ranked' && (
+            {!hasCompleted && !isLoggedIn && tempMode === 'ranked' && (
               <div 
                 className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2"
                 style={{ backgroundColor: 'var(--puzzle-destructive-bg, #FEF2F2)', borderColor: 'var(--puzzle-destructive, #FEE2E2)', color: '#DC2626' }}
