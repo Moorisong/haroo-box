@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { fetchArchivePuzzles, fetchMyProfile } from '@/lib/puzzle-api';
 import { Puzzle } from '@/types/puzzle';
 import ArchiveGrid from '@/components/puzzle/archive-grid';
 import Link from 'next/link';
 import styles from '../puzzle-layout.module.css';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ArchivePage() {
   const { data: session, status: sessionStatus } = useSession();
@@ -19,6 +20,30 @@ export default function ArchivePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
+
+  const checkScroll = () => {
+    const container = scrollRef.current;
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setShowLeftArrow(scrollLeft > 8);
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 8);
+    }
+  };
+
+  useEffect(() => {
+    if (puzzles.length > 0) {
+      const timer = setTimeout(checkScroll, 200);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [puzzles]);
 
   useEffect(() => {
     async function loadArchiveData() {
@@ -129,53 +154,71 @@ export default function ArchivePage() {
 
       {/* Monthly Filter Buttons Row */}
       {puzzles.length > 0 && (
-        <div 
-          className="mb-8 flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl border overflow-x-auto" 
-          style={{ 
-            backgroundColor: 'var(--puzzle-glass-bg)', 
-            borderColor: 'var(--puzzle-border)' 
-          }}
-        >
-          <button
-            onClick={() => setSelectedMonth(null)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] ${
-              selectedMonth === null
-                ? 'text-white'
-                : 'hover:text-[var(--puzzle-card-foreground)]'
-            }`}
-            style={
-              selectedMonth === null 
-                ? { backgroundColor: 'var(--puzzle-primary)' } 
-                : { color: 'var(--puzzle-muted-foreground)' }
-            }
+        <div className="relative mb-8 group">
+          {/* Left Scroll Indicator Arrow */}
+          {showLeftArrow && (
+            <div className="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/90 dark:bg-zinc-800/90 shadow-md flex items-center justify-center pointer-events-none md:hidden z-10 animate-pulse border border-zinc-200 dark:border-zinc-700">
+              <ChevronLeft size={14} className="text-[var(--puzzle-primary)]" />
+            </div>
+          )}
+          
+          <div 
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="flex md:flex-wrap items-center gap-1.5 p-1.5 rounded-2xl border overflow-x-auto scrollbar-hide" 
+            style={{ 
+              backgroundColor: 'var(--puzzle-glass-bg)', 
+              borderColor: 'var(--puzzle-border)' 
+            }}
           >
-            전체
-          </button>
-          {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
-            const isAvailable = availableMonths.includes(m);
-            const isSelected = selectedMonth === m;
-            return (
-              <button
-                key={m}
-                disabled={!isAvailable}
-                onClick={() => setSelectedMonth(m)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] ${
-                  isSelected
-                    ? 'text-white'
-                    : isAvailable
-                    ? 'hover:text-[var(--puzzle-card-foreground)]'
-                    : 'opacity-20 cursor-not-allowed'
-                }`}
-                style={
-                  isSelected 
-                    ? { backgroundColor: 'var(--puzzle-primary)' } 
-                    : { color: 'var(--puzzle-muted-foreground)' }
-                }
-              >
-                {m}월
-              </button>
-            );
-          })}
+            <button
+              onClick={() => setSelectedMonth(null)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] flex-shrink-0 ${
+                selectedMonth === null
+                  ? 'text-white'
+                  : 'hover:text-[var(--puzzle-card-foreground)]'
+              }`}
+              style={
+                selectedMonth === null 
+                  ? { backgroundColor: 'var(--puzzle-primary)' } 
+                  : { color: 'var(--puzzle-muted-foreground)' }
+              }
+            >
+              전체
+            </button>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
+              const isAvailable = availableMonths.includes(m);
+              const isSelected = selectedMonth === m;
+              return (
+                <button
+                  key={m}
+                  disabled={!isAvailable}
+                  onClick={() => setSelectedMonth(m)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:scale-[1.01] flex-shrink-0 ${
+                    isSelected
+                      ? 'text-white'
+                      : isAvailable
+                      ? 'hover:text-[var(--puzzle-card-foreground)]'
+                      : 'opacity-20 cursor-not-allowed'
+                  }`}
+                  style={
+                    isSelected 
+                      ? { backgroundColor: 'var(--puzzle-primary)' } 
+                      : { color: 'var(--puzzle-muted-foreground)' }
+                  }
+                >
+                  {m}월
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Scroll Indicator Arrow */}
+          {showRightArrow && (
+            <div className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/90 dark:bg-zinc-800/90 shadow-md flex items-center justify-center pointer-events-none md:hidden z-10 animate-pulse border border-zinc-200 dark:border-zinc-700">
+              <ChevronRight size={14} className="text-[var(--puzzle-primary)]" />
+            </div>
+          )}
         </div>
       )}
 
