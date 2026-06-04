@@ -11,11 +11,14 @@ import SettingsPanel from '@/components/puzzle/settings-panel';
 import Link from 'next/link';
 import { TrendingUp, Award, ArrowLeft } from 'lucide-react';
 import styles from '../puzzle-layout.module.css';
+import { useToast } from '@/lib/hooks/use-toast';
+import Toast from '@/components/ui/toast';
 
 export default function MyPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const token = session?.user?.kakaoId;
+  const { toast, showToast, hideToast } = useToast();
 
   const [profile, setProfile] = useState<any>(null);
   const [statistics, setStatistics] = useState<any>(null);
@@ -51,7 +54,7 @@ export default function MyPage() {
   }, [token, status]);
 
   const handleClearData = async () => {
-    if (window.confirm('진행 중인 퍼즐 진행도와 완료 기록 히스토리를 포함한 모든 퍼즐 데이터를 초기화하시겠습니까?\n\n이 작업 진행 시 기존의 조각 맞춤 진척도, 이어서 하기 데이터 및 완주 랭킹 기록이 전부 삭제되며 되돌릴 수 없습니다.')) {
+    if (window.confirm('모든 퍼즐 진행도와 완주 기록을 초기화하시겠습니까?\n(이 작업은 되돌릴 수 없습니다.)')) {
       try {
         // 1. 로그인 상태 시 서버 데이터베이스 진행 상황 및 완주 기록 삭제
         if (token) {
@@ -68,7 +71,7 @@ export default function MyPage() {
           bestRank: null
         });
 
-        alert('모든 퍼즐 진행도와 완주 기록이 성공적으로 초기화되었습니다! 처음부터 다시 새롭게 즐겨보세요.');
+        showToast('모든 퍼즐 데이터가 초기화되었습니다.', 'success');
         router.refresh();
       } catch (e) {
         console.error('Failed to clear puzzle data:', e);
@@ -244,6 +247,7 @@ export default function MyPage() {
           )}
         </div>
       </div>
+      <Toast toast={toast} onHide={hideToast} />
     </div>
   );
 }

@@ -116,9 +116,7 @@ export default function CompletionModal({
           className="mb-6 text-sm font-semibold leading-relaxed"
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
-          모든 퍼즐 조각을 알맞은 자리에 맞추셨습니다!
-          <br />
-          고요한 힐링 속 뛰어난 집중력이 돋보이네요.
+          힐링 속 뛰어난 집중력이 돋보이네요.
         </p>
 
         {/* Completion Time Badge */}

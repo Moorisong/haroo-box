@@ -38,8 +38,8 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
             Kakao.Share.sendDefault({
               objectType: 'feed',
               content: {
-                title: `🧩 [하루퍼즐] 이번 주 퍼즐 폼 미쳤다;;`,
-                description: `뇌 비우고 갓생 살기 프로젝트 ㄱㄱ? 🧠 ${puzzle.title} 맞추고 내 뇌지컬 랭킹 폼 확인해봐!`,
+                title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
+                description: `바쁜 일상 속 소소한 힐링 한 조각 어떠세요? ☕`,
                 imageUrl: absImgUrl,
                 link: {
                   mobileWebUrl: window.location.origin + '/puzzle',
@@ -48,7 +48,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
               },
               buttons: [
                 {
-                  title: '나보다 빨리 맞추기 ㄱㄱ',
+                  title: '함께 플레이하기',
                   link: {
                     mobileWebUrl: window.location.origin + '/puzzle',
                     webUrl: window.location.origin + '/puzzle',

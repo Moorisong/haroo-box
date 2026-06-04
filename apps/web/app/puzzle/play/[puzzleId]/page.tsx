@@ -423,8 +423,8 @@ export default function PlayPage({ params }: PlayPageProps) {
           Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
-              title: `🧩 [오퍼완] 하루퍼즐 완주! 기록 폼 미쳤다;;`,
-              description: `단 ${formatTime(timerSeconds)}만에 갓벽하게 조각 맞춰버림 😎 뇌지컬 디톡스 완. 내 기록 이길 수 있으면 드루와! 👊`,
+              title: `[하루퍼즐] 멋지게 완주 성공! 🎉`,
+              description: `대박🌟 ${formatTime(timerSeconds)} 만에 성공했네요!`,
               imageUrl: absImgUrl,
               link: {
                 mobileWebUrl: window.location.origin + '/puzzle',
@@ -433,7 +433,7 @@ export default function PlayPage({ params }: PlayPageProps) {
             },
             buttons: [
               {
-                title: '나보다 빨리 맞추기 ㄱㄱ',
+                title: '기록 도전하러 가기',
                 link: {
                   mobileWebUrl: window.location.origin + '/puzzle',
                   webUrl: window.location.origin + '/puzzle',
