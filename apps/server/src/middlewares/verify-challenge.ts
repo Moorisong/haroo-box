@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { getChallengeTokenModel } from '../models/challenge-token.model';
 import { getPuzzleModel } from '../models/puzzle.model';
+import { getPuzzleResultModel } from '../models/puzzle-result.model';
 
 export const verifyChallenge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -88,6 +89,21 @@ export const verifyChallenge = async (req: Request, res: Response, next: NextFun
       }
       if (!isActive || puzzle.archived) {
         res.status(400).json({ success: false, error: '활성화 기간이 만료된 퍼즐은 랭킹 등록이 불가능합니다.' });
+        return;
+      }
+
+      // 5.5. 이미 이 난이도로 랭킹 기록이 등록되어 있는지 확인
+      const PuzzleResult = getPuzzleResultModel();
+      const existingRankedResult = await PuzzleResult.findOne({
+        puzzleId,
+        userId: user._id,
+        difficulty,
+        mode: 'ranked',
+        completed: true
+      });
+
+      if (existingRankedResult) {
+        res.status(400).json({ success: false, error: '이 난이도는 이미 랭킹 등록이 완료되었습니다.' });
         return;
       }
     }
