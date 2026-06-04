@@ -194,7 +194,7 @@ export default function MyPage() {
               )}
               {statistics?.bestRank && statistics.bestRank <= 10 && (
                 <span className="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold" style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-primary)' }}>
-                  🎯 TOP 10 랭커
+                  💎 TOP 10 랭커
                 </span>
               )}
               {completedHistory.length === 0 && (
