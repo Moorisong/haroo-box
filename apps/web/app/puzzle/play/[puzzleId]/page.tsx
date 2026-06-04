@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState, use, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft, Timer, Eye, HelpCircle } from 'lucide-react';
@@ -34,6 +34,8 @@ export default function PlayPage({ params }: PlayPageProps) {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const token = session?.user?.kakaoId;
+
+  const submittingRef = useRef(false);
 
   // Zustand Store
   const {
@@ -343,7 +345,7 @@ export default function PlayPage({ params }: PlayPageProps) {
 
   // 5. 완료 시 기록 제출 처리
   const handleSaveRecord = async () => {
-    if (!puzzle || isSaved || isSubmitting) return;
+    if (!puzzle || isSaved || isSubmitting || submittingRef.current) return;
 
     if (!token) {
       // 비로그인 시 로그인 가이드 유도
@@ -352,6 +354,7 @@ export default function PlayPage({ params }: PlayPageProps) {
       return;
     }
 
+    submittingRef.current = true;
     setIsSubmitting(true);
     try {
       const submitMode = !puzzle.archived ? mode : 'solo';
@@ -388,10 +391,12 @@ export default function PlayPage({ params }: PlayPageProps) {
         await deletePuzzleState(puzzleId);
       } else {
         alert(res.error || '기록 저장에 실패했습니다. 치팅 방지 필터에 차단되었을 수 있습니다.');
+        submittingRef.current = false;
       }
     } catch (e) {
       console.error(e);
       alert('기록 업로드 중 알 수 없는 서버 에러가 발생했습니다.');
+      submittingRef.current = false;
     } finally {
       setIsSubmitting(false);
     }

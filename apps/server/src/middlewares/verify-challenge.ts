@@ -21,31 +21,27 @@ export const verifyChallenge = async (req: Request, res: Response, next: NextFun
     // 2. Challenge Token 유효성 검증
     if (mode === 'ranked') {
       const ChallengeToken = getChallengeTokenModel();
-      const tokenRecord = await ChallengeToken.findOne({ token: challengeToken });
+      
+      // 1회성 토큰을 원자적으로 찾아서 사용 상태(used = true)로 만듦 (Race Condition 방지)
+      const tokenRecord = await ChallengeToken.findOneAndUpdate(
+        { 
+          token: challengeToken,
+          userId: user._id,
+          puzzleId,
+          used: false,
+          expiresAt: { $gt: new Date() }
+        },
+        { $set: { used: true } },
+        { new: true }
+      );
 
       if (!tokenRecord) {
-        res.status(403).json({ success: false, error: '유효하지 않은 챌린지 토큰입니다.' });
+        res.status(403).json({ 
+          success: false, 
+          error: '유효하지 않거나, 만료되었거나, 이미 사용된 챌린지 토큰입니다.' 
+        });
         return;
       }
-
-      if (tokenRecord.used) {
-        res.status(403).json({ success: false, error: '이미 사용된 챌린지 토큰입니다.' });
-        return;
-      }
-
-      if (new Date(tokenRecord.expiresAt).getTime() < Date.now()) {
-        res.status(403).json({ success: false, error: '만료된 챌린지 토큰입니다.' });
-        return;
-      }
-
-      if (tokenRecord.userId.toString() !== user._id.toString() || tokenRecord.puzzleId.toString() !== puzzleId) {
-        res.status(403).json({ success: false, error: '토큰 발급 정보가 사용자와 일치하지 않습니다.' });
-        return;
-      }
-
-      // 1회성 토큰 폐기 처리 (used = true)
-      tokenRecord.used = true;
-      await tokenRecord.save();
     }
 
     // 3. 플레이 경과 시간 무결성 검증

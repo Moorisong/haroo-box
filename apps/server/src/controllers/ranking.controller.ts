@@ -171,6 +171,28 @@ export const submitResult = async (req: Request, res: Response, next: NextFuncti
       completed: true
     });
 
+    // 1.5. 동일한 시작 시간과 완성 소요 시간을 가진 기록이 이미 있는지 확인 (중복 전송 방지)
+    const duplicateResult = await PuzzleResult.findOne({
+      userId: user._id,
+      puzzleId,
+      startedAt: new Date(startedAt),
+      completionTime,
+      completed: true
+    });
+
+    if (duplicateResult) {
+      res.status(200).json({
+        success: true,
+        message: '이미 저장된 기록입니다.',
+        data: {
+          resultId: duplicateResult._id,
+          completionTime: duplicateResult.completionTime,
+          savedAt: duplicateResult.savedAt
+        }
+      });
+      return;
+    }
+
     // 2. 결과 생성 및 저장
     const newResult = await PuzzleResult.create({
       userId: user._id,
