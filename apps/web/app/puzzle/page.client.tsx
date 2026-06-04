@@ -149,6 +149,11 @@ export default function PuzzlePageClient() {
             } catch (err) {
               console.error('Failed to clear local puzzle state after sync:', err);
             }
+          } else {
+            // 초기화 등으로 완주 이력이 없는 경우 상태 리셋
+            setHasCompleted(false);
+            setCompletedDifficulties([]);
+            setCompletedDifficulty(null);
           }
         }
       } catch (e) {
