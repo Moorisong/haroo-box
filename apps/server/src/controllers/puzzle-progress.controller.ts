@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { getPuzzleProgressModel } from '../models/puzzle-progress.model';
 import { getPuzzleModel } from '../models/puzzle.model';
+import { getPuzzleResultModel } from '../models/puzzle-result.model';
 
 /**
  * POST /api/puzzle/progress
@@ -112,9 +113,14 @@ export const clearProgress = async (req: Request, res: Response, next: NextFunct
       });
     } else {
       await PuzzleProgress.deleteMany({ userId: user._id });
+      
+      // 완주 결과 히스토리도 일괄 삭제
+      const PuzzleResult = getPuzzleResultModel();
+      await PuzzleResult.deleteMany({ userId: user._id });
+
       res.json({
         success: true,
-        message: '성공적으로 모든 퍼즐 진행 상태가 초기화되었습니다.'
+        message: '성공적으로 모든 퍼즐 진행 상태 및 완주 기록이 초기화되었습니다.'
       });
     }
   } catch (error) {

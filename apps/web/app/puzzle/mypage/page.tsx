@@ -51,15 +51,24 @@ export default function MyPage() {
   }, [token, status]);
 
   const handleClearData = async () => {
-    if (window.confirm('진행 중인 모든 퍼즐을 완전히 초기화하고 처음부터 다시 시작하시겠습니까?\n\n이 작업 진행 시 기존의 조각 맞춤 진척도와 이어서 하기 데이터가 전부 삭제되며, 새로 진입 시 0% 상태로 새롭게 시작하게 됩니다. (되돌릴 수 없음)')) {
+    if (window.confirm('진행 중인 퍼즐 진행도와 완료 기록 히스토리를 포함한 모든 퍼즐 데이터를 초기화하시겠습니까?\n\n이 작업 진행 시 기존의 조각 맞춤 진척도, 이어서 하기 데이터 및 완주 랭킹 기록이 전부 삭제되며 되돌릴 수 없습니다.')) {
       try {
-        // 1. 로그인 상태 시 서버 데이터베이스 진행 상황 삭제
+        // 1. 로그인 상태 시 서버 데이터베이스 진행 상황 및 완주 기록 삭제
         if (token) {
           await clearMyProgress(token);
         }
         // 2. 로컬 IndexedDB 플레이어 캐시 삭제
         await clearAllPuzzleState();
-        alert('진행 중인 모든 퍼즐 플레이 상태가 성공적으로 초기화되었습니다! 처음부터 다시 즐겁게 도전해보세요.');
+
+        // 3. 클라이언트 상태 즉시 초기화
+        setHistory([]);
+        setStatistics({
+          totalCompleted: 0,
+          bestTimeBeginner: null,
+          bestRank: null
+        });
+
+        alert('모든 퍼즐 진행도와 완주 기록이 성공적으로 초기화되었습니다! 처음부터 다시 새롭게 즐겨보세요.');
         router.refresh();
       } catch (e) {
         console.error('Failed to clear puzzle data:', e);
