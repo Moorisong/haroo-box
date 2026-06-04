@@ -24,9 +24,9 @@ export default function PuzzleBoard({
   const cellSize = Math.floor(baseSize * zoom);
 
   return (
-    <div className="w-full flex p-4 overflow-auto max-h-full max-w-full scrollbar-hide select-none justify-start sm:justify-center items-center">
+    <div className="w-full h-full flex p-4 overflow-auto scrollbar-hide select-none">
       <div
-        className="grid border rounded-xl overflow-hidden shadow-2xl transition-all duration-200 flex-shrink-0"
+        className="grid border rounded-xl overflow-hidden shadow-2xl transition-all duration-200 flex-shrink-0 m-auto"
         style={{
           gridTemplateColumns: `repeat(${gridSize}, ${cellSize}px)`,
           gridTemplateRows: `repeat(${gridSize}, ${cellSize}px)`,
