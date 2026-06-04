@@ -106,7 +106,7 @@ export default function ArchivePuzzleCard({
             >
               {currentStatus.label}
             </span>
-            {!puzzle.archived && (
+            {new Date(puzzle.startDate) <= new Date() && new Date() <= new Date(puzzle.endDate) && (
               <span
                 className="px-3 py-1 rounded-full text-[10px] font-black shadow-sm text-white animate-pulse"
                 style={{ backgroundColor: 'var(--puzzle-primary)' }}
