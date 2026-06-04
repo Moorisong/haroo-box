@@ -91,7 +91,7 @@ export default function PlayPage({ params }: PlayPageProps) {
         setPuzzle(res.data);
 
         const isResume = searchParams.get('resume') === 'true';
-        const diffParam = (searchParams.get('diff') as 'beginner' | 'expert') || 'beginner';
+        const diffParam = (searchParams.get('diff') as 'novice' | 'beginner' | 'expert') || 'novice';
         const modeParam = (searchParams.get('mode') as 'ranked' | 'solo') || 'solo';
 
         let savedState: any = null;
@@ -239,7 +239,7 @@ export default function PlayPage({ params }: PlayPageProps) {
   }, [board, timerSeconds, puzzleId, totalPieces, difficulty, mode, isCompleted, startedAt, isPageLoading, token]);
 
   // 4. 모드 판정
-  const gridSize = difficulty === 'beginner' ? 10 : 16;
+  const gridSize = difficulty === 'novice' ? 6 : difficulty === 'beginner' ? 10 : 16;
   const correctCount = board.filter((cell, idx) => cell === idx).length;
   const progressPercent = Math.round((correctCount / totalPieces) * 100);
 
@@ -489,7 +489,7 @@ export default function PlayPage({ params }: PlayPageProps) {
             {puzzle.title}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
-            {difficulty === 'beginner' ? 'Beginner (100조각)' : 'Expert (256조각)'} · {mode === 'ranked' ? '🏆 랭킹 도전' : '🧘 힐링 플레이'}
+            {difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'} · {mode === 'ranked' ? '🏆 랭킹 도전' : '🧘 힐링 플레이'}
           </span>
         </div>
 

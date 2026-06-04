@@ -7,14 +7,14 @@ import Link from 'next/link';
 
 interface HeroSectionProps {
   puzzle: Puzzle;
-  onStart: (difficulty: 'beginner' | 'expert', mode: 'ranked' | 'solo') => void;
+  onStart: (difficulty: 'novice' | 'beginner' | 'expert', mode: 'ranked' | 'solo') => void;
   onResume?: () => void;
   hasSavedGame: boolean;
   progress: number;
-  savedDifficulty?: 'beginner' | 'expert' | null;
+  savedDifficulty?: 'novice' | 'beginner' | 'expert' | null;
   isLoggedIn?: boolean;
   hasCompleted?: boolean;
-  completedDifficulty?: 'beginner' | 'expert' | null;
+  completedDifficulty?: 'novice' | 'beginner' | 'expert' | null;
 }
 
 export default function HeroSection({
@@ -29,11 +29,11 @@ export default function HeroSection({
   completedDifficulty = null,
 }: HeroSectionProps) {
   const [showDiffSelect, setShowDiffSelect] = useState(false);
-  const [tempDiff, setTempDiff] = useState<'beginner' | 'expert'>('beginner');
+  const [tempDiff, setTempDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [tempMode, setTempMode] = useState<'ranked' | 'solo'>('ranked');
 
   // 진행률 기반 맞춘 조각수 계산
-  const totalPieces = savedDifficulty === 'expert' ? 256 : 100;
+  const totalPieces = savedDifficulty === 'novice' ? 36 : savedDifficulty === 'expert' ? 256 : 100;
   const matchedPieces = Math.round((progress / 100) * totalPieces);
 
   const [daysLeft, setDaysLeft] = useState<string>('');
@@ -91,7 +91,7 @@ export default function HeroSection({
                   className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200"
                 >
                   <Check size={13} strokeWidth={3} />
-                  완료함 {completedDifficulty && `(${completedDifficulty === 'expert' ? 'Expert' : 'Beginner'})`}
+                  완료함 {completedDifficulty && `(${completedDifficulty === 'novice' ? '초보' : completedDifficulty === 'expert' ? '고수' : '일반'})`}
                 </div>
               )}
             </div>
@@ -250,7 +250,7 @@ export default function HeroSection({
                 <>
                   <div className="flex items-center gap-1 text-xs font-bold text-emerald-600">
                     <Check size={13} strokeWidth={3} />
-                    <span>완료됨 ({completedDifficulty === 'expert' ? 'Expert' : 'Beginner'})</span>
+                    <span>완료됨 ({completedDifficulty === 'novice' ? '초보' : completedDifficulty === 'expert' ? '고수' : '일반'})</span>
                   </div>
                   <p className="mt-0.5 text-sm font-extrabold text-emerald-700">
                     랭킹 등록 완료! 🏅
@@ -260,7 +260,7 @@ export default function HeroSection({
                 <>
                   <div className="flex items-center gap-1 text-xs font-bold" style={{ color: 'var(--puzzle-primary)' }}>
                     <Layers size={13} />
-                    <span>진행 중 ({savedDifficulty === 'expert' ? 'Expert' : 'Beginner'})</span>
+                    <span>진행 중 ({savedDifficulty === 'novice' ? '초보' : savedDifficulty === 'expert' ? '고수' : '일반'})</span>
                   </div>
                   <p className="mt-0.5 text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
                     {matchedPieces} / {totalPieces} 조각
@@ -320,23 +320,41 @@ export default function HeroSection({
                 <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
                 1. 난이도 선택
               </h4>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                {/* Novice Card */}
+                <button
+                  onClick={() => setTempDiff('novice')}
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  style={{
+                    backgroundColor: tempDiff === 'novice' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
+                    borderColor: tempDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
+                  }}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                      초보
+                    </span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>36조각</span>
+                    </span>
+                  </div>
+                </button>
+
                 {/* Beginner Card */}
                 <button
                   onClick={() => setTempDiff('beginner')}
-                  className="flex flex-col justify-center text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'beginner' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full gap-1 min-w-0">
-                    <span className="text-sm sm:text-base font-black truncate" style={{ color: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       일반
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
-                      <span className="hidden sm:inline">100조각</span>
-                      <span className="inline sm:hidden">100</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>100조각</span>
                     </span>
                   </div>
                 </button>
@@ -344,19 +362,18 @@ export default function HeroSection({
                 {/* Expert Card */}
                 <button
                   onClick={() => setTempDiff('expert')}
-                  className="flex flex-col justify-center text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'expert' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full gap-1 min-w-0">
-                    <span className="text-sm sm:text-base font-black truncate" style={{ color: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       고수
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
-                      <span className="hidden sm:inline">256조각</span>
-                      <span className="inline sm:hidden">256</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>256조각</span>
                     </span>
                   </div>
                 </button>

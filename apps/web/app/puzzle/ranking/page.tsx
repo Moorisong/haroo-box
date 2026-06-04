@@ -18,7 +18,7 @@ export default function RankingPage() {
   const [currentPuzzle, setCurrentPuzzle] = useState<Puzzle | null>(null);
   const [rankings, setRankings] = useState<RankingEntry[]>([]);
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'beginner' | 'expert'>('beginner');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(20);
 
@@ -136,6 +136,17 @@ export default function RankingPage() {
         {/* Premium difficulty pills */}
         <div className="flex items-center gap-1.5 bg-zinc-100 p-1 rounded-2xl border self-start md:self-auto" style={{ borderColor: 'var(--puzzle-border)' }}>
           <button
+            onClick={() => setSelectedDifficulty('novice')}
+            className="px-4 py-2 text-xs font-black rounded-xl transition-all duration-200"
+            style={{
+              backgroundColor: selectedDifficulty === 'novice' ? 'var(--puzzle-primary)' : 'transparent',
+              color: selectedDifficulty === 'novice' ? '#fff' : 'var(--puzzle-muted-foreground)',
+              boxShadow: selectedDifficulty === 'novice' ? 'var(--puzzle-shadow-sm)' : 'none',
+            }}
+          >
+            초보 (36조각)
+          </button>
+          <button
             onClick={() => setSelectedDifficulty('beginner')}
             className="px-4 py-2 text-xs font-black rounded-xl transition-all duration-200"
             style={{
@@ -144,7 +155,7 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'beginner' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            Beginner (100조각)
+            일반 (100조각)
           </button>
           <button
             onClick={() => setSelectedDifficulty('expert')}
@@ -155,7 +166,7 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'expert' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            Expert (256조각)
+            고수 (256조각)
           </button>
         </div>
       </div>
@@ -205,7 +216,7 @@ export default function RankingPage() {
                     <Clock size={11} /> {getDaysLeft(currentPuzzle.endDate)}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-bold hidden sm:flex" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    <Trophy size={11} /> {selectedDifficulty === 'beginner' ? 'Beginner 난이도 (100조각)' : 'Expert 난이도 (256조각)'}
+                    <Trophy size={11} /> {selectedDifficulty === 'novice' ? '초보 난이도 (36조각)' : selectedDifficulty === 'beginner' ? '일반 난이도 (100조각)' : '고수 난이도 (256조각)'}
                   </span>
                 </div>
               </div>

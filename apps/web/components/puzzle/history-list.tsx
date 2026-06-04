@@ -6,7 +6,7 @@ interface HistoryEntry {
   puzzleId: string;
   title: string;
   imageUrl: string;
-  difficulty: 'beginner' | 'expert';
+  difficulty: 'novice' | 'beginner' | 'expert';
   completionTime: number;
   savedAt: string;
   completed: boolean;
@@ -48,7 +48,7 @@ export default function HistoryList({ history }: HistoryListProps) {
         </div>
       ) : (
         history.map((item, idx) => {
-          const isRanked = item.difficulty === 'beginner' && item.myRank;
+          const isRanked = !!item.myRank;
           return (
             <div
               key={idx}
@@ -85,7 +85,7 @@ export default function HistoryList({ history }: HistoryListProps) {
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
                   <span className="flex items-center gap-1">
-                    <PuzzleIcon size={11} /> {item.difficulty === 'beginner' ? 'Beginner (100조각)' : 'Expert (256조각)'}
+                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? '초보 (36조각)' : item.difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'}
                   </span>
                 </div>
               </div>

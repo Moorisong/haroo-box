@@ -7,8 +7,8 @@ import { RankingEntry } from '@/types/puzzle';
 interface RankingPreviewProps {
   rankings: RankingEntry[];
   isLoading: boolean;
-  difficulty: 'beginner' | 'expert';
-  onDifficultyChange: (diff: 'beginner' | 'expert') => void;
+  difficulty: 'novice' | 'beginner' | 'expert';
+  onDifficultyChange: (diff: 'novice' | 'beginner' | 'expert') => void;
 }
 
 export default function RankingPreview({ rankings, isLoading, difficulty, onDifficultyChange }: RankingPreviewProps) {
@@ -40,6 +40,16 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
           {/* Difficulty pills */}
           <div className="flex items-center gap-1 bg-zinc-100 p-0.5 rounded-lg border" style={{ borderColor: 'var(--puzzle-border)' }}>
             <button
+              onClick={() => onDifficultyChange('novice')}
+              className="px-2.5 py-1 text-[10px] font-black rounded-md transition-colors"
+              style={{
+                backgroundColor: difficulty === 'novice' ? 'var(--puzzle-primary)' : 'transparent',
+                color: difficulty === 'novice' ? '#fff' : 'var(--puzzle-muted-foreground)',
+              }}
+            >
+              초보
+            </button>
+            <button
               onClick={() => onDifficultyChange('beginner')}
               className="px-2.5 py-1 text-[10px] font-black rounded-md transition-colors"
               style={{
@@ -47,7 +57,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'beginner' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              Beginner
+              일반
             </button>
             <button
               onClick={() => onDifficultyChange('expert')}
@@ -57,7 +67,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              Expert
+              고수
             </button>
           </div>
         </div>

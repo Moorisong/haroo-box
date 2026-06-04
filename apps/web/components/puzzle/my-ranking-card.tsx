@@ -103,7 +103,7 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
             아직 완주 기록이 없습니다.
           </p>
           <p className="text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            Beginner 퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘
+            퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘
           </p>
         </div>
       )}

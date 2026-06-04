@@ -28,7 +28,7 @@ export default function ArchivePuzzleCard({
 }: ArchivePuzzleCardProps) {
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
-  const [selectedDiff, setSelectedDiff] = useState<'beginner' | 'expert'>('beginner');
+  const [selectedDiff, setSelectedDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [selectedMode, setSelectedMode] = useState<'ranked' | 'solo'>('ranked');
   const [isResetStart, setIsResetStart] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -238,23 +238,41 @@ export default function ArchivePuzzleCard({
                 <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
                 난이도 선택
               </h4>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                {/* Novice Card */}
+                <button
+                  onClick={() => setSelectedDiff('novice')}
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  style={{
+                    backgroundColor: selectedDiff === 'novice' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
+                    borderColor: selectedDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
+                  }}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                      초보
+                    </span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>36조각</span>
+                    </span>
+                  </div>
+                </button>
+
                 {/* Beginner Card */}
                 <button
                   onClick={() => setSelectedDiff('beginner')}
-                  className="flex flex-col justify-center text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: selectedDiff === 'beginner' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: selectedDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full gap-1 min-w-0">
-                    <span className="text-sm sm:text-base font-black truncate" style={{ color: selectedDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       일반
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
-                      <span className="hidden sm:inline">100조각</span>
-                      <span className="inline sm:hidden">100</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>100조각</span>
                     </span>
                   </div>
                 </button>
@@ -262,19 +280,18 @@ export default function ArchivePuzzleCard({
                 {/* Expert Card */}
                 <button
                   onClick={() => setSelectedDiff('expert')}
-                  className="flex flex-col justify-center text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: selectedDiff === 'expert' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: selectedDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex items-center justify-between w-full gap-1 min-w-0">
-                    <span className="text-sm sm:text-base font-black truncate" style={{ color: selectedDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       고수
                     </span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-10 sm:w-auto inline-flex justify-center items-center flex-shrink-0">
-                      <span className="hidden sm:inline">256조각</span>
-                      <span className="inline sm:hidden">256</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                      <span>256조각</span>
                     </span>
                   </div>
                 </button>
