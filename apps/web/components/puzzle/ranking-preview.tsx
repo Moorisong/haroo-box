@@ -29,7 +29,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
   const displayRankings = rankings.slice(0, 7);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
@@ -82,7 +82,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
       </div>
 
       <div 
-        className="rounded-2xl overflow-hidden flex-1 flex flex-col justify-start"
+        className="rounded-2xl overflow-hidden md:h-[482px] md:flex md:flex-col"
         style={{ 
           backgroundColor: 'var(--puzzle-glass-bg)',
           border: '1px solid var(--puzzle-border)',
@@ -97,14 +97,13 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
               className="flex items-center gap-4 px-5 py-4 border-b last:border-0"
               style={{ borderColor: 'var(--puzzle-border)' }}
             >
-              <div className="w-8 h-8 rounded bg-zinc-200 animate-pulse" />
+              <div className="w-9 h-9 rounded-full bg-zinc-200 animate-pulse" />
               <div className="flex-1 h-4 bg-zinc-200 rounded animate-pulse" />
               <div className="w-12 h-4 bg-zinc-200 rounded animate-pulse" />
             </div>
           ))
         ) : displayRankings.length === 0 ? (
-          <div className="py-12 text-center flex flex-col items-center justify-center gap-2">
-            <span style={{ fontSize: '24px' }}>🧘</span>
+          <div className="py-12 text-center flex flex-col items-center justify-center gap-2 md:flex-1">
             <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
               아직 등록된 랭킹 기록이 없습니다.
             </p>

@@ -13,6 +13,7 @@ import { TrendingUp, Award, ArrowLeft } from 'lucide-react';
 import styles from '../puzzle-layout.module.css';
 import { useToast } from '@/lib/hooks/use-toast';
 import Toast from '@/components/ui/toast';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function MyPage() {
   const router = useRouter();
@@ -25,6 +26,19 @@ export default function MyPage() {
   const [history, setHistory] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(5);
+  
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -139,17 +153,6 @@ export default function MyPage() {
             내 개인 통계 정보와 아카이브 완주 기록을 한눈에 관리해 보세요.
           </p>
         </div>
-
-        <Link
-          href="/puzzle"
-          className="flex items-center gap-1 text-xs font-bold transition-colors"
-          style={{ color: 'var(--puzzle-muted-foreground)' }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--puzzle-foreground)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--puzzle-muted-foreground)'; }}
-        >
-          <ArrowLeft size={14} strokeWidth={2.5} />
-          <span>메인으로</span>
-        </Link>
       </div>
 
       {/* Main Spacing Grid */}
@@ -206,10 +209,18 @@ export default function MyPage() {
             </div>
           </div>
 
-          <SettingsPanel
-            onClearData={handleClearData}
-            onDeleteAccount={handleDeleteAccount}
-          />
+          {/* Adfit AD Banner & SettingsPanel for PC (Placed below profile info/badges card on desktop) */}
+          {(!mounted || !isMobile) && (
+            <div className="hidden md:flex md:flex-col md:gap-4">
+              <div className="flex justify-center">
+                <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+              </div>
+              <SettingsPanel
+                onClearData={handleClearData}
+                onDeleteAccount={handleDeleteAccount}
+              />
+            </div>
+          )}
         </div>
 
         {/* Right side: completed history details & chart analytics */}
@@ -245,6 +256,19 @@ export default function MyPage() {
             >
               더보기 ⬇️
             </button>
+          )}
+
+          {/* Adfit AD Banner & SettingsPanel for Mobile (Placed below History list on mobile) */}
+          {(mounted && isMobile) && (
+            <div className="flex flex-col gap-4 mt-6 md:hidden">
+              <div className="flex justify-center">
+                <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+              </div>
+              <SettingsPanel
+                onClearData={handleClearData}
+                onDeleteAccount={handleDeleteAccount}
+              />
+            </div>
           )}
         </div>
       </div>

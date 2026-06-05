@@ -19,6 +19,22 @@ export const verifyChallenge = async (req: Request, res: Response, next: NextFun
       return;
     }
 
+    // 1.5. 중복 전송 방지: 이미 동일한 기록이 성공적으로 저장되어 있는지 먼저 확인
+    const PuzzleResult = getPuzzleResultModel();
+    const duplicateResult = await PuzzleResult.findOne({
+      userId: user._id,
+      puzzleId,
+      startedAt: new Date(startedAt),
+      completionTime,
+      completed: true
+    });
+
+    if (duplicateResult) {
+      // 이미 저장된 기록이 있다면 더 이상의 검증(챌린지 토큰 등) 없이 통과시킴
+      next();
+      return;
+    }
+
     // 2. Challenge Token 유효성 검증
     if (mode === 'ranked') {
       const ChallengeToken = getChallengeTokenModel();
@@ -49,13 +65,21 @@ export const verifyChallenge = async (req: Request, res: Response, next: NextFun
     if (mode === 'ranked') {
       const startMs = new Date(startedAt).getTime();
       const completeMs = new Date(completedAt).getTime();
-      const calculatedDurationSeconds = Math.round((completeMs - startMs) / 1000);
-      const timeDiff = Math.abs(calculatedDurationSeconds - completionTime);
 
-      if (timeDiff > 5) { // 5초 오차까지는 관용 (네트워크 딜레이 등)
+      if (isNaN(startMs) || isNaN(completeMs)) {
+        res.status(400).json({ success: false, error: '유효하지 않은 시간 포맷입니다.' });
+        return;
+      }
+
+      const calculatedDurationSeconds = Math.round((completeMs - startMs) / 1000);
+
+      // 실제 흘러간 현실 시간(calculatedDurationSeconds)이 게임 상 기록된 퍼즐 타이머 시간(completionTime)보다 5초 이상 짧다면, 
+      // 클라이언트 측에서 타이머 속도를 임의로 가속했거나 조작한 치팅임.
+      // (단, 유저가 중간에 일시정지하거나 탭을 내려두는 등 현실 시간이 더 길어진 경우는 정상적인 플레이 패턴이므로 허용함)
+      if (calculatedDurationSeconds < completionTime - 5) {
         res.status(400).json({ 
           success: false, 
-          error: `플레이 시간 무결성 검증 실패 (오차: ${timeDiff}초)` 
+          error: `플레이 시간 무결성 검증 실패 (현실 시간: ${calculatedDurationSeconds}초 / 타이머 시간: ${completionTime}초)` 
         });
         return;
       }

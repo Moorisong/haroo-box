@@ -10,6 +10,7 @@ import MyRankingCard from '@/components/puzzle/my-ranking-card';
 import PercentileChart from '@/components/puzzle/percentile-chart';
 import Link from 'next/link';
 import styles from '../puzzle-layout.module.css';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function RankingPage() {
   const { data: session } = useSession();
@@ -134,10 +135,10 @@ export default function RankingPage() {
         </div>
 
         {/* Premium difficulty pills */}
-        <div className="flex items-center gap-1.5 bg-zinc-100 p-1 rounded-2xl border self-start md:self-auto" style={{ borderColor: 'var(--puzzle-border)' }}>
+        <div className="flex items-center gap-1.5 bg-zinc-100 p-1 rounded-2xl border w-full md:w-auto" style={{ borderColor: 'var(--puzzle-border)' }}>
           <button
             onClick={() => setSelectedDifficulty('novice')}
-            className="px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
+            className="flex-1 md:flex-initial px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
             style={{
               backgroundColor: selectedDifficulty === 'novice' ? 'var(--puzzle-primary)' : 'transparent',
               color: selectedDifficulty === 'novice' ? '#fff' : 'var(--puzzle-muted-foreground)',
@@ -149,7 +150,7 @@ export default function RankingPage() {
           </button>
           <button
             onClick={() => setSelectedDifficulty('beginner')}
-            className="px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
+            className="flex-1 md:flex-initial px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
             style={{
               backgroundColor: selectedDifficulty === 'beginner' ? 'var(--puzzle-primary)' : 'transparent',
               color: selectedDifficulty === 'beginner' ? '#fff' : 'var(--puzzle-muted-foreground)',
@@ -161,7 +162,7 @@ export default function RankingPage() {
           </button>
           <button
             onClick={() => setSelectedDifficulty('expert')}
-            className="px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
+            className="flex-1 md:flex-initial px-3 sm:px-4 py-2 text-xs font-black rounded-xl transition-all duration-200 text-center"
             style={{
               backgroundColor: selectedDifficulty === 'expert' ? 'var(--puzzle-primary)' : 'transparent',
               color: selectedDifficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
@@ -236,6 +237,11 @@ export default function RankingPage() {
               onShowMore={() => setVisibleCount((prev) => prev + 20)}
             />
           </div>
+
+          {/* Adfit AD Banner on Mobile (Below Leaderboard) */}
+          <div className="order-3 lg:order-none block lg:hidden my-4 flex justify-center">
+            <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+          </div>
         </div>
 
         {/* Right Column (My Ranking + Percentile Chart) */}
@@ -256,6 +262,11 @@ export default function RankingPage() {
               totalParticipants={myRanking ? myRanking.totalParticipants : 0}
               myRank={myRanking ? myRanking.myRank : null}
             />
+          </div>
+
+          {/* Adfit AD Banner on PC (Below Percentile Chart - changed to 320x100 to reduce height) */}
+          <div className="order-4 lg:order-none hidden lg:block flex justify-center">
+            <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
           </div>
         </div>
       </div>

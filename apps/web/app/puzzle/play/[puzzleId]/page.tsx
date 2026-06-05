@@ -22,6 +22,7 @@ import FloatingToolbar from '@/components/puzzle/floating-toolbar';
 import CompletionModal from '@/components/puzzle/completion-modal';
 import CursorFollower from '@/components/puzzle/cursor-follower';
 import { MyRanking, Puzzle } from '@/types/puzzle';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 // Next.js 16 App Router Dynamic Route Params 대응
 interface PlayPageProps {
@@ -75,6 +76,7 @@ export default function PlayPage({ params }: PlayPageProps) {
   const [isSaved, setIsSaved] = useState(false);
   const [manualSaveStatus, setManualSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // 1. 초기 마운트 시 퍼즐 메타데이터 로드 및 게임 시작/이어하기 분기
   useEffect(() => {
@@ -505,7 +507,24 @@ export default function PlayPage({ params }: PlayPageProps) {
         }
       }
 
-      const activeToken = usePuzzleStore.getState().challengeToken || challengeToken || 'no-challenge-token';
+      let activeToken = usePuzzleStore.getState().challengeToken || challengeToken;
+
+      // 랭킹 모드인데 여전히 챌린지 토큰이 없는 경우 마지막으로 즉시 발급 시도
+      if (submitMode === 'ranked' && !activeToken) {
+        try {
+          const challengeRes = await startChallenge(puzzleId, token);
+          if (challengeRes.success && challengeRes.data?.challengeToken) {
+            activeToken = challengeRes.data.challengeToken;
+            setChallengeToken(activeToken);
+          }
+        } catch (err) {
+          console.error('Failed to issue challenge token dynamically at completion:', err);
+        }
+      }
+
+      if (!activeToken) {
+        activeToken = 'no-challenge-token';
+      }
       
       const res = await submitResult({
         puzzleId,
@@ -519,6 +538,7 @@ export default function PlayPage({ params }: PlayPageProps) {
 
       if (res.success) {
         setIsSaved(true);
+        setSubmitError(null);
         // 저장 성공 시 내 등수 즉시 업데이트
         const rankingRes = await fetchMyRanking(puzzleId, token, difficulty);
         if (rankingRes.success && rankingRes.data) {
@@ -527,12 +547,12 @@ export default function PlayPage({ params }: PlayPageProps) {
         // IndexedDB 로컬 임시 파일 비우기
         await deletePuzzleState(puzzleId);
       } else {
-        alert(res.error || '기록 저장에 실패했습니다. 치팅 방지 필터에 차단되었을 수 있습니다.');
+        setSubmitError(res.error || '기록 저장에 실패했습니다. 치팅 방지 필터에 차단되었을 수 있습니다.');
         submittingRef.current = false;
       }
     } catch (e) {
       console.error(e);
-      alert('기록 업로드 중 알 수 없는 서버 에러가 발생했습니다.');
+      setSubmitError('기록 업로드 중 알 수 없는 서버 에러가 발생했습니다.');
       submittingRef.current = false;
     } finally {
       setIsSubmitting(false);
@@ -708,6 +728,11 @@ export default function PlayPage({ params }: PlayPageProps) {
           mode={mode}
         />
 
+        {/* Adfit AD Banner (Placed between control toolbar and piece tray drawer to catch accidental clicks during gameplay) */}
+        <div className="flex justify-center my-0.5">
+          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x50} />
+        </div>
+
         <PieceTray
           trayPieces={trayPieces}
           image={puzzle.imageUrl}
@@ -731,6 +756,7 @@ export default function PlayPage({ params }: PlayPageProps) {
           isSaving={isSubmitting}
           isSaved={isSaved}
           mode={mode}
+          errorMessage={submitError}
         />
       )}
 

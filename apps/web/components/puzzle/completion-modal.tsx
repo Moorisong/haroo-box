@@ -15,6 +15,7 @@ interface CompletionModalProps {
   isSaving: boolean;
   isSaved: boolean;
   mode?: 'ranked' | 'solo';
+  errorMessage?: string | null;
 }
 
 const CONFETTI_COLORS = ['#4F8EF7', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
@@ -55,6 +56,7 @@ export default function CompletionModal({
   isSaving,
   isSaved,
   mode = 'solo',
+  errorMessage,
 }: CompletionModalProps) {
   const [visible, setVisible] = useState(false);
 
@@ -166,12 +168,14 @@ export default function CompletionModal({
         {/* Buttons / Actions */}
         <div className="flex flex-col gap-3">
           {isLoggedIn ? (
-            <div className="text-xs font-bold py-2 select-none flex items-center justify-center gap-1.5" style={{ color: isSaved ? '#22C55E' : 'var(--puzzle-muted-foreground)' }}>
+            <div className="text-xs font-bold py-2 select-none flex items-center justify-center gap-1.5" style={{ color: errorMessage ? '#EF4444' : isSaved ? '#22C55E' : 'var(--puzzle-muted-foreground)' }}>
               {isSaving ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) transparent' }} />
                   <span>{mode === 'solo' ? '기록 저장 중...' : '기록 저장/제출 중...'}</span>
                 </>
+              ) : errorMessage ? (
+                <span>⚠️ {errorMessage}</span>
               ) : isSaved ? (
                 <span>{mode === 'solo' ? '✓ 저장 완료' : '✓ 저장/제출 완료'}</span>
               ) : null}

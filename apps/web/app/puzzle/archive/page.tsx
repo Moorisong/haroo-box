@@ -8,6 +8,7 @@ import ArchiveGrid from '@/components/puzzle/archive-grid';
 import Link from 'next/link';
 import styles from '../puzzle-layout.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function ArchivePage() {
   const { data: session, status: sessionStatus } = useSession();
@@ -221,6 +222,16 @@ export default function ArchivePage() {
           )}
         </div>
       )}
+
+      {/* Adfit AD Banner (Placed above ArchiveGrid to catch attention naturally) */}
+      <div className="mb-8 flex justify-center">
+        <div className="block md:hidden">
+          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+        </div>
+        <div className="hidden md:block">
+          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_728x90} />
+        </div>
+      </div>
 
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (

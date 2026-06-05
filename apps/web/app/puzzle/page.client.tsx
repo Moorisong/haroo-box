@@ -14,6 +14,7 @@ import StatsCard from '@/components/puzzle/stats-card';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import styles from './puzzle-layout.module.css';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function PuzzlePageClient() {
   const router = useRouter();
@@ -218,8 +219,8 @@ export default function PuzzlePageClient() {
         />
       </div>
 
-      {/* Main Bottom Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 mt-6 md:mt-10">
+      {/* Main Bottom Grid (align items to start to prevent stretching height) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 mt-6 md:mt-10 items-start">
         {/* Top 5 Rankings */}
         <div className="md:col-span-2">
           <RankingPreview 
@@ -241,29 +242,39 @@ export default function PuzzlePageClient() {
             completionRate={serviceStats?.completionRate ?? '0%'} 
           />
 
-          {/* Archive teaser */}
-          <Link
-            href="/puzzle/archive"
-            className="flex items-center justify-between px-5 py-4 rounded-2xl border transition-all duration-200 group"
-            style={{
-              backgroundColor: 'var(--puzzle-glass-bg)',
-              backdropFilter: 'var(--puzzle-glass-blur)',
-              borderColor: 'var(--puzzle-border)',
-              boxShadow: 'var(--puzzle-shadow-sm)',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--puzzle-primary)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--puzzle-border)'; }}
-          >
-            <div>
-              <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                지난 아카이브 퍼즐 보기
-              </p>
-              <p className="text-[10px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                이전 주차 퍼즐 플레이 목록
-              </p>
-            </div>
-            <ArrowRight size={18} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-          </Link>
+        {/* Archive teaser */}
+        <Link
+          href="/puzzle/archive"
+          className="flex items-center justify-between px-5 py-4 rounded-2xl border transition-all duration-200 group"
+          style={{
+            backgroundColor: 'var(--puzzle-glass-bg)',
+            backdropFilter: 'var(--puzzle-glass-blur)',
+            borderColor: 'var(--puzzle-border)',
+            boxShadow: 'var(--puzzle-shadow-sm)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--puzzle-primary)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--puzzle-border)'; }}
+        >
+          <div>
+            <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
+              지난 아카이브 퍼즐 보기
+            </p>
+            <p className="text-[10px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+              이전 주차 퍼즐 플레이 목록
+            </p>
+          </div>
+          <ArrowRight size={18} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
+        </Link>
+      </div>
+      </div>
+      
+      {/* 최하단 광고 배너 */}
+      <div className="flex justify-center mt-12 w-full">
+        <div className="block sm:hidden">
+          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+        </div>
+        <div className="hidden sm:block">
+          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_728x90} />
         </div>
       </div>
     </div>

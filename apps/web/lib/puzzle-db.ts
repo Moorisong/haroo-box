@@ -16,7 +16,7 @@ export interface LocalPuzzleState {
 
 const DB_NAME = 'haruPuzzleDB';
 const STORE_NAME = 'puzzleState';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 let dbInstance: IDBDatabase | null = null;
 
@@ -34,9 +34,11 @@ async function getDB(): Promise<IDBDatabase> {
 
     request.onupgradeneeded = (event) => {
       const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'puzzleId' });
+      // 키 패스가 다르거나 예전 버전 잔재가 있을 수 있으므로 기존 스토어가 있으면 삭제 후 재생성
+      if (db.objectStoreNames.contains(STORE_NAME)) {
+        db.deleteObjectStore(STORE_NAME);
       }
+      db.createObjectStore(STORE_NAME, { keyPath: 'puzzleId' });
     };
   });
 }
@@ -50,6 +52,10 @@ export async function savePuzzleState(
   state: Omit<LocalPuzzleState, 'puzzleId' | 'updatedAt'>,
   immediate = false
 ): Promise<void> {
+  if (!puzzleId) {
+    console.error('savePuzzleState: puzzleId is invalid', puzzleId);
+    return;
+  }
   const saveFn = async () => {
     try {
       const db = await getDB();
@@ -109,6 +115,10 @@ export async function savePuzzleState(
 }
 
 export async function loadPuzzleState(puzzleId: string): Promise<LocalPuzzleState | null> {
+  if (!puzzleId) {
+    console.error('loadPuzzleState: puzzleId is invalid', puzzleId);
+    return null;
+  }
   try {
     const db = await getDB();
     return new Promise((resolve) => {
@@ -131,6 +141,10 @@ export async function loadPuzzleState(puzzleId: string): Promise<LocalPuzzleStat
 }
 
 export async function deletePuzzleState(puzzleId: string): Promise<void> {
+  if (!puzzleId) {
+    console.error('deletePuzzleState: puzzleId is invalid', puzzleId);
+    return;
+  }
   try {
     const db = await getDB();
     return new Promise((resolve) => {
