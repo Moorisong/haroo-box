@@ -719,6 +719,7 @@ export default function PlayPage({ params }: PlayPageProps) {
           zoom={zoom}
           onCellClick={handleCellClick}
           selectedPieceId={selectedTrayPiece}
+          difficulty={difficulty}
         />
       </div>
 

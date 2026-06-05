@@ -204,3 +204,27 @@
   scrollbar-width: none !important; /* Firefox */
 }
 
+/* 🎯 고수 모드 정답 배치 리플 애니메이션 */
+@keyframes puzzle-correct-ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(79, 142, 247, 0.8);
+    transform: scale(1.06);
+    z-index: 20;
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(79, 142, 247, 0.3);
+    transform: scale(1.03);
+    z-index: 20;
+  }
+  100% {
+    box-shadow: 0 0 0 25px rgba(79, 142, 247, 0);
+    transform: scale(1);
+    z-index: auto;
+  }
+}
+
+.puzzle-correct-ripple {
+  animation: puzzle-correct-ripple 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
