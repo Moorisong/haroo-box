@@ -230,19 +230,17 @@ export default function PieceTray({
       currentTarget.setPointerCapture(pointerId);
     } catch (err) {}
 
-    longPressTimeout.current = setTimeout(() => {
-      dragActiveRef.current = true;
-      setDraggedPiece({
-        id: pieceId,
-        x: clientX,
-        y: clientY,
-        startX: clientX,
-        startY: clientY,
-        pointerId: pointerId,
-      });
+    const onGlobalMove = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') return;
+      if (!startCoords.current) return;
+      
+      const dx = event.clientX - startCoords.current.x;
+      const dy = event.clientY - startCoords.current.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-      const onGlobalMove = (event: PointerEvent) => {
-        if (event.pointerType === 'mouse') {
+      if (!dragActiveRef.current) {
+        if (distance > 5) {
+          dragActiveRef.current = true;
           setDraggedPiece({
             id: pieceId,
             x: event.clientX,
@@ -251,21 +249,33 @@ export default function PieceTray({
             startY: clientY,
             pointerId: pointerId,
           });
-          lastCoords.current = { x: event.clientX, y: event.clientY };
-          
-          const dropElement = document.elementFromPoint(event.clientX, event.clientY);
-          const basketTab = dropElement?.closest('[data-basket-id]');
-          const targetBasket = basketTab?.getAttribute('data-basket-id') || null;
-          setHoveredBasket(targetBasket);
         }
-      };
+      } else {
+        setDraggedPiece({
+          id: pieceId,
+          x: event.clientX,
+          y: event.clientY,
+          startX: clientX,
+          startY: clientY,
+          pointerId: pointerId,
+        });
+        lastCoords.current = { x: event.clientX, y: event.clientY };
+        
+        const dropElement = document.elementFromPoint(event.clientX, event.clientY);
+        const basketTab = dropElement?.closest('[data-basket-id]');
+        const targetBasket = basketTab?.getAttribute('data-basket-id') || null;
+        setHoveredBasket(targetBasket);
+      }
+    };
 
-      const onGlobalUp = (event: PointerEvent) => {
-        cleanupListeners();
+    const onGlobalUp = (event: PointerEvent) => {
+      cleanupListeners();
 
-        dragActiveRef.current = false;
-        startCoords.current = null;
+      const wasDragging = dragActiveRef.current;
+      dragActiveRef.current = false;
+      startCoords.current = null;
 
+      if (wasDragging) {
         const endX = event.clientX || lastCoords.current.x;
         const endY = event.clientY || lastCoords.current.y;
 
@@ -279,34 +289,41 @@ export default function PieceTray({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
-      };
+      } else {
+        onPieceClick(pieceId);
+        if (isDrawerOpen) {
+          setTimeout(() => {
+            setIsDrawerOpen(false);
+          }, 60);
+        }
+      }
+    };
 
-      const onGlobalCancel = () => {
-        cleanupListeners();
-        dragActiveRef.current = false;
-        startCoords.current = null;
-        setDraggedPiece(null);
-        setHoveredBasket(null);
-      };
+    const onGlobalCancel = () => {
+      cleanupListeners();
+      dragActiveRef.current = false;
+      startCoords.current = null;
+      setDraggedPiece(null);
+      setHoveredBasket(null);
+    };
 
-      const cleanupListeners = () => {
-        window.removeEventListener('pointermove', onGlobalMove);
-        window.removeEventListener('pointerup', onGlobalUp);
-        window.removeEventListener('pointercancel', onGlobalCancel);
+    const cleanupListeners = () => {
+      window.removeEventListener('pointermove', onGlobalMove);
+      window.removeEventListener('pointerup', onGlobalUp);
+      window.removeEventListener('pointercancel', onGlobalCancel);
 
-        globalMoveRef.current = null;
-        globalUpRef.current = null;
-        globalCancelRef.current = null;
-      };
+      globalMoveRef.current = null;
+      globalUpRef.current = null;
+      globalCancelRef.current = null;
+    };
 
-      window.addEventListener('pointermove', onGlobalMove, { passive: true });
-      window.addEventListener('pointerup', onGlobalUp, { passive: true });
-      window.addEventListener('pointercancel', onGlobalCancel);
+    window.addEventListener('pointermove', onGlobalMove, { passive: true });
+    window.addEventListener('pointerup', onGlobalUp, { passive: true });
+    window.addEventListener('pointercancel', onGlobalCancel);
 
-      globalMoveRef.current = onGlobalMove;
-      globalUpRef.current = onGlobalUp;
-      globalCancelRef.current = onGlobalCancel;
-    }, 220);
+    globalMoveRef.current = onGlobalMove;
+    globalUpRef.current = onGlobalUp;
+    globalCancelRef.current = onGlobalCancel;
   };
 
   // 모바일 터치 드래그 시작 핸들러
@@ -462,62 +479,19 @@ export default function PieceTray({
   // 포인터 이동 핸들러 (마우스용)
   const handlePointerMove = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    if (!startCoords.current) return;
-
-    const dx = e.clientX - startCoords.current.x;
-    const dy = e.clientY - startCoords.current.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (!dragActiveRef.current) {
-      if (distance > 24) {
-        if (longPressTimeout.current) {
-          clearTimeout(longPressTimeout.current);
-          longPressTimeout.current = null;
-        }
-        startCoords.current = null;
-        const target = e.currentTarget as HTMLElement;
-        try {
-          target.releasePointerCapture(e.pointerId);
-        } catch (err) {}
-      }
-    }
+    // startDrag 내 globalMove에서 전적으로 마우스 드래그를 관리하므로 얼리 리턴합니다.
   };
 
   // 포인터 업 핸들러 (마우스용 단순 클릭)
   const handlePointerUp = (e: React.PointerEvent, pieceId: number) => {
     if (e.pointerType !== 'mouse') return;
-    if (longPressTimeout.current) {
-      clearTimeout(longPressTimeout.current);
-      longPressTimeout.current = null;
-    }
-
-    const wasDragging = dragActiveRef.current;
-    dragActiveRef.current = false;
-    startCoords.current = null;
-
-    if (!wasDragging) {
-      e.stopPropagation();
-      e.preventDefault();
-      onPieceClick(pieceId);
-      if (isDrawerOpen) {
-        setTimeout(() => {
-          setIsDrawerOpen(false);
-        }, 60);
-      }
-    }
+    // startDrag 내 globalUp에서 마우스 클릭 및 드래그 마무리를 관리하므로 얼리 리턴합니다.
   };
 
   // 포인터 드래그 취소 핸들러
   const handlePointerCancel = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    if (longPressTimeout.current) {
-      clearTimeout(longPressTimeout.current);
-      longPressTimeout.current = null;
-    }
-    dragActiveRef.current = false;
-    startCoords.current = null;
-    setDraggedPiece(null);
-    setHoveredBasket(null);
+    // startDrag 내 globalCancel에서 관리하므로 얼리 리턴합니다.
   };
 
   const activeBasketPieces = baskets[activeBasket] || [];
