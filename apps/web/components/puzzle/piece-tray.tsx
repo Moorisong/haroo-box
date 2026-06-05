@@ -15,6 +15,14 @@ interface PieceTrayProps {
   onGuideClick?: () => void;
 }
 
+const basketMetadata: Record<string, { label: string; color: string }> = {
+  basket1: { label: '빨강', color: '#ef4444' },
+  basket2: { label: '파랑', color: '#3b82f6' },
+  basket3: { label: '초록', color: '#22c55e' },
+  basket4: { label: '노랑', color: '#eab308' },
+  basket5: { label: '보라', color: '#a855f7' },
+};
+
 export default function PieceTray({
   trayPieces,
   image,
@@ -39,6 +47,63 @@ export default function PieceTray({
     basket4: [],
     basket5: [],
   });
+
+  // 서랍장 드래그오프/슬라이드다운 상태용 Refs 및 핸들러
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerDragStart = useRef<{ y: number; time: number } | null>(null);
+
+  const handleDrawerDragStart = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const target = e.currentTarget as HTMLElement;
+    try {
+      target.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    drawerDragStart.current = {
+      y: e.clientY,
+      time: Date.now(),
+    };
+    if (drawerRef.current) {
+      drawerRef.current.style.transition = 'none';
+    }
+  };
+
+  const handleDrawerDragMove = (e: React.PointerEvent) => {
+    if (!drawerDragStart.current || !drawerRef.current) return;
+    const deltaY = e.clientY - drawerDragStart.current.y;
+    if (deltaY > 0) {
+      drawerRef.current.style.transform = `translateY(${deltaY}px)`;
+    } else {
+      drawerRef.current.style.transform = 'translateY(0px)';
+    }
+  };
+
+  const handleDrawerDragEnd = (e: React.PointerEvent) => {
+    if (!drawerDragStart.current) return;
+    const target = e.currentTarget as HTMLElement;
+    try {
+      target.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+
+    const deltaY = e.clientY - drawerDragStart.current.y;
+    const deltaTime = Date.now() - drawerDragStart.current.time;
+    drawerDragStart.current = null;
+
+    if (!drawerRef.current) return;
+
+    drawerRef.current.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+
+    const velocity = deltaY / Math.max(deltaTime, 1);
+    const isFlick = deltaY > 50 && velocity > 0.5;
+    if (deltaY > 120 || isFlick) {
+      drawerRef.current.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        setIsDrawerOpen(false);
+      }, 250);
+    } else {
+      drawerRef.current.style.transform = 'translateY(0px)';
+    }
+  };
 
   // 드래그앤드롭 추적 상태
   const [draggedPiece, setDraggedPiece] = useState<{
@@ -108,10 +173,11 @@ export default function PieceTray({
         nextBaskets[key] = nextBaskets[key].filter((id) => traySet.has(id));
       }
 
-      // 2. 바구니에 없는 새로운 조각은 기본으로 'basket1'에 추가
+      // 2. 바구니에 없는 새로운 조각은 현재 활성화된 바구니(activeBasket)에 추가
       const newPieces = trayPieces.filter((id) => !allPiecesInBaskets.has(id));
       if (newPieces.length > 0) {
-        nextBaskets.basket1 = [...(nextBaskets.basket1 || []), ...newPieces];
+        const target = activeBasket || 'basket1';
+        nextBaskets[target] = [...(nextBaskets[target] || []), ...newPieces];
       }
 
       // 로컬스토리지 저장
@@ -122,7 +188,7 @@ export default function PieceTray({
 
       return nextBaskets;
     });
-  }, [trayPieces]);
+  }, [trayPieces, activeBasket]);
 
   // 특정 바구니로 조각 이동
   const movePieceToBasket = (pieceId: number, targetBasket: string) => {
@@ -474,16 +540,16 @@ export default function PieceTray({
     >
       {/* 트레이 헤더 영역 */}
       <div className="flex justify-between items-center mb-3 select-none">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3.5 sm:gap-2">
           <span className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             남은 조각: {trayPieces.length}
           </span>
 
           {/* 바구니 1,2,3,4,5 탭 버튼 */}
-          <div className="flex bg-black/20 rounded-lg p-0.5 border border-white/5">
-            {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key, i) => {
+          <div className="flex rounded-lg p-0.5 border ml-3 sm:ml-0" style={{ borderColor: 'var(--puzzle-border)' }}>
+            {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key) => {
                const isActive = activeBasket === key;
-               const count = baskets[key]?.length || 0;
+               const meta = basketMetadata[key];
                return (
                  <button
                    key={key}
@@ -491,14 +557,20 @@ export default function PieceTray({
                      e.stopPropagation();
                      setActiveBasket(key);
                    }}
-                   className="px-2.5 py-0.5 rounded text-[11px] font-black transition-all flex items-center gap-0.5 select-none"
+                   className="px-1.5 py-0.5 rounded-md transition-all flex items-center justify-center select-none"
                    style={{
-                     backgroundColor: isActive ? 'var(--puzzle-primary)' : 'transparent',
-                     color: isActive ? '#fff' : 'var(--puzzle-muted-foreground)',
+                     backgroundColor: isActive ? 'var(--puzzle-secondary)' : 'transparent',
                    }}
                  >
-                   <span>{i + 1}</span>
-                   <span className="hidden sm:inline opacity-70 text-[9px]">({count})</span>
+                   <span 
+                     className="w-2.5 h-2.5 rounded-full border border-white/20 shrink-0" 
+                     style={{ 
+                       backgroundColor: meta.color,
+                       transform: isActive ? 'scale(1.15)' : 'scale(1)',
+                       boxShadow: isActive ? `0 0 8px ${meta.color}` : 'none',
+                       transition: 'transform 0.2s, box-shadow 0.2s',
+                     }} 
+                   />
                  </button>
                );
             })}
@@ -636,7 +708,8 @@ export default function PieceTray({
 
           {/* 슬라이드 서랍 본체 */}
           <div
-            className="relative w-full max-h-[88vh] min-h-[65vh] flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 animate-slide-up pb-8"
+            ref={drawerRef}
+            className="relative w-full h-[85vh] flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 puzzle-animate-slide-up pb-8"
             style={{
               backgroundColor: '#1f2937', // 적당한 회색 (Gray 800)
               borderColor: 'var(--puzzle-border)',
@@ -645,11 +718,25 @@ export default function PieceTray({
             onClick={(e) => e.stopPropagation()}
           >
             {/* 상단 드래그 핸들바 디자인 */}
-            <div className="w-12 h-1 bg-slate-500/40 rounded-full mx-auto my-3" />
+            <div
+              className="w-full flex flex-col items-center cursor-ns-resize select-none touch-none py-3"
+              onPointerDown={handleDrawerDragStart}
+              onPointerMove={handleDrawerDragMove}
+              onPointerUp={handleDrawerDragEnd}
+              onPointerCancel={handleDrawerDragEnd}
+            >
+              <div className="w-12 h-1 bg-slate-500/40 rounded-full" />
+            </div>
 
             {/* 헤더 */}
-            <div className="flex justify-between items-center px-5 pb-3 border-b" style={{ borderColor: 'var(--puzzle-border)' }}>
-              <div>
+            <div className="flex justify-between items-center px-5 pb-3 border-b select-none" style={{ borderColor: 'var(--puzzle-border)' }}>
+              <div
+                className="flex-1 cursor-ns-resize py-1 touch-none"
+                onPointerDown={handleDrawerDragStart}
+                onPointerMove={handleDrawerDragMove}
+                onPointerUp={handleDrawerDragEnd}
+                onPointerCancel={handleDrawerDragEnd}
+              >
                 <h3 className="text-base font-black flex items-center gap-1.5" style={{ color: '#f8fafc' }}>
                   <Folder size={18} className="text-blue-400" />
                   <span>전체 조각 모아보기</span>
@@ -689,17 +776,18 @@ export default function PieceTray({
 
             {/* 분류 바구니 드롭 영역 (드랍존 역할) */}
             <div className="grid grid-cols-5 gap-2 p-4 border-b" style={{ borderColor: 'var(--puzzle-border)', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-              {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key, i) => {
+              {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key) => {
                 const isActive = activeBasket === key;
                 const isHovered = hoveredBasket === key;
                 const count = baskets[key]?.length || 0;
+                const meta = basketMetadata[key];
 
                 return (
                   <div
                     key={key}
                     data-basket-id={key}
                     onClick={() => setActiveBasket(key)}
-                    className="flex flex-col items-center justify-center p-1.5 rounded-xl border transition-all cursor-pointer select-none"
+                    className="flex flex-col items-center justify-center p-1.5 rounded-xl border transition-all cursor-pointer select-none gap-1"
                     style={{
                       borderColor: isHovered
                         ? 'var(--puzzle-primary)'
@@ -714,13 +802,19 @@ export default function PieceTray({
                       transform: isHovered ? 'scale(1.04)' : 'scale(1)',
                     }}
                   >
-                    <span
-                      className="text-[10px] font-black transition-colors"
-                      style={{ color: isActive || isHovered ? '#60a5fa' : '#94a3b8' }}
-                    >
-                      바구니 {i + 1}
-                    </span>
-                    <span className="text-[9px] font-bold text-slate-400 mt-0.5">({count}개)</span>
+                    <div className="flex items-center gap-1">
+                      <span 
+                        className="w-2 h-2 rounded-full border border-white/10 shrink-0" 
+                        style={{ backgroundColor: meta.color }} 
+                      />
+                      <span
+                        className="text-[10px] font-black transition-colors"
+                        style={{ color: isActive || isHovered ? '#60a5fa' : '#94a3b8' }}
+                      >
+                        {meta.label}
+                      </span>
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-400">({count}개)</span>
                   </div>
                 );
               })}

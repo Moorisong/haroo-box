@@ -89,6 +89,19 @@
   }
 }
 
+@keyframes puzzle-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.puzzle-animate-slide-up {
+  animation: puzzle-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 @keyframes puzzle-scale-in {
   from {
     opacity: 0;
