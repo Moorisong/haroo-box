@@ -12,12 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
     
     return {
       title: {
-        absolute: '하루퍼즐 | 소소한 힐링 콘텐츠'
+        absolute: '하루퍼즐 | 주간 랭킹 직소퍼즐'
       },
-      description: `바쁜 일상 속 소소한 힐링 한 조각 어떠세요? ☕`,
+      description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
       openGraph: {
         title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
-        description: `바쁜 일상 속 소소한 힐링 한 조각 어떠세요? ☕`,
+        description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
         url: 'https://box.haroo.site/puzzle',
         type: 'website',
         images: [
@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
       twitter: {
         card: 'summary_large_image',
         title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
-        description: `바쁜 일상 속 소소한 힐링 한 조각 어떠세요? ☕`,
+        description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
         images: [imageUrl],
       },
     };
@@ -40,9 +40,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: {
-      absolute: '하루퍼즐 | 소소한 힐링 콘텐츠'
+      absolute: '하루퍼즐 | 주간 랭킹 직소퍼즐'
     },
-    description: '바쁜 일상 속 소소한 힐링 한 조각 어떠세요? ☕',
+    description: '바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕',
   };
 }
 

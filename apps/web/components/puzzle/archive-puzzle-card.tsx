@@ -29,7 +29,7 @@ export default function ArchivePuzzleCard({
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [selectedDiff, setSelectedDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
-  const [selectedMode, setSelectedMode] = useState<'ranked' | 'solo'>('ranked');
+
   const [isResetStart, setIsResetStart] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -51,20 +51,16 @@ export default function ArchivePuzzleCard({
 
   const isCompletedActive = status === 'completed' && !puzzle.archived;
 
+
+
   const handlePlayStart = (resetProgress = false) => {
     setIsResetStart(resetProgress);
-    // 이미 완료한 이번주 퍼즐은 솔로 모드로 강제
-    if (isCompletedActive) {
-      setSelectedMode('solo');
-    }
     setShowDiffSelect(true);
   };
 
   const handleLaunchGame = () => {
     setShowDiffSelect(false);
-    // 아카이브 퍼즐 또는 이미 완료한 이번주 퍼즐은 무조건 solo
-    const mode = (puzzle.archived || isCompletedActive) ? 'solo' : selectedMode;
-    router.push(`/puzzle/play/${puzzle._id}?diff=${selectedDiff}&mode=${mode}`);
+    router.push(`/puzzle/play/${puzzle._id}?diff=${selectedDiff}&mode=ranked`);
   };
 
   return (
@@ -298,82 +294,7 @@ export default function ArchivePuzzleCard({
               </div>
             </div>
 
-            {/* Mode Selection (Only for Active Tournament Puzzles) */}
-            {!puzzle.archived ? (
-              <div className="mb-6">
-                <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <Trophy size={14} style={{ color: 'var(--puzzle-primary)' }} />
-                  모드 선택
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Ranked Card */}
-                  <button
-                    onClick={() => !isCompletedActive && setSelectedMode('ranked')}
-                    className={`flex flex-col text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 min-w-0 ${isCompletedActive ? 'opacity-40 cursor-not-allowed' : 'hover:scale-[1.01] active:scale-95'}`}
-                    style={{
-                      backgroundColor: selectedMode === 'ranked' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
-                      borderColor: selectedMode === 'ranked' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
-                    }}
-                    disabled={isCompletedActive}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm sm:text-base font-black" style={{ color: selectedMode === 'ranked' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
-                        랭킹 도전
-                      </span>
-                      {isCompletedActive && (
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600">등록 완료</span>
-                      )}
-                    </div>
-                    <p className="text-xs font-medium leading-relaxed mt-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                      {isCompletedActive ? '이미 랭킹 기록이 등록됨' : '공식 순위 경쟁에 참여'}
-                    </p>
-                  </button>
 
-                  {/* Solo Card */}
-                  <button
-                    onClick={() => setSelectedMode('solo')}
-                    className="flex flex-col text-left p-3 sm:p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
-                    style={{
-                      backgroundColor: selectedMode === 'solo' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
-                      borderColor: selectedMode === 'solo' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
-                    }}
-                  >
-                    <span className="text-sm sm:text-base font-black" style={{ color: selectedMode === 'solo' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
-                      힐링 플레이
-                    </span>
-                    <p className="text-xs font-medium leading-relaxed mt-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                      기록 경쟁 없이 편안하게
-                    </p>
-                  </button>
-                </div>
-
-                {/* Re-attempt notice for completed active puzzle */}
-                {isCompletedActive && (
-                  <div 
-                    className="mt-3 px-3 py-2.5 rounded-xl text-[11px] font-bold leading-relaxed border flex items-start gap-1.5"
-                    style={{ backgroundColor: '#F0F9FF', borderColor: '#BAE6FD', color: '#0369A1' }}
-                  >
-                    <span>
-                      이미 랭킹 기록이 등록된 퍼즐이에요. 재도전은 힐링 모드로만 가능하며, 기존 랭킹에는 영향 없습니다.
-                    </span>
-                  </div>
-                )}
-              </div>
-            ) : (
-              /* Solo Mode Notification for Archived Puzzles */
-              <div 
-                className="mb-6 p-4 rounded-2xl border text-xs font-bold text-left leading-relaxed flex flex-col gap-1"
-                style={{ backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}
-              >
-                <div className="flex items-center gap-1.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <Trophy size={14} />
-                  <span>플레이 모드 안내</span>
-                </div>
-                <p className="mt-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  ※ 아카이브 퍼즐은 기록 경쟁이 제외된 <span style={{ color: 'var(--puzzle-primary)' }}>힐링 플레이(솔로) 모드</span>로만 플레이할 수 있습니다.
-                </p>
-              </div>
-            )}
 
             {/* Warning for Reset Game */}
             {isResetStart && (

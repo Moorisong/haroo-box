@@ -14,7 +14,7 @@ interface CompletionModalProps {
   isLoggedIn: boolean;
   isSaving: boolean;
   isSaved: boolean;
-  mode?: 'ranked' | 'solo';
+
   errorMessage?: string | null;
 }
 
@@ -55,7 +55,7 @@ export default function CompletionModal({
   isLoggedIn,
   isSaving,
   isSaved,
-  mode = 'solo',
+
   errorMessage,
 }: CompletionModalProps) {
   const [visible, setVisible] = useState(false);
@@ -118,7 +118,7 @@ export default function CompletionModal({
           className="mb-6 text-sm font-semibold leading-relaxed"
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
-          힐링 속 뛰어난 집중력이 돋보이네요.
+          멋진 집중력이 돋보이네요.
         </p>
 
         {/* Completion Time Badge */}
@@ -137,11 +137,7 @@ export default function CompletionModal({
           </p>
         </div>
 
-        {mode === 'solo' && (
-          <p className="text-[11px] font-bold mb-6 -mt-2 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            ※ 힐링 플레이 모드는 랭킹 등록 및 순위 경쟁에서 제외됩니다.
-          </p>
-        )}
+
 
         {/* 랭킹 반영 수치 표시 (기록이 저장되었거나 로그인된 상태에서 랭킹 모드일 시) */}
         {myRanking && myRanking.myRank !== null && (
@@ -172,12 +168,12 @@ export default function CompletionModal({
               {isSaving ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) transparent' }} />
-                  <span>{mode === 'solo' ? '기록 저장 중...' : '기록 저장/제출 중...'}</span>
+                  <span>기록 저장/제출 중...</span>
                 </>
               ) : errorMessage ? (
                 <span>⚠️ {errorMessage}</span>
               ) : isSaved ? (
-                <span>{mode === 'solo' ? '✓ 저장 완료' : '✓ 저장/제출 완료'}</span>
+                <span>✓ 저장/제출 완료</span>
               ) : null}
             </div>
           ) : (
@@ -187,7 +183,7 @@ export default function CompletionModal({
               style={{ backgroundColor: '#EF4444' }}
             >
               <LogIn size={16} strokeWidth={2.5} />
-              <span>{mode === 'solo' ? '로그인하고 저장하기' : '로그인하고 저장/제출'}</span>
+              <span>로그인하고 저장/제출</span>
             </button>
           )}
 

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Clock, Users, Trophy, Play, Layers, X, HelpCircle, Check, Flame } from 'lucide-react';
+import { Clock, Users, Trophy, Play, Layers, X, Check, Flame } from 'lucide-react';
 import { Puzzle } from '@/types/puzzle';
 import Link from 'next/link';
 
 interface HeroSectionProps {
   puzzle: Puzzle;
-  onStart: (difficulty: 'novice' | 'beginner' | 'expert', mode: 'ranked' | 'solo') => void;
+  onStart: (difficulty: 'novice' | 'beginner' | 'expert') => void;
   onResume?: () => void;
   hasSavedGame: boolean;
   progress: number;
@@ -32,9 +32,9 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [tempDiff, setTempDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
-  const [tempMode, setTempMode] = useState<'ranked' | 'solo'>('ranked');
 
-  const isCurrentDiffCompleted = completedDifficulties.includes(tempDiff);
+
+
 
   // 진행률 기반 맞춘 조각수 계산
   const totalPieces = savedDifficulty === 'novice' ? 36 : savedDifficulty === 'expert' ? 256 : 100;
@@ -50,22 +50,9 @@ export default function HeroSection({
     setDaysLeft(days > 0 ? `${days}일` : '마감 임박');
   }, [puzzle.endDate]);
 
-  // 난이도가 변경될 때, 선택한 난이도가 이미 완료된 것이라면 강제로 solo 모드로 설정
-  useEffect(() => {
-    if (completedDifficulties.includes(tempDiff)) {
-      setTempMode('solo');
-    } else {
-      setTempMode('ranked');
-    }
-  }, [tempDiff, completedDifficulties]);
+
 
   const handleOpenModal = () => {
-    // 초기 난이도 선택값의 완료 상태에 따라 모드 설정
-    if (completedDifficulties.includes(tempDiff)) {
-      setTempMode('solo');
-    } else {
-      setTempMode('ranked');
-    }
     setShowDiffSelect(true);
   };
 
@@ -74,9 +61,7 @@ export default function HeroSection({
       const confirmRestart = window.confirm('이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시겠습니까? (기존 진행 데이터는 삭제됩니다.)');
       if (!confirmRestart) return;
     }
-    // 이미 완료한 난이도인 경우 무조건 solo 모드로 강제
-    const finalMode = completedDifficulties.includes(tempDiff) ? 'solo' : tempMode;
-    onStart(tempDiff, finalMode);
+    onStart(tempDiff);
     setShowDiffSelect(false);
   };
 
@@ -123,7 +108,7 @@ export default function HeroSection({
               style={{ color: 'var(--puzzle-muted-foreground)' }}
             >
               매주 배달되는 몽글몽글 감성 퍼즐 ✨<br />
-              한 조각 한 조각 맞추며 바쁜 일상 속 나만의 힐링 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결부터 평화로운 자유 플레이까지, 원하는 난이도로 지금 바로 시작해 볼까요?
+              한 조각 한 조각 맞추며 바쁜 일상 속 나만의 퍼즐 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결, 원하는 난이도로 지금 바로 도전해 볼까요?
             </p>
 
             {/* Stats row */}
@@ -380,19 +365,19 @@ export default function HeroSection({
             <div className="mb-6">
               <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                 <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
-                1. 난이도 선택
+                난이도 선택
               </h4>
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {/* Novice Card */}
                 <button
                   onClick={() => setTempDiff('novice')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col items-center justify-center text-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'novice' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                  <div className="flex flex-col items-center justify-center w-full gap-1 min-w-0">
                     <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       초보
                     </span>
@@ -405,13 +390,13 @@ export default function HeroSection({
                 {/* Beginner Card */}
                 <button
                   onClick={() => setTempDiff('beginner')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col items-center justify-center text-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'beginner' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                  <div className="flex flex-col items-center justify-center w-full gap-1 min-w-0">
                     <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       일반
                     </span>
@@ -424,13 +409,13 @@ export default function HeroSection({
                 {/* Expert Card */}
                 <button
                   onClick={() => setTempDiff('expert')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col items-center justify-center text-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
                   style={{
                     backgroundColor: tempDiff === 'expert' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
                   }}
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
+                  <div className="flex flex-col items-center justify-center w-full gap-1 min-w-0">
                     <span className="text-xs sm:text-sm font-black truncate" style={{ color: tempDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                       고수
                     </span>
@@ -442,101 +427,45 @@ export default function HeroSection({
               </div>
             </div>
 
-            {/* Play Mode Selector */}
-            <div className="mb-6">
-              <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                <Trophy size={14} style={{ color: 'var(--puzzle-primary)' }} />
-                2. 플레이 모드 선택
-              </h4>
-              <div className="flex flex-col gap-3">
-                {/* Ranked Mode Button */}
-                <button
-                  onClick={() => !isCurrentDiffCompleted && setTempMode('ranked')}
-                  className={`flex items-start gap-3.5 text-left p-4 rounded-2xl border transition-all duration-200 ${isCurrentDiffCompleted ? 'opacity-40 cursor-not-allowed' : 'hover:scale-[1.005] active:scale-95'}`}
-                  style={{
-                    backgroundColor: tempMode === 'ranked' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
-                    borderColor: tempMode === 'ranked' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
-                  }}
-                  disabled={isCurrentDiffCompleted}
-                >
-                  <div 
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ backgroundColor: tempMode === 'ranked' ? 'var(--puzzle-primary)' : 'var(--puzzle-muted)', color: tempMode === 'ranked' ? '#fff' : 'var(--puzzle-muted-foreground)' }}
-                  >
-                    <Trophy size={18} />
-                  </div>
-                  <div className="flex-1">
+            {/* Ranked Mode Info */}
+            <div className="mb-6 flex items-start gap-3.5 p-4 rounded-2xl border" style={{ backgroundColor: 'var(--puzzle-secondary)', borderColor: 'var(--puzzle-primary)' }}>
+              <div 
+                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                style={{ backgroundColor: 'var(--puzzle-primary)', color: '#fff' }}
+              >
+                <Trophy size={18} />
+              </div>
+              <div className="flex-1">
+                {completedDifficulties.includes(tempDiff) ? (
+                  <>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        <span className="hidden sm:inline">랭킹 도전 모드</span>
-                        <span className="inline sm:hidden">랭킹 도전</span>
+                        🎮 자유 연습 모드
                       </span>
-                      {isCurrentDiffCompleted ? (
-                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600">등록 완료</span>
-                      ) : (
-                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">
-                          <span className="hidden sm:inline">기록 측정</span>
-                          <span className="inline sm:hidden">기록</span>
-                        </span>
-                      )}
+                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600">랭킹 제외</span>
                     </div>
-                    {!isCurrentDiffCompleted && (
-                      <p className="text-xs font-medium mt-1 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                        기록 제출하고 주간 랭킹 도전
-                      </p>
-                    )}
-                  </div>
-                </button>
-
-                {/* Healing (Solo) Mode Button */}
-                <button
-                  onClick={() => setTempMode('solo')}
-                  className="flex items-start gap-3.5 text-left p-4 rounded-2xl border transition-all duration-200 hover:scale-[1.005] active:scale-95"
-                  style={{
-                    backgroundColor: tempMode === 'solo' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
-                    borderColor: tempMode === 'solo' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
-                  }}
-                >
-                  <div 
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ backgroundColor: tempMode === 'solo' ? 'var(--puzzle-primary)' : 'var(--puzzle-muted)', color: tempMode === 'solo' ? '#fff' : 'var(--puzzle-muted-foreground)' }}
-                  >
-                    <Clock size={18} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        <span className="hidden sm:inline">힐링 플레이 모드</span>
-                        <span className="inline sm:hidden">힐링 플레이</span>
-                      </span>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600">
-                        <span className="hidden sm:inline">연습 & 힐링</span>
-                        <span className="inline sm:hidden">힐링</span>
-                      </span>
-                    </div>
-                    <p className="text-xs font-medium mt-1 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                      경쟁 없이 함께 힐링
+                    <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                      이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!
                     </p>
-                  </div>
-                </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
+                        🏆 랭킹 도전 모드
+                      </span>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">기록 측정</span>
+                    </div>
+                    <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                      기록을 제출하고 주간 랭킹에 도전하세요!
+                    </p>
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Re-attempt notice for completed puzzle */}
-            {isCurrentDiffCompleted && (
-              <div 
-                className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2"
-                style={{ backgroundColor: '#F0F9FF', borderColor: '#BAE6FD', color: '#0369A1' }}
-              >
-                <HelpCircle size={16} className="flex-shrink-0 mt-0.5" />
-                <span>
-                  선택하신 난이도는 이미 랭킹 기록이 등록되어 있어, 재도전 시 힐링 모드(솔로)로만 플레이 가능합니다. (기존 랭킹 기록에는 영향을 주지 않습니다.)
-                </span>
-              </div>
-            )}
-
-            {/* Warning for unauthenticated user choosing Ranked */}
-            {!isCurrentDiffCompleted && !isLoggedIn && tempMode === 'ranked' && (
+            {/* Warning for unauthenticated user */}
+            {!isLoggedIn && (
               <div 
                 className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2"
                 style={{ backgroundColor: 'var(--puzzle-destructive-bg, #FEF2F2)', borderColor: 'var(--puzzle-destructive, #FEE2E2)', color: '#DC2626' }}
@@ -569,7 +498,7 @@ export default function HeroSection({
                   boxShadow: 'var(--puzzle-shadow-md)',
                 }}
               >
-                도전 시작하기
+                {completedDifficulties.includes(tempDiff) ? '다시 플레이하기' : '도전 시작하기'}
               </button>
             </div>
           </div>

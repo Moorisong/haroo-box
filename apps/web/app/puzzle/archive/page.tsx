@@ -119,7 +119,7 @@ export default function ArchivePage() {
           퍼즐 아카이브
         </h1>
         <p className="text-sm font-semibold mb-3.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 힐링을 이어나가 보세요.
+          지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.
         </p>
         <span className="inline-block text-[11px] font-extrabold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--puzzle-border)', color: 'var(--puzzle-primary)', backgroundColor: 'var(--puzzle-glass-bg)' }}>
           ℹ️ 올해 출시된 아카이브 퍼즐만 표시됩니다.

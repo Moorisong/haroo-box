@@ -102,7 +102,7 @@ export default function PuzzlePageClient() {
               const { savePuzzleState } = await import('@/lib/puzzle-db');
               await savePuzzleState(puzzleId, {
                 difficulty: s.difficulty,
-                mode: s.mode || 'solo',
+                mode: s.mode || 'ranked',
                 timerSeconds: s.timerSeconds || 0,
                 pieces: s.pieces || [],
                 board: s.board,
@@ -171,10 +171,10 @@ export default function PuzzlePageClient() {
     }
   }, [currentPuzzle, previewDiff, fetchRankings]);
 
-  const handleStart = (difficulty: 'novice' | 'beginner' | 'expert', mode: 'ranked' | 'solo') => {
+  const handleStart = (difficulty: 'novice' | 'beginner' | 'expert') => {
     if (!currentPuzzle) return;
-    // 난이도와 모드를 쿼리스트링에 실어 플레이 페이지로 이동
-    router.push(`/puzzle/play/${currentPuzzle._id}?diff=${difficulty}&mode=${mode}`);
+    // 난이도를 쿼리스트링에 실어 플레이 페이지로 이동 (모든 플레이는 랭킹 모드)
+    router.push(`/puzzle/play/${currentPuzzle._id}?diff=${difficulty}&mode=ranked`);
   };
 
   const handleResume = () => {

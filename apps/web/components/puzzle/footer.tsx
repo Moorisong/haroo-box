@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   const links = [
+    { label: '하루상자 메인', href: '/', newTab: true },
     { label: '이용약관', href: '/terms' },
     { label: '개인정보처리방침', href: '/privacy' },
   ];
@@ -37,10 +38,11 @@ export default function Footer() {
 
           {/* Links */}
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {links.map(({ label, href }) => (
+            {links.map(({ label, href, newTab }) => (
               <Link
                 key={label}
                 href={href}
+                {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="text-sm font-semibold transition-colors duration-150"
                 style={{ color: 'var(--puzzle-muted-foreground)' }}
                 onMouseEnter={(e) => {

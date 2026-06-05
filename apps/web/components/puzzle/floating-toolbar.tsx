@@ -10,7 +10,7 @@ interface FloatingToolbarProps {
   showOriginal: boolean;
   zoom: number;
   saveStatus?: 'idle' | 'saving' | 'saved';
-  mode?: 'ranked' | 'solo';
+
 }
 
 export default function FloatingToolbar({
@@ -22,7 +22,7 @@ export default function FloatingToolbar({
   showOriginal,
   zoom,
   saveStatus = 'idle',
-  mode = 'solo',
+
 }: FloatingToolbarProps) {
   const roundedZoom = Math.round(zoom * 10) / 10;
   const [showTooltip, setShowTooltip] = useState(false);
@@ -179,10 +179,10 @@ export default function FloatingToolbar({
             )}
             <span className="hidden sm:inline">
               {saveStatus === 'saving' 
-                ? (mode === 'solo' ? '저장 중...' : '저장/제출 중...') 
+                ? '저장/제출 중...' 
                 : saveStatus === 'saved' 
-                  ? (mode === 'solo' ? '저장 완료!' : '저장/제출 완료!') 
-                  : (mode === 'solo' ? '저장하기' : '저장/제출')}
+                  ? '저장/제출 완료!' 
+                  : '저장/제출'}
             </span>
           </button>
       </div>

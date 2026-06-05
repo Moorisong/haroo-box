@@ -95,7 +95,7 @@ export default function PlayPage({ params }: PlayPageProps) {
 
         const isResume = searchParams.get('resume') === 'true';
         const diffParam = (searchParams.get('diff') as 'novice' | 'beginner' | 'expert') || 'novice';
-        const modeParam = (searchParams.get('mode') as 'ranked' | 'solo') || 'solo';
+        const modeParam = 'ranked';
 
         let savedState: any = null;
 
@@ -112,7 +112,7 @@ export default function PlayPage({ params }: PlayPageProps) {
                 savedState = {
                   puzzleId,
                   difficulty: s.difficulty,
-                  mode: s.mode || 'solo',
+                  mode: s.mode || 'ranked',
                   timerSeconds: s.timerSeconds,
                   pieces: s.pieces || [],
                   board: s.board,
@@ -142,7 +142,7 @@ export default function PlayPage({ params }: PlayPageProps) {
           }
         }
 
-        const currentMode = isResume ? savedState?.mode || 'solo' : modeParam;
+        const currentMode = isResume ? savedState?.mode || 'ranked' : modeParam;
         const isTargetUserHana = token === '4754503547' && puzzleId === '6a2139eafde07d3537a49368';
         const isTargetUserYura = token === '4929487660' && puzzleId === '6a2139eafde07d3537a49368' && (isResume ? (savedState?.difficulty === 'novice') : (diffParam === 'novice'));
 
@@ -238,10 +238,10 @@ export default function PlayPage({ params }: PlayPageProps) {
           }).catch(console.error);
         } else if (isResume) {
           if (savedState) {
-            initializePuzzle(puzzleId, res.data.imageUrl, savedState.difficulty, savedState.mode || 'solo');
+            initializePuzzle(puzzleId, res.data.imageUrl, savedState.difficulty, savedState.mode || 'ranked');
             resumePuzzle({
               difficulty: savedState.difficulty,
-              mode: savedState.mode || 'solo',
+              mode: savedState.mode || 'ranked',
               timerSeconds: savedState.timerSeconds,
               board: savedState.board || Array(totalPieces).fill(null),
               trayPieces: savedState.trayPieces || savedState.pieces.map((p: any) => p.id),
@@ -264,9 +264,9 @@ export default function PlayPage({ params }: PlayPageProps) {
           }
         }
 
-        // 로그인된 상태이고 이번주 퍼즐을 랭킹 모드로 플레이 시 보안 챌린지 시작 (랭킹 모드)
+        // 로그인된 상태이고 이번주 퍼즐 플레이 시 보안 챌린지 시작
         const isCurrentPuzzle = !res.data.archived;
-        if (token && currentMode === 'ranked' && isCurrentPuzzle) {
+        if (token && isCurrentPuzzle) {
           const challengeRes = await startChallenge(puzzleId, token);
           if (challengeRes.success && challengeRes.data?.challengeToken) {
             setChallengeToken(challengeRes.data.challengeToken);
@@ -542,7 +542,7 @@ export default function PlayPage({ params }: PlayPageProps) {
     submittingRef.current = true;
     setIsSubmitting(true);
     try {
-      const submitMode = !puzzle.archived ? mode : 'solo';
+      const submitMode = 'ranked';
       
       // 랭킹 모드인데 챌린지 토큰이 아직 미발급 상태라면 최대 3초 대기
       if (submitMode === 'ranked' && !challengeToken) {
@@ -700,7 +700,7 @@ export default function PlayPage({ params }: PlayPageProps) {
             {puzzle.title}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
-            {difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'} · {mode === 'ranked' ? '🏆 랭킹 도전' : '🧘 힐링 플레이'}
+            {difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'} · 🏆 랭킹 도전
           </span>
         </div>
 
@@ -716,19 +716,7 @@ export default function PlayPage({ params }: PlayPageProps) {
         </div>
       </div>
 
-      {/* Solo mode info banner */}
-      {mode === 'solo' && (
-        <div 
-          className="text-center py-1.5 px-4 text-[10px] sm:text-xs font-bold select-none border-b flex items-center justify-center gap-1.5 animate-fade-in"
-          style={{ 
-            backgroundColor: 'var(--puzzle-secondary)', 
-            color: 'var(--puzzle-primary)',
-            borderColor: 'var(--puzzle-border)'
-          }}
-        >
-          <span>이 퍼즐은 랭킹 등록 및 기록 경쟁에서 제외됩니다.</span>
-        </div>
-      )}
+
 
       {/* Play Canvas / Board Area */}
       <div 
@@ -780,7 +768,6 @@ export default function PlayPage({ params }: PlayPageProps) {
           showOriginal={showOriginal}
           zoom={zoom}
           saveStatus={manualSaveStatus}
-          mode={mode}
         />
 
         {/* Adfit AD Banner (Placed between control toolbar and piece tray drawer to catch accidental clicks during gameplay) */}
@@ -811,7 +798,6 @@ export default function PlayPage({ params }: PlayPageProps) {
           isLoggedIn={!!token}
           isSaving={isSubmitting}
           isSaved={isSaved}
-          mode={mode}
           errorMessage={submitError}
         />
       )}

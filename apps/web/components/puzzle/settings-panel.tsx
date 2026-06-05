@@ -1,7 +1,8 @@
 'use client';
 
-import { LogOut, Trash2, UserX, ChevronRight } from 'lucide-react';
+import { LogOut, Trash2, UserX, ChevronRight, Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface SettingsPanelProps {
   onClearData: () => void;
@@ -9,6 +10,8 @@ interface SettingsPanelProps {
 }
 
 export default function SettingsPanel({ onClearData, onDeleteAccount }: SettingsPanelProps) {
+  const router = useRouter();
+
   const handleSignOut = async () => {
     try {
       const { clearAllPuzzleState } = await import('@/lib/puzzle-db');
@@ -20,6 +23,12 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
   };
 
   const menuItems = [
+    { 
+      icon: Home, 
+      label: '하루상자 메인으로 가기', 
+      color: 'var(--puzzle-foreground)', 
+      onClick: () => window.open('/', '_blank') 
+    },
     { 
       icon: LogOut, 
       label: '로그아웃', 
