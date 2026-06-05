@@ -122,8 +122,9 @@ export default function HeroSection({
               className="text-base mb-8 font-medium leading-relaxed"
               style={{ color: 'var(--puzzle-muted-foreground)' }}
             >
-              🌟 매주 선물처럼 배달되는 몽글몽글 감성 일러스트 퍼즐!
-              한 조각 한 조각 맞추며 바쁜 일상 속 나만의 힐링 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결부터 평화로운 자유 플레이까지, 원하는 난이도로 지금 바로 시작해 볼까요? 🧩✨
+              매주 선물처럼 배달되는 몽글몽글 감성 퍼즐!<br />
+              한 조각 한 조각 맞추며 바쁜 일상 속 나만의 힐링 타임을 채워보세요. <br />
+              불꽃 튀는 실시간 순위 대결부터 평화로운 자유 플레이까지, 원하는 난이도로 지금 바로 시작해 볼까요?✨
             </p>
 
             {/* Stats row */}
