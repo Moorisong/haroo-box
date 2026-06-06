@@ -55,6 +55,7 @@ function PuzzleBoardCell({
 
   return (
     <div
+      data-board-cell="true"
       onClick={(e) => {
         e.stopPropagation();
         if (isCorrect) return; // 정답 위치 조각은 클릭 전파 및 동작 차단

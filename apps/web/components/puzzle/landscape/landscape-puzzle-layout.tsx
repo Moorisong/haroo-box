@@ -259,33 +259,20 @@ export default function LandscapePuzzleLayout({
     });
   }, [guidePosition, guideSize, boardPosition, boardSize, interactionMode, puzzleId]);
 
-  // ── 이동 모드 변경 시 선택된 조각 해제 ──
-  const handleModeChange = useCallback(
-    (mode: InteractionMode) => {
-      setInteractionMode(mode);
-      if (mode === 'move' && selectedTrayPiece !== null) {
-        selectTrayPiece(null);
-      }
-    },
-    [selectedTrayPiece, selectTrayPiece]
-  );
-
-  // ── 보드 클릭 (플레이 모드에서만) ──
+  // ── 보드 클릭 ──
   const handleCellClickGuarded = useCallback(
     (slotIdx: number) => {
-      if (interactionMode !== 'play') return;
       onCellClick(slotIdx);
     },
-    [interactionMode, onCellClick]
+    [onCellClick]
   );
 
-  // ── 조각 선택 (플레이 모드에서만) ──
+  // ── 조각 선택 ──
   const handlePieceSelectGuarded = useCallback(
     (pieceId: number) => {
-      if (interactionMode !== 'play') return;
       onPieceSelect(pieceId);
     },
-    [interactionMode, onPieceSelect]
+    [onPieceSelect]
   );
 
   const difficultyLabel =
@@ -301,15 +288,15 @@ export default function LandscapePuzzleLayout({
       className="flex flex-col h-screen h-[100dvh] overflow-hidden select-none"
       style={{ backgroundColor: '#f3f4f6', overscrollBehavior: 'none' }}
       onClick={() => {
-        if (selectedTrayPiece !== null && interactionMode === 'play') {
+        if (selectedTrayPiece !== null) {
           selectTrayPiece(null);
         }
       }}
     >
       {/* ── 상단 툴바 ── */}
       <LandscapeToolbar
-        interactionMode={interactionMode}
-        onModeChange={handleModeChange}
+        interactionMode="play"
+        onModeChange={() => {}}
         zoom={calculatedZoom}
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
@@ -338,14 +325,12 @@ export default function LandscapePuzzleLayout({
           <span>뒤로가기</span>
         </Link>
 
-        {/* 이동 모드 안내 배지 */}
-        {interactionMode === 'move' && (
-          <span
-            className="ml-3 px-2 py-0.5 rounded-full text-[9px] font-semibold animate-pulse bg-blue-500/10 text-blue-600"
-          >
-            📦 이동 모드 활성 — 마우스 드래그로 각 패널의 위치와 크기를 자유롭게 배치해보세요.
-          </span>
-        )}
+        {/* 패널 이동 안내 배지 */}
+        <span
+          className="ml-3 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-gray-500/10 text-gray-600"
+        >
+        드래그해서 원하는 위치로 이동시켜보세요.
+        </span>
       </div>
 
       {/* ── 메인 영역: [Guide | Puzzle Canvas] + [Tray] ── */}
@@ -356,7 +341,7 @@ export default function LandscapePuzzleLayout({
           className="relative flex-1 min-w-0 overflow-hidden select-none"
           style={{ touchAction: 'none' }} // 모바일/태블릿 터치 시 브라우저 스크롤 제스처 차단
           onClick={(e) => {
-            if (selectedTrayPiece !== null && interactionMode === 'play') {
+            if (selectedTrayPiece !== null) {
               selectTrayPiece(null);
             }
           }}
@@ -367,7 +352,7 @@ export default function LandscapePuzzleLayout({
               <GuideImagePanel
                 imageUrl={puzzle.imageUrl}
                 initialSize={boardSize}
-                isDraggable={interactionMode === 'move'}
+                isDraggable={true}
                 defaultPosition={guidePosition}
                 defaultSize={guideSize}
                 onPositionChange={setGuidePosition}
@@ -376,38 +361,25 @@ export default function LandscapePuzzleLayout({
 
               {/* Puzzle Panel Wrapper (기존 PuzzleBoard 래핑) */}
               <PuzzlePanelWrapper
-                isDraggable={interactionMode === 'move'}
+                isDraggable={true}
                 position={boardPosition}
                 onPositionChange={setBoardPosition}
                 size={boardSize}
                 onSizeChange={setBoardSize}
               >
-                <div
-                  className="w-full h-full border rounded-xl overflow-hidden transition-all duration-300"
-                  style={{
-                    borderColor: interactionMode === 'move' ? '#4f8ef7' : 'rgba(0, 0, 0, 0.08)',
-                    backgroundColor: '#ffffff',
-                    boxShadow: interactionMode === 'move'
-                      ? '0 0 0 1px #4f8ef7, 0 8px 30px rgba(0,0,0,0.15)'
-                      : '0 4px 24px rgba(0, 0, 0, 0.06)',
-                    pointerEvents: interactionMode === 'move' ? 'none' : 'auto',
-                    touchAction: 'none', // 모바일/태블릿 터치 이동 시 브라우저 스크롤 제스처 완전 차단
-                  }}
+                <div 
+                  className="w-full h-full overflow-auto flex items-center justify-center p-2 scrollbar-hide"
+                  style={{ touchAction: 'none' }}
                 >
-                  <div 
-                    className="w-full h-full overflow-auto flex items-center justify-center p-2 scrollbar-hide"
-                    style={{ touchAction: 'none' }}
-                  >
-                    <PuzzleBoard
-                      board={board}
-                      image={puzzle.imageUrl}
-                      gridSize={gridSize}
-                      zoom={calculatedZoom}
-                      onCellClick={handleCellClickGuarded}
-                      selectedPieceId={selectedTrayPiece}
-                      difficulty={difficulty}
-                    />
-                  </div>
+                  <PuzzleBoard
+                    board={board}
+                    image={puzzle.imageUrl}
+                    gridSize={gridSize}
+                    zoom={calculatedZoom}
+                    onCellClick={handleCellClickGuarded}
+                    selectedPieceId={selectedTrayPiece}
+                    difficulty={difficulty}
+                  />
                 </div>
               </PuzzlePanelWrapper>
             </>

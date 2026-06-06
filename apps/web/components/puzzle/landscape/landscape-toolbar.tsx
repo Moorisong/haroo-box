@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { Move, Play, ZoomIn, ZoomOut, Shuffle, Save, Check } from 'lucide-react';
+import { ZoomIn, ZoomOut, Shuffle, Save, Check } from 'lucide-react';
 
 export type InteractionMode = 'play' | 'move';
 
 interface LandscapeToolbarProps {
-  interactionMode: InteractionMode;
-  onModeChange: (mode: InteractionMode) => void;
+  interactionMode?: InteractionMode;
+  onModeChange?: (mode: InteractionMode) => void;
   zoom: number;
   onZoomIn: () => void;
   onZoomOut: () => void;
@@ -21,7 +20,7 @@ interface LandscapeToolbarProps {
 }
 
 export default function LandscapeToolbar({
-  interactionMode,
+  interactionMode = 'play',
   onModeChange,
   zoom,
   onZoomIn,
@@ -35,9 +34,6 @@ export default function LandscapeToolbar({
   difficulty,
 }: LandscapeToolbarProps) {
   const roundedZoom = Math.round(zoom * 10) / 10;
-
-  const isPlayMode = interactionMode === 'play';
-  const isMoveMode = interactionMode === 'move';
 
   return (
     <div
@@ -63,44 +59,6 @@ export default function LandscapeToolbar({
           <span className="w-1 h-1 rounded-full bg-gray-300" />
           <span className="font-mono text-gray-600">⏱ {timerFormatted}</span>
         </div>
-      </div>
-
-      {/* 가운데: 인터랙션 모드 토글 (트렌디한 캡슐 디자인) */}
-      <div
-        className="flex items-center gap-1 p-1 rounded-full border"
-        style={{ borderColor: 'rgba(0, 0, 0, 0.06)', backgroundColor: 'rgba(0, 0, 0, 0.02)' }}
-      >
-        {/* 플레이 모드 */}
-        <button
-          id="landscape-mode-play"
-          onClick={() => onModeChange('play')}
-          className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200"
-          style={{
-            backgroundColor: isPlayMode ? '#ffffff' : 'transparent',
-            color: isPlayMode ? '#1f2937' : 'rgba(0, 0, 0, 0.4)',
-            boxShadow: isPlayMode ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-          }}
-          title="조각 배치 모드"
-        >
-          <Play size={11} strokeWidth={2.5} className={isPlayMode ? 'text-blue-500' : ''} />
-          <span>플레이</span>
-        </button>
-
-        {/* 이동 모드 */}
-        <button
-          id="landscape-mode-move"
-          onClick={() => onModeChange('move')}
-          className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200"
-          style={{
-            backgroundColor: isMoveMode ? '#ffffff' : 'transparent',
-            color: isMoveMode ? '#1f2937' : 'rgba(0, 0, 0, 0.4)',
-            boxShadow: isMoveMode ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-          }}
-          title="패널 이동 모드"
-        >
-          <Move size={11} strokeWidth={2.5} className={isMoveMode ? 'text-blue-500' : ''} />
-          <span>이동</span>
-        </button>
       </div>
 
       {/* 오른쪽: 확대/축소 + 판 엎기 + 저장 */}

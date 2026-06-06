@@ -39,6 +39,7 @@ export default function PuzzlePanelWrapper({
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if ((e.target as HTMLElement).closest('[data-resize-handle]')) return;
+      if ((e.target as HTMLElement).closest('[data-board-cell]')) return;
       if (!isDraggable) return;
       
       e.preventDefault();
@@ -132,7 +133,19 @@ export default function PuzzlePanelWrapper({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      {children}
+      <div
+        className="w-full h-full border rounded-xl overflow-hidden transition-all duration-300"
+        style={{
+          borderColor: dragging.current ? '#4f8ef7' : 'rgba(0, 0, 0, 0.08)',
+          backgroundColor: '#ffffff',
+          boxShadow: dragging.current
+            ? '0 0 0 1px #4f8ef7, 0 8px 30px rgba(0,0,0,0.15)'
+            : '0 4px 24px rgba(0, 0, 0, 0.06)',
+          touchAction: 'none',
+        }}
+      >
+        {children}
+      </div>
 
       {/* 우하단 리사이즈 핸들 */}
       <div

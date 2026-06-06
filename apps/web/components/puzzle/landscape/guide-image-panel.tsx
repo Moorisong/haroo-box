@@ -45,7 +45,7 @@ export default function GuideImagePanel({
   } | null>(null);
 
   // ────────────────────────────────────────────
-  // 패널 드래그 (이동 모드에서만 활성화)
+  // 패널 드래그 (이동 모드 상관없이 드래그 헤더를 통해서만 드래그 허용)
   // ────────────────────────────────────────────
   const handlePanelPointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -147,22 +147,25 @@ export default function GuideImagePanel({
       <div
         className="w-full h-full rounded-xl overflow-hidden border transition-all duration-300"
         style={{
-          borderColor: 'rgba(255, 255, 255, 0.08)',
+          borderColor: dragging.current ? '#4f8ef7' : 'rgba(0, 0, 0, 0.08)',
           backgroundColor: '#ffffff',
-          boxShadow: isDraggable
+          boxShadow: dragging.current
             ? '0 0 0 1px #4f8ef7, 0 8px 30px rgba(0,0,0,0.15)'
             : '0 4px 24px rgba(0, 0, 0, 0.06)',
           touchAction: 'none', // 터치 액션 상속 보장
         }}
       >
-        {/* 가이드 이미지 */}
-        <img
-          src={imageUrl}
-          alt="원본 가이드 이미지"
-          className="w-full h-full"
-          style={{ objectFit: 'contain', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
-          draggable={false}
-        />
+
+        {/* 가이드 이미지 본체 */}
+        <div className="flex-1 min-h-0 w-full relative">
+          <img
+            src={imageUrl}
+            alt="원본 가이드 이미지"
+            className="w-full h-full"
+            style={{ objectFit: 'contain', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
+            draggable={false}
+          />
+        </div>
       </div>
 
       {/* 우하단 리사이즈 핸들 */}
@@ -192,4 +195,3 @@ export default function GuideImagePanel({
     </div>
   );
 }
-
