@@ -332,11 +332,24 @@ export default function HeroSection({
       {/* Mode / Difficulty Selection Premium Modal */}
       {showDiffSelect && (
         <div 
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
           style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
         >
+          <style>{`
+            @media (max-height: 620px) {
+              .landscape-short-hide {
+                display: none !important;
+              }
+              .landscape-short-space {
+                margin-bottom: 0.75rem !important;
+              }
+              .landscape-short-padding {
+                padding: 1.25rem !important;
+              }
+            }
+          `}</style>
           <div 
-            className="relative w-full max-w-lg rounded-t-3xl sm:rounded-3xl border p-6 md:p-8 overflow-y-auto max-h-[90vh] sm:max-h-[85vh]"
+            className="relative w-full max-w-lg rounded-3xl border p-6 md:p-8 overflow-y-auto max-h-[90vh] sm:max-h-[85vh] landscape-short-padding"
             style={{
               backgroundColor: 'var(--puzzle-background)',
               borderColor: 'var(--puzzle-border)',
@@ -345,7 +358,7 @@ export default function HeroSection({
             }}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 landscape-short-space">
               <div>
                 <h3 className="text-2xl font-black flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
                   <Play size={22} className="text-emerald-500 fill-emerald-500/20" />
@@ -362,8 +375,8 @@ export default function HeroSection({
             </div>
 
             {/* Difficulty Selector */}
-            <div className="mb-6">
-              <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+            <div className="mb-6 landscape-short-space">
+              <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5 landscape-short-space" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                 <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
                 난이도 선택
               </h4>
@@ -428,7 +441,7 @@ export default function HeroSection({
             </div>
 
             {/* Ranked Mode Info */}
-            <div className="mb-6 flex items-start gap-3.5 p-4 rounded-2xl border" style={{ backgroundColor: 'var(--puzzle-secondary)', borderColor: 'var(--puzzle-primary)' }}>
+            <div className="mb-6 flex items-start gap-3.5 p-4 rounded-2xl border landscape-short-hide landscape-short-space" style={{ backgroundColor: 'var(--puzzle-secondary)', borderColor: 'var(--puzzle-primary)' }}>
               <div 
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
                 style={{ backgroundColor: 'var(--puzzle-primary)', color: '#fff' }}
@@ -467,7 +480,7 @@ export default function HeroSection({
             {/* Warning for unauthenticated user */}
             {!isLoggedIn && (
               <div 
-                className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2"
+                className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold leading-relaxed border flex items-start gap-2 landscape-short-space"
                 style={{ backgroundColor: 'var(--puzzle-destructive-bg, #FEF2F2)', borderColor: 'var(--puzzle-destructive, #FEE2E2)', color: '#DC2626' }}
               >
                 <Flame size={16} className="flex-shrink-0 mt-0.5" />
