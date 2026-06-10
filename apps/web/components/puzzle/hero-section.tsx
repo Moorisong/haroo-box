@@ -453,9 +453,8 @@ export default function HeroSection({
                   <>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        🎮 자유 연습 모드
+                        자유 연습 모드
                       </span>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600">랭킹 제외</span>
                     </div>
                     <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                       이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!
@@ -465,9 +464,8 @@ export default function HeroSection({
                   <>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                        🏆 랭킹 도전 모드
+                        랭킹 도전 모드
                       </span>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600">기록 측정</span>
                     </div>
                     <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                       기록을 제출하고 주간 랭킹에 도전하세요!

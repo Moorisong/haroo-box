@@ -59,9 +59,9 @@ export default function OrientationSuggestion() {
             가로 모드를 권장합니다 🔄
           </h3>
           <p className="text-sm font-semibold leading-relaxed text-slate-600">
-            태블릿같은 큰 화면 기기에서는<br />
-            기기를 <strong className="text-blue-600 font-bold">가로 모드</strong>로 회전하여 플레이하시면<br />
-            더욱 넓고 쾌적한 화면에서 퍼즐을 즐기실 수 있습니다.
+            태블릿, 모바일같은 기기에서는<br />
+            <strong className="text-blue-600 font-bold">가로 모드</strong>로 플레이하면<br />
+            더 넓고 쾌적한 화면에서 즐길 수 있습니다.
           </p>
         </div>
 

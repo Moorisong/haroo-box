@@ -203,10 +203,11 @@ export default function PuzzlePageClient() {
   }
 
   return (
-    <div className={`${styles.container} puzzle-animate-fade-in-up`}>
+    <>
       <OrientationSuggestion />
-      {/* Hero Section */}
-      <div className="mb-10">
+      <div className={`${styles.container} puzzle-animate-fade-in-up`}>
+        {/* Hero Section */}
+        <div className="mb-10">
         <HeroSection
           puzzle={currentPuzzle}
           onStart={handleStart}
@@ -280,5 +281,6 @@ export default function PuzzlePageClient() {
         </div>
       </div>
     </div>
+    </>
   );
 }

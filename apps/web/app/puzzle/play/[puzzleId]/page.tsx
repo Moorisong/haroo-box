@@ -718,7 +718,7 @@ export default function PlayPage({ params }: PlayPageProps) {
   // ── 세로모드 (기존 코드 그대로) ──
   return (
     <div
-      className="flex flex-col h-screen h-[100dvh] overflow-hidden select-none"
+      className="flex flex-col min-h-screen select-none"
       style={{ backgroundColor: 'var(--puzzle-background)' }}
       onClick={() => {
         if (selectedTrayPiece !== null) {
