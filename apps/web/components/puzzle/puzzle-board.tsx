@@ -127,8 +127,13 @@ export default function PuzzleBoard({
   difficulty,
   isPlayMode = true,
 }: PuzzleBoardProps) {
-  // 화면 넓이와 줌 비율에 맞춰 셀 크기를 유연하게 계산 (기본 48px ~ 72px 범위)
-  const baseSize = gridSize === 10 ? 46 : 30; // Beginner(10x10) vs Expert(16x16)
+  // 화면 넓이와 줌 비율에 맞춰 셀 크기를 유연하게 계산
+  const baseSize = 
+    gridSize === 6 
+      ? 48 
+      : gridSize === 10 
+      ? 34 // 일반(Beginner) 조각 크기를 모바일 가로모드 비율에 맞게 46에서 34로 축소 조정
+      : 30;
   const cellSize = Math.floor(baseSize * zoom);
 
   return (

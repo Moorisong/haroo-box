@@ -140,24 +140,35 @@ export default function LandscapePuzzleLayout({
   }, []);
 
 
-  // ── 태블릿/모바일 상하 바운스 및 스크롤 차단 (다만, 화면이 잘릴 때를 대비해 Y축 스크롤은 브라우저 기본 허용하고, 보관함 내부 스크롤만 격리) ──
+  // ── 태블릿/모바일 상하 바운스 및 스크롤 차단 ──
   useEffect(() => {
-    // 보관함 내부 스크롤 동작 시 body 스크롤 체이닝 방지
     const preventTouchMove = (e: TouchEvent) => {
       const target = e.target as HTMLElement;
+
+      // 1. 이동 모드일 때 퍼즐판(#landscape-puzzle-panel)이나 가이드(#landscape-guide-panel) 드래그 시 스크롤 격리 (e.preventDefault()로 브라우저 스크롤 완벽 방지)
+      if (interactionMode === 'move') {
+        const isPanel = target.closest('#landscape-puzzle-panel') || target.closest('#landscape-guide-panel');
+        if (isPanel) {
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+          return;
+        }
+      }
+
+      // 2. 보관함 내부 스크롤 동작 시 body 스크롤 체이닝 방지
       const scrollableDiv = target.closest('#landscape-tray-panel div.overflow-y-auto');
       if (scrollableDiv) {
-        // 보관함 내부 스크롤 시 body로 touchmove가 흘러들어가 전체가 스크롤되는 것 방지
         e.stopPropagation();
       }
     };
 
-    document.addEventListener('touchmove', preventTouchMove, { passive: true });
+    document.addEventListener('touchmove', preventTouchMove, { passive: false });
 
     return () => {
       document.removeEventListener('touchmove', preventTouchMove);
     };
-  }, []);
+  }, [interactionMode]);
 
   // ── LocalStorage에서 이전 landscapeState 복원 ──
   useEffect(() => {
@@ -330,7 +341,9 @@ export default function LandscapePuzzleLayout({
                 onSizeChange={setBoardSize}
               >
                 <div
-                  className="w-full h-full overflow-auto flex items-center justify-center p-2 scrollbar-hide"
+                  className={`w-full h-full flex items-center justify-center p-2 scrollbar-hide ${
+                    interactionMode === 'move' ? 'overflow-hidden' : 'overflow-auto'
+                  }`}
                   style={{ touchAction: 'none' }}
                 >
                   <PuzzleBoard
