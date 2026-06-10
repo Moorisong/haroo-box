@@ -33,9 +33,31 @@ export default function ArchivePuzzleCard({
   const [isResetStart, setIsResetStart] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const [hasSavedGame, setHasSavedGame] = useState(false);
+  const [savedDifficulty, setSavedDifficulty] = useState<'novice' | 'beginner' | 'expert' | null>(null);
+
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    async function checkSavedState() {
+      try {
+        const { loadPuzzleState } = await import('@/lib/puzzle-db');
+        const savedState = await loadPuzzleState(puzzle._id);
+        if (savedState && !savedState.completed) {
+          setHasSavedGame(true);
+          setSavedDifficulty(savedState.difficulty);
+          // 기본 선택 난이도를 기존 진행 중이던 난이도로 자동 설정
+          setSelectedDiff(savedState.difficulty);
+        } else {
+          setHasSavedGame(false);
+          setSavedDifficulty(null);
+        }
+      } catch (err) {
+        console.error('Failed to load saved state in ArchiveCard:', err);
+      }
+    }
+    checkSavedState();
+  }, [puzzle._id]);
 
   const currentStatus = STATUS_LABELS[status] || STATUS_LABELS.missed;
 
@@ -51,8 +73,6 @@ export default function ArchivePuzzleCard({
 
   const isCompletedActive = status === 'completed' && !puzzle.archived;
 
-
-
   const handlePlayStart = (resetProgress = false) => {
     setIsResetStart(resetProgress);
     setShowDiffSelect(true);
@@ -60,8 +80,16 @@ export default function ArchivePuzzleCard({
 
   const handleLaunchGame = () => {
     setShowDiffSelect(false);
-    router.push(`/puzzle/play/${puzzle._id}?diff=${selectedDiff}&mode=ranked`);
+    
+    // 선택된 난이도가 기존에 로컬 저장 중이던 난이도와 같다면 이어하기로 진입!
+    if (hasSavedGame && savedDifficulty === selectedDiff) {
+      router.push(`/puzzle/play/${puzzle._id}?resume=true`);
+    } else {
+      router.push(`/puzzle/play/${puzzle._id}?diff=${selectedDiff}&mode=ranked`);
+    }
   };
+
+  const showResetWarning = isResetStart || (hasSavedGame && savedDifficulty !== selectedDiff);
 
   return (
     <div
@@ -202,6 +230,19 @@ export default function ArchivePuzzleCard({
           className="puzzle-page fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in"
           style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', minHeight: 'auto' }}
         >
+          <style>{`
+            @media (hover: hover) {
+              .hover-scale-effect:hover {
+                transform: scale(1.01) !important;
+              }
+            }
+            .active-scale-effect-95:active {
+              transform: scale(0.95) !important;
+            }
+            .active-scale-effect-98:active {
+              transform: scale(0.98) !important;
+            }
+          `}</style>
           <div 
             className="relative w-full max-w-lg rounded-t-3xl sm:rounded-3xl border p-6 md:p-8 overflow-y-auto max-h-[90vh] sm:max-h-[85vh]"
             style={{
@@ -238,7 +279,7 @@ export default function ArchivePuzzleCard({
                 {/* Novice Card */}
                 <button
                   onClick={() => setSelectedDiff('novice')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
                   style={{
                     backgroundColor: selectedDiff === 'novice' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: selectedDiff === 'novice' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
@@ -257,7 +298,7 @@ export default function ArchivePuzzleCard({
                 {/* Beginner Card */}
                 <button
                   onClick={() => setSelectedDiff('beginner')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
                   style={{
                     backgroundColor: selectedDiff === 'beginner' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: selectedDiff === 'beginner' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
@@ -276,7 +317,7 @@ export default function ArchivePuzzleCard({
                 {/* Expert Card */}
                 <button
                   onClick={() => setSelectedDiff('expert')}
-                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] active:scale-95 min-w-0"
+                  className="flex flex-col justify-center text-left p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
                   style={{
                     backgroundColor: selectedDiff === 'expert' ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                     borderColor: selectedDiff === 'expert' ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
@@ -294,10 +335,8 @@ export default function ArchivePuzzleCard({
               </div>
             </div>
 
-
-
             {/* Warning for Reset Game */}
-            {isResetStart && (
+            {showResetWarning && (
               <div 
                 className="mb-6 px-4 py-3 rounded-2xl text-xs font-bold text-left leading-relaxed border flex items-start gap-2"
                 style={{ backgroundColor: 'var(--puzzle-destructive-bg, #FEF2F2)', borderColor: 'var(--puzzle-destructive, #FEE2E2)', color: '#DC2626' }}
@@ -324,13 +363,13 @@ export default function ArchivePuzzleCard({
               </button>
               <button
                 onClick={handleLaunchGame}
-                className="w-full sm:flex-1 py-3.5 rounded-xl text-white font-black text-sm transition-all duration-200 hover:scale-[1.01] active:scale-[0.98]"
+                className="w-full sm:flex-1 py-3.5 rounded-xl text-white font-black text-sm transition-all duration-200 hover-scale-effect active-scale-effect-98"
                 style={{
                   backgroundColor: 'var(--puzzle-primary)',
                   boxShadow: 'var(--puzzle-shadow-md)',
                 }}
               >
-                플레이 시작
+                {hasSavedGame && savedDifficulty === selectedDiff ? '이어서 하기' : '플레이 시작'}
               </button>
             </div>
           </div>
