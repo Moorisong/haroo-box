@@ -121,6 +121,7 @@ export default function PieceTray({
   const startCoords = useRef<{ x: number; y: number } | null>(null);
   const lastCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const hasMovedRef = useRef<boolean>(false); // 스크롤과 클릭 구분을 위한 Ref
+  const ignoreNextClickRef = useRef<boolean>(false);
 
   // 글로벌 이벤트 리스너 참조 Ref
   const globalMoveRef = useRef<any>(null);
@@ -214,6 +215,7 @@ export default function PieceTray({
 
   // 포인터 드래그 시작 핸들러 (데스크톱 마우스 및 가상 포인터용)
   const startDrag = (e: React.PointerEvent, pieceId: number) => {
+    if (e.pointerType === 'touch') return;
     if (e.button !== 0) return;
     
     const clientX = e.clientX;
@@ -288,8 +290,9 @@ export default function PieceTray({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       } else {
-        onPieceClick(pieceId);
+        ignoreNextClickRef.current = false;
         if (isDrawerOpen) {
           setTimeout(() => {
             setIsDrawerOpen(false);
@@ -392,6 +395,7 @@ export default function PieceTray({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       };
 
       const onGlobalTouchCancel = () => {
@@ -460,15 +464,10 @@ export default function PieceTray({
     dragActiveRef.current = false;
     startCoords.current = null;
 
-    // 터치 이동(스크롤)이 없었고 드래그 활성화도 안 되었던 순수 탭 동작인 경우에만 조각 클릭으로 처리
-    if (!wasDragging && !hasMovedRef.current) {
-      e.stopPropagation();
-      onPieceClick(pieceId);
-      if (isDrawerOpen) {
-        setTimeout(() => {
-          setIsDrawerOpen(false);
-        }, 60);
-      }
+    if (wasDragging) {
+      ignoreNextClickRef.current = true;
+    } else {
+      ignoreNextClickRef.current = false;
     }
     
     // 상태 초기화
@@ -630,6 +629,9 @@ export default function PieceTray({
               return (
                 <div
                   key={pieceId}
+                  data-tray-piece="true"
+                  data-piece-id={pieceId}
+                  data-selected={isSelected ? "true" : "false"}
                   onPointerDown={(e) => startDrag(e, pieceId)}
                   onPointerMove={handlePointerMove}
                   onPointerUp={(e) => handlePointerUp(e, pieceId)}
@@ -641,6 +643,11 @@ export default function PieceTray({
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
+                    if (ignoreNextClickRef.current) {
+                      ignoreNextClickRef.current = false;
+                      return;
+                    }
+                    onPieceClick(pieceId);
                   }}
                   className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-x"
                   style={{
@@ -810,6 +817,9 @@ export default function PieceTray({
                     return (
                       <div
                         key={pieceId}
+                        data-drawer-piece="true"
+                        data-piece-id={pieceId}
+                        data-selected={isSelected ? "true" : "false"}
                         onPointerDown={(e) => startDrag(e, pieceId)}
                         onPointerMove={handlePointerMove}
                         onPointerUp={(e) => handlePointerUp(e, pieceId)}
@@ -821,6 +831,11 @@ export default function PieceTray({
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
+                          if (ignoreNextClickRef.current) {
+                            ignoreNextClickRef.current = false;
+                            return;
+                          }
+                          onPieceClick(pieceId);
                         }}
                         className="relative cursor-pointer transition-all duration-200 select-none touch-pan-y"
                         style={{

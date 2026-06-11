@@ -73,6 +73,7 @@ export default function LandscapeTrayPanel({
   // 스크롤 감지 및 드래그/클릭 방지용 Ref
   const scrolledRecentlyRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const ignoreNextClickRef = useRef<boolean>(false);
 
   // 언마운트 시 글로벌 리스너 및 타이머 정리
   useEffect(() => {
@@ -151,6 +152,7 @@ export default function LandscapeTrayPanel({
 
   // 드래그 시작 (마우스 및 가상 포인터용)
   const startDrag = (e: React.PointerEvent, pieceId: number) => {
+    if (e.pointerType === 'touch') return;
     if (!isPlayMode) return;
     if (e.button !== 0) return;
     if (scrolledRecentlyRef.current) return;
@@ -197,10 +199,9 @@ export default function LandscapeTrayPanel({
         if (targetBasket) movePieceToBasket(pieceId, targetBasket);
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       } else {
-        if (!scrolledRecentlyRef.current) {
-          onPieceClick(pieceId);
-        }
+        ignoreNextClickRef.current = false;
       }
     };
 
@@ -280,6 +281,7 @@ export default function LandscapeTrayPanel({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       };
 
       const onTouchCancel = () => {
@@ -342,9 +344,10 @@ export default function LandscapeTrayPanel({
     dragActiveRef.current = false;
     startCoords.current = null;
 
-    if (!wasDragging && !hasMovedRef.current) {
-      e.stopPropagation();
-      onPieceClick(pieceId);
+    if (wasDragging) {
+      ignoreNextClickRef.current = true;
+    } else {
+      ignoreNextClickRef.current = false;
     }
     hasMovedRef.current = false;
   };
@@ -486,12 +489,24 @@ export default function LandscapeTrayPanel({
                 <div
                   key={pieceId}
                   data-tray-piece="true"
+                  data-piece-id={pieceId}
+                  data-selected={isSelected ? "true" : "false"}
                   onPointerDown={(e) => startDrag(e, pieceId)}
                   onTouchStart={(e) => handleTouchStart(e, pieceId)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
                   onContextMenu={(e) => e.preventDefault()}
-                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (ignoreNextClickRef.current) {
+                      ignoreNextClickRef.current = false;
+                      return;
+                    }
+                    if (!scrolledRecentlyRef.current) {
+                      onPieceClick(pieceId);
+                    }
+                  }}
                   className="relative cursor-pointer transition-all duration-200 select-none"
                   style={{
                     transform: isSelected && draggedPiece?.id !== pieceId ? 'scale(1.08)' : 'scale(1)',
