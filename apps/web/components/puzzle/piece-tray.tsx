@@ -38,6 +38,7 @@ export default function PieceTray({
   // 상태 관리
   const [mounted, setMounted] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isOrganizeMode, setIsOrganizeMode] = useState(false);
   const [activeBasket, setActiveBasket] = useState<string>('basket1');
   const [hoveredBasket, setHoveredBasket] = useState<string | null>(null);
   const [baskets, setBaskets] = useState<Record<string, number[]>>({
@@ -121,6 +122,7 @@ export default function PieceTray({
   const startCoords = useRef<{ x: number; y: number } | null>(null);
   const lastCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const hasMovedRef = useRef<boolean>(false); // 스크롤과 클릭 구분을 위한 Ref
+  const ignoreNextClickRef = useRef<boolean>(false);
 
   // 글로벌 이벤트 리스너 참조 Ref
   const globalMoveRef = useRef<any>(null);
@@ -192,6 +194,9 @@ export default function PieceTray({
 
   // 특정 바구니로 조각 이동
   const movePieceToBasket = (pieceId: number, targetBasket: string) => {
+    if (selectedPieceId === pieceId) {
+      onTrayClick?.();
+    }
     setBaskets((prev) => {
       const next = { ...prev };
       // 모든 바구니에서 제거
@@ -212,9 +217,10 @@ export default function PieceTray({
   };
 
 
-  // 포인터 드래그 시작 핸들러 (데스크톱 마우스용)
+  // 포인터 드래그 시작 핸들러 (데스크톱 마우스 및 가상 포인터용)
   const startDrag = (e: React.PointerEvent, pieceId: number) => {
-    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    if (e.pointerType === 'touch') return;
+    if (e.button !== 0) return;
     
     const clientX = e.clientX;
     const clientY = e.clientY;
@@ -231,7 +237,6 @@ export default function PieceTray({
     } catch (err) {}
 
     const onGlobalMove = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') return;
       if (!startCoords.current) return;
       
       const dx = event.clientX - startCoords.current.x;
@@ -289,8 +294,9 @@ export default function PieceTray({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       } else {
-        onPieceClick(pieceId);
+        ignoreNextClickRef.current = false;
         if (isDrawerOpen) {
           setTimeout(() => {
             setIsDrawerOpen(false);
@@ -393,6 +399,7 @@ export default function PieceTray({
 
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       };
 
       const onGlobalTouchCancel = () => {
@@ -420,7 +427,7 @@ export default function PieceTray({
       globalMoveRef.current = onGlobalTouchMove;
       globalUpRef.current = onGlobalTouchEnd;
       globalCancelRef.current = onGlobalTouchCancel;
-    }, 220);
+    }, 180);
   };
 
   // 모바일 터치 이동 핸들러 (롱프레스 활성화 전 스크롤 허용용)
@@ -436,12 +443,12 @@ export default function PieceTray({
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     // 미세 움직임 감지 시 스크롤 중임을 임시 마킹하여 클릭 전환 방지
-    if (distance > 8) {
+    if (distance > 4) {
       hasMovedRef.current = true;
     }
 
     // 스크롤 및 큰 움직임 감지 시 롱프레스 취소 (임계값을 10px로 하향 조정)
-    if (distance > 10) {
+    if (distance > 6) {
       if (longPressTimeout.current) {
         clearTimeout(longPressTimeout.current);
         longPressTimeout.current = null;
@@ -461,15 +468,10 @@ export default function PieceTray({
     dragActiveRef.current = false;
     startCoords.current = null;
 
-    // 터치 이동(스크롤)이 없었고 드래그 활성화도 안 되었던 순수 탭 동작인 경우에만 조각 클릭으로 처리
-    if (!wasDragging && !hasMovedRef.current) {
-      e.stopPropagation();
-      onPieceClick(pieceId);
-      if (isDrawerOpen) {
-        setTimeout(() => {
-          setIsDrawerOpen(false);
-        }, 60);
-      }
+    if (wasDragging || hasMovedRef.current) {
+      ignoreNextClickRef.current = true;
+    } else {
+      ignoreNextClickRef.current = false;
     }
     
     // 상태 초기화
@@ -525,13 +527,17 @@ export default function PieceTray({
                const isActive = activeBasket === key;
                const meta = basketMetadata[key];
                return (
-                 <button
-                   key={key}
-                   onClick={(e) => {
-                     e.stopPropagation();
-                     setActiveBasket(key);
-                   }}
-                   className="px-1.5 py-0.5 rounded-md transition-all flex items-center justify-center select-none"
+                  <button
+                    key={key}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isOrganizeMode && selectedPieceId !== null) {
+                        movePieceToBasket(selectedPieceId, key);
+                      } else {
+                        setActiveBasket(key);
+                      }
+                    }}
+                    className="px-1.5 py-0.5 rounded-md transition-all flex items-center justify-center select-none"
                    style={{
                      backgroundColor: isActive ? 'var(--puzzle-secondary)' : 'transparent',
                    }}
@@ -631,6 +637,9 @@ export default function PieceTray({
               return (
                 <div
                   key={pieceId}
+                  data-tray-piece="true"
+                  data-piece-id={pieceId}
+                  data-selected={isSelected ? "true" : "false"}
                   onPointerDown={(e) => startDrag(e, pieceId)}
                   onPointerMove={handlePointerMove}
                   onPointerUp={(e) => handlePointerUp(e, pieceId)}
@@ -642,6 +651,11 @@ export default function PieceTray({
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
+                    if (ignoreNextClickRef.current) {
+                      ignoreNextClickRef.current = false;
+                      return;
+                    }
+                    onPieceClick(pieceId);
                   }}
                   className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-x"
                   style={{
@@ -715,16 +729,38 @@ export default function PieceTray({
                   <Folder size={18} className="text-blue-400" />
                   <span>전체 조각 모아보기</span>
                 </h3>
-                <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={10} className="text-blue-400" />
-                  <span>조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.</span>
-                </p>
-                <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={9} className="text-blue-400" />
-                  <span>조각 드래그 시 바구니 분류 가능</span>
-                </p>
+                {isOrganizeMode ? (
+                  <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
+                    ● 조각 터치 후, 이동할 바구니를 선택하세요.
+                  </p>
+                ) : (
+                  <>
+                    <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
+                      <HelpCircle size={10} className="text-blue-400" />
+                      <span>조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.</span>
+                    </p>
+                    <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
+                      <HelpCircle size={9} className="text-blue-400" />
+                      <span>조각 드래그 시 바구니 분류 가능</span>
+                    </p>
+                  </>
+                )}
               </div>
               <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOrganizeMode(!isOrganizeMode);
+                  }}
+                  className="px-2.5 py-1 rounded-lg text-xs font-black transition-all border select-none shrink-0"
+                  style={{
+                    backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
+                    borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255, 255, 255, 0.1)',
+                    color: isOrganizeMode ? '#60a5fa' : '#9ca3af',
+                  }}
+                >
+                  분류 모드 {isOrganizeMode ? 'ON' : 'OFF'}
+                </button>
                 {onGuideClick && (
                   <button
                     onClick={(e) => {
@@ -763,7 +799,13 @@ export default function PieceTray({
                   <div
                     key={key}
                     data-basket-id={key}
-                    onClick={() => setActiveBasket(key)}
+                    onClick={() => {
+                      if (isOrganizeMode && selectedPieceId !== null) {
+                        movePieceToBasket(selectedPieceId, key);
+                      } else {
+                        setActiveBasket(key);
+                      }
+                    }}
                     className="flex flex-col items-center justify-center p-1.5 rounded-xl border transition-all cursor-pointer select-none gap-1"
                     style={{
                       borderColor: isHovered
@@ -811,6 +853,9 @@ export default function PieceTray({
                     return (
                       <div
                         key={pieceId}
+                        data-drawer-piece="true"
+                        data-piece-id={pieceId}
+                        data-selected={isSelected ? "true" : "false"}
                         onPointerDown={(e) => startDrag(e, pieceId)}
                         onPointerMove={handlePointerMove}
                         onPointerUp={(e) => handlePointerUp(e, pieceId)}
@@ -822,6 +867,22 @@ export default function PieceTray({
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
+                          if (ignoreNextClickRef.current) {
+                            ignoreNextClickRef.current = false;
+                            return;
+                          }
+                          if (isOrganizeMode) {
+                            if (selectedPieceId === pieceId) {
+                              onTrayClick?.();
+                            } else {
+                              onPieceClick(pieceId);
+                            }
+                          } else {
+                            onPieceClick(pieceId);
+                            setTimeout(() => {
+                              setIsDrawerOpen(false);
+                            }, 60);
+                          }
                         }}
                         className="relative cursor-pointer transition-all duration-200 select-none touch-pan-y"
                         style={{

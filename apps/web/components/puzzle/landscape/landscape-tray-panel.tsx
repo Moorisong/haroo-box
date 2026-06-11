@@ -44,6 +44,7 @@ export default function LandscapeTrayPanel({
   const cellSize = isLarge ? 54 : 40;
 
   const [activeBasket, setActiveBasket] = useState<string>('basket1');
+  const [isOrganizeMode, setIsOrganizeMode] = useState(false);
   const [hoveredBasket, setHoveredBasket] = useState<string | null>(null);
   const [baskets, setBaskets] = useState<Record<string, number[]>>({
     basket1: [],
@@ -61,21 +62,37 @@ export default function LandscapeTrayPanel({
   } | null>(null);
   const dragActiveRef = useRef(false);
   const startCoords = useRef<{ x: number; y: number } | null>(null);
+  const lastCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const globalMoveRef = useRef<any>(null);
   const globalUpRef = useRef<any>(null);
   const globalCancelRef = useRef<any>(null);
 
+  // 꾹 누르기(롱프레스) 및 모바일 스크롤 충돌 방지용 Refs
+  const longPressTimeout = useRef<any>(null);
+  const hasMovedRef = useRef<boolean>(false);
+
   // 스크롤 감지 및 드래그/클릭 방지용 Ref
   const scrolledRecentlyRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const ignoreNextClickRef = useRef<boolean>(false);
 
   // 언마운트 시 글로벌 리스너 및 타이머 정리
   useEffect(() => {
     return () => {
-      if (globalMoveRef.current) window.removeEventListener('pointermove', globalMoveRef.current);
-      if (globalUpRef.current) window.removeEventListener('pointerup', globalUpRef.current);
-      if (globalCancelRef.current) window.removeEventListener('pointercancel', globalCancelRef.current);
+      if (globalMoveRef.current) {
+        window.removeEventListener('pointermove', globalMoveRef.current);
+        window.removeEventListener('touchmove', globalMoveRef.current);
+      }
+      if (globalUpRef.current) {
+        window.removeEventListener('pointerup', globalUpRef.current);
+        window.removeEventListener('touchend', globalUpRef.current);
+      }
+      if (globalCancelRef.current) {
+        window.removeEventListener('pointercancel', globalCancelRef.current);
+        window.removeEventListener('touchcancel', globalCancelRef.current);
+      }
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (longPressTimeout.current) clearTimeout(longPressTimeout.current);
     };
   }, []);
 
@@ -119,6 +136,9 @@ export default function LandscapeTrayPanel({
   }, [trayPieces, activeBasket]);
 
   const movePieceToBasket = (pieceId: number, targetBasket: string) => {
+    if (selectedPieceId === pieceId) {
+      onTrayClick?.();
+    }
     setBaskets((prev) => {
       const next = { ...prev };
       for (const key in next) {
@@ -134,13 +154,11 @@ export default function LandscapeTrayPanel({
     });
   };
 
-  // 드래그 시작
+  // 드래그 시작 (마우스 및 가상 포인터용)
   const startDrag = (e: React.PointerEvent, pieceId: number) => {
+    if (e.pointerType === 'touch') return;
     if (!isPlayMode) return;
-    // 마우스 클릭(좌클릭) 또는 터치 드래그 모두 허용
-    if (e.button !== 0 && e.pointerType === 'mouse') return;
-
-    // 만약 현재 스크롤 중이라면 무시
+    if (e.button !== 0) return;
     if (scrolledRecentlyRef.current) return;
 
     const clientX = e.clientX;
@@ -185,11 +203,9 @@ export default function LandscapeTrayPanel({
         if (targetBasket) movePieceToBasket(pieceId, targetBasket);
         setDraggedPiece(null);
         setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
       } else {
-        // 스크롤이 감지된 직후라면 클릭 처리를 무시
-        if (!scrolledRecentlyRef.current) {
-          onPieceClick(pieceId);
-        }
+        ignoreNextClickRef.current = false;
       }
     };
 
@@ -218,10 +234,126 @@ export default function LandscapeTrayPanel({
     globalCancelRef.current = onCancel;
   };
 
-  // 터치 탭 (드래그하지 않고 가볍게 두드릴 때만 탭 동작을 하도록 처리)
+  // 모바일 터치 드래그 시작 (롱프레스 220ms 후 스크롤 차단 및 드래그 모드 진입)
+  const handleTouchStart = (e: React.TouchEvent, pieceId: number) => {
+    if (!isPlayMode) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const clientX = touch.clientX;
+    const clientY = touch.clientY;
+
+    startCoords.current = { x: clientX, y: clientY };
+    lastCoords.current = { x: clientX, y: clientY };
+    dragActiveRef.current = false;
+    hasMovedRef.current = false;
+
+    longPressTimeout.current = setTimeout(() => {
+      dragActiveRef.current = true;
+      setDraggedPiece({ id: pieceId, x: clientX, y: clientY });
+
+      const onTouchMove = (event: TouchEvent) => {
+        if (event.cancelable) {
+          event.preventDefault(); // 드래그 중 브라우저 스크롤 완벽 차단
+        }
+        const t = event.touches[0];
+        if (t) {
+          setDraggedPiece({ id: pieceId, x: t.clientX, y: t.clientY });
+          lastCoords.current = { x: t.clientX, y: t.clientY };
+
+          const dropElement = document.elementFromPoint(t.clientX, t.clientY);
+          const basketTab = dropElement?.closest('[data-basket-id]');
+          setHoveredBasket(basketTab?.getAttribute('data-basket-id') || null);
+        }
+      };
+
+      const onTouchEnd = (event: TouchEvent) => {
+        cleanupTouch();
+        dragActiveRef.current = false;
+        startCoords.current = null;
+
+        const t = event.changedTouches[0];
+        const endX = t ? t.clientX : lastCoords.current.x;
+        const endY = t ? t.clientY : lastCoords.current.y;
+
+        const dropElement = document.elementFromPoint(endX, endY);
+        const basketTab = dropElement?.closest('[data-basket-id]');
+        const targetBasket = basketTab?.getAttribute('data-basket-id');
+        if (targetBasket) {
+          movePieceToBasket(pieceId, targetBasket);
+        }
+
+        setDraggedPiece(null);
+        setHoveredBasket(null);
+        ignoreNextClickRef.current = true;
+      };
+
+      const onTouchCancel = () => {
+        cleanupTouch();
+        dragActiveRef.current = false;
+        startCoords.current = null;
+        setDraggedPiece(null);
+        setHoveredBasket(null);
+      };
+
+      const cleanupTouch = () => {
+        window.removeEventListener('touchmove', onTouchMove);
+        window.removeEventListener('touchend', onTouchEnd);
+        window.removeEventListener('touchcancel', onTouchCancel);
+        globalMoveRef.current = null;
+        globalUpRef.current = null;
+        globalCancelRef.current = null;
+      };
+
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+      window.addEventListener('touchcancel', onTouchCancel);
+      globalMoveRef.current = onTouchMove;
+      globalUpRef.current = onTouchEnd;
+      globalCancelRef.current = onTouchCancel;
+    }, 180);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!startCoords.current) return;
+    if (dragActiveRef.current) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const dx = touch.clientX - startCoords.current.x;
+    const dy = touch.clientY - startCoords.current.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > 4) {
+      hasMovedRef.current = true;
+    }
+
+    if (distance > 6) {
+      if (longPressTimeout.current) {
+        clearTimeout(longPressTimeout.current);
+        longPressTimeout.current = null;
+      }
+      startCoords.current = null;
+    }
+  };
+
   const handleTouchEnd = (e: React.TouchEvent, pieceId: number) => {
-    // PointerEvent의 startDrag에서 드래그/클릭 판정을 처리하므로 터치중복 탭 방지를 위해 여기서는 아무것도 하지 않고 이벤트 버블링만 제어
-    e.stopPropagation();
+    if (longPressTimeout.current) {
+      clearTimeout(longPressTimeout.current);
+      longPressTimeout.current = null;
+    }
+
+    const wasDragging = dragActiveRef.current;
+    dragActiveRef.current = false;
+    startCoords.current = null;
+
+    if (wasDragging || hasMovedRef.current) {
+      ignoreNextClickRef.current = true;
+    } else {
+      ignoreNextClickRef.current = false;
+    }
+    hasMovedRef.current = false;
   };
 
   const activeBasketPieces = baskets[activeBasket] || [];
@@ -261,16 +393,32 @@ export default function LandscapeTrayPanel({
     >
       {/* 헤더 */}
       <div
-        className="flex items-center justify-between px-4 py-2.5 border-b flex-shrink-0"
+        className="flex items-center justify-between px-3 py-2 border-b flex-shrink-0 gap-1"
         style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 min-w-0">
           <Folder size={14} className="text-blue-500 flex-shrink-0" />
-          <span className="text-sm font-bold text-gray-800">보관함</span>
+          <span className="text-sm font-bold text-gray-800 truncate">보관함</span>
         </div>
-        <span className="text-xs font-medium text-gray-500">
-          대기 조각: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
-        </span>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOrganizeMode(!isOrganizeMode);
+            }}
+            className="px-1.5 py-0.5 rounded text-[10px] font-bold transition-all border select-none"
+            style={{
+              backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+              borderColor: isOrganizeMode ? '#3b82f6' : 'rgba(0, 0, 0, 0.1)',
+              color: isOrganizeMode ? '#2563eb' : '#6b7280',
+            }}
+          >
+            분류 {isOrganizeMode ? 'ON' : 'OFF'}
+          </button>
+          <span className="text-[10px] font-medium text-gray-500">
+            대기: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
+          </span>
+        </div>
       </div>
 
       {/* 바구니 탭 */}
@@ -291,7 +439,11 @@ export default function LandscapeTrayPanel({
               onClick={(e) => {
                 e.stopPropagation();
                 if (!isPlayMode) return;
-                setActiveBasket(key);
+                if (isOrganizeMode && selectedPieceId !== null) {
+                  movePieceToBasket(selectedPieceId, key);
+                } else {
+                  setActiveBasket(key);
+                }
               }}
               className="flex flex-row items-center justify-center p-1 rounded-lg border transition-all cursor-pointer gap-1.5"
               style={{
@@ -360,10 +512,29 @@ export default function LandscapeTrayPanel({
               return (
                 <div
                   key={pieceId}
+                  data-tray-piece="true"
+                  data-piece-id={pieceId}
+                  data-selected={isSelected ? "true" : "false"}
                   onPointerDown={(e) => startDrag(e, pieceId)}
+                  onTouchStart={(e) => handleTouchStart(e, pieceId)}
+                  onTouchMove={handleTouchMove}
                   onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
                   onContextMenu={(e) => e.preventDefault()}
-                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (ignoreNextClickRef.current) {
+                      ignoreNextClickRef.current = false;
+                      return;
+                    }
+                    if (!scrolledRecentlyRef.current) {
+                      if (isOrganizeMode && selectedPieceId === pieceId) {
+                        onTrayClick?.();
+                      } else {
+                        onPieceClick(pieceId);
+                      }
+                    }
+                  }}
                   className="relative cursor-pointer transition-all duration-200 select-none"
                   style={{
                     transform: isSelected && draggedPiece?.id !== pieceId ? 'scale(1.08)' : 'scale(1)',
