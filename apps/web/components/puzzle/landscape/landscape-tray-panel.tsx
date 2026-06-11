@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Folder, HelpCircle } from 'lucide-react';
 import PieceCell from '../piece-cell';
 
@@ -401,20 +402,22 @@ export default function LandscapeTrayPanel({
           <span className="text-sm font-bold text-gray-800 truncate">보관함</span>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsOrganizeMode(!isOrganizeMode);
-            }}
-            className="px-1.5 py-0.5 rounded text-[10px] font-bold transition-all border select-none"
-            style={{
-              backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-              borderColor: isOrganizeMode ? '#3b82f6' : 'rgba(0, 0, 0, 0.1)',
-              color: isOrganizeMode ? '#2563eb' : '#6b7280',
-            }}
-          >
-            분류 {isOrganizeMode ? 'ON' : 'OFF'}
-          </button>
+          {!isLarge && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOrganizeMode(!isOrganizeMode);
+              }}
+              className="px-1.5 py-0.5 rounded text-[10px] font-bold transition-all border select-none"
+              style={{
+                backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                borderColor: isOrganizeMode ? '#3b82f6' : 'rgba(0, 0, 0, 0.1)',
+                color: isOrganizeMode ? '#2563eb' : '#6b7280',
+              }}
+            >
+              분류 {isOrganizeMode ? 'ON' : 'OFF'}
+            </button>
+          )}
           <span className="text-[10px] font-medium text-gray-500">
             대기: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
           </span>
@@ -569,7 +572,7 @@ export default function LandscapeTrayPanel({
       </div>
 
       {/* 드래그 고스트 */}
-      {draggedPiece && typeof document !== 'undefined' && (
+      {draggedPiece && typeof document !== 'undefined' && createPortal(
         <div
           className="pointer-events-none fixed z-[9999] opacity-90 select-none"
           style={{
@@ -589,7 +592,8 @@ export default function LandscapeTrayPanel({
             gridSize={gridSize}
             small
           />
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -81,6 +81,11 @@ export default function PlayPage({ params }: PlayPageProps) {
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // 난이도나 퍼즐이 변경될 때(새로운 게임 시작 또는 복원) 줌 비율을 기본값(1.0)으로 초기화
+  useEffect(() => {
+    setZoom(1.0);
+  }, [difficulty, puzzleId]);
+
   // 1. 초기 마운트 시 퍼즐 메타데이터 로드 및 게임 시작/이어하기 분기
   useEffect(() => {
     const pageEnterTime = new Date().toISOString();
