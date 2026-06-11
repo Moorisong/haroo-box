@@ -46,30 +46,51 @@ export const metadata: Metadata = {
 export default function Home() {
     const contents = [
         {
-            id: 'htsm',
-            title: '자아탐험',
-            description: '친구들의 익명 평가로 발견하는 나.\nJohari Window 기반 심리 분석!',
-            image: '/htsm-logo-v6.png',
-            link: '/htsm',
-            badge: 'Hot',
+            id: 'puzzle',
+            title: '하루퍼즐',
+            description: '매주 찾아오는 고요하고 평화로운 직소퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
+            image: '/puzzle-logo.png',
+            link: ROUTES.PUZZLE,
+            badge: 'New',
+            badgeType: styles.badgeNew,
+            newTab: true,
             active: true,
         },
         {
-            id: 'toby',
-            title: 'TOBY',
-            description: '학교 선생님들을 위한 서비스 툴 모음.\n수업과 학급 관리에 유용한 도구들을 만나보세요!',
-            image: '/sample/toby-logo.png',
-            link: 'https://toby-teacher.vercel.app',
+            id: 'u-know',
+            title: '너잘알',
+            description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
+            image: '/u-know-logo-v2.png',
+            link: ROUTES.U_KNOW,
             badge: 'New',
-            extraBadge: '웹 전용',
+            badgeType: styles.badgeNew,
             active: true,
         },
         {
             id: 'rolling-paper',
             title: '롤링페이퍼',
-            description: '친구들과 추억을 나누는 롤링페이퍼',
+            description: '친구들과 추억을 나누는 익명 롤링페이퍼.\n마음을 전하는 따뜻한 시간!',
             image: '/sample/r-paper-logo.png',
             link: 'https://r-paper-web.haroo.site',
+            badge: 'Hot',
+            badgeType: styles.badgeHot,
+            active: true,
+        },
+        {
+            id: 'toby',
+            title: 'TOBY',
+            description: '학교 선생님들을 위한 서비스 툴 모음.\n수업과 학급 관리에 유용한 도구들!',
+            image: '/sample/toby-logo.png',
+            link: '/toby',
+            newTab: true,
+            active: true,
+        },
+        {
+            id: 'htsm',
+            title: '자아탐험',
+            description: '친구들의 익명 평가로 발견하는 나.\nJohari Window 기반 심리 분석!',
+            image: '/htsm-logo-v6.png',
+            link: '/htsm',
             active: true,
         },
     ];
@@ -78,7 +99,7 @@ export default function Home() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1 className={styles.title}>하루상자</h1>
-                <p className={styles.subtitle}>오늘의 작은 재미를 담다</p>
+                <p className={styles.subtitle}>매일 새로운 즐거움과 유익함이 담긴 곳</p>
             </header>
 
             <div className={styles.grid}>
@@ -88,21 +109,22 @@ export default function Home() {
                             href={content.link}
                             key={content.id}
                             className={styles.card}
-                            {...(content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                            {...((content as any).newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                         >
                             <div className={styles.cardImageWrapper}>
-                                {(content.badge || ('extraBadge' in content && content.extraBadge)) && (
+                                {content.badge && (
                                     <div className={styles.badgeGroup}>
-                                        {content.badge && <span className={styles.badge}>{content.badge}</span>}
-                                        {'extraBadge' in content && content.extraBadge && <span className={`${styles.badge} ${styles.badgeWebOnly}`}>{content.extraBadge}</span>}
+                                        <span className={`${styles.badge} ${content.badgeType || ''}`}>{content.badge}</span>
                                     </div>
                                 )}
+
                                 <Image
                                     src={content.image}
                                     alt={content.title}
-                                    width={150}
-                                    height={150}
+                                    width={140}
+                                    height={140}
                                     className={styles.cardImage}
+                                    style={content.id === 'puzzle' ? { mixBlendMode: 'multiply' } : undefined}
                                     priority
                                 />
                             </div>
@@ -113,14 +135,12 @@ export default function Home() {
                         </Link>
                     ) : (
                         <div key={content.id} className={`${styles.card} ${styles.disabled}`}>
-                            <div className={styles.comingSoonOverlay}>Coming Soon</div>
                             <div className={styles.cardImageWrapper}>
-                                {content.badge && <span className={styles.badge} style={{ background: '#94a3b8' }}>{content.badge}</span>}
                                 <Image
                                     src={content.image}
                                     alt={content.title}
-                                    width={150}
-                                    height={150}
+                                    width={140}
+                                    height={140}
                                     className={styles.cardImage}
                                     style={{ filter: 'grayscale(100%)', opacity: 0.5 }}
                                 />
@@ -135,10 +155,7 @@ export default function Home() {
             </div>
 
             <AdBanner className={styles.adBanner} />
-
-            <footer style={{ marginTop: 'auto', paddingTop: '2rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', textAlign: 'center' }}>
-                <p>하루상자는 하루의 소소한 재미를 담아두는 작은 놀이 상자입니다.</p>
-            </footer>
         </div>
     );
 }
+

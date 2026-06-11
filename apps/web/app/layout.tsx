@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
 import NavBar from '@/components/layout/nav-bar';
 import Footer from '@/components/layout/footer';
+import MainLayoutWrapper from '@/components/layout/main-layout-wrapper';
 import SessionProvider from '@/components/providers/session-provider';
-import NicknameProvider from '@/components/providers/nickname-provider';
 
 import './globals.css';
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s | 하루상자',
   },
   description: '하루상자는 다양한 미니콘텐츠를 즐길 수 있는 웹 플랫폼입니다.',
-  keywords: ['하루상자', '자아탐험', '롤링페이퍼', '조하리의 창', '성격 테스트', '심리 테스트', '친구 테스트', 'MBTI', '무료 테스트'],
+  keywords: ['하루상자', 'TOBY', '토비', '자아탐험', '롤링페이퍼', '조하리의 창', '성격 테스트', '심리 테스트', '친구 테스트', 'MBTI', '무료 테스트'],
   authors: [{ name: '하루상자' }],
   robots: {
     index: true,
@@ -68,18 +68,30 @@ export default async function RootLayout({
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-QKK7S8Z3Z5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-QKK7S8Z3Z5');
+          `}
+        </Script>
+        <Script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
           strategy="lazyOnload"
         />
         <SessionProvider>
-          <NicknameProvider>
-            <NavBar />
-            <main className="main-content">
-              {children}
-            </main>
-            <Footer />
-          </NicknameProvider>
+          <NavBar />
+          <MainLayoutWrapper>
+            {children}
+          </MainLayoutWrapper>
+          <Footer />
         </SessionProvider>
+
       </body>
     </html>
   );

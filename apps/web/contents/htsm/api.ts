@@ -3,7 +3,9 @@
  * 백엔드 API와의 통신을 담당
  */
 
-const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/htsm`;
+import { getApiBaseUrl } from '../../constants/api';
+
+const API_BASE = `${getApiBaseUrl()}/api/htsm`;
 
 interface ApiResponse<T = unknown> {
     success: boolean;

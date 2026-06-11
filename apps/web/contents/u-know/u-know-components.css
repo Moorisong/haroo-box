@@ -1,0 +1,299 @@
+/* 너잘알 - 컴포넌트별 스타일 (배지, 오버레이, 카드 뒤집기 등) */
+
+/* 배지/태그 */
+.uknow-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  transform: rotate(-2deg);
+  border: 1px solid var(--color-text);
+}
+
+.uknow-badge--accent { background: var(--color-accent); color: var(--color-surface); border-color: var(--color-accent); }
+
+/* 질문 하이라이트 박스 */
+.uknow-question-box {
+  background: rgba(108, 92, 231, 0.05);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+/* 오버레이 모달 (병맛 리액션) */
+.uknow-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: var(--z-modal);
+  backdrop-filter: blur(4px);
+}
+
+.uknow-overlay__card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transform: rotate(2deg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.uknow-overlay__text { font-size: var(--font-size-2xl); font-weight: 900; color: var(--color-text); }
+
+/* 뒤집기 카드 */
+.uknow-flip-card { cursor: pointer; perspective: 1000px; }
+
+.uknow-flip-card__back {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(-1deg);
+  box-shadow: 3px 3px 0 0 rgba(108, 92, 231, 0.3);
+}
+
+.uknow-flip-card__front {
+  background: rgba(108, 92, 231, 0.1);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(1deg);
+  box-shadow: 3px 3px 0 0 rgba(108, 92, 231, 0.3);
+}
+
+.uknow-flip-card__mystery {
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+/* 예상 답변 박스 */
+.uknow-prediction-box {
+  background: rgba(162, 155, 254, 0.1);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transform: rotate(1deg);
+  box-shadow: 3px 3px 0 0 rgba(162, 155, 254, 0.3);
+}
+
+/* 리액션 카드 */
+.uknow-reaction-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: 3px 3px 0 0 var(--color-text);
+  text-align: center;
+}
+
+/* TTL 안내 */
+.uknow-ttl-notice {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  padding: var(--space-md);
+  background: rgba(162, 155, 254, 0.1);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-md);
+  transform: rotate(-1deg);
+}
+
+/* 힌트 박스 */
+.uknow-hint-box {
+  background: rgba(162, 155, 254, 0.1);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transform: rotate(-1deg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* 플로팅 이모지 */
+.uknow-emoji { position: absolute; font-size: var(--font-size-4xl); opacity: 0.15; }
+
+/* ===== 결과 페이지 비교 영역 ===== */
+
+.uknow-result-label {
+  font-weight: 900;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.uknow-result-text {
+  font-weight: 900;
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+/* 비교 섹션 전체 */
+.uknow-compare-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: relative;
+}
+
+/* 비교 카드 공통 */
+.uknow-compare-card {
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: 3px 3px 0 0 var(--color-text);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.uknow-compare-card--mine {
+  background: rgba(162, 155, 254, 0.1);
+  border-color: var(--color-secondary);
+  box-shadow: 3px 3px 0 0 rgba(162, 155, 254, 0.4);
+  transform: rotate(-1deg);
+}
+
+.uknow-compare-card--friend {
+  background: rgba(0, 184, 148, 0.06);
+  border-color: #00b894;
+  box-shadow: 3px 3px 0 0 rgba(0, 184, 148, 0.2);
+  transform: rotate(1deg);
+}
+
+.uknow-compare-card--friend.uknow-compare-card--revealed {
+  background: rgba(0, 184, 148, 0.1);
+  border-color: #00b894;
+  box-shadow: 3px 3px 0 0 rgba(0, 184, 148, 0.35);
+  animation: uknow-wiggle 2.5s ease-in-out infinite;
+}
+
+@keyframes uknow-wiggle {
+  0%, 100% { transform: rotate(1deg); }
+  25% { transform: rotate(0deg); }
+  75% { transform: rotate(2deg); }
+}
+
+/* 카드 헤더 */
+.uknow-compare-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.uknow-compare-emoji {
+  font-size: var(--font-size-xl);
+}
+
+.uknow-compare-who {
+  font-weight: 900;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.uknow-compare-answer {
+  font-weight: 900;
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+/* 가운데 구분선 / 공개 버튼 */
+.uknow-compare-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) 0;
+}
+
+.uknow-reveal-btn {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-xl);
+  font-weight: 900;
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 var(--color-text);
+  transition: all var(--transition-fast);
+  animation: uknow-bounce 1.2s ease-in-out infinite;
+}
+
+.uknow-reveal-btn:hover {
+  box-shadow: 1px 1px 0 0 var(--color-text);
+  transform: translateY(2px);
+  animation: none;
+}
+
+@keyframes uknow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* 정답/오답 배지 */
+.uknow-match-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-weight: 900;
+  font-size: var(--font-size-lg);
+  border: 2px solid var(--color-text);
+  box-shadow: 3px 3px 0 0 var(--color-text);
+  animation: uknow-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.uknow-match-badge--match {
+  background: #00b894;
+  color: #ffffff;
+  border-color: #00b894;
+  box-shadow: 3px 3px 0 0 rgba(0, 184, 148, 0.4);
+}
+
+.uknow-match-badge--miss {
+  background: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+  box-shadow: 3px 3px 0 0 rgba(255, 107, 129, 0.4);
+}
+
+@keyframes uknow-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 숨김 상태 */
+.uknow-compare-hidden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  gap: var(--space-xs);
+}
+
+.uknow-compare-hidden span {
+  font-size: var(--font-size-2xl);
+  font-weight: 900;
+  color: var(--color-text-muted);
+  letter-spacing: 4px;
+}
+
+.uknow-compare-hidden-hint {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-muted);
+}

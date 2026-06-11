@@ -4,11 +4,19 @@
  */
 
 export const API = {
-    // 사용자 API
-    USER: {
-        NICKNAME: '/api/user/nickname',
-    },
 } as const;
 
+
 // 외부 API URL
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+export const getApiBaseUrl = () => {
+  if (process.env.NODE_ENV === 'development') {
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname;
+      return `http://${host}:3000`;
+    }
+    return 'http://localhost:3000';
+  }
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+};
+
+export const API_BASE_URL = getApiBaseUrl();

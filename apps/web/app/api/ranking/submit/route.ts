@@ -112,8 +112,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 사용자 정보 가져오기
-    const user = await users.findOne({ kakaoId: session.user.kakaoId });
+    // 사용자 정보 가져오기 (통합 스키마: providerId 기준)
+    const user = await users.findOne({
+      $or: [
+        { providerId: session.user.kakaoId },
+        { kakaoId: session.user.kakaoId }
+      ]
+    });
 
     if (!user) {
       return NextResponse.json(
@@ -175,17 +180,7 @@ export async function POST(request: NextRequest) {
       // Initial values are already set above
     }
 
-    // 사용자의 누적 점수 업데이트 (highScore 필드를 누적 점수로 사용)
-    await users.updateOne(
-      { kakaoId: session.user.kakaoId },
-      {
-        $inc: {
-          highScore: score, // 기존 점수에 이번 게임 점수 누적
-          totalGames: 1
-        },
-        $set: { updatedAt: new Date() },
-      }
-    );
+    // 참고: 미니게임 미출시 및 데이터 단순화를 위해 users 컬렉션의 highScore/totalGames 업데이트는 제거되었습니다.
 
     return NextResponse.json({
       success: true,

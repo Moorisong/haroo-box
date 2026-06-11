@@ -9,7 +9,9 @@ export const ROUTES = {
     MYPAGE: '/mypage',
     ROLLING_PAPER: 'https://r-paper-web.haroo.site/',
     HTSM: '/htsm',
-    TOBY: 'https://toby-teacher.vercel.app',
+    U_KNOW: '/u-know',
+    TOBY: '/toby',
+    PUZZLE: '/puzzle',
     TERMS: '/terms',
     PRIVACY: '/privacy',
 } as const;
