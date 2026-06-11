@@ -44,6 +44,7 @@ export default function LandscapeTrayPanel({
   const cellSize = isLarge ? 54 : 40;
 
   const [activeBasket, setActiveBasket] = useState<string>('basket1');
+  const [isOrganizeMode, setIsOrganizeMode] = useState(false);
   const [hoveredBasket, setHoveredBasket] = useState<string | null>(null);
   const [baskets, setBaskets] = useState<Record<string, number[]>>({
     basket1: [],
@@ -135,6 +136,9 @@ export default function LandscapeTrayPanel({
   }, [trayPieces, activeBasket]);
 
   const movePieceToBasket = (pieceId: number, targetBasket: string) => {
+    if (selectedPieceId === pieceId) {
+      onTrayClick?.();
+    }
     setBaskets((prev) => {
       const next = { ...prev };
       for (const key in next) {
@@ -307,7 +311,7 @@ export default function LandscapeTrayPanel({
       globalMoveRef.current = onTouchMove;
       globalUpRef.current = onTouchEnd;
       globalCancelRef.current = onTouchCancel;
-    }, 220);
+    }, 180);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -321,11 +325,11 @@ export default function LandscapeTrayPanel({
     const dy = touch.clientY - startCoords.current.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (distance > 8) {
+    if (distance > 4) {
       hasMovedRef.current = true;
     }
 
-    if (distance > 10) {
+    if (distance > 6) {
       if (longPressTimeout.current) {
         clearTimeout(longPressTimeout.current);
         longPressTimeout.current = null;
@@ -344,7 +348,7 @@ export default function LandscapeTrayPanel({
     dragActiveRef.current = false;
     startCoords.current = null;
 
-    if (wasDragging) {
+    if (wasDragging || hasMovedRef.current) {
       ignoreNextClickRef.current = true;
     } else {
       ignoreNextClickRef.current = false;
@@ -389,16 +393,32 @@ export default function LandscapeTrayPanel({
     >
       {/* 헤더 */}
       <div
-        className="flex items-center justify-between px-4 py-2.5 border-b flex-shrink-0"
+        className="flex items-center justify-between px-3 py-2 border-b flex-shrink-0 gap-1"
         style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 min-w-0">
           <Folder size={14} className="text-blue-500 flex-shrink-0" />
-          <span className="text-sm font-bold text-gray-800">보관함</span>
+          <span className="text-sm font-bold text-gray-800 truncate">보관함</span>
         </div>
-        <span className="text-xs font-medium text-gray-500">
-          대기 조각: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
-        </span>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOrganizeMode(!isOrganizeMode);
+            }}
+            className="px-1.5 py-0.5 rounded text-[10px] font-bold transition-all border select-none"
+            style={{
+              backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+              borderColor: isOrganizeMode ? '#3b82f6' : 'rgba(0, 0, 0, 0.1)',
+              color: isOrganizeMode ? '#2563eb' : '#6b7280',
+            }}
+          >
+            분류 {isOrganizeMode ? 'ON' : 'OFF'}
+          </button>
+          <span className="text-[10px] font-medium text-gray-500">
+            대기: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
+          </span>
+        </div>
       </div>
 
       {/* 바구니 탭 */}
@@ -419,7 +439,11 @@ export default function LandscapeTrayPanel({
               onClick={(e) => {
                 e.stopPropagation();
                 if (!isPlayMode) return;
-                setActiveBasket(key);
+                if (isOrganizeMode && selectedPieceId !== null) {
+                  movePieceToBasket(selectedPieceId, key);
+                } else {
+                  setActiveBasket(key);
+                }
               }}
               className="flex flex-row items-center justify-center p-1 rounded-lg border transition-all cursor-pointer gap-1.5"
               style={{
@@ -504,7 +528,11 @@ export default function LandscapeTrayPanel({
                       return;
                     }
                     if (!scrolledRecentlyRef.current) {
-                      onPieceClick(pieceId);
+                      if (isOrganizeMode && selectedPieceId === pieceId) {
+                        onTrayClick?.();
+                      } else {
+                        onPieceClick(pieceId);
+                      }
                     }
                   }}
                   className="relative cursor-pointer transition-all duration-200 select-none"
