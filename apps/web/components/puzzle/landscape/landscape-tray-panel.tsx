@@ -402,24 +402,29 @@ export default function LandscapeTrayPanel({
           <span className="text-sm font-bold text-gray-800 truncate">보관함</span>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          <button
+          <div
             onClick={(e) => {
               e.stopPropagation();
               setIsOrganizeMode(!isOrganizeMode);
             }}
-            className={`flex items-center justify-center gap-1 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-extrabold transition-all border select-none cursor-pointer active:scale-95 shadow-sm ${
-              isOrganizeMode
-                ? 'bg-blue-600 border-blue-700 text-white shadow-md shadow-blue-600/10'
-                : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-gray-900'
-            }`}
+            className="flex items-center gap-1.5 cursor-pointer select-none group"
+            title="보관함 분류 모드"
           >
-            <span
-              className={`w-1.5 h-1.5 rounded-full transition-all ${
-                isOrganizeMode ? 'bg-white animate-pulse' : 'bg-gray-400'
+            <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-700 transition-colors">
+              분류
+            </span>
+            <div
+              className={`w-7 h-4 flex items-center rounded-full p-0.5 transition-colors duration-200 ${
+                isOrganizeMode ? 'bg-blue-500' : 'bg-gray-200'
               }`}
-            />
-            <span>분류 {isOrganizeMode ? 'ON' : 'OFF'}</span>
-          </button>
+            >
+              <div
+                className={`bg-white w-3 h-3 rounded-full shadow transform transition-transform duration-200 ${
+                  isOrganizeMode ? 'translate-x-3' : 'translate-x-0'
+                }`}
+              />
+            </div>
+          </div>
           <span className="text-[10px] font-medium text-gray-500">
             대기: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
           </span>
@@ -452,17 +457,21 @@ export default function LandscapeTrayPanel({
               }}
               className={`flex flex-row items-center justify-center rounded-lg border transition-all cursor-pointer gap-1.5 ${
                 isLarge ? 'py-2.5 px-1.5' : 'p-1'
-              }`}
+              } ${isOrganizeMode && selectedPieceId !== null ? 'animate-pulse' : ''}`}
               style={{
                 borderColor: isHovered
                   ? 'rgba(79, 142, 247, 0.5)'
                   : isActive
-                  ? 'rgba(0, 0, 0, 0.15)'
+                  ? 'rgba(0, 0, 0, 0.25)'
+                  : isOrganizeMode && selectedPieceId !== null
+                  ? 'rgba(59, 130, 246, 0.6)'
                   : 'rgba(0, 0, 0, 0.05)',
                 backgroundColor: isHovered
                   ? 'rgba(79, 142, 247, 0.08)'
                   : isActive
-                  ? 'rgba(0, 0, 0, 0.04)'
+                  ? 'rgba(0, 0, 0, 0.06)'
+                  : isOrganizeMode && selectedPieceId !== null
+                  ? 'rgba(59, 130, 246, 0.05)'
                   : 'rgba(0, 0, 0, 0.01)',
                 transform: isHovered ? 'scale(1.03)' : 'scale(1)',
               }}
@@ -473,7 +482,7 @@ export default function LandscapeTrayPanel({
               />
               <span
                 className={`${isLarge ? 'text-sm' : 'text-xs'} font-semibold leading-none font-mono`}
-                style={{ color: isActive || isHovered ? '#1f2937' : 'rgba(0, 0, 0, 0.4)' }}
+                style={{ color: isActive || isHovered || (isOrganizeMode && selectedPieceId !== null) ? '#1f2937' : 'rgba(0, 0, 0, 0.4)' }}
               >
                 {count}
               </span>
@@ -482,14 +491,30 @@ export default function LandscapeTrayPanel({
         })}
       </div>
 
-      {/* 도움말 */}
-      {isLarge && (
-        <div className="px-4 py-1.5 border-b flex-shrink-0" style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}>
-          <p className="text-[10px] font-medium text-gray-500 flex items-center gap-1">
-            <HelpCircle size={12} className="text-gray-400 flex-shrink-0" />
-            <span>조각 목록 스크롤 가능</span>
+      {/* 도움말 / 분류 가이드 */}
+      {isOrganizeMode ? (
+        <div 
+          className="px-3 py-1.5 border-b flex-shrink-0 bg-blue-50/50"
+          style={{ borderColor: 'rgba(59, 130, 246, 0.15)' }}
+        >
+          <p className="text-[10px] font-bold text-blue-600 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping shrink-0" />
+            <span>
+              {selectedPieceId === null 
+                ? "① 아래 조각을 눌러 선택해주세요." 
+                : "② 위 바구니 탭을 눌러 조각을 옮기세요."}
+            </span>
           </p>
         </div>
+      ) : (
+        isLarge && (
+          <div className="px-4 py-1.5 border-b flex-shrink-0" style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}>
+            <p className="text-[10px] font-medium text-gray-500 flex items-center gap-1">
+              <HelpCircle size={12} className="text-gray-400 flex-shrink-0" />
+              <span>조각 목록 스크롤 가능</span>
+            </p>
+          </div>
+        )
       )}
 
       {/* 조각 목록 - 세로 스크롤 영역 (overflow-y-auto 필수) */}
