@@ -152,38 +152,47 @@ export default function PlayPage({ params }: PlayPageProps) {
             }
           }
 
-          if (!savedState && token) {
-            // 로컬에 없는데 로그인된 상태면 서버에서 불러와 복구 시도
+          if (token) {
+            // 로그인 상태 시 로컬 데이터 존재 유무와 관계없이 항상 서버에서 최신 정보 조회 시도
             try {
               const serverProgressRes = await fetchMyProgress(puzzleId, token);
               if (serverProgressRes.success && serverProgressRes.data?.detailState) {
                 const s = serverProgressRes.data.detailState;
-                savedState = {
-                  puzzleId,
-                  difficulty: s.difficulty,
-                  mode: s.mode || 'ranked',
-                  timerSeconds: s.timerSeconds,
-                  pieces: s.pieces || [],
-                  board: s.board,
-                  trayPieces: s.trayPieces,
-                  progress: serverProgressRes.data.progress,
-                  completed: false,
-                  startedAt: s.startedAt || new Date().toISOString(),
-                  updatedAt: new Date().toISOString(),
-                };
+                const serverProgress = serverProgressRes.data.progress;
 
-                // 이후 로컬 자동저장을 위해 IndexedDB에도 즉시 써줌
-                await savePuzzleState(puzzleId, {
-                  difficulty: savedState.difficulty,
-                  mode: savedState.mode,
-                  timerSeconds: savedState.timerSeconds,
-                  pieces: savedState.pieces,
-                  board: savedState.board,
-                  trayPieces: savedState.trayPieces,
-                  progress: savedState.progress,
-                  completed: savedState.completed,
-                  startedAt: savedState.startedAt,
-                }, true);
+                // 로컬 데이터가 없거나, 진행 상황(진행도 또는 시간)이 다르면 서버 상태로 로컬 상태 덮어씌움
+                const shouldOverwrite = !savedState ||
+                  savedState.progress !== serverProgress ||
+                  savedState.timerSeconds !== s.timerSeconds;
+
+                if (shouldOverwrite) {
+                  savedState = {
+                    puzzleId,
+                    difficulty: s.difficulty,
+                    mode: s.mode || 'ranked',
+                    timerSeconds: s.timerSeconds,
+                    pieces: s.pieces || [],
+                    board: s.board,
+                    trayPieces: s.trayPieces,
+                    progress: serverProgress,
+                    completed: false,
+                    startedAt: s.startedAt || new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                  };
+
+                  // 이후 로컬 자동저장을 위해 IndexedDB에도 즉시 써줌
+                  await savePuzzleState(puzzleId, {
+                    difficulty: savedState.difficulty,
+                    mode: savedState.mode,
+                    timerSeconds: savedState.timerSeconds,
+                    pieces: savedState.pieces,
+                    board: savedState.board,
+                    trayPieces: savedState.trayPieces,
+                    progress: savedState.progress,
+                    completed: savedState.completed,
+                    startedAt: savedState.startedAt,
+                  }, true);
+                }
               }
             } catch (err) {
               console.error('Failed to restore progress from server:', err);
