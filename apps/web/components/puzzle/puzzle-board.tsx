@@ -90,6 +90,8 @@ function PuzzleBoardCell({
   return (
     <div
       data-board-cell="true"
+      data-is-placed={isPlaced ? "true" : "false"}
+      data-placed-piece-id={pieceId !== null ? pieceId : ""}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={(e) => {
