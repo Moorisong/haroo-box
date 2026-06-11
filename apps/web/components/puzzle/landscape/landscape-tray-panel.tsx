@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Folder, HelpCircle } from 'lucide-react';
+import { Folder, HelpCircle, Lock } from 'lucide-react';
 import PieceCell from '../piece-cell';
 
 interface LandscapeTrayPanelProps {
@@ -376,7 +376,7 @@ export default function LandscapeTrayPanel({
   return (
     <div
       id="landscape-tray-panel"
-      className="flex flex-col h-full min-h-0 border-l"
+      className="relative flex flex-col h-full min-h-0 border-l"
       style={{
         backgroundColor: '#ffffff',
         borderColor: 'rgba(0, 0, 0, 0.08)',
@@ -594,6 +594,23 @@ export default function LandscapeTrayPanel({
           />
         </div>,
         document.body
+      )}
+
+      {/* 비활성화 오버레이 (이동 모드 시) */}
+      {!isPlayMode && (
+        <div className="absolute inset-0 bg-slate-50/70 backdrop-blur-[2px] z-30 flex flex-col items-center justify-center p-4 text-center transition-all duration-300 animate-in fade-in">
+          <div className="bg-white/95 p-5 rounded-2xl shadow-xl border border-slate-200/60 flex flex-col items-center gap-3 max-w-[85%]">
+            <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+              <Lock size={18} className="text-slate-600" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xs font-bold text-slate-800">보관함 비활성화</p>
+              <p className="text-[10px] text-slate-500 leading-relaxed">
+                이동 모드 해제 후 사용 가능
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
