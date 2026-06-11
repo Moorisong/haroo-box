@@ -212,9 +212,9 @@ export default function PieceTray({
   };
 
 
-  // 포인터 드래그 시작 핸들러 (데스크톱 마우스용)
+  // 포인터 드래그 시작 핸들러 (데스크톱 마우스 및 가상 포인터용)
   const startDrag = (e: React.PointerEvent, pieceId: number) => {
-    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    if (e.button !== 0) return;
     
     const clientX = e.clientX;
     const clientY = e.clientY;
@@ -231,7 +231,6 @@ export default function PieceTray({
     } catch (err) {}
 
     const onGlobalMove = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') return;
       if (!startCoords.current) return;
       
       const dx = event.clientX - startCoords.current.x;

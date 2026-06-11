@@ -39,6 +39,7 @@ function PuzzleBoardCell({
 }: PuzzleBoardCellProps) {
   const [showRipple, setShowRipple] = useState(false);
   const prevPieceId = useRef<number | null>(pieceId);
+  const touchStartCoords = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     // 모든 난이도에서 이전 조각 상태와 다르고 현재 놓인 조각이 제자리(정답)인 경우 리플 활성화
@@ -56,9 +57,41 @@ function PuzzleBoardCell({
   const isPlaced = pieceId !== null;
   const isCorrect = isPlaced && pieceId === slotIdx; // 정답 자리 조각인지 확인
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isPlayMode) return;
+    if (isCorrect) return;
+    const touch = e.touches[0];
+    if (touch) {
+      touchStartCoords.current = { x: touch.clientX, y: touch.clientY };
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isPlayMode) return;
+    if (isCorrect) return;
+    if (!touchStartCoords.current) return;
+
+    const touch = e.changedTouches[0];
+    if (touch) {
+      const dx = touch.clientX - touchStartCoords.current.x;
+      const dy = touch.clientY - touchStartCoords.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // 손가락 움직임 거리가 8px 미만이면 순수 탭(Click)으로 처리
+      if (dist < 8) {
+        e.preventDefault(); // 모바일 브라우저의 가상 click 이벤트가 중복 호출되는 것을 방지
+        e.stopPropagation();
+        onCellClick(slotIdx);
+      }
+    }
+    touchStartCoords.current = null;
+  };
+
   return (
     <div
       data-board-cell="true"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onClick={(e) => {
         e.stopPropagation();
         if (!isPlayMode) return; // 이동모드일 때는 클릭 무시
