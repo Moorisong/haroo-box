@@ -114,6 +114,14 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
   
   test.beforeEach(async ({ page }) => {
     await setupBaseMocks(page);
+    // Hide Next.js Dev Tools / Dev Overlay portal to prevent it from intercepting E2E test clicks
+    await page.addInitScript(() => {
+      window.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style');
+        style.innerHTML = 'nextjs-portal { display: none !important; pointer-events: none !important; }';
+        document.head.appendChild(style);
+      });
+    });
   });
 
   // ----------------------------------------------------
@@ -198,6 +206,7 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
   // 5. 퍼즐 플레이 페이지 세로 모드(Portrait) 검증
   // ----------------------------------------------------
   test('5-1. 플레이 페이지 세로 모드 UI 및 상호작용 검증', async ({ page, isMobile }) => {
+    page.on('console', msg => console.log('BROWSER:', msg.text()));
     // 세로 모드 뷰포트 설정
     await page.setViewportSize({ width: 375, height: 812 });
 
@@ -239,23 +248,35 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
 
     // [요구사항 2] 세로 모드 조각 퍼즐판 배치 검증
     // 1. 트레이에서 첫 번째 조각 클릭
-    const firstPiece = page.locator('.touch-pan-x').first();
+    const firstPiece = page.locator('[data-tray-piece="true"]').first();
+    const pieceId = await firstPiece.getAttribute('data-piece-id');
+    expect(pieceId).not.toBeNull();
+
     if (isMobile) {
-      await firstPiece.tap({ force: true });
+      await firstPiece.tap();
     } else {
-      await firstPiece.click({ force: true });
+      await firstPiece.click();
     }
 
     // [추가 요구사항] 세로 모드에서 조각을 집는 순간 보관함 내에 "집었다" 텍스트가 생기지 않는지 검증
     await expect(tray.locator('text=/집었/')).toBeHidden();
 
+    // 조각이 선택되었는지 검증
+    await expect(firstPiece).toHaveAttribute('data-selected', 'true');
+
     // 2. 보드판의 첫 번째 빈 셀 클릭
     const firstCell = page.locator('[data-board-cell="true"]').first();
+    await expect(firstCell).toHaveAttribute('data-is-placed', 'false');
+
     if (isMobile) {
       await firstCell.tap({ force: true });
     } else {
       await firstCell.click({ force: true });
     }
+
+    // 조각 배치 완료 검증
+    await expect(firstCell).toHaveAttribute('data-is-placed', 'true');
+    await expect(firstCell).toHaveAttribute('data-placed-piece-id', pieceId!);
 
     // [요구사항 3] 세로 모드 보관함에서 조각을 다른 바구니로 드래그하여 옮겨지는지 확인 (모아보기 서랍 내)
     const openDrawerBtn = page.locator('button:has-text("모아보기")');
@@ -333,6 +354,9 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
     // [요구사항 2] 가로 모드 조각 퍼즐판 배치 검증
     // 1. 트레이에서 첫 번째 조각 클릭
     const firstPiece = page.locator('#landscape-tray-panel [data-tray-piece="true"]').first();
+    const pieceId = await firstPiece.getAttribute('data-piece-id');
+    expect(pieceId).not.toBeNull();
+
     if (isMobile) {
       await firstPiece.tap({ force: true });
     } else {
@@ -342,13 +366,22 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
     // [추가 요구사항] 가로 모드에서 조각을 집는 순간 보관함 내에 "집었다" 텍스트가 생기지 않는지 검증
     await expect(trayPanel.locator('text=/집었/')).toBeHidden();
 
+    // 조각이 선택되었는지 검증
+    await expect(firstPiece).toHaveAttribute('data-selected', 'true');
+
     // 2. 보드판의 첫 번째 빈 셀 클릭
     const firstCell = page.locator('[data-board-cell="true"]').first();
+    await expect(firstCell).toHaveAttribute('data-is-placed', 'false');
+
     if (isMobile) {
       await firstCell.tap({ force: true });
     } else {
       await firstCell.click({ force: true });
     }
+
+    // 조각 배치 완료 검증
+    await expect(firstCell).toHaveAttribute('data-is-placed', 'true');
+    await expect(firstCell).toHaveAttribute('data-placed-piece-id', pieceId!);
 
     // 퍼즐 조각 배치 및 바구니 상태 업데이트 대기
     await page.waitForTimeout(500);
