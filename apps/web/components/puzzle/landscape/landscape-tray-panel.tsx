@@ -385,6 +385,7 @@ export default function LandscapeTrayPanel({
         width: isLarge ? '25%' : '28%', // 가로 가용 영역 점유 비율 상향
         flexShrink: 0,
         overscrollBehavior: 'none',
+        zIndex: 10,
       }}
       onClick={(e) => {
         e.stopPropagation();
