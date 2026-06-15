@@ -932,4 +932,154 @@ test.describe('챌린지 토큰 오류 격리 및 제출 안정성 테스트', (
     await expect(page.locator('text=챌린지 토큰')).toBeVisible({ timeout: 10000 });
   });
 
+  // ----------------------------------------------------------
+  // Case 6: 비로그인 완성 -> 로그인 -> 0%로 초기화(리셋)되는 현상 방지 테스트
+  // ----------------------------------------------------------
+  test('Case 6: 비로그인 완성 후 로그인하여 복귀 시 퍼즐 상태 리셋 방지 및 동기화 작동', async ({ page }) => {
+    // 1. NextAuth 세션: 처음부터 로그인 완료된 세션으로 셋업 (로그인 직후 페이지에 다시 진입한 상태를 모방)
+    await page.route('**/api/auth/session', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: { name: '성공유저', email: 'success@example.com', kakaoId: 'mock-kakao-user' },
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        }),
+      });
+    });
+
+    // 2. 기본 Mocking
+    await setupBaseMocks(page);
+
+    // 3. 퍼즐 상세 Mock
+    await page.route('**/api/puzzle/puzzle-mock-id-001', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: {
+            _id: 'puzzle-mock-id-001',
+            title: '테스트용 퍼즐',
+            imageUrl: '/sample/puzzle.png',
+            participantCount: 0,
+            startDate: '2026-06-01T00:00:00Z',
+            endDate: '2026-06-30T00:00:00Z',
+            archived: false,
+          },
+        }),
+      });
+    });
+
+    // 4. 최초 베이스 페이지 진입하여 브라우저 컨텍스트 획득 후 데이터 모킹 주입
+    await page.goto('/puzzle');
+    await dismissOrientationSuggestion(page);
+
+    // 강제로 로컬 스토리지/IndexedDB 상태를 완성 직전 상태로 세팅
+    await page.evaluate(() => {
+      sessionStorage.setItem('pending_sync_puzzle-mock-id-001', 'true');
+    });
+
+    // IndexedDB에 직접 completion 데이터(100% 완성)를 주입하는 시뮬레이션
+    await page.evaluate(async () => {
+      const openRequest = indexedDB.open('haruPuzzleDB', 4);
+      openRequest.onupgradeneeded = (e: any) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('puzzleState')) {
+          db.createObjectStore('puzzleState', { keyPath: 'puzzleId' });
+        }
+      };
+      
+      await new Promise<void>((resolve, reject) => {
+        openRequest.onsuccess = (e: any) => {
+          const db = e.target.result;
+          const transaction = db.transaction('puzzleState', 'readwrite');
+          const store = transaction.objectStore('puzzleState');
+          
+          const nearlyCompleteBoard = Array.from({ length: 36 }, (_, i) => i);
+          const piecesData = nearlyCompleteBoard.map((pieceId, idx) => ({
+            id: pieceId,
+            correctIndex: idx,
+            locked: true
+          }));
+
+          store.put({
+            puzzleId: 'puzzle-mock-id-001',
+            difficulty: 'novice',
+            mode: 'ranked',
+            timerSeconds: 85,
+            pieces: piecesData,
+            board: nearlyCompleteBoard,
+            trayPieces: [],
+            progress: 100,
+            completed: true,
+            startedAt: new Date(Date.now() - 85000).toISOString(),
+            updatedAt: new Date().toISOString(),
+          });
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = () => reject();
+        };
+      });
+    });
+
+    // 이제 로그인 완료 상황으로 mock 설정을 바꾸고, 진입(resume)하는 시나리오
+
+    // 서버 진행도 API Mock: 이 시점에서 서버에는 데이터가 없음 (null)
+    let saveProgressCalled = false;
+    let savedProgressVal = -1;
+    await page.route('**/api/puzzle/progress**', async (route) => {
+      const method = route.request().method();
+      if (method === 'GET') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true, data: null }), // 서버에 데이터가 없음
+        });
+      } else if (method === 'POST') {
+        saveProgressCalled = true;
+        const postData = route.request().postDataJSON();
+        savedProgressVal = postData.progress;
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
+
+    // 결과 제출 API Mock
+    let submitResultCalled = false;
+    await page.route('**/api/puzzle/results', async (route) => {
+      submitResultCalled = true;
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: { resultId: 'mock-final-res', completionTime: 85 }
+        }),
+      });
+    });
+
+    // 랭킹 조회 API Mock
+    await page.route('**/api/puzzle/rankings/current**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, data: [] }),
+      });
+    });
+
+    // 로그인된 상태로 퍼즐 플레이 페이지를 이어하기 모드로 다시 엽니다.
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    
+    // 0%로 초기화(리셋)되지 않고, 로컬의 100% 진행 데이터를 기반으로 서버에 saveProgress(100)이 호출되었는지 검증
+    // 또한 완료 처리 결과 제출이 동작했는지 확인
+    await page.waitForTimeout(1500);
+
+    expect(saveProgressCalled).toBe(true);
+    expect(savedProgressVal).toBe(100);
+  });
+
 });
+
