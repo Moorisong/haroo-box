@@ -621,3 +621,315 @@ test.describe('하루퍼즐 (Haroo Puzzle) E2E 테스트', () => {
 
 });
 
+
+// ============================================================
+// 챌린지 토큰 오류 격리 테스트
+// - 챌린지 토큰 에러는 진짜 토큰 문제일 때만 발생해야 함
+// - 다른 검증 실패 시 거짓 토큰 에러가 발생하면 안 됨
+// - 에러 발생 시 무한 깜빡임(재시도 루프)이 발생하면 안 됨
+// ============================================================
+test.describe('챌린지 토큰 오류 격리 및 제출 안정성 테스트', () => {
+
+  // 로그인 세션 + 거의 완성된 퍼즐(35/36) 상태를 세팅하는 공통 헬퍼
+  async function setupNearlyCompletePuzzle(
+    page,
+    options: {
+      resultsResponse: { status: number; body: any };
+      challengeStartOverride?: { status: number; body: any } | null;
+    }
+  ) {
+    // Base mocks (current, archive, stats, rankings/current, challenge/start)
+    await setupBaseMocks(page);
+
+    // NextAuth 로그인 세션 Mock
+    await page.route('**/api/auth/session', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            name: '토큰테스터',
+            email: 'tokentest@example.com',
+            kakaoId: 'mock-kakao-token-tester',
+          },
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        }),
+      });
+    });
+
+    // 퍼즐 상세 Mock
+    await page.route('**/api/puzzle/puzzle-mock-id-001', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: {
+            _id: 'puzzle-mock-id-001',
+            title: '토큰 테스트 퍼즐',
+            imageUrl: '/sample/puzzle.png',
+            participantCount: 10,
+            startDate: '2026-06-01T00:00:00Z',
+            endDate: '2026-06-30T00:00:00Z',
+            archived: false,
+          },
+        }),
+      });
+    });
+
+    // 진행 상황 API Mock (GET: 35/36 완성 상태 반환, POST/DELETE: 성공)
+    const nearlyCompleteBoard = Array.from({ length: 36 }, (_, i) => i);
+    nearlyCompleteBoard[35] = null; // 마지막 슬롯만 비어있음
+
+    await page.route('**/api/puzzle/progress**', async (route) => {
+      const method = route.request().method();
+      if (method === 'GET') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            success: true,
+            data: {
+              progress: 97,
+              lastPlayedAt: new Date().toISOString(),
+              detailState: {
+                difficulty: 'novice',
+                mode: 'ranked',
+                timerSeconds: 120,
+                board: nearlyCompleteBoard,
+                trayPieces: [35],
+                startedAt: new Date(Date.now() - 120000).toISOString(),
+                updatedAt: new Date().toISOString(),
+              }
+            }
+          }),
+        });
+      } else {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
+
+    // 챌린지 시작 토큰 Mock (override 가능)
+    if (options.challengeStartOverride !== undefined) {
+      await page.route('**/api/puzzle/challenge/start', async (route) => {
+        if (options.challengeStartOverride === null) {
+          await route.abort('failed');
+        } else {
+          await route.fulfill({
+            status: options.challengeStartOverride.status,
+            contentType: 'application/json',
+            body: JSON.stringify(options.challengeStartOverride.body),
+          });
+        }
+      });
+    }
+
+    // 결과 제출 API Mock (테스트마다 다른 응답)
+    await page.route('**/api/puzzle/results', async (route) => {
+      await route.fulfill({
+        status: options.resultsResponse.status,
+        contentType: 'application/json',
+        body: JSON.stringify(options.resultsResponse.body),
+      });
+    });
+
+    // 내 랭킹 Mock
+    await page.route('**/api/puzzle/rankings/me*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: { myRank: 5, nickname: '토큰테스터', completionTime: 120, totalParticipants: 50, topPercent: 10 },
+        }),
+      });
+    });
+  }
+
+  // 마지막 조각을 배치하여 퍼즐을 완성시키는 헬퍼
+  async function completePuzzle(page) {
+    // 트레이에 남은 마지막 조각(pieceId=35) 클릭
+    const lastPiece = page.locator('[data-tray-piece="true"][data-piece-id="35"]');
+    await lastPiece.waitFor({ state: 'visible', timeout: 10000 });
+    await lastPiece.click({ force: true });
+
+    // 조각이 선택되었는지 확인
+    await expect(lastPiece).toHaveAttribute('data-selected', 'true');
+
+    // 보드의 마지막 빈 셀 클릭하여 배치
+    const lastCell = page.locator('[data-board-cell="true"][data-is-placed="false"]');
+    await lastCell.click({ force: true });
+
+    // CompletionModal이 나타날 때까지 대기
+    await page.locator('text=퍼즐 완성!').waitFor({ state: 'visible', timeout: 10000 });
+  }
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      window.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style');
+        style.innerHTML = 'nextjs-portal { display: none !important; pointer-events: none !important; }';
+        document.head.appendChild(style);
+      });
+    });
+  });
+
+  // ----------------------------------------------------------
+  // Case 1: 정상 제출 성공 시 토큰 에러 없이 완료 메시지 표시
+  // ----------------------------------------------------------
+  test('Case 1: 정상 제출 시 "저장/제출 완료" 표시, 토큰 에러 없음', async ({ page }) => {
+    await setupNearlyCompletePuzzle(page, {
+      resultsResponse: {
+        status: 201,
+        body: {
+          success: true,
+          message: '성공적으로 퍼즐 기록이 검증 및 저장되었습니다.',
+          data: { resultId: 'test-result-id', completionTime: 120, savedAt: new Date().toISOString() },
+        },
+      },
+    });
+
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    await dismissOrientationSuggestion(page);
+    await completePuzzle(page);
+
+    // "저장/제출 완료" 메시지가 표시되는지 확인
+    await expect(page.locator('text=저장/제출 완료')).toBeVisible({ timeout: 10000 });
+
+    // 토큰 에러 메시지가 표시되지 않는지 확인
+    await expect(page.locator('text=챌린지 토큰')).toBeHidden();
+    await expect(page.locator('text=치팅 방지 필터')).toBeHidden();
+  });
+
+  // ----------------------------------------------------------
+  // Case 2: "이미 랭킹 등록 완료" 에러 시 토큰 에러가 아닌
+  //          정확한 에러 메시지 표시 (거짓 토큰 에러 방지)
+  // ----------------------------------------------------------
+  test('Case 2: 이미 랭킹 등록 완료 에러 → 토큰 에러가 아닌 정확한 에러 메시지 표시', async ({ page }) => {
+    await setupNearlyCompletePuzzle(page, {
+      resultsResponse: {
+        status: 400,
+        body: {
+          success: false,
+          error: '이 난이도는 이미 랭킹 등록이 완료되었습니다.',
+        },
+      },
+    });
+
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    await dismissOrientationSuggestion(page);
+    await completePuzzle(page);
+
+    // 정확한 에러 메시지가 표시되는지 확인
+    await expect(page.locator('text=이미 랭킹 등록이 완료되었습니다')).toBeVisible({ timeout: 10000 });
+
+    // 토큰 관련 거짓 에러가 표시되지 않는지 확인
+    await expect(page.locator('text=챌린지 토큰')).toBeHidden();
+  });
+
+  // ----------------------------------------------------------
+  // Case 3: "만료된 퍼즐" 에러 시 토큰 에러가 아닌
+  //          정확한 에러 메시지 표시 (거짓 토큰 에러 방지)
+  // ----------------------------------------------------------
+  test('Case 3: 만료된 퍼즐 에러 → 토큰 에러가 아닌 정확한 에러 메시지 표시', async ({ page }) => {
+    await setupNearlyCompletePuzzle(page, {
+      resultsResponse: {
+        status: 400,
+        body: {
+          success: false,
+          error: '활성화 기간이 만료된 퍼즐은 랭킹 등록이 불가능합니다.',
+        },
+      },
+    });
+
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    await dismissOrientationSuggestion(page);
+    await completePuzzle(page);
+
+    // 정확한 에러 메시지 표시 확인
+    await expect(page.locator('text=활성화 기간이 만료된 퍼즐')).toBeVisible({ timeout: 10000 });
+
+    // 토큰 관련 거짓 에러 미표시 확인
+    await expect(page.locator('text=챌린지 토큰')).toBeHidden();
+  });
+
+  // ----------------------------------------------------------
+  // Case 4: 에러 발생 시 무한 깜빡임(저장중↔에러) 없이
+  //          안정적으로 에러 메시지 1회만 표시
+  //          (무한 재시도 루프 방지 검증 - 가장 중요한 테스트)
+  // ----------------------------------------------------------
+  test('Case 4: 제출 에러 시 무한 깜빡임 없이 안정적 에러 표시 (재시도 루프 방지)', async ({ page }) => {
+    let resultsCallCount = 0;
+
+    await setupNearlyCompletePuzzle(page, {
+      resultsResponse: {
+        status: 400,
+        body: {
+          success: false,
+          error: '이 난이도는 이미 랭킹 등록이 완료되었습니다.',
+        },
+      },
+    });
+
+    // results API 호출 횟수 카운팅을 위한 추가 인터셉터
+    await page.route('**/api/puzzle/results', async (route) => {
+      resultsCallCount++;
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: false,
+          error: '이 난이도는 이미 랭킹 등록이 완료되었습니다.',
+        }),
+      });
+    });
+
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    await dismissOrientationSuggestion(page);
+    await completePuzzle(page);
+
+    // 에러 메시지가 안정적으로 표시될 때까지 대기
+    await expect(page.locator('text=이미 랭킹 등록이 완료되었습니다')).toBeVisible({ timeout: 10000 });
+
+    // 3초 대기 후 API 호출 횟수가 과도하지 않은지 확인 (무한 재시도 없음)
+    await page.waitForTimeout(3000);
+    expect(resultsCallCount).toBeLessThanOrEqual(2);
+
+    // 3초 대기 후에도 에러 메시지가 여전히 안정적으로 표시되는지 확인
+    // (깜빡거림 = "저장중" 메시지와 에러 메시지가 번갈아 나타남)
+    await expect(page.locator('text=이미 랭킹 등록이 완료되었습니다')).toBeVisible();
+    await expect(page.locator('text=기록 저장/제출 중')).toBeHidden();
+  });
+
+  // ----------------------------------------------------------
+  // Case 5: 진짜 챌린지 토큰 무효 → 정확한 토큰 에러 표시
+  //          (챌린지 토큰 에러가 정당한 경우에만 발생하는지 확인)
+  // ----------------------------------------------------------
+  test('Case 5: 진짜 토큰 무효 시에만 챌린지 토큰 에러 메시지 표시', async ({ page }) => {
+    await setupNearlyCompletePuzzle(page, {
+      challengeStartOverride: {
+        status: 500,
+        body: { success: false, error: '서버 내부 오류' },
+      },
+      resultsResponse: {
+        status: 403,
+        body: {
+          success: false,
+          error: '유효하지 않거나, 만료되었거나, 이미 사용된 챌린지 토큰입니다.',
+        },
+      },
+    });
+
+    await page.goto('/puzzle/play/puzzle-mock-id-001?resume=true&diff=novice');
+    await dismissOrientationSuggestion(page);
+    await completePuzzle(page);
+
+    // 진짜 토큰 에러이므로 토큰 관련 에러 메시지가 표시되어야 함
+    await expect(page.locator('text=챌린지 토큰')).toBeVisible({ timeout: 10000 });
+  });
+
+});
