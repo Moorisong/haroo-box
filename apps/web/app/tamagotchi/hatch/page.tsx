@@ -3,31 +3,61 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PixelCharacter, TamagotchiSpecies } from '@/components/tamagotchi/pixel-character';
+import { API_BASE_URL } from '@/constants/api';
 
 const SPECIES_LIST = [
-  { type: 'cutie' as TamagotchiSpecies, title: '귀염상', emoji: '🐱', desc: '사랑스럽고 동글동글한 애교쟁이' },
-  { type: 'weird' as TamagotchiSpecies, title: '기괴상', emoji: '👽', desc: '알 수 없는 표정을 짓는 개구쟁이' },
-  { type: 'normal' as TamagotchiSpecies, title: '평범상', emoji: '🐹', desc: '평화롭고 어디에나 있는 든든한 친구' },
-  { type: 'unique' as TamagotchiSpecies, title: '개성상', emoji: '🦎', desc: '나만의 스타일을 확실하게 표현하는 개성파' },
+  { type: 'cutie' as TamagotchiSpecies, title: '귀염상', desc: '사랑스럽고 동글동글한 애교쟁이' },
+  { type: 'weird' as TamagotchiSpecies, title: '기괴상', desc: '알 수 없는 표정을 짓는 개구쟁이' },
+  { type: 'normal' as TamagotchiSpecies, title: '평범상', desc: '평화롭고 어디에나 있는 든든한 친구' },
+  { type: 'unique' as TamagotchiSpecies, title: '개성상', desc: '나만의 스타일을 확실하게 표현하는 개성파' },
 ];
 
 export default function HatchPage() {
   const router = useRouter();
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0); // 0: Welcome Screen 추가
   const [selectedSpecies, setSelectedSpecies] = useState<TamagotchiSpecies>('cutie');
   const [name, setName] = useState('');
   const [crackCount, setCrackCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleNextStep = () => {
-    if (step === 2 && !name.trim()) return;
-    setStep((s) => (s + 1) as any);
+  const checkNameAndHatch = async () => {
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      const sessionRes = await fetch('/api/auth/session');
+      const session = await sessionRes.json();
+      const token = session?.user?.kakaoId || 'test_user_guest';
+
+      const res = await fetch(`${API_BASE_URL}/api/tamagotchi/hatch`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, species: selectedSpecies }),
+      });
+
+      const body = await res.json();
+      if (!body.success) {
+        setErrorMsg(body.error || '부화 중 오류가 발생했습니다.');
+        setStep(2);
+      } else {
+        setStep(4);
+      }
+    } catch (e) {
+      setErrorMsg('서버와 통신할 수 없습니다.');
+      setStep(2);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCrackEgg = () => {
     if (crackCount < 3) {
       setCrackCount((c) => c + 1);
     } else {
-      setStep(4);
+      checkNameAndHatch();
     }
   };
 
@@ -44,6 +74,47 @@ export default function HatchPage() {
         textAlign: 'center',
       }}
     >
+      {step === 0 && (
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <div style={{ fontSize: 14, color: '#b5445a', fontFamily: "'DotGothic16', monospace", fontWeight: 700, marginBottom: 8 }}>
+            ✦ BATTLE TAMAGOTCHI ✦
+          </div>
+          <h1 style={{ fontSize: 26, color: '#3d2c1e', fontWeight: 900, marginBottom: 16 }}>
+            전투 다마고치 아레나
+          </h1>
+          <p style={{ fontSize: 13, color: '#9e7b5f', lineHeight: 1.6, marginBottom: 32 }}>
+            이상하게 생긴 녀석을 잘 먹이고 씻겨 키운 뒤,<br />
+            다른 녀석의 뚝배기를 깨부수고 랭킹을 차지해보세요!
+          </p>
+
+          <div style={{ margin: '40px 0', display: 'flex', justifyContent: 'center' }}>
+            <svg width="100" height="120" viewBox="0 0 100 120">
+              <ellipse cx="50" cy="65" rx="38" ry="48" fill="#ffd166" stroke="#f4a261" strokeWidth="4" />
+              <path d="M 45,35 Q 50,25 55,35" stroke="#f4a261" strokeWidth="3" fill="none" />
+              <path d="M 35,65 Q 50,70 65,65" stroke="#f4a261" strokeWidth="3" fill="none" />
+            </svg>
+          </div>
+
+          <button
+            onClick={() => setStep(1)}
+            style={{
+              width: '100%',
+              background: '#b5445a',
+              color: 'white',
+              border: 'none',
+              padding: '16px',
+              borderRadius: 24,
+              fontSize: 16,
+              fontWeight: 800,
+              cursor: 'pointer',
+              boxShadow: '0 8px 16px rgba(181, 68, 90, 0.25)',
+            }}
+          >
+            새로운 알 부화하기
+          </button>
+        </div>
+      )}
+
       {step === 1 && (
         <div style={{ width: '100%' }}>
           <div style={{ fontSize: 13, color: '#9e7b5f', fontFamily: "'DotGothic16', monospace", marginBottom: 8 }}>
@@ -64,38 +135,24 @@ export default function HatchPage() {
                   borderRadius: 20,
                   padding: '14px 18px',
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
+                  flexDirection: 'column',
                   textAlign: 'left',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
-                  boxShadow: '0 4px 12px rgba(180, 140, 100, 0.04)',
                 }}
               >
-                <span style={{ fontSize: 28 }}>{sp.emoji}</span>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: selectedSpecies === sp.type ? 'white' : '#3d2c1e' }}>
-                    {sp.title}
-                  </div>
-                  <div style={{ fontSize: 11, color: selectedSpecies === sp.type ? 'rgba(255,255,255,0.85)' : '#9e7b5f', marginTop: 2 }}>
-                    {sp.desc}
-                  </div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: selectedSpecies === sp.type ? 'white' : '#3d2c1e' }}>
+                  {sp.title}
+                </div>
+                <div style={{ fontSize: 11, color: selectedSpecies === sp.type ? 'rgba(255,255,255,0.85)' : '#9e7b5f', marginTop: 2 }}>
+                  {sp.desc}
                 </div>
               </button>
             ))}
           </div>
           <button
-            onClick={handleNextStep}
-            style={{
-              width: '100%',
-              background: '#3d2c1e',
-              color: 'white',
-              border: 'none',
-              padding: '14px',
-              borderRadius: 20,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            onClick={() => setStep(2)}
+            style={{ width: '100%', background: '#3d2c1e', color: 'white', border: 'none', padding: '14px', borderRadius: 20, fontWeight: 700 }}
           >
             선택 완료
           </button>
@@ -110,6 +167,7 @@ export default function HatchPage() {
           <h2 style={{ fontSize: 20, color: '#3d2c1e', fontWeight: 800, marginBottom: 12 }}>
             다마고치의 이름을 지어주세요
           </h2>
+          {errorMsg && <div style={{ color: '#e63946', fontSize: 13, marginBottom: 10 }}>{errorMsg}</div>}
           <div style={{ margin: '36px 0 24px' }}>
             <input
               type="text"
@@ -132,8 +190,8 @@ export default function HatchPage() {
             />
           </div>
           <button
-            onClick={handleNextStep}
-            disabled={!name.trim()}
+            onClick={() => setStep(3)}
+            disabled={!name.trim() || loading}
             style={{
               width: '100%',
               background: name.trim() ? '#3d2c1e' : '#c4a882',
@@ -142,7 +200,6 @@ export default function HatchPage() {
               padding: '14px',
               borderRadius: 20,
               fontWeight: 700,
-              cursor: name.trim() ? 'pointer' : 'not-allowed',
             }}
           >
             다음 단계로
@@ -158,30 +215,34 @@ export default function HatchPage() {
           <h2 style={{ fontSize: 20, color: '#3d2c1e', fontWeight: 800, marginBottom: 12 }}>
             알을 톡톡! 두드려서 깨워주세요
           </h2>
-          <div style={{ position: 'relative', margin: '40px 0', height: 200, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ margin: '40px 0', display: 'flex', justifyContent: 'center' }}>
             <button
               onClick={handleCrackEgg}
+              disabled={loading}
               style={{
-                fontSize: crackCount === 0 ? 90 : crackCount === 1 ? 95 : crackCount === 2 ? 100 : 105,
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'transform 0.1s',
-                transform: crackCount > 0 ? 'rotate(10deg)' : 'none',
+                transform: crackCount > 0 ? 'scale(1.1) rotate(5deg)' : 'none',
               }}
             >
-              {crackCount === 0 ? '🥚' : crackCount === 1 ? '🐣' : crackCount === 2 ? '🐥' : '💥'}
+              <svg width="120" height="150" viewBox="0 0 100 120">
+                <ellipse cx="50" cy="65" rx="42" ry="52" fill="#ffd166" stroke="#f4a261" strokeWidth="4" />
+                {crackCount >= 1 && <path d="M 30,55 L 45,65 L 55,55" stroke="#f4a261" strokeWidth="4" fill="none" />}
+                {crackCount >= 2 && <path d="M 50,60 L 65,75 L 75,65" stroke="#f4a261" strokeWidth="4" fill="none" />}
+                {crackCount >= 3 && <path d="M 40,30 L 50,45 L 60,35" stroke="#f4a261" strokeWidth="4" fill="none" />}
+              </svg>
             </button>
           </div>
           <div style={{ fontSize: 12, color: '#9e7b5f', fontFamily: "'DotGothic16', monospace" }}>
-            터치 횟수: {crackCount} / 4
+            {loading ? '부화 처리 중...' : `터치 횟수: ${crackCount} / 4`}
           </div>
         </div>
       )}
 
       {step === 4 && (
         <div style={{ width: '100%' }}>
-          <div style={{ fontSize: 32, marginBottom: 16 }}>🎉</div>
           <h2 style={{ fontSize: 22, color: '#3d2c1e', fontWeight: 800, marginBottom: 4 }}>
             부화에 성공했어요!
           </h2>

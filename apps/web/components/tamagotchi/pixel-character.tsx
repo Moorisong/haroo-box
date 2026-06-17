@@ -2,27 +2,30 @@
 
 import React, { useState, useEffect } from 'react';
 
-const BODY_COLORS = {
-  cutie: { main: '#ffd166', border: '#e6b333', dark: '#d4a31a' },    // 귀염상
-  weird: { main: '#b8c0ff', border: '#929cf8', dark: '#7d87f0' },    // 기괴상
-  normal: { main: '#f4a261', border: '#e28743', dark: '#c86f2d' },   // 평범상
-  unique: { main: '#74c69d', border: '#52b788', dark: '#409c70' },   // 개성상
-} as const;
+// 종족별 5종 색상 팔레트 테마 (0 ~ 4)
+const PALETTES = [
+  { main: '#ffd166', border: '#e6b333', dark: '#d4a31a' }, // 0: 노랑
+  { main: '#b8c0ff', border: '#929cf8', dark: '#7d87f0' }, // 1: 파랑
+  { main: '#f4a261', border: '#e28743', dark: '#c86f2d' }, // 2: 오렌지
+  { main: '#74c69d', border: '#52b788', dark: '#409c70' }, // 3: 연두
+  { main: '#ffb3c1', border: '#e07a5f', dark: '#c1121f' }, // 4: 핑크/레드
+];
 
-export type TamagotchiSpecies = keyof typeof BODY_COLORS;
+export type TamagotchiSpecies = 'cutie' | 'weird' | 'normal' | 'unique';
 export type TamagotchiMood = 'happy' | 'hungry' | 'sleepy' | 'excited' | 'dead';
-export type TamagotchiHat = 'crown' | 'wizard' | 'explorer';
 
 export interface PixelCharacterProps {
   species?: TamagotchiSpecies;
+  colorPalette?: number;
   mood?: TamagotchiMood;
   size?: 'sm' | 'md' | 'lg';
   flower?: string | null;
-  hat?: TamagotchiHat | null;
+  hat?: string | null;
 }
 
 export function PixelCharacter({
   species = 'cutie',
+  colorPalette = 0,
   mood = 'happy',
   size = 'lg',
   flower = null,
@@ -32,200 +35,184 @@ export function PixelCharacter({
 
   useEffect(() => {
     if (mood === 'dead') return;
-    const interval = setInterval(() => {
-      setBounce((b) => !b);
-    }, 1000);
+    const interval = setInterval(() => setBounce((b) => !b), 800);
     return () => clearInterval(interval);
   }, [mood]);
 
-  const sizes = { sm: 64, md: 100, lg: 140 };
+  const sizes = { sm: 48, md: 80, lg: 120 };
   const s = sizes[size];
-  const theme = BODY_COLORS[species];
+  const theme = PALETTES[colorPalette] || PALETTES[0];
+
+  // 1. 모자 10종 렌더러
+  const renderHat = () => {
+    if (!hat) return null;
+    switch (hat) {
+      case 'crown': // 왕관
+        return (
+          <path d="M 30,22 L 35,12 L 50,22 L 65,12 L 70,22 L 70,30 L 30,30 Z" fill="#ffe066" stroke="#d4a31a" strokeWidth="2" />
+        );
+      case 'ribbon': // 리본
+        return (
+          <g fill="#ff70a6" stroke="#ff477e" strokeWidth="1.5">
+            <circle cx="42" cy="24" r="7" />
+            <circle cx="58" cy="24" r="7" />
+            <polygon points="45,24 55,24 50,28" fill="#ff477e" />
+          </g>
+        );
+      case 'sunglasses': // 선글라스
+        return (
+          <g fill="#212529" stroke="#343a40" strokeWidth="1.5">
+            <rect x="28" y="38" width="18" height="10" rx="3" />
+            <rect x="54" y="38" width="18" height="10" rx="3" />
+            <line x1="46" y1="42" x2="54" y2="42" stroke="#212529" strokeWidth="3" />
+          </g>
+        );
+      case 'helmet': // 전투 헬멧
+        return (
+          <path d="M 22,34 C 22,18 78,18 78,34 L 78,40 L 22,40 Z" fill="#6c757d" stroke="#495057" strokeWidth="2" />
+        );
+      case 'cap': // 야구모자
+        return (
+          <g>
+            <path d="M 25,32 C 25,18 75,18 75,32 Z" fill="#023e8a" />
+            <path d="M 65,30 L 90,30 L 85,34 L 65,34 Z" fill="#0077b6" />
+          </g>
+        );
+      case 'box': // 종이상자
+        return (
+          <rect x="26" y="16" width="48" height="20" fill="#b79ced" stroke="#9b5de5" strokeWidth="2" rx="4" />
+        );
+      case 'pot': // 냄비
+        return (
+          <g>
+            <path d="M 28,32 L 72,32 L 68,20 L 32,20 Z" fill="#adb5bd" stroke="#6c757d" strokeWidth="2" />
+            <rect x="46" y="14" width="8" height="6" fill="#495057" />
+          </g>
+        );
+      case 'frog': // 개구리 모자
+        return (
+          <g>
+            <path d="M 24,34 C 24,18 76,18 76,34 Z" fill="#52b788" />
+            <circle cx="36" cy="22" r="6" fill="#fff" stroke="#52b788" strokeWidth="2" />
+            <circle cx="36" cy="22" r="3" fill="#000" />
+            <circle cx="64" cy="22" r="6" fill="#fff" stroke="#52b788" strokeWidth="2" />
+            <circle cx="64" cy="22" r="3" fill="#000" />
+          </g>
+        );
+      case 'poop': // 똥 모자
+        return (
+          <path d="M 50,12 C 55,12 60,18 55,24 C 65,24 68,34 50,34 C 32,34 35,24 45,24 C 40,18 45,12 50,12 Z" fill="#a06cd5" />
+        );
+      case 'plunger': // 뚫어뻥
+        return (
+          <g>
+            <rect x="48" y="4" width="4" height="20" fill="#e0aaff" />
+            <path d="M 38,24 C 38,18 62,18 62,24 Z" fill="#e63946" />
+          </g>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // 2. 꽃 6종 렌더러
+  const renderFlower = () => {
+    if (!flower) return null;
+    let color = '#ffb703';
+    if (flower === '민들레') color = '#ffd166';
+    else if (flower === '초록 새싹') color = '#06d6a0';
+    else if (flower === '장미') color = '#ef476f';
+    else if (flower === '해바라기') color = '#ffb703';
+    else if (flower === '네잎클로버') color = '#38b000';
+    else if (flower === '황금꽃') color = '#ffd700';
+
+    return (
+      <g transform="translate(68, 16)">
+        <circle cx="8" cy="8" r="6" fill={color} />
+        <circle cx="2" cy="8" r="4" fill="#fff" />
+        <circle cx="14" cy="8" r="4" fill="#fff" />
+        <circle cx="8" cy="2" r="4" fill="#fff" />
+        <circle cx="8" cy="14" r="4" fill="#fff" />
+      </g>
+    );
+  };
 
   return (
     <div
       style={{
         width: s,
         height: s,
-        transition: 'transform 0.3s ease-in-out',
-        transform: bounce ? 'translateY(-6px)' : 'translateY(0px)',
+        transition: 'transform 0.15s ease-in-out',
+        transform: bounce ? 'translateY(-4px)' : 'translateY(0px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
       }}
     >
-      {/* 그림자 */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: -4,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: s * 0.7,
-          height: 6,
-          background: 'rgba(180, 130, 80, 0.15)',
-          borderRadius: '50%',
-          filter: 'blur(2px)',
-        }}
-      />
-
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ zIndex: 1 }}
-      >
-        {/* 귀염상 전용 귀 */}
+      <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* 귀염상 귀 */}
         {species === 'cutie' && (
           <>
-            <rect x="25" y="18" width="12" height="16" rx="4" fill={theme.main} stroke={theme.border} strokeWidth="2.5" />
-            <rect x="63" y="18" width="12" height="16" rx="4" fill={theme.main} stroke={theme.border} strokeWidth="2.5" />
-            <rect x="28" y="21" width="6" height="10" rx="2" fill="#ffb3c1" />
-            <rect x="66" y="21" width="6" height="10" rx="2" fill="#ffb3c1" />
+            <rect x="24" y="20" width="14" height="18" rx="5" fill={theme.main} stroke={theme.border} strokeWidth="2" />
+            <rect x="62" y="20" width="14" height="18" rx="5" fill={theme.main} stroke={theme.border} strokeWidth="2" />
           </>
         )}
 
-        {/* 기괴상 전용 더듬이 */}
+        {/* 기괴상 더듬이 */}
         {species === 'weird' && (
           <>
-            <path d="M 38,22 Q 30,12 32,7" stroke={theme.border} strokeWidth="3.5" strokeLinecap="round" />
-            <path d="M 62,22 Q 70,12 68,7" stroke={theme.border} strokeWidth="3.5" strokeLinecap="round" />
-            <circle cx="32" cy="7" r="4.5" fill="#ef476f" />
-            <circle cx="68" cy="7" r="4.5" fill="#ef476f" />
+            <path d="M 36,24 Q 28,14 30,8" stroke={theme.border} strokeWidth="3" fill="none" />
+            <path d="M 64,24 Q 72,14 70,8" stroke={theme.border} strokeWidth="3" fill="none" />
+            <circle cx="30" cy="8" r="4" fill="#e63946" />
+            <circle cx="70" cy="8" r="4" fill="#e63946" />
           </>
         )}
 
-        {/* 본체 몸통 */}
-        <rect x="18" y="28" width="64" height="56" rx="24" fill={theme.main} stroke={theme.border} strokeWidth="3" />
-        {/* 배 (Tummy) */}
-        <rect x="30" y="52" width="40" height="24" rx="12" fill="rgba(255,255,255,0.45)" />
+        {/* 몸체 */}
+        <rect x="18" y="32" width="64" height="52" rx="22" fill={theme.main} stroke={theme.border} strokeWidth="3.5" />
 
-        {/* 상태별 눈 */}
+        {/* 눈 렌더링 */}
         {mood === 'dead' ? (
           <>
-            <path d="M 33,43 L 39,49 M 39,43 L 33,49" stroke={theme.dark} strokeWidth="3" strokeLinecap="round" />
-            <path d="M 61,43 L 67,49 M 67,43 L 61,49" stroke={theme.dark} strokeWidth="3" strokeLinecap="round" />
+            <path d="M 32,46 L 40,54 M 40,46 L 32,54" stroke="#000" strokeWidth="3.5" />
+            <path d="M 60,46 L 68,54 M 68,46 L 60,54" stroke="#000" strokeWidth="3.5" />
           </>
         ) : mood === 'sleepy' ? (
           <>
-            <path d="M 32,46 Q 36,50 40,46" stroke={theme.dark} strokeWidth="3.5" strokeLinecap="round" fill="none" />
-            <path d="M 60,46 Q 64,50 68,46" stroke={theme.dark} strokeWidth="3.5" strokeLinecap="round" fill="none" />
+            <path d="M 32,50 Q 36,54 40,50" stroke="#000" strokeWidth="3.5" fill="none" />
+            <path d="M 60,50 Q 64,54 68,50" stroke="#000" strokeWidth="3.5" fill="none" />
           </>
         ) : mood === 'excited' ? (
           <>
-            <circle cx="36" cy="44" r="7" fill="#ffffff" stroke={theme.border} strokeWidth="1.5" />
-            <circle cx="64" cy="44" r="7" fill="#ffffff" stroke={theme.border} strokeWidth="1.5" />
-            <circle cx="36" cy="44" r="3" fill="#3d2c1e" />
-            <circle cx="64" cy="44" r="3" fill="#3d2c1e" />
+            <circle cx="36" cy="48" r="6" fill="#fff" stroke="#000" strokeWidth="2" />
+            <circle cx="64" cy="48" r="6" fill="#fff" stroke="#000" strokeWidth="2" />
           </>
         ) : (
           <>
-            <circle cx="36" cy="44" r="5.5" fill="#3d2c1e" />
-            <circle cx="64" cy="44" r="5.5" fill="#3d2c1e" />
-            <circle cx="38" cy="42" r="1.8" fill="#ffffff" />
-            <circle cx="66" cy="42" r="1.8" fill="#ffffff" />
-          </>
-        )}
-
-        {/* 볼터치 */}
-        {mood !== 'dead' && (
-          <>
-            <ellipse cx="28" cy="50" rx="5" ry="3.5" fill="#ffb3c1" fillOpacity="0.7" />
-            <ellipse cx="72" cy="50" rx="5" ry="3.5" fill="#ffb3c1" fillOpacity="0.7" />
+            <circle cx="36" cy="48" r="4" fill="#000" />
+            <circle cx="64" cy="48" r="4" fill="#000" />
           </>
         )}
 
         {/* 입 */}
         {mood === 'dead' ? (
-          <path d="M 44,60 Q 50,56 56,60" stroke="#3d2c1e" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          <path d="M 44,66 Q 50,60 56,66" stroke="#000" strokeWidth="3" fill="none" />
         ) : mood === 'hungry' ? (
-          <path d="M 44,58 Q 50,54 56,58" stroke="#3d2c1e" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          <rect x="44" y="62" width="12" height="4" rx="2" fill="#000" />
         ) : mood === 'excited' ? (
-          <path d="M 42,56 Q 50,68 58,56" fill="#b5445a" stroke={theme.border} strokeWidth="2" strokeLinecap="round" />
+          <path d="M 42,62 Q 50,74 58,62 Z" fill="#d90429" />
         ) : (
-          <path d="M 44,56 Q 50,62 56,56" stroke="#3d2c1e" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          <path d="M 44,64 Q 50,70 56,64" stroke="#000" strokeWidth="3" fill="none" />
         )}
 
         {/* 발 */}
-        <rect x="26" y="80" width="14" height="8" rx="4" fill={theme.main} stroke={theme.border} strokeWidth="2.5" />
-        <rect x="60" y="80" width="14" height="8" rx="4" fill={theme.main} stroke={theme.border} strokeWidth="2.5" />
+        <rect x="26" y="82" width="14" height="8" rx="3" fill={theme.main} stroke={theme.border} strokeWidth="2" />
+        <rect x="60" y="82" width="14" height="8" rx="3" fill={theme.main} stroke={theme.border} strokeWidth="2" />
 
-        {/* 1. 왕관 모자 (crown) SVG 렌더링 */}
-        {hat === 'crown' && (
-          <g transform="translate(30, 4)">
-            <path d="M 0,16 L 8,6 L 20,16 L 32,6 L 40,16 L 40,24 L 0,24 Z" fill="#ffe066" stroke="#d4a31a" strokeWidth="2" strokeLinejoin="round" />
-            <circle cx="8" cy="5" r="2" fill="#ef476f" />
-            <circle cx="20" cy="15" r="2.5" fill="#06d6a0" />
-            <circle cx="32" cy="5" r="2" fill="#ef476f" />
-          </g>
-        )}
-
-        {/* 2. 마법사 모자 (wizard) SVG 렌더링 */}
-        {hat === 'wizard' && (
-          <g transform="translate(32, 2)">
-            <path d="M 18,0 L 0,22 L 36,22 Z" fill="#929cf8" stroke="#7d87f0" strokeWidth="2" strokeLinejoin="round" />
-            {/* 별 무늬 */}
-            <path d="M 15,9 L 18,6 L 21,9 L 18,12 Z" fill="#ffe066" />
-            <ellipse cx="18" cy="22" rx="20" ry="3.5" fill="#929cf8" stroke="#7d87f0" strokeWidth="1.8" />
-          </g>
-        )}
-
-        {/* 3. 탐험가 모자 (explorer) SVG 렌더링 */}
-        {hat === 'explorer' && (
-          <g transform="translate(26, 8)">
-            <path d="M 6,14 L 6,6 Q 24,0 42,6 L 42,14 Z" fill="#e28743" stroke="#c86f2d" strokeWidth="2" />
-            <rect x="6" y="11" width="36" height="3" fill="#ffe9c5" />
-            <ellipse cx="24" cy="15" rx="24" ry="4.5" fill="#e28743" stroke="#c86f2d" strokeWidth="1.8" />
-          </g>
-        )}
+        {renderHat()}
+        {renderFlower()}
       </svg>
-
-      {/* 꽃 장식 액세서리 */}
-      {flower && (
-        <span
-          style={{
-            position: 'absolute',
-            top: s * 0.18,
-            right: s * 0.18,
-            fontSize: s * 0.22,
-            zIndex: 10,
-          }}
-        >
-          {flower}
-        </span>
-      )}
-    </div>
-  );
-}
-
-export function MiniCharacter({
-  species = 'cutie',
-  mood = 'happy',
-  accessory = null,
-}: {
-  species?: TamagotchiSpecies;
-  mood?: TamagotchiMood;
-  accessory?: string | null;
-}) {
-  return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <PixelCharacter species={species} mood={mood} size="sm" />
-      {accessory && (
-        <span
-          style={{
-            position: 'absolute',
-            top: -2,
-            right: -2,
-            fontSize: 14,
-            zIndex: 5,
-          }}
-        >
-          {accessory}
-        </span>
-      )}
     </div>
   );
 }
