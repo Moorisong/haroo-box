@@ -10,6 +10,8 @@ import { MobileView } from '@/components/tamagotchi/responsive/mobile-view';
 import { TabletView } from '@/components/tamagotchi/responsive/tablet-view';
 import { DesktopView } from '@/components/tamagotchi/responsive/desktop-view';
 
+import { LandscapeView } from '@/components/tamagotchi/responsive/landscape-view';
+
 const FLOWER_DECORATIONS = ['🌸', '🌹', '🌻', '🌿', '🍂'];
 
 export default function TamagotchiPage() {
@@ -154,6 +156,19 @@ export default function TamagotchiPage() {
               {renderToolbar()}
             </div>
           </DesktopView>
+        }
+        landscape={
+          <LandscapeView>
+            <div>
+              {renderRoom()}
+              <div style={{ marginTop: 12 }}>
+                <StatusBars stats={stats} />
+              </div>
+            </div>
+            <div style={{ background: '#fffaf4', borderRadius: 20, padding: 16, border: '1.5px solid rgba(180,140,100,0.15)' }}>
+              {renderToolbar()}
+            </div>
+          </LandscapeView>
         }
       />
     </div>
