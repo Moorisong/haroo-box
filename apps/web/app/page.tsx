@@ -46,6 +46,16 @@ export const metadata: Metadata = {
 export default function Home() {
     const contents = [
         {
+            id: 'tamagotchi',
+            title: '전투 다마고치',
+            description: '나만의 다마고치를 육성하고 전투에 참여시키세요!\n진화와 훈련을 통한 짜릿한 경쟁!',
+            image: '/tamagotchi-logo.png',
+            link: ROUTES.TAMAGOTCHI,
+            badge: 'New',
+            badgeType: styles.badgeNew,
+            active: true,
+        },
+        {
             id: 'puzzle',
             title: '하루퍼즐',
             description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
@@ -62,8 +72,6 @@ export default function Home() {
             description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
             image: '/u-know-logo-v2.png',
             link: ROUTES.U_KNOW,
-            badge: 'New',
-            badgeType: styles.badgeNew,
             active: true,
         },
         {
