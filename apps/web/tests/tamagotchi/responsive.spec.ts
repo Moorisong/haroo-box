@@ -44,4 +44,17 @@ test.describe('다마고치 반응형/적응형 레이아웃 정합성 테스트
     await expect(mobileIndicator).not.toBeVisible();
     await expect(tabletIndicator).not.toBeVisible();
   });
+
+  test('가로모드 뷰포트(667x375)에서 가로모드 전용 2단 분할 레이아웃이 노출되어야 한다', async ({ page }) => {
+    await page.setViewportSize({ width: 667, height: 375 });
+    await page.goto('/tamagotchi');
+
+    const landscapeIndicator = page.locator('[data-testid="device-landscape-view"]');
+    await expect(landscapeIndicator).toBeVisible();
+
+    const mobileIndicator = page.locator('[data-testid="device-mobile-view"]');
+    const tabletIndicator = page.locator('[data-testid="device-tablet-view"]');
+    await expect(mobileIndicator).not.toBeVisible();
+    await expect(tabletIndicator).not.toBeVisible();
+  });
 });
