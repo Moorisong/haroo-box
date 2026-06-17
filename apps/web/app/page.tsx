@@ -59,7 +59,7 @@ export default function Home() {
             id: 'puzzle',
             title: '하루퍼즐',
             description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
-            image: '/puzzle-logo.png',
+            image: '/puzzle-logo-v2.png',
             link: ROUTES.PUZZLE,
             badge: 'New',
             badgeType: styles.badgeNew,
@@ -132,7 +132,6 @@ export default function Home() {
                                     width={140}
                                     height={140}
                                     className={styles.cardImage}
-                                    style={content.id === 'puzzle' ? { mixBlendMode: 'multiply' } : undefined}
                                     priority
                                 />
                             </div>
