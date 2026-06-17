@@ -20,6 +20,7 @@ export default function HatchPage() {
   const [crackCount, setCrackCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [hatchedData, setHatchedData] = useState<{ colorPalette: number; hat: string | null } | null>(null);
 
   const checkNameAndHatch = async () => {
     setLoading(true);
@@ -43,6 +44,10 @@ export default function HatchPage() {
         setErrorMsg(body.error || '부화 중 오류가 발생했습니다.');
         setStep(2);
       } else {
+        setHatchedData({
+          colorPalette: body.data.colorPalette,
+          hat: body.data.hat,
+        });
         setStep(4);
       }
     } catch (e) {
@@ -251,7 +256,13 @@ export default function HatchPage() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'center', margin: '30px 0' }}>
-            <PixelCharacter species={selectedSpecies} mood="excited" size="lg" />
+            <PixelCharacter
+              species={selectedSpecies}
+              colorPalette={hatchedData?.colorPalette ?? 0}
+              hat={hatchedData?.hat ?? null}
+              mood="excited"
+              size="lg"
+            />
           </div>
 
           <button
