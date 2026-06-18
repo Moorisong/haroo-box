@@ -50,7 +50,7 @@ export default function HatchPage() {
         });
         setStep(4);
       }
-    } catch (e) {
+    } catch {
       setErrorMsg('서버와 통신할 수 없습니다.');
       setStep(2);
     } finally {

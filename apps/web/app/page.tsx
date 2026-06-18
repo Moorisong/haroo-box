@@ -1,3 +1,5 @@
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -43,14 +45,17 @@ export const metadata: Metadata = {
     },
 };
 
-export default function Home() {
+export default async function Home() {
+    const session = await getServerSession(authOptions);
+    const isLoggedIn = !!session?.user?.kakaoId;
+
     const contents = [
         {
             id: 'tamagotchi',
             title: '전투 다마고치',
             description: '나만의 다마고치를 육성하고 전투에 참여시키세요!\n진화와 훈련을 통한 짜릿한 경쟁!',
             image: '/tamagotchi-logo.png',
-            link: ROUTES.TAMAGOTCHI,
+            link: isLoggedIn ? ROUTES.TAMAGOTCHI : `/login?callbackUrl=${ROUTES.TAMAGOTCHI}`,
             badge: 'New',
             badgeType: styles.badgeNew,
             active: true,

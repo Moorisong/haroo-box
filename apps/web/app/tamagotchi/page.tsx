@@ -49,7 +49,11 @@ export default function TamagotchiPage() {
     const initSession = async () => {
       const sessionRes = await fetch('/api/auth/session');
       const session = await sessionRes.json();
-      const currentToken = session?.user?.kakaoId || 'test_user_guest';
+      const currentToken = session?.user?.kakaoId;
+      if (!currentToken) {
+        router.push('/');
+        return;
+      }
       setToken(currentToken);
       await fetchMyTama(currentToken);
     };
@@ -136,9 +140,31 @@ export default function TamagotchiPage() {
           </div>
           <h1 style={{ fontSize: 20, fontWeight: 800, color: '#3d2c1e' }}>{tamaData.name} (Gen {tamaData.generation})</h1>
         </div>
-        <Link href="/tamagotchi/notifications" style={{ background: '#fffaf4', border: '1.5px solid rgba(180,140,100,0.25)', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span>🔔</span>
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {token === '4708331286' && (
+            <Link
+              href="/tamagotchi/test-showcase"
+              style={{
+                background: '#fffaf4',
+                border: '1.5px solid #f4a261',
+                borderRadius: 12,
+                padding: '8px 12px',
+                fontSize: 12,
+                fontWeight: 700,
+                color: '#e28743',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4
+              }}
+            >
+              🎨 외형 테스트
+            </Link>
+          )}
+          <Link href="/tamagotchi/notifications" style={{ background: '#fffaf4', border: '1.5px solid rgba(180,140,100,0.25)', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span>🔔</span>
+          </Link>
+        </div>
       </div>
 
       <DeviceWrapper
