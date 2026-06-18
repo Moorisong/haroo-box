@@ -1,16 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Poporing } from './characters/Poporing';
+import { Leafy } from './characters/Leafy';
+import { Starpy } from './characters/Starpy';
+import { Lunafore } from './characters/Lunafore';
 
 // 종족별 5종 색상 팔레트 테마 (0 ~ 4)
-const PALETTES = [
-  { main: '#ffd166', border: '#e6b333', dark: '#d4a31a' }, // 0: 노랑
-  { main: '#b8c0ff', border: '#929cf8', dark: '#7d87f0' }, // 1: 파랑
-  { main: '#f4a261', border: '#e28743', dark: '#c86f2d' }, // 2: 오렌지
-  { main: '#74c69d', border: '#52b788', dark: '#409c70' }, // 3: 연두
-  { main: '#ffb3c1', border: '#e07a5f', dark: '#c1121f' }, // 4: 핑크/레드
-];
-
 export type TamagotchiSpecies = 'cutie' | 'weird' | 'normal' | 'unique';
 export type TamagotchiMood = 'happy' | 'hungry' | 'sleepy' | 'excited' | 'dead';
 
@@ -41,7 +37,6 @@ export function PixelCharacter({
 
   const sizes = { sm: 48, md: 80, lg: 120 };
   const s = sizes[size];
-  const theme = PALETTES[colorPalette] || PALETTES[0];
 
   // 1. 모자 10종 렌더러
   const renderHat = () => {
@@ -137,6 +132,21 @@ export function PixelCharacter({
     );
   };
 
+  const renderCharacterSvg = () => {
+    switch (species) {
+      case 'cutie':
+        return <Poporing mood={mood} colorPalette={colorPalette} />;
+      case 'normal':
+        return <Leafy mood={mood} colorPalette={colorPalette} />;
+      case 'unique':
+        return <Starpy mood={mood} colorPalette={colorPalette} />;
+      case 'weird':
+        return <Lunafore mood={mood} colorPalette={colorPalette} />;
+      default:
+        return <Poporing mood={mood} colorPalette={colorPalette} />;
+    }
+  };
+
   return (
     <div
       style={{
@@ -150,69 +160,23 @@ export function PixelCharacter({
         position: 'relative',
       }}
     >
-      <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* 귀염상 귀 */}
-        {species === 'cutie' && (
-          <>
-            <rect x="24" y="20" width="14" height="18" rx="5" fill={theme.main} stroke={theme.border} strokeWidth="2" />
-            <rect x="62" y="20" width="14" height="18" rx="5" fill={theme.main} stroke={theme.border} strokeWidth="2" />
-          </>
-        )}
-
-        {/* 기괴상 더듬이 */}
-        {species === 'weird' && (
-          <>
-            <path d="M 36,24 Q 28,14 30,8" stroke={theme.border} strokeWidth="3" fill="none" />
-            <path d="M 64,24 Q 72,14 70,8" stroke={theme.border} strokeWidth="3" fill="none" />
-            <circle cx="30" cy="8" r="4" fill="#e63946" />
-            <circle cx="70" cy="8" r="4" fill="#e63946" />
-          </>
-        )}
-
-        {/* 몸체 */}
-        <rect x="18" y="32" width="64" height="52" rx="22" fill={theme.main} stroke={theme.border} strokeWidth="3.5" />
-
-        {/* 눈 렌더링 */}
-        {mood === 'dead' ? (
-          <>
-            <path d="M 32,46 L 40,54 M 40,46 L 32,54" stroke="#000" strokeWidth="3.5" />
-            <path d="M 60,46 L 68,54 M 68,46 L 60,54" stroke="#000" strokeWidth="3.5" />
-          </>
-        ) : mood === 'sleepy' ? (
-          <>
-            <path d="M 32,50 Q 36,54 40,50" stroke="#000" strokeWidth="3.5" fill="none" />
-            <path d="M 60,50 Q 64,54 68,50" stroke="#000" strokeWidth="3.5" fill="none" />
-          </>
-        ) : mood === 'excited' ? (
-          <>
-            <circle cx="36" cy="48" r="6" fill="#fff" stroke="#000" strokeWidth="2" />
-            <circle cx="64" cy="48" r="6" fill="#fff" stroke="#000" strokeWidth="2" />
-          </>
-        ) : (
-          <>
-            <circle cx="36" cy="48" r="4" fill="#000" />
-            <circle cx="64" cy="48" r="4" fill="#000" />
-          </>
-        )}
-
-        {/* 입 */}
-        {mood === 'dead' ? (
-          <path d="M 44,66 Q 50,60 56,66" stroke="#000" strokeWidth="3" fill="none" />
-        ) : mood === 'hungry' ? (
-          <rect x="44" y="62" width="12" height="4" rx="2" fill="#000" />
-        ) : mood === 'excited' ? (
-          <path d="M 42,62 Q 50,74 58,62 Z" fill="#d90429" />
-        ) : (
-          <path d="M 44,64 Q 50,70 56,64" stroke="#000" strokeWidth="3" fill="none" />
-        )}
-
-        {/* 발 */}
-        <rect x="26" y="82" width="14" height="8" rx="3" fill={theme.main} stroke={theme.border} strokeWidth="2" />
-        <rect x="60" y="82" width="14" height="8" rx="3" fill={theme.main} stroke={theme.border} strokeWidth="2" />
-
+      <div style={{ position: 'absolute', inset: 0 }}>
+        {renderCharacterSvg()}
+      </div>
+      
+      {/* 장착형 아이템 오버레이용 SVG */}
+      <svg
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         {renderHat()}
         {renderFlower()}
       </svg>
     </div>
   );
 }
+
