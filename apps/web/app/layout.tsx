@@ -45,11 +45,20 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '하루상자',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: '하루상자 메인 이미지',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
     description: '하루상자는 자아탐험(조하리의 창) 등 다양한 미니콘텐츠를 즐길 수 있는 웹 플랫폼입니다.',
+    images: ['/og-image.png'],
   },
   verification: {
     google: '46025c5df5a2c939',
