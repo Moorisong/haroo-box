@@ -10,7 +10,7 @@ import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adf
 
 interface PortraitPuzzleLayoutProps {
   puzzle: any;
-  difficulty: string;
+  difficulty: 'novice' | 'beginner' | 'expert';
   timerSeconds: number;
   progressPercent: number;
   formatTime: (sec: number) => string;
