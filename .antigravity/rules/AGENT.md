@@ -11,6 +11,7 @@
 * **[웹 작업 시]:** Next.js 등 웹 관련 파일(src/app, components/web 등)을 수정하거나 생성할 때는 `/docs/conventions/WEB_CONVENTIONS.md` 규칙을 결합하여 적용한다.
 * **[앱 작업 시]:** React Native 등 모바일 앱 관련 파일(components/app, ios, android 등)을 수정하거나 생성할 때는 `/docs/conventions/APP_CONVENTIONS.md` 규칙을 결합하여 적용한다.
 * 기존 구현 방식이나 기존 소스 코드의 스타일보다 위의 지정된 규칙과 컨벤션이 무조건 절대 우선한다.
+* **[리팩토링 작업 시 트리거]:** 사용자가 "리팩토링" 관련 명력을 내리는 즉시, 에이전트는 자동으로 `/.antigravity/rules/REFACTORING_AGENT.md` 지침을 1순위로 로드한다. 이와 동시에 코드 수정을 즉각 중단하고, 해당 문서의 [1단계] 프로토콜에 의거하여 시각적/기능적 동결을 보장하는 아키텍처 제안서부터 작성하여 사용자에게 승인을 받아야 한다.
 
 ---
 

@@ -9,6 +9,8 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.haroo.site';
+
 export const metadata: Metadata = {
     title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
     description: '하루상자는 심리 분석 등 다양한 미니콘텐츠와 함께, 학교 선생님을 위한 교사 전용 서비스 툴(TOBY)을 제공하는 웹 플랫폼입니다. 수업과 학급 관리에 유용한 도구들과 매일 새로운 즐거움을 만나보세요.',
@@ -26,11 +28,11 @@ export const metadata: Metadata = {
     openGraph: {
         title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
         description: '하루상자는 미니콘텐츠와 교사 전용 서비스 툴(TOBY)을 제공하는 웹 플랫폼입니다. 수업·학급 관리 도구와 다양한 즐거움을 만나보세요.',
-        url: 'https://box.haroo.site',
+        url: baseUrl,
         type: 'website',
         images: [
             {
-                url: '/og-image.png',
+                url: '/haroo-og-image-v1.png',
                 width: 1200,
                 height: 630,
                 alt: '하루상자 메인 이미지',
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
         description: '하루상자는 미니콘텐츠와 교사 전용 서비스 툴(TOBY)을 제공하는 웹 플랫폼입니다. 수업·학급 관리 도구와 다양한 즐거움을 만나보세요.',
-        images: ['/og-image.png'],
+        images: ['/haroo-og-image-v1.png'],
     },
 };
 

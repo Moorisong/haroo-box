@@ -88,8 +88,6 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
     // 4. 진행 중(미완주)인 퍼즐 히스토리 추가
     for (const prog of rawProgresses) {
       const pIdStr = prog.puzzleId.toString();
-      if (completedPuzzleIds.includes(pIdStr)) continue;
-
       const p = puzzleMap.get(pIdStr);
       if (!p) continue;
 
@@ -97,7 +95,7 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
         puzzleId: prog.puzzleId,
         title: p.title,
         imageUrl: p.imageUrl,
-        difficulty: 'beginner',
+        difficulty: prog.detailState?.difficulty || 'beginner',
         completionTime: 0,
         savedAt: prog.updatedAt || prog.lastPlayedAt,
         completed: false,
