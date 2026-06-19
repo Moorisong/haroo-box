@@ -46,7 +46,7 @@ export default function HeroSection({
     completedDifficulties.includes(savedDifficulty)
   );
 
-  const showResume = hasSavedGame && !!onResume && !isSavedDifficultyCompleted;
+  const showResume = hasSavedGame && !!onResume;
 
   const [daysLeft, setDaysLeft] = useState<string>('');
 
