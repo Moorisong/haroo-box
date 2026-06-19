@@ -18,8 +18,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.haroo.site';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://box.haroo.site'),
+  metadataBase: new URL(baseUrl),
   title: {
     default: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
     template: '%s | 하루상자',
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
     description: '하루상자는 자아탐험(조하리의 창) 등 다양한 미니콘텐츠를 즐길 수 있는 웹 플랫폼입니다.',
-    url: 'https://box.haroo.site',
+    url: baseUrl,
     type: 'website',
     locale: 'ko_KR',
     siteName: '하루상자',
