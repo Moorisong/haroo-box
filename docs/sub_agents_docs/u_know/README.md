@@ -13,11 +13,11 @@
 
 ### 1. 백엔드 및 보안 전담 에이전트 (Backend Agent)
 - **담당**: MongoDB 스키마(TTL 포함), Express API (생성, 제출, 결과조회), Rate Limit 및 보안(fingerprintjs, CAPTCHA, nanoid) 적용.
-- **문서 참조**: `docs/sub_agents_docs/u_know/01_backend_agent.md`
+- **문서 참조**: `docs/sub_agents_docs/u_know/BackendAgent.md`
 
 ### 2. 프론트엔드 UI/UX 전담 에이전트 (Frontend Agent)
 - **담당**: React/Vite 기반 페이지 라우팅, 병맛/밈 UI 구현, Framer Motion 애니메이션 (3D 카드 뒤집기 등), 카카오톡 공유 연동.
-- **문서 참조**: `docs/sub_agents_docs/u_know/02_frontend_agent.md`
+- **문서 참조**: `docs/sub_agents_docs/u_know/FrontendAgent.md`
 
 ---
 > **병렬 개발 원칙 (필수 숙지)**

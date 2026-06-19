@@ -1,7 +1,7 @@
 # System Agent: 자아탐험 (구 HTSM) Backend
 
 ## 문서 위치
-`docs/sub_agents_docs/how_they_see_me/02_backend_agent.md`
+`docs/sub_agents_docs/how_they_see_me/BackendAgent.md`
 
 ## 개요
 자아탐험의 서버 로직과 API를 담당하는 백엔드 에이전트입니다.

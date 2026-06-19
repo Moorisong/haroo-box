@@ -1,7 +1,7 @@
 # System Agent: 자아탐험 (HTSM) Core
 
 ## 문서 위치
-`docs/sub_agents_docs/how_they_see_me/00_master_plan.md`
+`docs/sub_agents_docs/how_they_see_me/MasterPlan.md`
 
 ## 개요
 자아탐험은 친구들의 익명 평가를 통해 "내가 보는 나"와 "남이 보는 나"를 비교하는 **Johari Window 기반 심리/성격 분석 웹 서비스**입니다.
@@ -17,12 +17,12 @@
 
 ### 1. [HTSM-Front] Frontend Implementation Agent
 - **담당**: UI/UX, 페이지 라우팅, 3D 시각화, 공유 플로우
-- **문서**: `docs/sub_agents_docs/how_they_see_me/01_frontend_agent.md`
+- **문서**: `docs/sub_agents_docs/how_they_see_me/FrontendAgent.md`
 - **주요 기술**: Next.js (App Router), Three.js (R3F), Zustand, Framer Motion
 
 ### 2. [HTSM-Back] Backend & Security Agent
 - **담당**: API 서버, 데이터 모델링(MongoDB), 보안(Rate Limit, Proof Token), 로직(Johari 계산)
-- **문서**: `docs/sub_agents_docs/how_they_see_me/02_backend_agent.md`
+- **문서**: `docs/sub_agents_docs/how_they_see_me/BackendAgent.md`
 - **주요 기술**: Express, MongoDB(Mongoose), Redis(옵션/메모리), Helmet
 
 ---

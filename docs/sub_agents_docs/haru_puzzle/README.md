@@ -13,11 +13,11 @@
 
 ### 1. 백엔드 및 DB/보안 전담 에이전트 (Backend Agent)
 - **담당**: MongoDB 스키마 설계, Express API 구현 (퍼즐 조회, 챌린지 시작 토큰 발급, 실시간 진행률 저장, 랭킹 기록 제출/조회, 내 정보 조회 및 탈퇴), 챌린지 토큰 검증 및 치팅 방지(Rate Limit 포함), 매주 월요일 퍼즐 교체용 배치 작업(Cron) 설계.
-- **문서 참조**: [01_backend_agent.md](file:///Users/shkim/Desktop/Project/miki-labs/docs/sub_agents_docs/haru_puzzle/01_backend_agent.md)
+- **문서 참조**: [BackendAgent.md](file:///Users/shkim/Desktop/Project/miki-labs/docs/sub_agents_docs/haru_puzzle/BackendAgent.md)
 
 ### 2. 프론트엔드 UI/UX 및 퍼즐엔진 전담 에이전트 (Frontend Agent)
 - **담당**: React 기반 페이지 라우팅, HTML5 Canvas 기반 직소 퍼즐 엔진(드래그, 스냅, 줌/핀치 줌, 섞기, 원본 보기, 렌더링 성능 최적화) 구현, IndexedDB 연동(2초 debounce 자동저장/이어하기), Zustand 스토어 설계, 카카오 로그인 및 공유 기능 연동.
-- **문서 참조**: [02_frontend_agent.md](file:///Users/shkim/Desktop/Project/miki-labs/docs/sub_agents_docs/haru_puzzle/02_frontend_agent.md)
+- **문서 참조**: [FrontendAgent.md](file:///Users/shkim/Desktop/Project/miki-labs/docs/sub_agents_docs/haru_puzzle/FrontendAgent.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # HTSM Result Description Agent Reference
 
-## 조하리 창 결과 텍스트 개선 기획서 (04_result_style_guide.md)
+## 조하리 창 결과 텍스트 개선 기획서 (ResultStyleGuide.md)
 # 조하리 창 결과 텍스트 개선 기획서 (최종)
 
 ## 1. 목적

@@ -1,7 +1,7 @@
 # System Agent: 자아탐험 (구 HTSM) Frontend
 
 ## 문서 위치
-`docs/sub_agents_docs/how_they_see_me/01_frontend_agent.md`
+`docs/sub_agents_docs/how_they_see_me/FrontendAgent.md`
 
 ## 개요
 HTSM의 웹 클라이언트 구현 에이전트입니다.
@@ -53,7 +53,7 @@ Next.js (App Router) 환경에서 사용자가 테스트를 생성하고, 친구
 
 ### Step 3: 공유 페이지 (작성자)
 - **공유 페이지 (`/htsm/share/[id]`)**:
-    - **참여 유도 (Request Page) - [상세 명세](docs/planning/how_they_see_me/05_share_feature_ux.md)**:
+    - **참여 유도 (Request Page) - [상세 명세](docs/planning/HowTheySeeMePlanning.md)**:
         - 타이틀: "친구에게 요청하기 👇"
         - 버튼: [친구 초대 (카카오톡)] / [초대 링크 복사]
         - **카카오 메시지**: 상세 문구는 소스 코드 및 상수를 참조
@@ -72,7 +72,7 @@ Next.js (App Router) 환경에서 사용자가 테스트를 생성하고, 친구
 ### Step 5: 결과 페이지 & 3D 시각화 (업데이트)
 - **결과 페이지 (`/htsm/result/[id]`)**:
     - `GET /api/htsm/result/[id]` 호출
-    - **결과 확산 (Result Page) - [상세 명세](docs/planning/how_they_see_me/05_share_feature_ux.md)**:
+    - **결과 확산 (Result Page) - [상세 명세](docs/planning/HowTheySeeMePlanning.md)**:
         - **탭 구조 도입**: `[ 내 결과 공유 ]` (기본) / `[ 친구 참여시키기 ]`
         - 섹션 타이틀: "친구에게 공유하기 🔥"
         - **모드 1 (내 결과 공유)**:

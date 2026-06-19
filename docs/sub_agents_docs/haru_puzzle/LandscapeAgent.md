@@ -5,7 +5,7 @@
 
 ---
 
-## 04_haru_puzzle_planning.md § VII (가로모드 구현 스펙)
+## HaruPuzzlePlanning.md § VII (가로모드 구현 스펙)
 
 ### 목표
 
