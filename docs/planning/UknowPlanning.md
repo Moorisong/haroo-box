@@ -64,11 +64,11 @@
 **TTL 안내:**
 > “서버비 아까우니까 결과는 3일 뒤 삭제됨”
 
-### 공유 페이지 (`/u-know/share/:id`)
+### 공유 페이지 (`/u-know/share/[id]`)
 **목적:** 카카오톡 공유 극대화.
 - **버튼 예시:** 단톡방 폭격하기, 친구 긁으러 가기
 
-### 친구 참여 (`/u-know/play/:token`)
+### 친구 참여 (`/u-know/play/[token]`)
 **핵심:**
 - 로그인 ❌, 회원가입 ❌, 긴 설명 ❌
 - 즉시 답변 입력 구조.
@@ -78,7 +78,7 @@
 - 입력 시 가벼운 shake 효과
 - 병맛 리액션 텍스트 노출
 
-### 결과 페이지 (`/u-know/result/:id`)
+### 결과 페이지 (`/u-know/result/[token]`)
 **핵심:** 점수 시스템 없음. “예상 답변” → 카드 뒤집기 → “실제 답변” 구조로 비교 재미 제공.
 - **연출:** CSS 3D 카드 뒤집기, 과한 애니메이션 금지, 짧고 임팩트 있게
 - **리액션 예시:** “생각보다 모르네”, “이 정도면 타인”, “친구 계속 해도 되겠다”
@@ -87,7 +87,7 @@
 
 ## 3. 프론트엔드 기획
 
-- **기술 스택:** React, CRA 또는 Vite, React Router, Axios
+- **기술 스택:** Next.js (App Router), Zustand, Axios, Framer Motion
 - **애니메이션:** Framer Motion 중심, GSAP 일부 사용, Three.js 거의 사용 안 함
 - **모바일 전략:** 모바일 퍼스트 (세로 UX, 큰 입력창, 큰 버튼, 짧은 동선, 앱 같은 느낌)
 - **디자인 키워드:** 병맛, 인터넷 밈, 러프함, 친구 놀리기, 괴상함
@@ -101,7 +101,7 @@
 - **핵심 API:**
   - `POST /api/u-know/create`
   - `POST /api/u-know/submit`
-  - `GET /api/u-know/result/:id`
+  - `GET /api/u-know/result/:token`
 - **정책:** 로그인 없이 사용 가능, 모든 데이터 3일 후 삭제, MongoDB TTL Index 사용
 
 ---

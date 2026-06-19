@@ -10,9 +10,9 @@
 ### 1. 라우팅 구조 구현
 - `/u-know` : 메인 페이지 ("이거 단톡에 던지면 재밌겠다" CTA 강조)
 - `/u-know/create` : 질문 및 예상 답변 생성 (랜덤 placeholder, 떨어지는 카드 모션)
-- `/u-know/share/:id` : 생성 완료 후 공유 페이지 (카카오톡 공유 버튼)
-- `/u-know/play/:token` : 친구가 들어와서 답변하는 페이지 (답변 입력 시 가벼운 shake 효과)
-- `/u-know/result/:id` : 예상 답변과 실제 답변을 비교하는 페이지
+- `/u-know/share/[id]` : 생성 완료 후 공유 페이지 (카카오톡 공유 버튼)
+- `/u-know/play/[token]` : 친구가 들어와서 답변하는 페이지 (답변 입력 시 가벼운 shake 효과)
+- `/u-know/result/[token]` : 예상 답변과 실제 답변을 비교하는 페이지
 
 ### 2. UI / UX 및 디자인
 - **디자인 방향:** 병맛, 인터넷 밈, 친구 놀리기, 삐뚤어진 카드 UI, 말풍선. (예쁜 감성 절대 금지)
@@ -26,7 +26,7 @@
 백엔드가 아직 완성되지 않았을 수 있으므로 다음 데이터를 Mocking하여 우선 구현합니다:
 - 생성 API (`POST /api/u-know/create`)
 - 답변 제출 API (`POST /api/u-know/submit`)
-- 결과 조회 API (`GET /api/u-know/result/:id`)
+- 결과 조회 API (`GET /api/u-know/result/:token`)
 
 ## 💡 개발 시 주의사항
 - 카카오톡 공유 기능은 카카오 JS SDK를 활용하여야 하며, 버튼 클릭 시 공유 플로우가 매끄러워야 합니다.

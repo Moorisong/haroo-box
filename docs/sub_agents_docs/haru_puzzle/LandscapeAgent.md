@@ -136,10 +136,10 @@ export function useOrientation() {
 #### Step 2. 레이아웃 분기 렌더링
 
 ```tsx
-// pages/puzzle/play/[puzzleId].tsx (또는 PuzzlePlayPage.jsx)
-import { useOrientation } from '@/hooks/useOrientation';
-import { PortraitPuzzleLayout } from '@/components/puzzle/PortraitPuzzleLayout';   // 기존 세로모드 (변경 없음)
-import { LandscapePuzzleLayout } from '@/components/puzzle/LandscapePuzzleLayout'; // 신규 가로모드
+// apps/web/app/puzzle/play/[puzzleId]/page.tsx
+import { useOrientation } from '@/app/puzzle/hooks/use-orientation';
+import PortraitPuzzleLayout from '@/components/puzzle/portrait/portrait-puzzle-layout';   // 기존 세로모드 (변경 없음)
+import LandscapePuzzleLayout from '@/components/puzzle/landscape/landscape-puzzle-layout'; // 신규 가로모드
 
 export default function PuzzlePlayPage() {
   const { isLandscape } = useOrientation();
@@ -150,11 +150,11 @@ export default function PuzzlePlayPage() {
 }
 ```
 
-> **주의**: 기존 세로모드 코드를 `PortraitPuzzleLayout`으로 감싸는 작업만 허용. 내부 로직 변경 금지.
+> **주의**: 기존 세로모드 코드를 `portrait-puzzle-layout.tsx`로 감싸는 작업만 허용. 내부 로직 변경 금지.
 
 #### Step 3. LandscapePuzzleLayout 컴포넌트 구현
 
-파일 위치: `src/components/puzzle/LandscapePuzzleLayout.jsx`
+파일 위치: `apps/web/components/puzzle/landscape/landscape-puzzle-layout.tsx`
 
 구조:
 ```tsx
@@ -258,18 +258,18 @@ export default function PuzzlePlayPage() {
 
 ### 모듈 분리 구조 (병렬 구현 가능)
 
-각 모듈은 독립적으로 병렬 구현 가능:
+각 모듈은 독립적으로 구현 가능합니다:
 
 | 모듈 | 파일 | 의존성 |
 |------|------|--------|
-| `useOrientation` 훅 | `hooks/useOrientation.ts` | 없음 |
-| `GuidePanel` | `components/puzzle/landscape/GuidePanel.jsx` | 없음 |
-| `TrayPanel` | `components/puzzle/landscape/TrayPanel.jsx` | 기존 모아보기 보관함 컴포넌트 |
-| `LandscapeToolbar` | `components/puzzle/landscape/LandscapeToolbar.jsx` | `puzzleStore` |
-| `PuzzlePanelWrapper` | `components/puzzle/landscape/PuzzlePanelWrapper.jsx` | 기존 퍼즐 컴포넌트 |
-| `LandscapePuzzleLayout` | `components/puzzle/LandscapePuzzleLayout.jsx` | 위 모든 컴포넌트 |
-| `landscapeState` IndexedDB | `services/indexedDB.js` 확장 | 기존 저장 서비스 |
-| `puzzleStore` 확장 | `stores/puzzleStore.js` 확장 | 기존 스토어 |
+| `useOrientation` 훅 | `apps/web/app/puzzle/hooks/use-orientation.ts` | 없음 |
+| `GuidePanel` | `apps/web/components/puzzle/landscape/guide-image-panel.tsx` | 없음 |
+| `TrayPanel` | `apps/web/components/puzzle/landscape/landscape-tray-panel.tsx` | 기존 모아보기 보관함 컴포넌트 |
+| `LandscapeToolbar` | `apps/web/components/puzzle/landscape/landscape-toolbar.tsx` | `puzzleStore` |
+| `PuzzlePanelWrapper` | `apps/web/components/puzzle/landscape/puzzle-panel-wrapper.tsx` | 기존 퍼즐 컴포넌트 |
+| `LandscapePuzzleLayout` | `apps/web/components/puzzle/landscape/landscape-puzzle-layout.tsx` | 위 모든 컴포넌트 |
+| `landscapeState` IndexedDB | `apps/web/lib/puzzle-db.ts` 확장 | 기존 저장 서비스 |
+| `puzzleStore` 확장 | `apps/web/lib/stores/puzzle-store.ts` 확장 | 기존 스토어 |
 
 ---
 
