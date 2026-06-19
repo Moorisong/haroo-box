@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getDatabase } from '@/lib/mongodb';
-import { verifySessionToken, consumeSession, MIN_GAME_DURATION_MS } from '@/app/api/game/session/route';
+import { verifySessionToken, consumeSession, MIN_GAME_DURATION_MS } from '@/lib/game-session';
 
 // 중복 제출 방지: 최소 제출 간격 (밀리초)
 const MIN_SUBMIT_INTERVAL_MS = 5000; // 5초

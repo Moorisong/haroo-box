@@ -6,7 +6,7 @@
     "dev": "concurrently -n \"WEB,TOBY\" -c \"cyan,magenta\" \"npm:dev:web\" \"npm:dev:toby\"",
     "dev:web": "next dev -p 3001",
     "dev:toby": "npm run dev --prefix ../toby",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "test:watch": "nodemon --watch app --watch components --watch tests -e ts,tsx,css --exec \"npx playwright test\""

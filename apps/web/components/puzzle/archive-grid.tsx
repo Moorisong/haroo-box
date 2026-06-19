@@ -10,13 +10,16 @@ interface ArchiveGridProps {
     completionTime: number;
     myRank?: number;
     completed: boolean;
+    difficulty?: 'novice' | 'beginner' | 'expert';
+    progress?: number;
   }[];
   isHistoryLoaded?: boolean;
 }
 
 export default function ArchiveGrid({ puzzles, myHistory, isHistoryLoaded }: ArchiveGridProps) {
-  // 내 히스토리 맵 구성 (퍼즐 ID별 데이터 맵핑)
-  const historyMap = new Map(myHistory.map((h) => [h.puzzleId, h]));
+  // 내 히스토리 맵 구성 (완성 및 진행 중 분리)
+  const completedMap = new Map(myHistory.filter(h => h.completed).map((h) => [h.puzzleId, h]));
+  const progressMap = new Map(myHistory.filter(h => !h.completed).map((h) => [h.puzzleId, h]));
 
   const formatDuration = (seconds: number) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -27,15 +30,19 @@ export default function ArchiveGrid({ puzzles, myHistory, isHistoryLoaded }: Arc
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {puzzles.map((puzzle) => {
-        const history = historyMap.get(puzzle._id);
+        const completedRecord = completedMap.get(puzzle._id);
+        const progressRecord = progressMap.get(puzzle._id);
         
         let status: 'current' | 'completed' | 'missed' = 'missed';
-        if (history) {
-          status = history.completed ? 'completed' : 'current';
+        if (completedRecord) {
+          status = 'completed';
+        }
+        if (progressRecord) {
+          status = 'current';
         }
 
-        const myTime = history && history.completed ? formatDuration(history.completionTime) : null;
-        const myRank = history && history.myRank ? history.myRank : null;
+        const myTime = completedRecord ? formatDuration(completedRecord.completionTime) : null;
+        const myRank = completedRecord && completedRecord.myRank ? completedRecord.myRank : null;
 
         return (
           <ArchivePuzzleCard
@@ -45,6 +52,8 @@ export default function ArchiveGrid({ puzzles, myHistory, isHistoryLoaded }: Arc
             myTime={myTime}
             myRank={myRank}
             isHistoryLoaded={isHistoryLoaded}
+            serverProgress={progressRecord ? progressRecord.progress : undefined}
+            serverDifficulty={progressRecord ? progressRecord.difficulty : undefined}
           />
         );
       })}
