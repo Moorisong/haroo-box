@@ -12,6 +12,8 @@ interface ArchivePuzzleCardProps {
   myTime: string | null;
   myRank: number | null;
   isHistoryLoaded?: boolean;
+  serverProgress?: number;
+  serverDifficulty?: 'novice' | 'beginner' | 'expert' | null;
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
@@ -26,6 +28,8 @@ export default function ArchivePuzzleCard({
   myTime,
   myRank,
   isHistoryLoaded = false,
+  serverProgress,
+  serverDifficulty,
 }: ArchivePuzzleCardProps) {
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
@@ -49,6 +53,11 @@ export default function ArchivePuzzleCard({
           setSavedDifficulty(savedState.difficulty);
           // 기본 선택 난이도를 기존 진행 중이던 난이도로 자동 설정
           setSelectedDiff(savedState.difficulty);
+        } else if (serverProgress !== undefined && serverProgress > 0 && serverDifficulty) {
+          // 로컬 IndexedDB에 저장된 내용이 없더라도 서버에 저장된 진행 정보가 있다면 폴백 적용
+          setHasSavedGame(true);
+          setSavedDifficulty(serverDifficulty);
+          setSelectedDiff(serverDifficulty);
         } else {
           setHasSavedGame(false);
           setSavedDifficulty(null);
@@ -58,7 +67,7 @@ export default function ArchivePuzzleCard({
       }
     }
     checkSavedState();
-  }, [puzzle._id]);
+  }, [puzzle._id, serverProgress, serverDifficulty]);
 
   const currentStatus = STATUS_LABELS[status] || STATUS_LABELS.missed;
 
@@ -90,7 +99,7 @@ export default function ArchivePuzzleCard({
     }
   };
 
-  const showResetWarning = isResetStart || (hasSavedGame && savedDifficulty !== selectedDiff);
+  const showResetWarning = hasSavedGame && savedDifficulty !== selectedDiff;
 
   return (
     <div
