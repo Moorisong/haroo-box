@@ -138,7 +138,7 @@ export default function TamagotchiPage() {
           <div style={{ fontSize: 11, color: '#9e7b5f', fontFamily: "'DotGothic16', monospace" }}>
             {tamaData.representativeTitle || '평범한 여행자'}
           </div>
-          <h1 style={{ fontSize: 20, fontWeight: 800, color: '#3d2c1e' }}>{tamaData.name} (Gen {tamaData.generation})</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 800, color: '#3d2c1e' }}>{tamaData.name} ({tamaData.generation}세대)</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {token === '4708331286' && (

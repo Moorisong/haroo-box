@@ -111,7 +111,7 @@ export default function BattlePage() {
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#9e7b5f', marginBottom: 6 }}>✦ 상대방 대결 지목</div>
               <select onChange={(e) => setSelectedOpp(oppTamas.find(o => o._id === e.target.value))} style={{ width: '100%', padding: 12, borderRadius: 12, background: '#fffaf4', border: '1.5px solid rgba(180,140,100,0.2)' }}>
-                {oppTamas.map(o => <option key={o._id} value={o._id}>{o.name} (Gen {o.generation})</option>)}
+                {oppTamas.map(o => <option key={o._id} value={o._id}>{o.name} ({o.generation}세대)</option>)}
               </select>
             </div>
           )}

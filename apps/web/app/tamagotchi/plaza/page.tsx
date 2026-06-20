@@ -105,7 +105,7 @@ export default function PlazaPage() {
               <PixelCharacter species={f.species} colorPalette={f.colorPalette} mood="happy" size="sm" hat={f.hat} flower={f.flower} />
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, fontWeight: 700 }}>{f.name}</div>
-                <div style={{ fontSize: 11, color: '#9e7b5f' }}>{f.representativeTitle || '초보 여행자'} (Gen {f.generation})</div>
+                <div style={{ fontSize: 11, color: '#9e7b5f' }}>{f.representativeTitle || '초보 여행자'} ({f.generation}세대)</div>
               </div>
             </div>
           ))}

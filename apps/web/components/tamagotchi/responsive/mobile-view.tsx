@@ -17,19 +17,7 @@ export function MobileView({ children }: MobileViewProps) {
         gap: 12,
       }}
     >
-      <div
-        style={{
-          fontSize: 10,
-          background: '#3d2c1e',
-          color: '#ffd166',
-          borderRadius: 8,
-          padding: '4px 8px',
-          fontWeight: 700,
-          alignSelf: 'flex-start',
-        }}
-      >
-        📱 모바일 모드 최적화
-      </div>
+
       {children}
     </div>
   );
