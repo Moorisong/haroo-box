@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import LandingPage from '@/contents/htsm/landing-page';
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || '';
+
 export const metadata: Metadata = {
     title: '자아탐험 | 친구들이 보는 나를 발견하세요',
     description:
@@ -11,15 +13,15 @@ export const metadata: Metadata = {
         '바이럴 테스트', '익명 평가', '성격 키워드',
     ],
     alternates: {
-        canonical: 'https://box.haroo.site/htsm',
+        canonical: `${BASE_URL}/htsm`,
     },
     openGraph: {
         title: '자아탐험 | 친구들이 보는 나를 발견하세요',
         description: '친구들의 익명 키워드 선택으로 Johari Window 결과를 확인하세요.',
-        url: 'https://box.haroo.site/htsm',
+        url: `${BASE_URL}/htsm`,
         images: [
             {
-                url: 'https://box.haroo.site/htsm-og-base.png',
+                url: `${BASE_URL}/htsm-og-base.png`,
                 width: 1200,
                 height: 630,
                 alt: '자아탐험 - See how they see me',
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: '자아탐험 | 친구들이 보는 나를 발견하세요',
         description: '친구들의 익명 키워드 선택으로 Johari Window 결과를 확인하세요.',
-        images: ['https://box.haroo.site/htsm-og-base.png'],
+        images: [`${BASE_URL}/htsm-og-base.png`],
     },
 };
 

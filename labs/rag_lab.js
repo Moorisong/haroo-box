@@ -19,6 +19,47 @@ const DATA_PATHS = [
     "../apps/web/lib"
 ]; 
 
+// [추가] LLM 기반 정밀 리랭커 (NodePostprocessor)
+class LLMReranker {
+    constructor(topN = 5) {
+        this.topN = topN;
+    }
+    
+    async postprocessNodes(nodes, query) {
+        if (nodes.length === 0) return nodes;
+        
+        console.log(`\n⚖️  [Reranking] 1차로 검색된 ${nodes.length}개의 문서를 LLM으로 정밀 평가하여 핵심 문서 ${this.topN}개를 선별합니다...`);
+        
+        // 토큰 절약을 위해 각 문서 텍스트를 일부만 사용
+        const contextStr = nodes.map((n, i) => `[문서 ID: ${i}]\n${n.node.text.substring(0, 400)}...`).join("\n\n");
+        
+        const prompt = `당신은 검색 정확도를 높이는 문서 평가자입니다. 다음 질문에 대답하기 위해 아래 제공된 문서들 중 가장 관련성 높은 문서 ID를 최대 ${this.topN}개만 순서대로 콤마로 구분하여 숫자만 반환하세요. 어떤 부가 설명도 하지 마세요.
+질문: ${query}
+
+문서들:
+${contextStr}
+
+가장 관련성 높은 문서 ID (예: 2,5,1):`;
+
+        try {
+            const response = await Settings.llm.complete({ prompt });
+            const resultText = response.text.trim();
+            console.log(`🎯 [Reranking 완료] AI가 판단한 핵심 문서 ID: ${resultText}`);
+            
+            const selectedIds = resultText.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+            const rerankedNodes = selectedIds.map(id => nodes[id]).filter(n => n !== undefined);
+            
+            if (rerankedNodes.length > 0) {
+                return rerankedNodes;
+            }
+        } catch (e) {
+            console.error("Reranking 중 오류 발생:", e);
+        }
+        
+        return nodes.slice(0, this.topN); // fallback
+    }
+}
+
 async function runRagExperiment() {
     console.log("🚀 [1/3] Node.js 실험실 RAG 파이프라인 가동 시작...");
     
@@ -44,7 +85,27 @@ async function runRagExperiment() {
         // 이미지 파일들은 텍스트 전용 벡터 스토어에 들어갈 수 없으므로 필터링합니다.
         documents = documents.filter(doc => doc.constructor.name !== "ImageDocument");
         
-        console.log(`📚 총 ${documents.length}개의 텍스트/코드 조각을 뇌에 넣을 준비 완료!`);
+        // 🌟 [추가] 각 문서의 파일 경로를 바탕으로 '어떤 서비스의 문서인지' 동적으로 알아내어 메타데이터 꼬리표 달기
+        documents.forEach(doc => {
+            const filePath = doc.metadata?.file_path || "";
+            let serviceTag = "common"; // 기본값
+            
+            // project_docs/서비스명 또는 apps/서비스명 형태에서 폴더명을 자동으로 추출합니다.
+            const match = filePath.match(/(?:project_docs|apps)\/([^\/]+)/);
+            if (match && match[1]) {
+                serviceTag = match[1];
+                // haroo-box는 중앙 지침서이므로 명확하게 표기
+                if (serviceTag === "haroo-box") {
+                    serviceTag = "haroo-box (Central)";
+                }
+            }
+
+            // AI가 헷갈리지 않도록 텍스트 앞부분에 메타데이터를 직접 박아줍니다.
+            doc.text = `[Service Context: ${serviceTag}]\n` + doc.text;
+            doc.metadata.service_name = serviceTag;
+        });
+
+        console.log(`📚 총 ${documents.length}개의 텍스트/코드 조각에 메타데이터 꼬리표 부착 완료!`);
         
         // 로컬 파일시스템(storage)에 저장하기 위한 StorageContext 생성
         const storageContext = await storageContextFromDefaults({ persistDir: PERSIST_DIR });
@@ -61,11 +122,20 @@ async function runRagExperiment() {
     }
 
     // 4. AI에게 질문을 던질 엔진 가동
-    const queryEngine = index.asQueryEngine();
-    
-    // 5. 면접관들이 환장하는 교차 검증 질문 던지기
-    const testQuery = "중앙 지침서(central-docs)에 정의된 아키텍처 규칙이나 제약 조건이 실제 소스 코드 파일들에 잘 반영되어 있는지 검증하고, 모순점이 있다면 보고해줘.";
-    console.log(`\n🔍 [2/3] AI 비서에게 질문 던지는 중...\n👉 "${testQuery}"`);
+    // 전체 문서를 더 폭넓게 분석할 수 있도록 가져올 유사 문서의 수(similarityTopK)를 30으로 늘리고,
+    // 커스텀 LLMReranker를 통해 그 중 가장 중요한 10개의 핵심 문맥만 걸러서 AI에게 주입합니다.
+    const queryEngine = index.asQueryEngine({ 
+        similarityTopK: 30,
+        nodePostprocessors: [new LLMReranker(10)]
+    });    
+    // 5. 면접관들이 환장하는 교차 검증 질문 던지기 (프롬프트 고도화)
+    const testQuery = `
+당신은 깐깐한 수석 시스템 아키텍트입니다. 전체 문서를 바탕으로 다음을 명확하고 단호하게 평가하여 보고서를 작성하세요:
+1. [Service Context: haroo-box (Central)]에 명시된 '중앙 대원칙(공통 지침)'들을 정확히 나열할 것.
+2. htsm과 u-know 서비스가 이 중앙 대원칙들을 하나라도 위반하거나 어긋나게 구현한 내용이 문서나 코드상에 존재하는지 샅샅이 찾아보고, 위반 사항이 있다면 '경고'로, 없다면 '통과'로 명확히 판정할 것.
+3. Rate Limit이나 보안 규칙처럼 개별 서비스의 특성에 맞춰 다르게 적용된 고유 정책은 위반이 아니므로 판정에서 제외할 것.
+`;
+    console.log(`\n🔍 [2/3] AI 비서에게 더 확실해진 질문 던지는 중...\n👉 "${testQuery.trim()}"`);
     
     const response = await queryEngine.query({ query: testQuery });
     
