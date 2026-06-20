@@ -12,6 +12,7 @@ const MOODS: TamagotchiMood[] = ['happy', 'sleepy', 'excited', 'hungry'];
 
 interface ShowcaseItem {
   colorPalette: number;
+  eyeType: number;
   mood: TamagotchiMood;
   hat: string | null;
   flower: string | null;
@@ -47,7 +48,7 @@ export default function TestShowcasePage() {
     { type: 'weird', name: '기괴상 (슬라임)' },
   ];
 
-  // 각 종족별로 10개의 고정된 랜덤 조합 생성 (렌더링 안정성을 위해 useMemo 사용)
+  // 모든 종족에 대해 5가지 팔레트 * 5가지 눈 모양 = 25종의 테스트 케이스를 생성
   const itemsPerSpecies = useMemo(() => {
     const data: Record<TamagotchiSpecies, ShowcaseItem[]> = {
       cutie: [],
@@ -59,13 +60,15 @@ export default function TestShowcasePage() {
     const speciesKeys: TamagotchiSpecies[] = ['cutie', 'normal', 'unique', 'weird'];
 
     speciesKeys.forEach((sp) => {
-      for (let i = 0; i < 10; i++) {
-        // i 값과 수식을 조합해 고정 난수 시드처럼 활용하여 빌드 에러 방지
-        const colorPalette = (i * 2 + sp.length) % 5;
-        const mood = MOODS[(i + 1) % MOODS.length];
-        const hat = HATS[(i * 3) % HATS.length];
-        const flower = FLOWERS[(i * 2) % FLOWERS.length];
-        data[sp].push({ colorPalette, mood, hat, flower });
+      let i = 0;
+      for (let palette = 0; palette < 5; palette++) {
+        for (let eye = 0; eye < 5; eye++) {
+          const mood = MOODS[i % MOODS.length];
+          const hat = i % 3 === 0 ? HATS[(i * 3) % HATS.length] : null;
+          const flower = i % 4 === 0 ? FLOWERS[(i * 2) % FLOWERS.length] : null;
+          data[sp].push({ colorPalette: palette, eyeType: eye, mood, hat, flower });
+          i++;
+        }
       }
     });
 
@@ -99,7 +102,7 @@ export default function TestShowcasePage() {
           ← 돌아가기
         </Link>
         <h1 style={{ fontSize: 20, color: '#3d2c1e', fontWeight: 900, margin: 0 }}>
-          종족별 외형 조합 쇼케이스 (각 10종)
+          종족별 외형 조합 쇼케이스 (색상 5종 × 눈모양 5종 = 각 25종)
         </h1>
       </div>
 
@@ -107,12 +110,12 @@ export default function TestShowcasePage() {
         {speciesList.map((sp) => (
           <div key={sp.type} style={{ background: '#fff', borderRadius: 20, padding: 20, border: '1.5px solid rgba(180,140,100,0.12)' }}>
             <h2 style={{ fontSize: 16, color: '#b5445a', fontWeight: 800, marginBottom: 16, borderBottom: '2px dashed #fdf6ee', paddingBottom: 8 }}>
-              ✨ {sp.name} 조합 예시
+              ✨ {sp.name} 조합 예시 (총 {itemsPerSpecies[sp.type].length}개)
             </h2>
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
                 gap: 12,
               }}
             >
@@ -133,14 +136,16 @@ export default function TestShowcasePage() {
                   <PixelCharacter
                     species={sp.type}
                     colorPalette={item.colorPalette}
+                    eyeType={item.eyeType}
                     mood={item.mood}
                     size="md"
                     hat={item.hat}
                     flower={item.flower}
                   />
-                  <div style={{ fontSize: 9, color: '#9e7b5f', marginTop: 8, lineHeight: 1.3 }}>
-                    <div style={{ fontWeight: 700, color: '#3d2c1e' }}>조합 {idx + 1}</div>
-                    <div>팔레트: {item.colorPalette}</div>
+                  <div style={{ fontSize: 10, color: '#9e7b5f', marginTop: 8, lineHeight: 1.4 }}>
+                    <div style={{ fontWeight: 800, color: '#3d2c1e' }}>조합 {idx + 1}</div>
+                    <div>색상: Type {item.colorPalette}</div>
+                    <div style={{ color: '#0077b6', fontWeight: 700 }}>눈모양: Type {item.eyeType}</div>
                     <div>기분: {item.mood}</div>
                     {item.hat && <div style={{ color: '#b5445a' }}>모자: {item.hat}</div>}
                     {item.flower && <div style={{ color: '#2a9d8f' }}>꽃: {item.flower}</div>}

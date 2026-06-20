@@ -6,6 +6,7 @@ import { TamagotchiMood } from '../pixel-character';
 interface CharacterProps {
   mood: TamagotchiMood;
   colorPalette: number;
+  eyeType: number;
 }
 
 // 파스텔 톤 색상 테이블
@@ -17,7 +18,7 @@ const PALETTES = [
   { bodyLight: '#ffffff', bodyMid: '#fff0f5', bodyDark: '#ffccd5', pointLight: '#ffe5ec', pointDark: '#ffb3c1', border: '#e07a5f' }, // 4: 핑크
 ];
 
-export function Poporing({ mood, colorPalette }: CharacterProps) {
+export function Poporing({ mood, colorPalette, eyeType }: CharacterProps) {
   const palette = PALETTES[colorPalette] || PALETTES[0];
 
   const renderEyes = () => {
@@ -37,17 +38,59 @@ export function Poporing({ mood, colorPalette }: CharacterProps) {
         </g>
       );
     }
-    return (
-      <g>
-        <circle cx="36" cy="56" r="6.5" fill="#3a2528" />
-        <circle cx="34.5" cy="53.5" r="2.2" fill="#ffffff" />
-        <circle cx="38" cy="58" r="1" fill="#ffffff" />
-        
-        <circle cx="64" cy="56" r="6.5" fill="#3a2528" />
-        <circle cx="62.5" cy="53.5" r="2.2" fill="#ffffff" />
-        <circle cx="66" cy="58" r="1" fill="#ffffff" />
-      </g>
-    );
+    
+    // 5가지 귀여운 눈 모양 유형 (덜 기괴하게 톤다운)
+    switch (eyeType % 5) {
+      case 1: // 1. 점눈 (클래식 큐티)
+        return (
+          <g fill="#3a2528">
+            <circle cx="36" cy="56" r="4.5" />
+            <circle cx="64" cy="56" r="4.5" />
+          </g>
+        );
+      case 2: // 2. 블링블링 별빛 눈망울 (아이돌 느낌)
+        return (
+          <g>
+            <circle cx="36" cy="55" r="7" fill="#3a2528" />
+            {/* 별 모양 하이라이트 */}
+            <polygon points="36,50 37,53 40,53 37.5,54.5 38.5,57 36,55.5 33.5,57 34.5,54.5 32,53 35,53" fill="#ffea00" />
+            <circle cx="34" cy="56" r="1.5" fill="#ffffff" />
+            <circle cx="38" cy="53" r="1" fill="#ffffff" />
+
+            <circle cx="64" cy="55" r="7" fill="#3a2528" />
+            <polygon points="64,50 65,53 68,53 65.5,54.5 66.5,57 64,55.5 61.5,57 62.5,54.5 60,53 63,53" fill="#ffea00" />
+            <circle cx="62" cy="56" r="1.5" fill="#ffffff" />
+            <circle cx="66" cy="53" r="1" fill="#ffffff" />
+          </g>
+        );
+      case 3: // 3. 심플 하트 눈
+        return (
+          <g fill="#3a2528">
+            <path d="M 36,58 C 36,58 32,54 32,52 C 32,49 35,48 36,51 C 37,48 40,49 40,52 C 40,54 36,58 36,58 Z" />
+            <path d="M 64,58 C 64,58 60,54 60,52 C 60,49 63,48 64,51 C 65,48 68,49 68,52 C 68,54 64,58 64,58 Z" />
+          </g>
+        );
+      case 4: // 4. 방긋 웃는 눈 (^ ^)
+        return (
+          <g stroke="#3a2528" strokeWidth="3.5" fill="none" strokeLinecap="round">
+            <path d="M 32,56 Q 36,51 40,56" />
+            <path d="M 60,56 Q 64,51 68,56" />
+          </g>
+        );
+      case 0: // 0. 기본: 초롱초롱 맑은 눈 (색상 단순화)
+      default:
+        return (
+          <g>
+            <circle cx="36" cy="55" r="7" fill="#3a2528" />
+            <circle cx="34.5" cy="53" r="2.5" fill="#ffffff" />
+            <circle cx="38" cy="57" r="1.2" fill="#ffffff" />
+            
+            <circle cx="64" cy="55" r="7" fill="#3a2528" />
+            <circle cx="62.5" cy="53" r="2.5" fill="#ffffff" />
+            <circle cx="66" cy="57" r="1.2" fill="#ffffff" />
+          </g>
+        );
+    }
   };
 
   const renderMouth = () => {

@@ -13,6 +13,7 @@ export type TamagotchiMood = 'happy' | 'hungry' | 'sleepy' | 'excited' | 'dead';
 export interface PixelCharacterProps {
   species?: TamagotchiSpecies;
   colorPalette?: number;
+  eyeType?: number;
   mood?: TamagotchiMood;
   size?: 'sm' | 'md' | 'lg';
   flower?: string | null;
@@ -22,6 +23,7 @@ export interface PixelCharacterProps {
 export function PixelCharacter({
   species = 'cutie',
   colorPalette = 0,
+  eyeType = 0,
   mood = 'happy',
   size = 'lg',
   flower = null,
@@ -135,15 +137,15 @@ export function PixelCharacter({
   const renderCharacterSvg = () => {
     switch (species) {
       case 'cutie':
-        return <Poporing mood={mood} colorPalette={colorPalette} />;
+        return <Poporing mood={mood} colorPalette={colorPalette} eyeType={eyeType} />;
       case 'normal':
-        return <Leafy mood={mood} colorPalette={colorPalette} />;
+        return <Leafy mood={mood} colorPalette={colorPalette} eyeType={eyeType} />;
       case 'unique':
-        return <Starpy mood={mood} colorPalette={colorPalette} />;
+        return <Starpy mood={mood} colorPalette={colorPalette} eyeType={eyeType} />;
       case 'weird':
-        return <Lunafore mood={mood} colorPalette={colorPalette} />;
+        return <Lunafore mood={mood} colorPalette={colorPalette} eyeType={eyeType} />;
       default:
-        return <Poporing mood={mood} colorPalette={colorPalette} />;
+        return <Poporing mood={mood} colorPalette={colorPalette} eyeType={eyeType} />;
     }
   };
 

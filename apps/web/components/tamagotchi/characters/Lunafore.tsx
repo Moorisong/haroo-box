@@ -6,6 +6,7 @@ import { TamagotchiMood } from '../pixel-character';
 interface CharacterProps {
   mood: TamagotchiMood;
   colorPalette: number;
+  eyeType: number;
 }
 
 const PALETTES = [
@@ -16,7 +17,7 @@ const PALETTES = [
   { bodyLight: '#ffffff', bodyMid: '#fff0f5', bodyDark: '#ffccd5', pointLight: '#ffe5ec', pointDark: '#ffb3c1', border: '#e07a5f' }, // 4: 핑크
 ];
 
-export function Lunafore({ mood, colorPalette }: CharacterProps) {
+export function Lunafore({ mood, colorPalette, eyeType }: CharacterProps) {
   const palette = PALETTES[colorPalette] || PALETTES[0];
 
   const renderEyes = () => {
@@ -36,17 +37,47 @@ export function Lunafore({ mood, colorPalette }: CharacterProps) {
         </g>
       );
     }
-    // 기괴상 특유의 멍청하고 커다란 비대칭 눈
-    return (
-      <g>
-        <circle cx="34" cy="54" r="8" fill="#ffffff" stroke={palette.border} strokeWidth="1.5" />
-        <circle cx="34" cy="54" r="3" fill="#2f3e46" />
-        <circle cx="32" cy="52" r="1" fill="#ffffff" />
 
-        <circle cx="66" cy="54" r="5" fill="#ffffff" stroke={palette.border} strokeWidth="1.5" />
-        <circle cx="66" cy="54" r="2.2" fill="#2f3e46" />
-      </g>
-    );
+    switch (eyeType % 5) {
+      case 1: // 1. 맹한 짝짝이 점눈 (O o) - 멍청하고 귀여움
+        return (
+          <g fill="#2f3e46">
+            <circle cx="34" cy="54" r="5" />
+            <circle cx="66" cy="54" r="3" />
+          </g>
+        );
+      case 2: // 2. 동그란 외곽선 눈 (ㅇ ㅇ) - 멍때림
+        return (
+          <g fill="none" stroke="#2f3e46" strokeWidth="2.5">
+            <circle cx="34" cy="54" r="4.5" />
+            <circle cx="66" cy="54" r="4.5" />
+          </g>
+        );
+      case 3: // 3. 빙글빙글 어지러운 눈 (@ @) - 작고 귀엽게
+        return (
+          <g fill="none" stroke="#2f3e46" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M 34,54 a 1.5,1.5 0 0,1 3,0 a 3,3 0 0,1 -6,0 a 4.5,4.5 0 0,1 9,0" />
+            <path d="M 66,54 a 1.5,1.5 0 0,1 3,0 a 3,3 0 0,1 -6,0 a 4.5,4.5 0 0,1 9,0" />
+          </g>
+        );
+      case 4: // 4. 아주 멀리 떨어진 초점 없는 점눈 (미니멀)
+        return (
+          <g fill="#2f3e46">
+            <circle cx="28" cy="54" r="2.5" />
+            <circle cx="72" cy="54" r="2.5" />
+          </g>
+        );
+      case 0: // 0. 기본: 비대칭 큰 눈동자와 맹한 점
+      default:
+        return (
+          <g>
+            <circle cx="34" cy="54" r="6" fill="#ffffff" stroke={palette.border} strokeWidth="1.5" />
+            <circle cx="34" cy="54" r="2.5" fill="#2f3e46" />
+            
+            <circle cx="66" cy="54" r="3" fill="#2f3e46" />
+          </g>
+        );
+    }
   };
 
   const renderMouth = () => {

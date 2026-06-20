@@ -6,6 +6,7 @@ import { TamagotchiMood } from '../pixel-character';
 interface CharacterProps {
   mood: TamagotchiMood;
   colorPalette: number;
+  eyeType: number;
 }
 
 const PALETTES = [
@@ -16,7 +17,7 @@ const PALETTES = [
   { bodyLight: '#ffffff', bodyMid: '#fff0f5', bodyDark: '#ffccd5', pointLight: '#ffe5ec', pointDark: '#ffb3c1', border: '#e07a5f' }, // 4: 핑크
 ];
 
-export function Starpy({ mood, colorPalette }: CharacterProps) {
+export function Starpy({ mood, colorPalette, eyeType }: CharacterProps) {
   const palette = PALETTES[colorPalette] || PALETTES[0];
 
   const renderEyes = () => {
@@ -36,18 +37,57 @@ export function Starpy({ mood, colorPalette }: CharacterProps) {
         </g>
       );
     }
-    // 살짝 올라간 도도한 눈빛
-    return (
-      <g>
-        <circle cx="36" cy="56" r="6" fill="#372c38" />
-        <path d="M 34,50 Q 38,48 42,52" stroke="#372c38" strokeWidth="2.5" fill="none" />
-        <circle cx="34.5" cy="54" r="2" fill="#ffffff" />
 
-        <circle cx="64" cy="56" r="6" fill="#372c38" />
-        <path d="M 66,50 Q 62,48 58,52" stroke="#372c38" strokeWidth="2.5" fill="none" />
-        <circle cx="62.5" cy="54" r="2" fill="#ffffff" />
-      </g>
-    );
+    switch (eyeType % 5) {
+      case 1: // 1. 반쯤 감은 거만한 눈 (Tsurime - 귀엽게)
+        return (
+          <g stroke="#372c38" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M 30,53 L 42,53" />
+            <path d="M 30,53 Q 36,48 42,53" fill="none" />
+            <circle cx="36" cy="51.5" r="2" fill="#372c38" stroke="none" />
+            
+            <path d="M 70,53 L 58,53" />
+            <path d="M 70,53 Q 64,48 58,53" fill="none" />
+            <circle cx="64" cy="51.5" r="2" fill="#372c38" stroke="none" />
+          </g>
+        );
+      case 2: // 2. 별 모양 눈 (이름에 어울리는 큐티 스타일)
+        return (
+          <g fill="#372c38">
+            <polygon points="36,51 38,54 41,54 39,56.5 40,60 36,58 32,60 33,56.5 31,54 34,54" />
+            <polygon points="64,51 66,54 69,54 67,56.5 68,60 64,58 60,60 61,56.5 59,54 62,54" />
+          </g>
+        );
+      case 3: // 3. 앙칼진 타원형 고양이 눈
+        return (
+          <g fill="#372c38">
+            <ellipse cx="36" cy="54" rx="3.5" ry="6" transform="rotate(20 36 54)" />
+            <circle cx="35" cy="52" r="1.2" fill="#ffffff" />
+            
+            <ellipse cx="64" cy="54" rx="3.5" ry="6" transform="rotate(-20 64 54)" />
+            <circle cx="63" cy="52" r="1.2" fill="#ffffff" />
+          </g>
+        );
+      case 4: // 4. 윙크하는 장난꾸러기 눈 (> o)
+        return (
+          <g stroke="#372c38" strokeWidth="2.5" fill="none" strokeLinecap="round">
+            <path d="M 32,52 L 40,56 M 32,56 L 40,52" />
+            <circle cx="64" cy="54" r="4.5" fill="#372c38" stroke="none" />
+            <circle cx="62.5" cy="52.5" r="1.5" fill="#ffffff" stroke="none" />
+          </g>
+        );
+      case 0: // 0. 기본: 귀여운 세로 동공
+      default:
+        return (
+          <g>
+            <path d="M 28,54 Q 36,48 42,56 Q 34,58 28,54 Z" fill="#ffffff" stroke="#372c38" strokeWidth="1.5" strokeLinejoin="round" />
+            <ellipse cx="36" cy="53" rx="1.5" ry="3.5" fill="#372c38" />
+            
+            <path d="M 72,54 Q 64,48 58,56 Q 66,58 72,54 Z" fill="#ffffff" stroke="#372c38" strokeWidth="1.5" strokeLinejoin="round" />
+            <ellipse cx="64" cy="53" rx="1.5" ry="3.5" fill="#372c38" />
+          </g>
+        );
+    }
   };
 
   const renderMouth = () => {

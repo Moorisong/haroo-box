@@ -6,6 +6,7 @@ import { TamagotchiMood } from '../pixel-character';
 interface CharacterProps {
   mood: TamagotchiMood;
   colorPalette: number;
+  eyeType: number;
 }
 
 const PALETTES = [
@@ -16,7 +17,7 @@ const PALETTES = [
   { bodyLight: '#ffffff', bodyMid: '#fff0f5', bodyDark: '#ffccd5', pointLight: '#ffe5ec', pointDark: '#ffb3c1', border: '#e07a5f' }, // 4: 핑크
 ];
 
-export function Leafy({ mood, colorPalette }: CharacterProps) {
+export function Leafy({ mood, colorPalette, eyeType }: CharacterProps) {
   const palette = PALETTES[colorPalette] || PALETTES[0];
 
   const renderEyes = () => {
@@ -36,12 +37,59 @@ export function Leafy({ mood, colorPalette }: CharacterProps) {
         </g>
       );
     }
-    return (
-      <g fill="#4e3b30">
-        <circle cx="36" cy="56" r="5" />
-        <circle cx="64" cy="56" r="5" />
-      </g>
-    );
+
+    switch (eyeType % 5) {
+      case 1: // 1. 길쭉하고 똘망똘망한 눈 (클래식 귀요미)
+        return (
+          <g fill="#4e3b30">
+            <ellipse cx="36" cy="55" rx="3.5" ry="6" />
+            <circle cx="36" cy="52" r="1.5" fill="#ffffff" />
+            
+            <ellipse cx="64" cy="55" rx="3.5" ry="6" />
+            <circle cx="64" cy="52" r="1.5" fill="#ffffff" />
+          </g>
+        );
+      case 2: // 2. 송충이 눈썹과 귀여운 점눈 (짱구 스타일 곰)
+        return (
+          <g fill="#4e3b30">
+            <circle cx="36" cy="56" r="3.5" />
+            <path d="M 32,49 L 40,51" stroke="#4e3b30" strokeWidth="3" strokeLinecap="round" />
+            
+            <circle cx="64" cy="56" r="3.5" />
+            <path d="M 68,49 L 60,51" stroke="#4e3b30" strokeWidth="3" strokeLinecap="round" />
+          </g>
+        );
+      case 3: // 3. 초롱초롱 맑고 큰 눈망울
+        return (
+          <g fill="#4e3b30">
+            <circle cx="36" cy="55" r="6" />
+            <circle cx="34.5" cy="52.5" r="2" fill="#ffffff" />
+            <circle cx="37.5" cy="57" r="1" fill="#ffffff" />
+            
+            <circle cx="64" cy="55" r="6" />
+            <circle cx="62.5" cy="52.5" r="2" fill="#ffffff" />
+            <circle cx="65.5" cy="57" r="1" fill="#ffffff" />
+          </g>
+        );
+      case 4: // 4. 방긋 감은 눈 (U U)
+        return (
+          <g stroke="#4e3b30" strokeWidth="2.5" fill="none" strokeLinecap="round">
+            <path d="M 32,54 Q 36,58 40,54" />
+            <path d="M 60,54 Q 64,58 68,54" />
+          </g>
+        );
+      case 0: // 0. 기본: 약간 쳐진 부드러운 타원 눈
+      default:
+        return (
+          <g>
+            <ellipse cx="36" cy="56" rx="4" ry="5.5" fill="#4e3b30" />
+            <circle cx="35" cy="54" r="1.5" fill="#ffffff" />
+            
+            <ellipse cx="64" cy="56" rx="4" ry="5.5" fill="#4e3b30" />
+            <circle cx="63" cy="54" r="1.5" fill="#ffffff" />
+          </g>
+        );
+    }
   };
 
   const renderMouth = () => {
