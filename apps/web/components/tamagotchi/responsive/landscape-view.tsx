@@ -17,19 +17,7 @@ export function LandscapeView({ children }: LandscapeViewProps) {
         gap: 12,
       }}
     >
-      <div
-        style={{
-          fontSize: 10,
-          background: '#3d2c1e',
-          color: '#f4a261',
-          borderRadius: 8,
-          padding: '3px 8px',
-          fontWeight: 700,
-          alignSelf: 'flex-start',
-        }}
-      >
-        🔄 가로모드(Landscape) 레이아웃 최적화
-      </div>
+
       <div
         style={{
           display: 'grid',

@@ -17,19 +17,7 @@ export function TabletView({ children }: TabletViewProps) {
         gap: 16,
       }}
     >
-      <div
-        style={{
-          fontSize: 11,
-          background: '#3d2c1e',
-          color: '#b8c0ff',
-          borderRadius: 8,
-          padding: '4px 10px',
-          fontWeight: 700,
-          alignSelf: 'flex-start',
-        }}
-      >
-        📟 태블릿 모드 최적화 (2열 구성)
-      </div>
+
       <div
         style={{
           display: 'grid',
