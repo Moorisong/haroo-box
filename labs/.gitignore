@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# API keys and secrets
+.env
+.env.*
+
+# LlamaIndex local storage
+storage/

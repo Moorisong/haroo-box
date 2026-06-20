@@ -8,6 +8,7 @@ export default function Footer() {
     { label: '하루상자 메인', href: '/', newTab: true },
     { label: '이용약관', href: '/terms' },
     { label: '개인정보처리방침', href: '/privacy' },
+    { label: 'GitHub', href: 'https://github.com/Moorisong/haroo-box', newTab: true },
   ];
 
   return (
