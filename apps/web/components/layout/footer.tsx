@@ -25,6 +25,10 @@ export default function Footer() {
           <Link href={ROUTES.PRIVACY} className={styles.link}>
             개인정보처리방침
           </Link>
+          <span className={styles.separator}>·</span>
+          <a href="https://github.com/Moorisong/haroo-box" target="_blank" rel="noopener noreferrer" className={styles.link}>
+            GitHub
+          </a>
         </div>
         <div className={styles.bottom}>
           <p className={styles.copyright}>
