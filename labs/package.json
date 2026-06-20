@@ -1,0 +1,20 @@
+{
+  "name": "labs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@llamaindex/core": "^0.6.23",
+    "@llamaindex/openai": "^0.4.23",
+    "@llamaindex/readers": "^3.1.22",
+    "dotenv": "^17.4.2",
+    "llamaindex": "^0.12.1"
+  }
+}
