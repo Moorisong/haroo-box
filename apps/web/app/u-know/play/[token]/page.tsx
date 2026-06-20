@@ -6,7 +6,7 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.haroo.site';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || '';
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const sp = await searchParams;
