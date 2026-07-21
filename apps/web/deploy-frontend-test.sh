@@ -34,6 +34,8 @@ rsync -avz --delete --progress -e "$RSYNC_SSH" \
   --exclude '.next' \
   --exclude '.git' \
   --exclude '.env' \
+  --exclude 'docs' \
+  --exclude '.antigravity' \
   $LOCAL_SERVER_ROOT/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_DIR
 
 # 2. 서버에서 빌드 및 실행 명령 전달
@@ -49,6 +51,7 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   echo \"사용중인 Node 버전: \$(node -v)\"
   
   cd $REMOTE_DIR && \
+  rm -f docs .antigravity && \
   npm install && \
   rm -rf .next && \
   NEXT_PUBLIC_BASE_URL="https://test-box.haroo.site" npm run build && \
