@@ -4,8 +4,8 @@ module.exports = {
     apps: [
         {
             name: 'box-fe-test',
-            script: 'npm',
-            args: 'start -- -p 3004 -H 127.0.0.1',
+            script: 'node_modules/next/dist/bin/next',
+            args: 'start -p 3004 -H 127.0.0.1',
             env: {
                 NODE_ENV: 'production',
                 NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,

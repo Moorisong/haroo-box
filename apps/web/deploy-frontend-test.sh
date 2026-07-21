@@ -11,6 +11,7 @@ REMOTE_DIR="~/srv/box-test"
 LOCAL_SERVER_ROOT="."
 
 # --- 네트워크 자동 감지 ---
+# 집 LAN IP로 ping 2초 내 응답 시 → 집 환경, 아니면 → 외부 환경
 if ping -c 1 -W 2 "$LOCAL_HOST" > /dev/null 2>&1; then
   REMOTE_HOST="$LOCAL_HOST"
   SSH_PORT="$SSH_PORT_LOCAL"
@@ -51,10 +52,10 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   echo \"사용중인 Node 버전: \$(node -v)\"
   
   cd $REMOTE_DIR && \
-  rm -f docs .antigravity && \
+  rm -rf docs .antigravity && \
   npm install && \
   rm -rf .next && \
-  NEXT_PUBLIC_BASE_URL="https://test-box.haroo.site" npm run build && \
+  NEXT_PUBLIC_BASE_URL=\"https://test-box.haroo.site\" npm run build && \
   pm2 restart box-fe-test --update-env || pm2 start ecosystem-test.config.js
 "
 
