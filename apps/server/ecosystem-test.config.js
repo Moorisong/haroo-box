@@ -8,7 +8,7 @@ module.exports = {
             args: 'start',
             env: {
                 NODE_ENV: 'production',
-                PORT: 3010,
+                PORT: 3003,
                 JWT_SECRET: process.env.JWT_SECRET,
                 MONGODB_URI: process.env.MONGODB_URI,
                 HTSM_MONGODB_URI: process.env.HTSM_MONGODB_URI,

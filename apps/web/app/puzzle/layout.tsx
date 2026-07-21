@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import Header from '@/components/puzzle/header';
 import Footer from '@/components/puzzle/footer';
+import SNSBrowserFallback from '@/components/puzzle/sns-browser-fallback';
+import { useExternalBrowser } from '@/lib/hooks/use-external-browser';
 import '@/styles/puzzle-theme.css';
 
 export default function PuzzleLayout({
@@ -12,6 +14,11 @@ export default function PuzzleLayout({
 }) {
   const pathname = usePathname();
   const isPlayPage = pathname?.includes('/play/') ?? false;
+  const { isSnsBrowser } = useExternalBrowser();
+
+  if (isSnsBrowser) {
+    return <SNSBrowserFallback />;
+  }
 
   if (isPlayPage) {
     return (

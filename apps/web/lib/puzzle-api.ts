@@ -12,10 +12,18 @@ const getHeaders = (token?: string) => {
   return headers;
 };
 
+async function parseJsonResponse(res: Response) {
+  const contentType = res.headers.get('content-type');
+  if (!contentType?.includes('application/json')) {
+    throw new Error(`API Error: Expected JSON, got ${contentType} (Status: ${res.status})`);
+  }
+  return await res.json();
+}
+
 export async function fetchCurrentPuzzle(): Promise<ApiResponse<Puzzle>> {
   try {
     const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.CURRENT}`);
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchCurrentPuzzle error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -25,7 +33,7 @@ export async function fetchCurrentPuzzle(): Promise<ApiResponse<Puzzle>> {
 export async function fetchArchivePuzzles(): Promise<ApiResponse<Puzzle[]>> {
   try {
     const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.ARCHIVE}`);
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchArchivePuzzles error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -35,7 +43,7 @@ export async function fetchArchivePuzzles(): Promise<ApiResponse<Puzzle[]>> {
 export async function fetchServiceStats(): Promise<ApiResponse<{ totalPlayCount: number; completionRate: string }>> {
   try {
     const res = await fetch(`${API_BASE_URL}/api/puzzle/stats`);
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchServiceStats error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -45,7 +53,7 @@ export async function fetchServiceStats(): Promise<ApiResponse<{ totalPlayCount:
 export async function fetchPuzzleById(id: string): Promise<ApiResponse<Puzzle>> {
   try {
     const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.DETAILS(id)}`);
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchPuzzleById error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -58,7 +66,7 @@ export async function fetchCurrentRankings(puzzleId: string, difficulty?: 'novic
       ? `${API_BASE_URL}/api${API_PUZZLE.RANKINGS_CURRENT}?puzzleId=${puzzleId}&difficulty=${difficulty}`
       : `${API_BASE_URL}/api${API_PUZZLE.RANKINGS_CURRENT}?puzzleId=${puzzleId}`;
     const res = await fetch(url);
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchCurrentRankings error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -73,7 +81,7 @@ export async function fetchMyRanking(puzzleId: string, token: string, difficulty
     const res = await fetch(url, {
       headers: getHeaders(token),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyRanking error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -87,7 +95,7 @@ export async function startChallenge(puzzleId: string, token: string): Promise<A
       headers: getHeaders(token),
       body: JSON.stringify({ puzzleId }),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('startChallenge error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -112,7 +120,7 @@ export async function submitResult(
       headers: getHeaders(token),
       body: JSON.stringify(data),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('submitResult error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -131,7 +139,7 @@ export async function saveProgress(
       headers: getHeaders(token),
       body: JSON.stringify({ puzzleId, progress, detailState }),
     });
-    const data = await res.json();
+    const data = await parseJsonResponse(res);
     return {
       ...data,
       status: res.status
@@ -150,7 +158,7 @@ export async function fetchMyProgress(
     const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.PROGRESS}?puzzleId=${puzzleId}`, {
       headers: getHeaders(token),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyProgress error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -168,7 +176,7 @@ export async function fetchMyProfile(
     const res = await fetch(`${API_BASE_URL}/api/puzzle/users/me`, {
       headers: getHeaders(token),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyProfile error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -181,7 +189,7 @@ export async function deleteMyAccount(token: string): Promise<ApiResponse<void>>
       method: 'DELETE',
       headers: getHeaders(token),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('deleteMyAccount error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
@@ -197,7 +205,7 @@ export async function clearMyProgress(token: string, puzzleId?: string): Promise
       method: 'DELETE',
       headers: getHeaders(token),
     });
-    return await res.json();
+    return await parseJsonResponse(res);
   } catch (error) {
     console.error('clearMyProgress error:', error);
     return { success: false, error: '네트워크 오류가 발생했습니다.' };
