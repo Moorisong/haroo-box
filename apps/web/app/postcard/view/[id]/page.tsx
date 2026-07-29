@@ -9,7 +9,7 @@ interface Props {
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: '하루엽서가 도착했어요 🌸',
-    description: '소중한 사람이 보낸 하루엽서를 열어보세요. 3일간만 열람 가능합니다.',
+    description: '소중한 사람이 보낸 하루엽서를 열어보세요. 2일간만 열람 가능합니다.',
     openGraph: {
       title: '🌸 하루엽서가 도착했어요',
       description: '특별한 사람이 당신을 위해 만든 감성 엽서입니다.',

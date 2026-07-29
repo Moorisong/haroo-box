@@ -61,7 +61,7 @@ export default function LandingSection() {
           style={{ animation: 'fadeIn 1s 0.55s ease both' }}
         >
           생성된 엽서는{' '}
-          <span className="text-primary font-medium">3일 뒤</span> 자동으로 사라집니다
+          <span className="text-primary font-medium">2일 뒤</span> 자동으로 사라집니다
         </p>
       </div>
 

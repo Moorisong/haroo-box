@@ -38,7 +38,7 @@ export default function ExpiredCard() {
               className="text-base leading-[1.8] text-center mb-6"
               style={{ fontFamily: "'Gowun Batang', serif", color: '#5C3317' }}
             >
-              앗, 유효기간(3일)이 지나
+              앗, 유효기간(2일)이 지나
               <br />
               추억 속으로 사라진 엽서입니다.
             </h1>
@@ -54,7 +54,7 @@ export default function ExpiredCard() {
               className="text-[11px] text-center mb-6"
               style={{ color: '#A07850', fontFamily: "'Gowun Batang', serif" }}
             >
-              하루엽서는 3일간만 열람 가능합니다
+              하루엽서는 2일간만 열람 가능합니다
             </p>
 
             <Link

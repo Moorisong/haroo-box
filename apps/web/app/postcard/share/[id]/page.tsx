@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   return {
     title: '하루엽서 공유',
-    description: `하루엽서 #${id} — 링크가 생성되었습니다. 3일간만 열람 가능합니다.`,
+    description: `하루엽서 #${id} — 링크가 생성되었습니다. 2일간만 열람 가능합니다.`,
     robots: { index: false, follow: false },
   };
 }

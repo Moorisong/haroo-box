@@ -128,7 +128,7 @@ export default function PostcardStepper() {
             background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
           }}
         >
-          {isSubmitting ? '엽서 만드는 중…' : '🔗 3일짜리 감성 엽서 링크 만들기'}
+          {isSubmitting ? '엽서 만드는 중…' : '🔗 2일짜리 감성 엽서 링크 만들기'}
         </button>
       </div>
     </div>

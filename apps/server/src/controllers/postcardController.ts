@@ -125,7 +125,7 @@ export const getPostcard = async (
 
     // 만료 여부 검사 (DB 레코드가 살아있어도 expires_at 기준으로 410 반환)
     if (postcard.expires_at < new Date()) {
-      res.status(410).json({ success: false, message: '만료된 엽서입니다. (3일 경과)' });
+      res.status(410).json({ success: false, message: '만료된 엽서입니다. (2일 경과)' });
       return;
     }
 

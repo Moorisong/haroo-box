@@ -14,8 +14,8 @@ export type PostcardFontFamily = (typeof POSTCARD_FONT_FAMILIES)[number];
 /** 엽서 메시지 최대 길이 */
 export const POSTCARD_MESSAGE_MAX_LENGTH = 150;
 
-/** 엽서 TTL (72시간, 3일) ms 단위 */
-export const POSTCARD_TTL_MS = 3 * 24 * 60 * 60 * 1000;
+/** 엽서 TTL (48시간, 2일) ms 단위 */
+export const POSTCARD_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 /** 유튜브 11자리 ID 검증 정규식 */
 export const YOUTUBE_ID_REGEX = /^[a-zA-Z0-9_-]{11}$/;
