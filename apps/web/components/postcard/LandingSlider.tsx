@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EXAMPLE_CARDS } from '@/constants/postcard';
 import PostcardMiniCard from './PostcardMiniCard';
 
@@ -21,10 +21,6 @@ export default function LandingSlider() {
     }, 3000);
     return () => clearInterval(timer);
   }, [total]);
-
-  const handleCardClick = useCallback((index: number) => {
-    setActive(index);
-  }, []);
 
   return (
     <div className="w-full">
@@ -48,14 +44,13 @@ export default function LandingSlider() {
           return (
             <div
               key={i}
-              className="absolute cursor-pointer"
+              className="absolute cursor-default pointer-events-none select-none"
               style={{
                 transform: `translateX(${translateX}px) scale(${scale})`,
                 opacity,
                 zIndex,
                 transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease',
               }}
-              onClick={() => handleCardClick(i)}
             >
               <PostcardMiniCard card={card} width={130} />
             </div>
@@ -64,11 +59,10 @@ export default function LandingSlider() {
       </div>
 
       {/* 페이지네이션 도트 */}
-      <div className="flex justify-center gap-1.5 mt-3">
+      <div className="flex justify-center gap-1.5 mt-3 pointer-events-none select-none">
         {EXAMPLE_CARDS.map((_, i) => (
-          <button
+          <div
             key={i}
-            onClick={() => handleCardClick(i)}
             aria-label={`예시 엽서 ${i + 1}번`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
               i === active ? 'w-4 bg-primary' : 'w-1.5 bg-muted-foreground/25'

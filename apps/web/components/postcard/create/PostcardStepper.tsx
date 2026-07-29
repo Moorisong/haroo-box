@@ -83,7 +83,7 @@ export default function PostcardStepper() {
           <span
             className="text-sm tracking-[0.2em]"
             style={{
-              fontFamily: "'Gowun Batang', serif",
+              fontFamily: "'Nanum Gothic', sans-serif",
               color: '#6C5CE7',
             }}
           >

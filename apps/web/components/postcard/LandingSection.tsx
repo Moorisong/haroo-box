@@ -15,7 +15,7 @@ export default function LandingSection() {
     <div className="min-h-screen flex flex-col bg-background">
       {/* Hero 영역 */}
       <div
-        className="flex-1 flex flex-col items-center pt-24 pb-36 px-6"
+        className="flex-1 flex flex-col items-center pt-20 pb-20 px-6"
         style={{
           animation: 'fadeInUp 0.9s ease both',
         }}
@@ -26,20 +26,20 @@ export default function LandingSection() {
           style={{ animation: 'fadeInUp 0.9s ease both' }}
         >
           <div
-            className="text-6xl mb-2 leading-none"
+            className="text-6xl mb-2 leading-none font-bold"
             style={{
-              fontFamily: "'Gowun Batang', serif",
+              fontFamily: "'Nanum Gothic', sans-serif",
               color: 'var(--color-primary, #6C5CE7)',
             }}
           >
             하루엽서
           </div>
-          <div className="text-[10px] tracking-[0.4em] text-muted-foreground mb-10 uppercase">
+          <div className="text-[10px] tracking-[0.4em] text-muted-foreground mb-10 uppercase font-sans">
             Haru Yeopseo
           </div>
           <p
-            className="text-[15px] leading-[1.9] text-foreground/75 max-w-[220px] mx-auto"
-            style={{ fontFamily: "'Gowun Batang', serif" }}
+            className="text-[15px] leading-[1.9] text-foreground/75 max-w-[220px] mx-auto font-sans"
+            style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
           >
             당신의 하루에 어울리는
             <br />
@@ -57,26 +57,26 @@ export default function LandingSection() {
 
         {/* TTL 안내 문구 */}
         <p
-          className="text-xs text-muted-foreground text-center"
+          className="text-xs text-muted-foreground text-center mb-8"
           style={{ animation: 'fadeIn 1s 0.55s ease both' }}
         >
           생성된 엽서는{' '}
           <span className="text-primary font-medium">2일 뒤</span> 자동으로 사라집니다
         </p>
-      </div>
 
-      {/* 하단 고정 CTA 버튼 */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto px-5 py-5 bg-background/80 backdrop-blur-md">
-        <Link
-          href="/postcard/create"
-          className="block w-full py-4 rounded-2xl text-sm font-medium tracking-wide text-white shadow-lg text-center transition-transform active:scale-[0.97] hover:scale-[1.01]"
-          style={{
-            background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
-          }}
-          id="postcard-landing-cta"
-        >
-          💌 나만의 하루엽서 만들기
-        </Link>
+        {/* inline CTA 버튼 */}
+        <div className="w-full max-w-[390px] px-2" style={{ animation: 'fadeInUp 0.8s 0.65s ease both' }}>
+          <Link
+            href="/postcard/create"
+            className="block w-full py-4 rounded-2xl text-sm font-medium tracking-wide text-white hover:text-white shadow-lg text-center transition-all active:scale-[0.97] hover:scale-[1.01]"
+            style={{
+              background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
+            }}
+            id="postcard-landing-cta"
+          >
+            💌 나만의 하루엽서 만들기
+          </Link>
+        </div>
       </div>
 
       {/* 페이드인 애니메이션 키프레임 */}

@@ -38,12 +38,12 @@ export interface FontMeta {
 }
 
 /**
- * 기획 문서 기준 5종 감성 폰트
- * - font-1: 모던 고딕 (Pretendard계열)
- * - font-2: 서정 명조 (Gowun Batang)
+ * 5종 고딕 계열 감성 폰트
+ * - font-1: 모던 고딕 (Nanum Gothic)
+ * - font-2: 고딕 (Nanum Gothic)
  * - font-3: 레트로 고딕 (Nanum Gothic)
- * - font-4: 시네마틱 명조 (Noto Serif KR)
- * - font-5: 손글씨풍 (Nanum Myeongjo)
+ * - font-4: 시네마틱 고딕 (Noto Sans KR)
+ * - font-5: 라운드 고딕 (Nanum Gothic)
  */
 export const POSTCARD_FONTS: FontMeta[] = [
   {
@@ -54,9 +54,9 @@ export const POSTCARD_FONTS: FontMeta[] = [
   },
   {
     id: 'font-2',
-    name: '서정명조',
-    fontFamily: "'Gowun Batang', serif",
-    style: { fontFamily: "'Gowun Batang', serif" },
+    name: '고딕',
+    fontFamily: "'Nanum Gothic', sans-serif",
+    style: { fontFamily: "'Nanum Gothic', sans-serif" },
   },
   {
     id: 'font-3',
@@ -67,20 +67,20 @@ export const POSTCARD_FONTS: FontMeta[] = [
   {
     id: 'font-4',
     name: '시네마틱',
-    fontFamily: "'Noto Serif KR', serif",
-    style: { fontFamily: "'Noto Serif KR', serif" },
+    fontFamily: "'Noto Sans KR', sans-serif",
+    style: { fontFamily: "'Noto Sans KR', sans-serif" },
   },
   {
     id: 'font-5',
-    name: '손글씨',
-    fontFamily: "'Nanum Myeongjo', serif",
-    style: { fontFamily: "'Nanum Myeongjo', serif" },
+    name: '라운드고딕',
+    fontFamily: "'Nanum Gothic', sans-serif",
+    style: { fontFamily: "'Nanum Gothic', sans-serif" },
   },
 ];
 
 /** 폰트 ID → CSSProperties 조회 헬퍼 */
 export const getFontStyle = (id: PostcardFontFamily): React.CSSProperties =>
-  POSTCARD_FONTS.find((f) => f.id === id)?.style ?? { fontFamily: "'Gowun Batang', serif" };
+  POSTCARD_FONTS.find((f) => f.id === id)?.style ?? { fontFamily: "'Nanum Gothic', sans-serif" };
 
 // ─── 메시지 제한 ──────────────────────────────────────────────────────────────
 
@@ -111,7 +111,7 @@ export interface ExampleCard {
 export const EXAMPLE_CARDS: ExampleCard[] = [
   {
     imageUrl:
-      'https://images.unsplash.com/photo-1490750967868-88df5691cc33?w=280&h=340&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=280&h=340&fit=crop&auto=format',
     text: '봄이 오는 길목에\n잠깐 멈춰서 있었어',
     filterType: 'vintage',
     fontFamily: 'font-2',

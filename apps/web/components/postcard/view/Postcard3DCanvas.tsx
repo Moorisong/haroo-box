@@ -156,7 +156,7 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
             </p>
             <div
               className="mt-3 text-[10px] text-muted-foreground/50 tracking-wider"
-              style={{ fontFamily: "'Gowun Batang', serif" }}
+              style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
             >
               — 하루엽서
             </div>

@@ -50,7 +50,7 @@ export default function AdGateContainer({ postcardId }: AdGateContainerProps) {
         <div className="h-14 flex items-center justify-center px-5 bg-background/90 backdrop-blur-md border-b border-border">
           <span
             className="text-sm tracking-[0.2em]"
-            style={{ fontFamily: "'Gowun Batang', serif", color: '#6C5CE7' }}
+            style={{ fontFamily: "'Nanum Gothic', sans-serif", color: '#6C5CE7' }}
           >
             하루엽서
           </span>
@@ -65,13 +65,13 @@ export default function AdGateContainer({ postcardId }: AdGateContainerProps) {
         >
           <div
             className="text-3xl mb-4"
-            style={{ fontFamily: "'Gowun Batang', serif" }}
+            style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
           >
             ✉️
           </div>
           <p
             className="text-sm leading-[1.9] text-muted-foreground"
-            style={{ fontFamily: "'Gowun Batang', serif" }}
+            style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
           >
             잠시만요! 소중한 엽서를 꺼내어 담는 동안,
             <br />

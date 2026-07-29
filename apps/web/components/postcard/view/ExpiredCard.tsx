@@ -30,13 +30,13 @@ export default function ExpiredCard() {
           <div className="px-6 pt-8 pb-6">
             <div
               className="text-4xl mb-4 text-center"
-              style={{ fontFamily: "'Gowun Batang', serif" }}
+              style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
             >
               🎫
             </div>
             <h1
-              className="text-base leading-[1.8] text-center mb-6"
-              style={{ fontFamily: "'Gowun Batang', serif", color: '#5C3317' }}
+              className="text-base leading-[1.8] text-center mb-6 font-medium"
+              style={{ fontFamily: "'Nanum Gothic', sans-serif", color: '#5C3317' }}
             >
               앗, 유효기간(2일)이 지나
               <br />
@@ -52,14 +52,14 @@ export default function ExpiredCard() {
 
             <p
               className="text-[11px] text-center mb-6"
-              style={{ color: '#A07850', fontFamily: "'Gowun Batang', serif" }}
+              style={{ color: '#A07850', fontFamily: "'Nanum Gothic', sans-serif" }}
             >
               하루엽서는 2일간만 열람 가능합니다
             </p>
 
             <Link
               href="/postcard"
-              className="block w-full py-3.5 rounded-xl text-sm font-medium text-white text-center transition-opacity hover:opacity-90"
+              className="block w-full py-3.5 rounded-xl text-sm font-medium text-white hover:text-white text-center transition-opacity hover:opacity-90"
               style={{
                 background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
               }}

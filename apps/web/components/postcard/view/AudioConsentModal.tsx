@@ -52,7 +52,7 @@ export default function AudioConsentModal({
 
         <p
           className="text-lg text-white font-medium text-center leading-relaxed mb-6 tracking-wide"
-          style={{ fontFamily: "'Gowun Batang', serif" }}
+          style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
         >
           상대방이 음악과 함께
           <br />

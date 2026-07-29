@@ -86,7 +86,7 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
         <div className="h-14 flex items-center justify-center px-5 bg-background/90 backdrop-blur-md border-b border-border">
           <span
             className="text-sm tracking-[0.2em]"
-            style={{ fontFamily: "'Gowun Batang', serif", color: '#6C5CE7' }}
+            style={{ fontFamily: "'Nanum Gothic', sans-serif", color: '#6C5CE7' }}
           >
             하루엽서
           </span>
