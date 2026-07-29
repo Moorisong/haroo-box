@@ -48,13 +48,23 @@ export const metadata: Metadata = {
 export default function Home() {
     const contents = [
         {
+            id: 'postcard',
+            title: '하루엽서',
+            description: '사진, 필터, 폰트, BGM을 담아 전하는\n3일간만 열람 가능한 감성 디지털 엽서!',
+            image: '/postcard-logo.png',
+            link: ROUTES.POSTCARD,
+            badge: 'New',
+            badgeType: styles.badgeNew,
+            active: true,
+        },
+        {
             id: 'puzzle',
             title: '하루퍼즐',
             description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
             image: '/puzzle-logo.png',
             link: ROUTES.PUZZLE,
-            badge: 'New',
-            badgeType: styles.badgeNew,
+            badge: 'Hot',
+            badgeType: styles.badgeHot,
             newTab: true,
             active: true,
         },
@@ -111,7 +121,7 @@ export default function Home() {
                             href={content.link}
                             key={content.id}
                             className={styles.card}
-                            {...((content as any).newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                            {...('newTab' in content && content.newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                         >
                             <div className={styles.cardImageWrapper}>
                                 {content.badge && (
