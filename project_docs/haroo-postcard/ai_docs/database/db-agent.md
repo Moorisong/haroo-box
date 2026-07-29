@@ -25,7 +25,7 @@
    - `font_family`는 Enum 제약 조건(`'font-1' | 'font-2' | 'font-3' | 'font-4' | 'font-5'`) 설정.
    - `youtube_id`는 11자리 비디오 ID 검증 정규식 또는 기본 trim 옵션 제공.
    - `created_at`은 `Date.now`를 기본값으로 갖는 Date 타입 지정.
-   - `expires_at`은 생성 시점(`created_at`)을 기준으로 3일(72시간)이 유동적으로 계산되어 삽입되도록 함수형 기본값(`default`) 바인딩.
+   - `expires_at`: `created_at` + 2일 (48시간 TTL)이 유동적으로 계산되어 삽입되도록 함수형 기본값(`default`) 바인딩.
 2. **인덱스 설정**:
    - `expires_at`에 오름차순 단일 인덱스(`expires_at: 1`)를 생성하여 만료 엽서 삭제 쿼리 시 풀스캔을 방지하도록 최적화.
 

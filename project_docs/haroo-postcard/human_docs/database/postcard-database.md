@@ -24,7 +24,7 @@
 | `font_family` | `String` | **필수** | `'font-1'` | 선택된 폰트 타입 식별자 (`font-1` ~ `font-5`) |
 | `youtube_id` | `String` | 옵션 | `null` | 유튜브 비디오 고유 11자리 ID |
 | `created_at` | `Date` | **필수** | `Date.now` | 엽서 최초 생성 시각 |
-| `expires_at` | `Date` | **필수** | `created_at` + 3일 | 엽서 파기 만료 예정 시각 (72시간) |
+| `expires_at` | `Date` | **필수** | `created_at` + 2일 | 엽서 파기 만료 예정 시각 (48시간) |
 
 ---
 
