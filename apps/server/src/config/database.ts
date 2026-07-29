@@ -9,6 +9,9 @@ let uknowConnection: Connection | null = null;
 /** 하루퍼즐 전용 DB 커넥션 */
 let puzzleConnection: Connection | null = null;
 
+/** 하루엽서 전용 DB 커넥션 */
+let postcardConnection: Connection | null = null;
+
 /**
  * MONGODB_URI에서 DB명을 교체하여 HTSM 전용 URI 생성
  * 예: mongodb+srv://...mongodb.net/haroo-box?... → mongodb+srv://...mongodb.net/htsm?...
@@ -38,6 +41,16 @@ function buildPuzzleUri(baseUri: string): string {
     return process.env.PUZZLE_MONGODB_URI;
   }
   return baseUri.replace(/\/[^/?]+(\?|$)/, '/puzzle$1');
+}
+
+/**
+ * MONGODB_URI에서 DB명을 교체하여 하루엽서 전용 URI 생성
+ */
+function buildPostcardUri(baseUri: string): string {
+  if (process.env.POSTCARD_MONGODB_URI) {
+    return process.env.POSTCARD_MONGODB_URI;
+  }
+  return baseUri.replace(/\/[^/?]+(\?|$)/, '/postcard$1');
 }
 
 export const connectDatabase = async (): Promise<void> => {
@@ -74,6 +87,12 @@ export const connectDatabase = async (): Promise<void> => {
     puzzleConnection = mongoose.createConnection(puzzleUri);
     await puzzleConnection.asPromise();
     console.log('Connected to MongoDB (puzzle)');
+
+    // 하루엽서 전용 DB 연결
+    const postcardUri = buildPostcardUri(mongoUri);
+    postcardConnection = mongoose.createConnection(postcardUri);
+    await postcardConnection.asPromise();
+    console.log('Connected to MongoDB (postcard)');
   } catch (error) {
     console.error('MongoDB connection error:', error);
     throw error;
@@ -104,6 +123,14 @@ export const getPuzzleConnection = (): Connection => {
   return puzzleConnection;
 };
 
+/** 하루엽서 전용 DB 커넥션 반환 */
+export const getPostcardConnection = (): Connection => {
+  if (!postcardConnection) {
+    throw new Error('Postcard DB connection not initialized. Call connectDatabase() first.');
+  }
+  return postcardConnection;
+};
+
 export const disconnectDatabase = async (): Promise<void> => {
   await mongoose.disconnect();
   if (htsmConnection) {
@@ -117,6 +144,10 @@ export const disconnectDatabase = async (): Promise<void> => {
   if (puzzleConnection) {
     await puzzleConnection.close();
     puzzleConnection = null;
+  }
+  if (postcardConnection) {
+    await postcardConnection.close();
+    postcardConnection = null;
   }
   console.log('Disconnected from MongoDB');
 };
