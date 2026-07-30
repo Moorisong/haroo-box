@@ -24,14 +24,16 @@
 - 컴포넌트 구조:
   - `apps/web/components/postcard/create/PostcardStepper.tsx` (반응형 12컬럼 그리드 컨테이너)
   - `apps/web/components/postcard/create/PostcardPreview.tsx` (실시간 완성 엽서 3D/필터 미리보기)
+  - `apps/web/components/postcard/create/PostcardPreview.tsx` (실시간 완성 엽서 필터/문구 미리보기)
   - `apps/web/components/postcard/create/StepUpload.tsx` (Card UI - 사진 및 필터 효과)
   - `apps/web/components/postcard/create/StepMessage.tsx` (Card UI - 문구 및 폰트)
   - `apps/web/components/postcard/create/StepMusic.tsx` (Card UI - BGM 오디오)
 
 ### 🛠️ 개발 단계 (Step-by-Step 상세 로직)
 1. **Zustand 스토어 정의**: 이미지 데이터, 문구, 폰트 선택값, 유튜브 링크 상태 저장 함수 설계.
-2. **실시간 완성 엽서 미리보기 (`PostcardPreview.tsx`)**:
-   - 업로드 사진 + 선택 필터 + 입력 문구 + 선택 폰트 + 3D 효과 마우스 상호작용 실시간 동기화.
+2. **실시간 완성 엽서 미리보기**:
+   - `PostcardPreview` 컴포넌트를 통한 완성 엽서 실시간 필터/문구 감상 기능.
+   - 업로드 사진 + 선택 필터 + 입력 문구 + 선택 폰트 실시간 동기화.
 3. **Step 1 (사진 및 필터)**:
    - 파일 유효성 검사 (JPEG, PNG, WEBP 지원 여부 및 최대 5MB 크기 제한).
    - Card UI 래퍼 적용 및 CSS 필터 실시간 바인딩.

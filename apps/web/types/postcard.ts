@@ -30,7 +30,6 @@ export interface PostcardFormState {
   imageFile: File | null;
   imagePreviewUrl: string | null;
   filterType: PostcardFilterType;
-  effect3d: boolean;
   message: string;
   fontFamily: PostcardFontFamily;
   youtubeUrl: string;

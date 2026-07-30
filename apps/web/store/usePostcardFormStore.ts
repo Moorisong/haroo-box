@@ -8,7 +8,6 @@ interface PostcardFormState {
   imageOffsetY: number; // 0 (top) ~ 100 (bottom), default 50 (center)
   filterType: PostcardFilterType;
   filterIntensity: number; // 0 ~ 100 (%)
-  effect3d: boolean;
   message: string;
   fontFamily: PostcardFontFamily;
   youtubeUrl: string;
@@ -20,7 +19,6 @@ interface PostcardFormActions {
   setImageOffsetY: (offsetY: number) => void;
   setFilterType: (filter: PostcardFilterType) => void;
   setFilterIntensity: (intensity: number) => void;
-  setEffect3d: (enabled: boolean) => void;
   setMessage: (message: string) => void;
   setFontFamily: (font: PostcardFontFamily) => void;
   setYoutubeUrl: (url: string, id: string | null) => void;
@@ -34,7 +32,6 @@ const INITIAL_STATE: PostcardFormState = {
   imageOffsetY: 50,
   filterType: 'none',
   filterIntensity: 100,
-  effect3d: false,
   message: '',
   fontFamily: 'font-2',
   youtubeUrl: '',
@@ -57,8 +54,6 @@ export const usePostcardFormStore = create<PostcardFormState & PostcardFormActio
   setFilterType: (filterType) => set({ filterType }),
 
   setFilterIntensity: (filterIntensity) => set({ filterIntensity }),
-
-  setEffect3d: (effect3d) => set({ effect3d }),
 
   setMessage: (message) => set({ message }),
 

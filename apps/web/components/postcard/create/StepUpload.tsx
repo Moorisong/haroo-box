@@ -9,7 +9,7 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
 /**
- * Step 1: 사진 업로드 & 필터 선택 (명확한 구분선 반영)
+ * Step 1: 사진 업로드 & 필터 선택
  */
 export default function StepUpload() {
   const {
@@ -17,12 +17,10 @@ export default function StepUpload() {
     imageOffsetY,
     filterType,
     filterIntensity,
-    effect3d,
     setImageFile,
     setImageOffsetY,
     setFilterType,
     setFilterIntensity,
-    setEffect3d,
   } = usePostcardFormStore();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -54,11 +52,6 @@ export default function StepUpload() {
   const handleFilterSelect = useCallback(
     (id: PostcardFilterType) => setFilterType(id),
     [setFilterType]
-  );
-
-  const handleEffect3dToggle = useCallback(
-    () => setEffect3d(!effect3d),
-    [effect3d, setEffect3d]
   );
 
   return (
@@ -113,8 +106,6 @@ export default function StepUpload() {
           </div>
         )}
       </div>
-
-
 
       <input
         ref={fileRef}
@@ -181,44 +172,6 @@ export default function StepUpload() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* 3D 입체 효과 토글 */}
-      <div
-        onClick={handleEffect3dToggle}
-        className="flex items-center justify-between p-3.5 rounded-xl bg-muted/20 border border-border/70 hover:bg-muted/40 transition-all cursor-pointer select-none"
-      >
-        <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-foreground block">
-              3D 입체 카드 효과
-            </span>
-            <span
-              className={`text-[10px] px-1.5 py-0.2 rounded font-medium ${
-                effect3d ? 'bg-blue-500/15 text-blue-600 font-bold' : 'bg-muted-foreground/15 text-muted-foreground'
-              }`}
-            >
-              {effect3d ? '켜짐' : '꺼짐'}
-            </span>
-          </div>
-          <span className="text-[10px] text-muted-foreground block">
-            마우스/터치 반응 입체 포커스 효과 적용
-          </span>
-        </div>
-        <button
-          type="button"
-          id="postcard-3d-toggle"
-          aria-label="3D 효과 토글"
-          className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer ${
-            effect3d ? 'bg-blue-500' : 'bg-muted-foreground/30'
-          }`}
-        >
-          <div
-            className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-md transition-transform ${
-              effect3d ? 'translate-x-5' : 'translate-x-0.5'
-            }`}
-          />
-        </button>
       </div>
     </section>
   );

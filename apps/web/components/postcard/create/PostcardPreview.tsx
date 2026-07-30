@@ -16,29 +16,13 @@ export default function PostcardPreview() {
     fontFamily,
     message,
     youtubeId,
-    effect3d,
     setImageOffsetY,
   } = usePostcardFormStore();
 
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const startYRef = React.useRef<number>(0);
   const startOffsetYRef = React.useRef<number>(50);
   const imgContainerRef = React.useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!effect3d || isDragging) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x: x * 14, y: -y * 14 });
-  };
-
-  const handleMouseLeave = () => {
-    if (!isDragging) {
-      setMousePos({ x: 0, y: 0 });
-    }
-  };
 
   // ── 드래그 상하 위치 조절 핸들러 ──
   const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
@@ -93,13 +77,8 @@ export default function PostcardPreview() {
 
       {/* 엽서 카드 메인 프레임 */}
       <div
-        className="w-full max-w-[340px] aspect-[3/4] rounded-2xl p-4 bg-card border border-border/80 shadow-xs transition-transform duration-200 ease-out flex flex-col justify-between relative overflow-hidden select-none"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        className="w-full max-w-[340px] aspect-[3/4] rounded-2xl p-4 bg-card border border-border/80 shadow-xs flex flex-col justify-between relative overflow-hidden select-none"
         style={{
-          transform: effect3d
-            ? `perspective(1000px) rotateX(${mousePos.y}deg) rotateY(${mousePos.x}deg)`
-            : 'none',
           fontFamily: "'Nanum Gothic', sans-serif",
         }}
       >
