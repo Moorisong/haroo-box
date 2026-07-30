@@ -6,8 +6,16 @@
 /** 엽서 이미지 필터 타입 */
 export type PostcardFilterType = 'vintage' | 'monotone' | 'film-grain' | 'none';
 
-/** 엽서 폰트 패밀리 타입 */
-export type PostcardFontFamily = 'font-1' | 'font-2' | 'font-3' | 'font-4' | 'font-5';
+/** 엽서 폰트 패밀리 타입 (고딕 계열 4종 + 명조 계열 4종) */
+export type PostcardFontFamily =
+  | 'font-1'
+  | 'font-2'
+  | 'font-3'
+  | 'font-4'
+  | 'font-5'
+  | 'font-6'
+  | 'font-7'
+  | 'font-8';
 
 /** 엽서 제작 폼 상태 (Zustand 스토어) */
 export interface PostcardFormState {

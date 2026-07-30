@@ -38,49 +38,65 @@ export interface FontMeta {
 }
 
 /**
- * 5종 고딕 계열 감성 폰트
- * - font-1: 모던 고딕 (Nanum Gothic)
- * - font-2: 고딕 (Nanum Gothic)
- * - font-3: 레트로 고딕 (Nanum Gothic)
- * - font-4: 시네마틱 고딕 (Noto Sans KR)
- * - font-5: 라운드 고딕 (Nanum Gothic)
+ * 8종 대표 폰트 (고딕 계열 4종 + 명조 계열 4종)
  */
 export const POSTCARD_FONTS: FontMeta[] = [
+  // ── 고딕 계열 4종 ──
   {
     id: 'font-1',
     name: '모던고딕',
-    fontFamily: "'Nanum Gothic', sans-serif",
-    style: { fontFamily: "'Nanum Gothic', sans-serif" },
-  },
-  {
-    id: 'font-2',
-    name: '고딕',
-    fontFamily: "'Nanum Gothic', sans-serif",
-    style: { fontFamily: "'Nanum Gothic', sans-serif" },
-  },
-  {
-    id: 'font-3',
-    name: '레트로',
-    fontFamily: "'Nanum Gothic', sans-serif",
-    style: { fontFamily: "'Nanum Gothic', sans-serif", letterSpacing: '0.05em' },
-  },
-  {
-    id: 'font-4',
-    name: '시네마틱',
     fontFamily: "'Noto Sans KR', sans-serif",
     style: { fontFamily: "'Noto Sans KR', sans-serif" },
   },
   {
-    id: 'font-5',
+    id: 'font-2',
     name: '라운드고딕',
-    fontFamily: "'Nanum Gothic', sans-serif",
-    style: { fontFamily: "'Nanum Gothic', sans-serif" },
+    fontFamily: "'Gowun Dodum', sans-serif",
+    style: { fontFamily: "'Gowun Dodum', sans-serif" },
+  },
+  {
+    id: 'font-3',
+    name: '임팩트고딕',
+    fontFamily: "'Black Han Sans', sans-serif",
+    style: { fontFamily: "'Black Han Sans', sans-serif" },
+  },
+  {
+    id: 'font-4',
+    name: '캐주얼고딕',
+    fontFamily: "'Do Hyeon', sans-serif",
+    style: { fontFamily: "'Do Hyeon', sans-serif" },
+  },
+
+  // ── 명조 계열 4종 ──
+  {
+    id: 'font-5',
+    name: '클래식명조',
+    fontFamily: "'Noto Serif KR', serif",
+    style: { fontFamily: "'Noto Serif KR', serif" },
+  },
+  {
+    id: 'font-6',
+    name: '감성명조',
+    fontFamily: "'Gowun Batang', serif",
+    style: { fontFamily: "'Gowun Batang', serif" },
+  },
+  {
+    id: 'font-7',
+    name: '레트로명조',
+    fontFamily: "'Song Myung', serif",
+    style: { fontFamily: "'Song Myung', serif" },
+  },
+  {
+    id: 'font-8',
+    name: '시인명조',
+    fontFamily: "'Gowun Batang', serif",
+    style: { fontFamily: "'Gowun Batang', serif", fontStyle: 'italic', letterSpacing: '0.04em' },
   },
 ];
 
 /** 폰트 ID → CSSProperties 조회 헬퍼 */
 export const getFontStyle = (id: PostcardFontFamily): React.CSSProperties =>
-  POSTCARD_FONTS.find((f) => f.id === id)?.style ?? { fontFamily: "'Nanum Gothic', sans-serif" };
+  POSTCARD_FONTS.find((f) => f.id === id)?.style ?? { fontFamily: "'Noto Sans KR', sans-serif" };
 
 // ─── 메시지 제한 ──────────────────────────────────────────────────────────────
 
