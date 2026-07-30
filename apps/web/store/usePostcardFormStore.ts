@@ -5,7 +5,9 @@ import type { PostcardFilterType, PostcardFontFamily } from '@/types/postcard';
 interface PostcardFormState {
   imageFile: File | null;
   imagePreviewUrl: string | null;
+  imageOffsetY: number; // 0 (top) ~ 100 (bottom), default 50 (center)
   filterType: PostcardFilterType;
+  filterIntensity: number; // 0 ~ 100 (%)
   effect3d: boolean;
   message: string;
   fontFamily: PostcardFontFamily;
@@ -15,7 +17,9 @@ interface PostcardFormState {
 
 interface PostcardFormActions {
   setImageFile: (file: File, previewUrl: string) => void;
+  setImageOffsetY: (offsetY: number) => void;
   setFilterType: (filter: PostcardFilterType) => void;
+  setFilterIntensity: (intensity: number) => void;
   setEffect3d: (enabled: boolean) => void;
   setMessage: (message: string) => void;
   setFontFamily: (font: PostcardFontFamily) => void;
@@ -27,7 +31,9 @@ interface PostcardFormActions {
 const INITIAL_STATE: PostcardFormState = {
   imageFile: null,
   imagePreviewUrl: null,
+  imageOffsetY: 50,
   filterType: 'none',
+  filterIntensity: 100,
   effect3d: false,
   message: '',
   fontFamily: 'font-2',
@@ -44,9 +50,13 @@ export const usePostcardFormStore = create<PostcardFormState & PostcardFormActio
   ...INITIAL_STATE,
 
   setImageFile: (file, previewUrl) =>
-    set({ imageFile: file, imagePreviewUrl: previewUrl }),
+    set({ imageFile: file, imagePreviewUrl: previewUrl, imageOffsetY: 50 }),
+
+  setImageOffsetY: (imageOffsetY) => set({ imageOffsetY }),
 
   setFilterType: (filterType) => set({ filterType }),
+
+  setFilterIntensity: (filterIntensity) => set({ filterIntensity }),
 
   setEffect3d: (effect3d) => set({ effect3d }),
 

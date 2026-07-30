@@ -3,7 +3,8 @@
 ## 📝 1. 연동 기획 명세 (postcard-frontend.md, postcard-database.md)
 - `/create` (또는 `/postcard/create`) 경로에서 실행되는 엽서 제작 모듈.
 - 반응형 2-Column (PC/태블릿) / 1-Column (모바일) 구조로 반응형 최적 배치.
-- 이미지 파일 업로드 및 Vintage/Monotone/Film Grain 필터 적용.
+- 이미지 파일 업로드 및 8종 감성 필터(Vintage, Monotone, Film Grain, Warm, Cool, Dramatic, Pastel) 적용 및 프로그레스 바 필터 강도(0~100%) 조절.
+- 실시간 미리보기 카드에서 마우스/터치 드래그로 사진 상하 구도(object-position) 맞추기 기능.
 - 8가지 감성 폰트(고딕 계열 4종 + 명조 계열 4종) 실시간 미리보기 및 메인 페이지 고딕 서체(`'Nanum Gothic', sans-serif`) 통합.
 - 150자 문구 유효성 검증 및 유튜브 오디오 썸네일 미리보기.
 - `PostcardPreview` 컴포넌트를 통한 완성 엽서 실시간 3D 패럴랙스/필터/문구 감상 기능.
