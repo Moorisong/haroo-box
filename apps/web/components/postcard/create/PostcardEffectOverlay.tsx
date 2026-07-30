@@ -67,27 +67,55 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
         </div>
       )}
 
-      {/* 4. 창가에 붙어 주르륵 흘러내리는 빗방울 (Window Raindrops Trickle) */}
+      {/* 4. 창가에 맺혀있는 진짜 물방울 쉐입 빗방울 (Realistic Glass Water Drops) */}
       {effectType === 'raindrop' && (
-        <div className="absolute inset-0 bg-slate-900/15 backdrop-blur-[0.5px]">
-          {/* 창문에 맺힌 잔여 물방울 맺힘 노드들 */}
-          <div className="absolute top-6 left-[18%] w-2 h-2.5 bg-white/70 rounded-full blur-[0.4px] shadow-[0_1px_3px_rgba(255,255,255,0.6)]" />
-          <div className="absolute top-1/3 left-[72%] w-2.5 h-3 bg-white/75 rounded-full blur-[0.4px] shadow-[0_1px_3px_rgba(255,255,255,0.6)]" />
-          <div className="absolute top-1/2 left-[35%] w-1.5 h-2 bg-white/60 rounded-full blur-[0.3px]" />
-          <div className="absolute bottom-1/4 left-[82%] w-2 h-2.5 bg-white/65 rounded-full blur-[0.4px]" />
+        <div className="absolute inset-0 bg-slate-900/15 backdrop-blur-[0.3px]">
+          {/* 창문에 처음부터 균일하게 배치된 투명 입체 물방울 8개 */}
+          <div
+            className="absolute top-[10%] left-[12%] w-3.5 h-4.5 bg-gradient-to-b from-white/70 via-white/20 to-black/20 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/60 shadow-[inset_0_1.5px_2px_rgba(255,255,255,1),0_2px_4px_rgba(0,0,0,0.3)] backdrop-blur-[0.2px]"
+            style={{ animation: 'naturalBeadFlow1 12s linear infinite' }}
+          />
+          <div
+            className="absolute top-[25%] left-[70%] w-4.5 h-5.5 bg-gradient-to-b from-white/80 via-white/25 to-black/25 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/70 shadow-[inset_0_2px_3px_rgba(255,255,255,1),0_3px_5px_rgba(0,0,0,0.35)] backdrop-blur-[0.2px]"
+            style={{ animation: 'naturalBeadFlow2 15s linear infinite' }}
+          />
+          <div
+            className="absolute top-[40%] left-[24%] w-2.5 h-3.5 bg-gradient-to-b from-white/60 via-white/15 to-black/15 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1.5px_3px_rgba(0,0,0,0.25)] backdrop-blur-[0.1px]"
+            style={{ animation: 'naturalBeadFlow3 10s linear infinite' }}
+          />
+          <div
+            className="absolute top-[60%] left-[85%] w-3.5 h-4.5 bg-gradient-to-b from-white/70 via-white/20 to-black/20 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/60 shadow-[inset_0_1.5px_2px_rgba(255,255,255,1),0_2px_4px_rgba(0,0,0,0.3)] backdrop-blur-[0.2px]"
+            style={{ animation: 'naturalBeadFlow4 14s linear infinite' }}
+          />
+          <div
+            className="absolute top-[18%] left-[42%] w-3 h-4 bg-gradient-to-b from-white/65 via-white/18 to-black/18 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/55 shadow-[inset_0_1.2px_2px_rgba(255,255,255,0.95),0_2px_4px_rgba(0,0,0,0.28)] backdrop-blur-[0.1px]"
+            style={{ animation: 'naturalBeadFlow2 13s linear infinite' }}
+          />
+          <div
+            className="absolute top-[52%] left-[60%] w-2.5 h-3.5 bg-gradient-to-b from-white/60 via-white/15 to-black/15 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1.5px_3px_rgba(0,0,0,0.25)] backdrop-blur-[0.1px]"
+            style={{ animation: 'naturalBeadFlow1 11s linear infinite' }}
+          />
+          <div
+            className="absolute top-[32%] left-[50%] w-4 h-5 bg-gradient-to-b from-white/75 via-white/22 to-black/22 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/65 shadow-[inset_0_1.8px_2.5px_rgba(255,255,255,1),0_2.5px_5px_rgba(0,0,0,0.32)] backdrop-blur-[0.2px]"
+            style={{ animation: 'naturalBeadFlow4 16s linear infinite' }}
+          />
+          <div
+            className="absolute top-[75%] left-[92%] w-2.5 h-3.5 bg-gradient-to-b from-white/60 via-white/15 to-black/15 rounded-[50%_50%_40%_40%/60%_60%_40%_40%] border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1.5px_3px_rgba(0,0,0,0.25)] backdrop-blur-[0.1px]"
+            style={{ animation: 'naturalBeadFlow3 9s linear infinite' }}
+          />
 
-          {/* 주르륵 속도를 가감하며 실감나게 내려오는 빗방울 궤적들 */}
+          {/* 창가를 타고 수직으로 스쳐 내리는 세로 일자 빗줄기들 (은은하고 자연스러운 속도) */}
           <div
-            className="absolute left-[28%] top-0 w-2 h-4 bg-gradient-to-b from-white/90 via-white/50 to-transparent rounded-full shadow-[0_2px_6px_rgba(255,255,255,0.8)]"
-            style={{ animation: 'raindropTrickle 3.8s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}
+            className="absolute left-[28%] top-0 w-[1.5px] h-16 bg-gradient-to-b from-transparent via-white/85 to-transparent rounded-full shadow-[0_0_4px_rgba(255,255,255,0.8)]"
+            style={{ animation: 'fastRainStreak 1.4s linear infinite' }}
           />
           <div
-            className="absolute left-[58%] top-0 w-2.5 h-5 bg-gradient-to-b from-white/95 via-white/60 to-transparent rounded-full shadow-[0_2px_6px_rgba(255,255,255,0.9)]"
-            style={{ animation: 'raindropTrickle 2.9s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.2s' }}
+            className="absolute left-[54%] top-0 w-[2px] h-20 bg-gradient-to-b from-transparent via-white/90 to-transparent rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]"
+            style={{ animation: 'fastRainStreak 1.1s linear infinite 0.3s' }}
           />
           <div
-            className="absolute left-[85%] top-0 w-1.5 h-3.5 bg-gradient-to-b from-white/80 via-white/40 to-transparent rounded-full"
-            style={{ animation: 'raindropTrickle 4.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.5s' }}
+            className="absolute left-[78%] top-0 w-[1.5px] h-14 bg-gradient-to-b from-transparent via-white/75 to-transparent rounded-full"
+            style={{ animation: 'fastRainStreak 1.6s linear infinite 0.6s' }}
           />
         </div>
       )}
@@ -171,12 +199,31 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
           80% { opacity: 0.9; }
           100% { transform: translateY(240px) translateX(15px); opacity: 0; }
         }
-        @keyframes raindropTrickle {
-          0% { transform: translateY(-20px) scaleY(1); opacity: 0; }
-          15% { opacity: 0.9; transform: translateY(10px) scaleY(1.3); }
-          45% { transform: translateY(80px) scaleY(0.9); opacity: 0.95; }
-          70% { transform: translateY(140px) scaleY(1.4); opacity: 0.85; }
-          100% { transform: translateY(240px) scaleY(1); opacity: 0; }
+        @keyframes fastRainStreak {
+          0% { transform: translateY(-40px); opacity: 0; }
+          20% { opacity: 0.95; }
+          80% { opacity: 0.9; }
+          100% { transform: translateY(240px); opacity: 0; }
+        }
+        @keyframes naturalBeadFlow1 {
+          0% { transform: translateY(0); opacity: 0.9; }
+          70% { opacity: 0.85; }
+          100% { transform: translateY(120px); opacity: 0; }
+        }
+        @keyframes naturalBeadFlow2 {
+          0% { transform: translateY(0); opacity: 0.85; }
+          65% { opacity: 0.8; }
+          100% { transform: translateY(140px); opacity: 0; }
+        }
+        @keyframes naturalBeadFlow3 {
+          0% { transform: translateY(0); opacity: 0.9; }
+          80% { opacity: 0.85; }
+          100% { transform: translateY(110px); opacity: 0; }
+        }
+        @keyframes naturalBeadFlow4 {
+          0% { transform: translateY(0); opacity: 0.85; }
+          75% { opacity: 0.8; }
+          100% { transform: translateY(150px); opacity: 0; }
         }
         @keyframes petalIrregular1 {
           0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
