@@ -6,16 +6,12 @@ import { ChevronLeft } from 'lucide-react';
 import StepUpload from './StepUpload';
 import StepMessage from './StepMessage';
 import StepMusic from './StepMusic';
+import PostcardPreview from './PostcardPreview';
 import { usePostcardFormStore } from '@/store/usePostcardFormStore';
 import { createPostcardApi } from '@/utils/postcardApi';
 
-const TOTAL_STEPS = 3;
-
 /**
- * 하루엽서 제작 Stepper 컨테이너
- * - 3단계 스텝 UI (사진/문구/BGM) 동시 노출 (싱글 페이지 폼)
- * - 하단 고정 CTA: API 전송 → /postcard/ad-gate/:id 이동
- * - 취소/뒤로가기 시 Zustand 상태 초기화 (사이드 이펙트 방어)
+ * 반응형 하루엽서 제작 모듈 (PostcardStepper)
  */
 export default function PostcardStepper() {
   const router = useRouter();
@@ -26,7 +22,6 @@ export default function PostcardStepper() {
     usePostcardFormStore();
 
   const handleBack = useCallback(() => {
-    // 취소 시 폼 상태 초기화 후 랜딩으로 복귀
     resetForm();
     router.push('/postcard');
   }, [resetForm, router]);
@@ -40,7 +35,6 @@ export default function PostcardStepper() {
     try {
       const formData = new FormData();
 
-      // 이미지가 없는 경우 기본 이미지 URL을 텍스트로 전송
       if (imageFile) {
         formData.append('image', imageFile);
       } else {
@@ -57,8 +51,6 @@ export default function PostcardStepper() {
       }
 
       const result = await createPostcardApi(formData);
-
-      // 성공 시 폼 상태 유지하고 광고 브릿지로 이동
       router.push(`/postcard/ad-gate/${result.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : '엽서 생성에 실패했습니다. 다시 시도해 주세요.');
@@ -68,68 +60,71 @@ export default function PostcardStepper() {
   }, [isSubmitting, imageFile, filterType, fontFamily, message, youtubeId, router]);
 
   return (
-    <div className="min-h-screen bg-background pb-28">
-      {/* 헤더 */}
-      <div className="fixed top-0 left-0 right-0 z-40 max-w-[390px] mx-auto">
-        <div className="h-14 flex items-center justify-between px-5 bg-background/90 backdrop-blur-md border-b border-border">
+    <div
+      className="min-h-screen bg-background pb-32"
+      style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+    >
+      {/* 상단 네비게이션 헤더 (명확한 구분선 반영) */}
+      <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-md border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <button
             onClick={handleBack}
-            className="flex items-center gap-1 text-sm text-muted-foreground"
+            className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
             id="postcard-create-back"
           >
             <ChevronLeft size={18} />
-            랜딩
+            랜딩으로
           </button>
-          <span
-            className="text-sm tracking-[0.2em]"
+          <div className="font-bold text-sm text-foreground tracking-wide">
+            하루엽서 만들기
+          </div>
+          <div className="w-16 text-right text-[11px] text-muted-foreground hidden sm:block">
+            2일간 유효
+          </div>
+        </div>
+      </header>
+
+      {/* 메인 콘텐츠 반응형 컨테이너 */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* 좌측 컬럼: 실시간 프리뷰 */}
+          <div className="lg:col-span-5 lg:sticky lg:top-20 order-1 lg:order-1">
+            <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-xs">
+              <PostcardPreview />
+            </div>
+          </div>
+
+          {/* 우측 컬럼: 3개 Step 카드 폼 패널 */}
+          <div className="lg:col-span-7 space-y-6 order-2 lg:order-2">
+            <StepUpload />
+            <StepMessage />
+            <StepMusic />
+          </div>
+        </div>
+      </main>
+
+      {/* 하단 고정 Submit CTA (명확한 구분선 반영) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-md border-t border-border py-3.5 px-4">
+        <div className="max-w-md lg:max-w-xl mx-auto flex flex-col items-center">
+          {error && (
+            <p className="text-xs text-rose-500 font-medium text-center mb-2">
+              {error}
+            </p>
+          )}
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            id="postcard-create-submit"
+            className={`w-full py-3.5 px-6 rounded-xl text-sm font-bold tracking-wide text-white shadow-xs text-center transition-all active:scale-[0.99] ${
+              isSubmitting ? 'opacity-60 cursor-not-allowed' : 'hover:opacity-95'
+            }`}
             style={{
-              fontFamily: "'Nanum Gothic', sans-serif",
-              color: '#6C5CE7',
+              background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
             }}
           >
-            하루엽서
-          </span>
-          <div className="w-12" />
+            {isSubmitting ? '엽서 만드는 중…' : '2일짜리 감성 엽서 링크 만들기'}
+          </button>
         </div>
-      </div>
-
-      <div className="pt-[72px] px-5">
-        {/* 진행 단계 표시 */}
-        <div className="flex items-center gap-2 py-5">
-          {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((n) => (
-            <React.Fragment key={n}>
-              <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-medium bg-primary text-white">
-                {n}
-              </div>
-              {n < TOTAL_STEPS && <div className="flex-1 h-px bg-primary/30" />}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* 스텝 컴포넌트 (싱글 페이지 폼) */}
-        <StepUpload />
-        <StepMessage />
-        <StepMusic />
-      </div>
-
-      {/* 하단 고정 CTA */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto px-5 py-5 bg-background/80 backdrop-blur-md">
-        {error && (
-          <p className="text-[11px] text-rose-400 text-center mb-2">{error}</p>
-        )}
-        <button
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          id="postcard-create-submit"
-          className={`w-full py-4 rounded-2xl text-sm font-medium tracking-wide text-white shadow-lg transition-opacity ${
-            isSubmitting ? 'opacity-60 cursor-not-allowed' : ''
-          }`}
-          style={{
-            background: 'linear-gradient(135deg, #BF8B6E 0%, #D4956B 60%, #C78B79 100%)',
-          }}
-        >
-          {isSubmitting ? '엽서 만드는 중…' : '🔗 2일짜리 감성 엽서 링크 만들기'}
-        </button>
       </div>
     </div>
   );
