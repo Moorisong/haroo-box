@@ -4,7 +4,7 @@
  * 하드코딩 금지 원칙 준수: 모든 열거 값은 이 파일에서 참조
  */
 
-import type { PostcardFilterType, PostcardFontFamily } from '@/types/postcard';
+import type { PostcardFilterType, PostcardFontFamily, PostcardEffectType } from '@/types/postcard';
 
 // ─── 필터 상수 ────────────────────────────────────────────────────────────────
 
@@ -81,6 +81,28 @@ export const getFilterCss = (id: PostcardFilterType, intensity: number = 100): s
   const filter = POSTCARD_FILTERS.find((f) => f.id === id);
   return filter ? filter.getStyle(intensity) : '';
 };
+
+// ─── 이펙트 상수 ──────────────────────────────────────────────────────────────
+
+export interface EffectMeta {
+  id: PostcardEffectType;
+  name: string;
+  desc: string;
+  icon: string;
+}
+
+/** 8종 감성 움직이는 배경 이펙트 메타데이터 */
+export const POSTCARD_EFFECTS: EffectMeta[] = [
+  { id: 'none', name: '없음', desc: '효과 없음', icon: '✨' },
+  { id: 'sunlight', name: '햇살', desc: '따사롭게 쏟아지는 햇살', icon: '☀️' },
+  { id: 'starlight', name: '별빛', desc: '밤하늘에 반짝이는 별빛', icon: '✨' },
+  { id: 'snowfall', name: '포근한 눈', desc: '은은하게 내리는 눈송이', icon: '❄️' },
+  { id: 'raindrop', name: '빗방울', desc: '창가에 맺힌 듯한 물방울', icon: '💧' },
+  { id: 'cherry-blossom', name: '벚꽃 흩날림', desc: '봄바람에 날리는 꽃잎', icon: '🌸' },
+  { id: 'firefly', name: '반딧불이', desc: '숲속 감성 춤추는 빛무기', icon: '🌿' },
+  { id: 'bubble', name: '비눗방울', desc: '몽환적으로 떠오르는 영롱한 비눗방울', icon: '🫧' },
+  { id: 'shooting-star', name: '유성우', desc: '밤하늘 가로지르는 별빛 유성우', icon: '🌠' },
+];
 
 // ─── 폰트 상수 ────────────────────────────────────────────────────────────────
 

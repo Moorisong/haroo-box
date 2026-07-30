@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { PostcardFilterType, PostcardFontFamily } from '@/types/postcard';
+import type { PostcardFilterType, PostcardFontFamily, PostcardEffectType } from '@/types/postcard';
 
 /** 하루엽서 제작 폼 상태 (Zustand 스토어) */
 interface PostcardFormState {
@@ -8,6 +8,7 @@ interface PostcardFormState {
   imageOffsetY: number; // 0 (top) ~ 100 (bottom), default 50 (center)
   filterType: PostcardFilterType;
   filterIntensity: number; // 0 ~ 100 (%)
+  effectType: PostcardEffectType;
   message: string;
   fontFamily: PostcardFontFamily;
   youtubeUrl: string;
@@ -19,6 +20,7 @@ interface PostcardFormActions {
   setImageOffsetY: (offsetY: number) => void;
   setFilterType: (filter: PostcardFilterType) => void;
   setFilterIntensity: (intensity: number) => void;
+  setEffectType: (effect: PostcardEffectType) => void;
   setMessage: (message: string) => void;
   setFontFamily: (font: PostcardFontFamily) => void;
   setYoutubeUrl: (url: string, id: string | null) => void;
@@ -32,6 +34,7 @@ const INITIAL_STATE: PostcardFormState = {
   imageOffsetY: 50,
   filterType: 'none',
   filterIntensity: 100,
+  effectType: 'none',
   message: '',
   fontFamily: 'font-2',
   youtubeUrl: '',
@@ -54,6 +57,8 @@ export const usePostcardFormStore = create<PostcardFormState & PostcardFormActio
   setFilterType: (filterType) => set({ filterType }),
 
   setFilterIntensity: (filterIntensity) => set({ filterIntensity }),
+
+  setEffectType: (effectType) => set({ effectType }),
 
   setMessage: (message) => set({ message }),
 

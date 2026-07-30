@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { POSTCARD_FILTERS, getFilterCss, getFontStyle } from '@/constants/postcard';
 import { usePostcardFormStore } from '@/store/usePostcardFormStore';
+import PostcardEffectOverlay from './PostcardEffectOverlay';
 
 /**
  * 실시간 엽서 커스텀 프리뷰 컴포넌트
@@ -13,6 +14,7 @@ export default function PostcardPreview() {
     imageOffsetY,
     filterType,
     filterIntensity,
+    effectType,
     fontFamily,
     message,
     youtubeId,
@@ -97,7 +99,7 @@ export default function PostcardPreview() {
           onTouchEnd={handleDragEnd}
         >
           {imagePreviewUrl ? (
-            <div className="w-full h-full relative group">
+            <div className="w-full h-full relative group overflow-hidden">
               <img
                 src={imagePreviewUrl}
                 alt="엽서 이미지 미리보기"
@@ -107,7 +109,9 @@ export default function PostcardPreview() {
                   objectPosition: `center ${imageOffsetY}%`,
                 }}
               />
-              <div className="absolute inset-x-0 bottom-2 flex justify-center opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none">
+              {/* 은은한 8종 감성 이펙트 레이어 */}
+              <PostcardEffectOverlay effectType={effectType} />
+              <div className="absolute inset-x-0 bottom-2 flex justify-center opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
                 <span className="bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-xs flex items-center gap-1">
                   ↕ 위아래로 드래그해서 위치 맞추기
                 </span>

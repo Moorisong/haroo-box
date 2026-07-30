@@ -3,6 +3,7 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { getFilterCss, getFontStyle } from '@/constants/postcard';
 import type { PostcardViewData } from '@/types/postcard';
+import PostcardEffectOverlay from '../create/PostcardEffectOverlay';
 
 /** Three.js 3D 조명/카메라 설정 (하드코딩 방지 분리 설정 객체) */
 const CARD_3D_CONFIG = {

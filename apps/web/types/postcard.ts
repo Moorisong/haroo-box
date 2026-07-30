@@ -14,6 +14,18 @@ export type PostcardFilterType =
   | 'dramatic'
   | 'pastel';
 
+/** 엽서 감성 배경 이펙트 8종 타입 + 없음 */
+export type PostcardEffectType =
+  | 'none'
+  | 'sunlight'       // 쏟아지는 햇살 (Warm Sunlight)
+  | 'starlight'      // 반짝이는 별빛 (Floating Starlight)
+  | 'snowfall'       // 은은한 눈 내림 (Soft Snowfall)
+  | 'raindrop'       // 빗방울 물방울 (Glass Raindrops)
+  | 'cherry-blossom' // 휘날리는 벚꽃잎 (Falling Petals)
+  | 'firefly'        // 숲속 반딧불이 (Forest Fireflies)
+  | 'bubble'         // 몽환 비눗방울 (Floating Bubbles)
+  | 'shooting-star'; // 밤하늘 유성우 (Shooting Star);
+
 /** 엽서 폰트 패밀리 타입 (고딕 계열 4종 + 명조 계열 4종) */
 export type PostcardFontFamily =
   | 'font-1'
@@ -29,7 +41,10 @@ export type PostcardFontFamily =
 export interface PostcardFormState {
   imageFile: File | null;
   imagePreviewUrl: string | null;
+  imageOffsetY: number;
   filterType: PostcardFilterType;
+  filterIntensity: number;
+  effectType: PostcardEffectType;
   message: string;
   fontFamily: PostcardFontFamily;
   youtubeUrl: string;
@@ -54,6 +69,7 @@ export interface PostcardViewData {
   id: string;
   image_url: string;
   filter_type: PostcardFilterType;
+  effect_type?: PostcardEffectType;
   message: string;
   font_family: PostcardFontFamily;
   youtube_id: string | null;
