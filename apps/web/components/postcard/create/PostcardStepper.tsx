@@ -44,12 +44,18 @@ export default function PostcardStepper() {
         return;
       }
 
+      if (!message.trim()) {
+        setError('엽서 문구를 작성해 주세요.');
+        setIsSubmitting(false);
+        return;
+      }
+
       formData.append('filter_type', filterType);
       formData.append('filter_intensity', filterIntensity.toString());
       formData.append('effect_type', effectType);
       formData.append('image_offset_y', imageOffsetY.toString());
       formData.append('font_family', fontFamily);
-      formData.append('message', message.trim() || '오늘 하루도 고생했어');
+      formData.append('message', message.trim());
       if (youtubeId) {
         formData.append('youtube_url', `https://youtu.be/${youtubeId}`);
       }
