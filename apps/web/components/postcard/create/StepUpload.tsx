@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useCallback } from 'react';
-import { POSTCARD_FILTERS, POSTCARD_EFFECTS, getFilterCss } from '@/constants/postcard';
+import { POSTCARD_FILTERS, POSTCARD_EFFECTS } from '@/constants/postcard';
 import { usePostcardFormStore } from '@/store/usePostcardFormStore';
 import type { PostcardFilterType, PostcardEffectType } from '@/types/postcard';
 
@@ -14,12 +14,10 @@ const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 export default function StepUpload() {
   const {
     imagePreviewUrl,
-    imageOffsetY,
     filterType,
     filterIntensity,
     effectType,
     setImageFile,
-    setImageOffsetY,
     setFilterType,
     setFilterIntensity,
     setEffectType,

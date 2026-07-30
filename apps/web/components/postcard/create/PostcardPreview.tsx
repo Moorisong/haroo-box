@@ -100,6 +100,7 @@ export default function PostcardPreview() {
         >
           {imagePreviewUrl ? (
             <div className="w-full h-full relative group overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imagePreviewUrl}
                 alt="엽서 이미지 미리보기"
