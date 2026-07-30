@@ -11,21 +11,76 @@ import type { PostcardFilterType, PostcardFontFamily } from '@/types/postcard';
 export interface FilterMeta {
   id: PostcardFilterType;
   name: string;
-  /** CSS filter 함수 문자열 */
-  css: string;
+  /** 기준 CSS filter 생성 함수 (intensity 0~100) */
+  getStyle: (intensity: number) => string;
 }
 
-/** 기획 문서 기준 3종 필터 + 없음 */
+/** 8종 다양한 미적 감성 필터 메타데이터 */
 export const POSTCARD_FILTERS: FilterMeta[] = [
-  { id: 'none', name: '없음', css: '' },
-  { id: 'vintage', name: 'Vintage', css: 'sepia(0.45) contrast(1.1) brightness(0.93) saturate(0.8)' },
-  { id: 'monotone', name: 'Monotone', css: 'grayscale(1) contrast(1.1)' },
-  { id: 'film-grain', name: 'Film Grain', css: 'contrast(1.08) brightness(0.96) saturate(1.15)' },
+  { id: 'none', name: '없음', getStyle: () => '' },
+  {
+    id: 'vintage',
+    name: 'Vintage',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `sepia(${0.6 * ratio}) contrast(${1 + 0.15 * ratio}) brightness(${1 - 0.08 * ratio}) saturate(${1 - 0.3 * ratio})`;
+    },
+  },
+  {
+    id: 'monotone',
+    name: 'Monotone',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `grayscale(${1 * ratio}) contrast(${1 + 0.2 * ratio})`;
+    },
+  },
+  {
+    id: 'film-grain',
+    name: 'Film Grain',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `contrast(${1 + 0.18 * ratio}) brightness(${1 - 0.05 * ratio}) saturate(${1 + 0.3 * ratio})`;
+    },
+  },
+  {
+    id: 'warm',
+    name: 'Warm Sunset',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `sepia(${0.35 * ratio}) saturate(${1 + 0.4 * ratio}) hue-rotate(-10deg)`;
+    },
+  },
+  {
+    id: 'cool',
+    name: 'Cool Breeze',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `hue-rotate(${15 * ratio}deg) saturate(${1 + 0.2 * ratio}) brightness(${1 + 0.05 * ratio})`;
+    },
+  },
+  {
+    id: 'dramatic',
+    name: 'Dramatic',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `contrast(${1 + 0.5 * ratio}) saturate(${1 + 0.3 * ratio}) brightness(${1 - 0.1 * ratio})`;
+    },
+  },
+  {
+    id: 'pastel',
+    name: 'Soft Pastel',
+    getStyle: (i) => {
+      const ratio = i / 100;
+      return `brightness(${1 + 0.12 * ratio}) saturate(${1 - 0.25 * ratio}) contrast(${1 - 0.1 * ratio})`;
+    },
+  },
 ];
 
-/** 필터 ID → CSS 문자열 조회 헬퍼 */
-export const getFilterCss = (id: PostcardFilterType): string =>
-  POSTCARD_FILTERS.find((f) => f.id === id)?.css ?? '';
+/** 필터 ID 및 intensity(0~100) → CSS filter 문자열 반환 */
+export const getFilterCss = (id: PostcardFilterType, intensity: number = 100): string => {
+  const filter = POSTCARD_FILTERS.find((f) => f.id === id);
+  return filter ? filter.getStyle(intensity) : '';
+};
 
 // ─── 폰트 상수 ────────────────────────────────────────────────────────────────
 

@@ -3,8 +3,16 @@
  * 백엔드 타입과 분리하여 프론트 전용으로 관리
  */
 
-/** 엽서 이미지 필터 타입 */
-export type PostcardFilterType = 'vintage' | 'monotone' | 'film-grain' | 'none';
+/** 엽서 이미지 필터 8종 타입 */
+export type PostcardFilterType =
+  | 'none'
+  | 'vintage'
+  | 'monotone'
+  | 'film-grain'
+  | 'warm'
+  | 'cool'
+  | 'dramatic'
+  | 'pastel';
 
 /** 엽서 폰트 패밀리 타입 (고딕 계열 4종 + 명조 계열 4종) */
 export type PostcardFontFamily =
