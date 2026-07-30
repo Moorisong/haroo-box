@@ -239,3 +239,25 @@ export const extractYoutubeId = (url: string): string | null => {
 /** 유튜브 썸네일 URL 생성 */
 export const getYoutubeThumbnailUrl = (youtubeId: string): string =>
   `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+
+// ─── 공유 모달 & 상태 메시지 리터럴 상수 ──────────────────────────────────────
+
+export const SHARE_MESSAGES = {
+  EXPIRED: '만료됨',
+  HOURS: '시간',
+  MINUTES_LEFT: '분 후 사라짐',
+  COPY_SUCCESS: '복사됨 ✓',
+  COPY_DEFAULT: '링크 복사',
+  DOWNLOADING: '저장 중…',
+  DOWNLOAD_DEFAULT: '이미지 다운로드',
+  DOWNLOAD_ERROR: '이미지 저장에 실패했습니다. 다시 시도해 주세요.',
+  VIEW_POSTCARD: '엽서 직접 보기 →',
+  KAKAO_SHARE: '카카오톡 공유',
+  LINK_CREATED: '링크가 생성되었습니다.',
+  AD_TITLE: '엽서를 만드는 중...',
+  AD_DESC: '잠시만 기다려주시면 엽서가 공개됩니다.',
+} as const;
+
+/** 공유 페이지의 엽서 생성 광고 대기 시간 (초) */
+export const AD_GATE_COUNTDOWN_SHARE_SEC = 5;
+
