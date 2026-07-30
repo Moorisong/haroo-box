@@ -9,6 +9,7 @@ import StepMusic from './StepMusic';
 import PostcardPreview from './PostcardPreview';
 import { usePostcardFormStore } from '@/store/usePostcardFormStore';
 import { createPostcardApi } from '@/utils/postcardApi';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 /**
  * 반응형 하루엽서 제작 모듈 (PostcardStepper)
@@ -91,9 +92,17 @@ export default function PostcardStepper() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* 좌측 컬럼: 실시간 프리뷰 */}
-          <div className="lg:col-span-5 lg:sticky lg:top-20 order-1 lg:order-1">
+          <div className="lg:col-span-5 lg:sticky lg:top-20 order-1 lg:order-1 space-y-4">
             <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-xs">
               <PostcardPreview />
+            </div>
+
+            {/* Adfit AD Banner */}
+            <div className="w-full flex justify-center bg-card border border-border/80 rounded-2xl py-4 px-2 shadow-xs">
+              <KakaoAdfit
+                unit={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID || ADFIT_UNITS.MAIN_BANNER}
+                {...ADFIT_SIZES.BANNER_320x100}
+              />
             </div>
           </div>
 

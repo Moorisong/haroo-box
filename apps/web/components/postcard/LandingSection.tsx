@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import LandingSlider from './LandingSlider';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 /**
  * 하루엽서 랜딩 섹션 컴포넌트
@@ -76,6 +77,17 @@ export default function LandingSection() {
           >
             💌 나만의 하루엽서 만들기
           </Link>
+        </div>
+
+        {/* Adfit AD Banner */}
+        <div 
+          className="w-full flex justify-center mt-6"
+          style={{ animation: 'fadeIn 1.2s 0.75s ease both' }}
+        >
+          <KakaoAdfit 
+            unit={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID || ADFIT_UNITS.MAIN_BANNER} 
+            {...ADFIT_SIZES.BANNER_320x100} 
+          />
         </div>
       </div>
 

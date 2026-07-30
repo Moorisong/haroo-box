@@ -9,7 +9,7 @@ import { shareViaKakao, copyToClipboard, buildShareUrl } from '@/utils/kakaoShar
 import type { PostcardViewData } from '@/types/postcard';
 import PostcardEffectOverlay from '../create/PostcardEffectOverlay';
 
-import KakaoAdfit, { ADFIT_UNITS } from '@/components/ads/kakao-adfit';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 interface ShareContainerProps {
   postcard: PostcardViewData;
@@ -26,8 +26,8 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
-  const [showAdModal, setShowAdModal] = useState(true);
-  const [adCountdown, setAdCountdown] = useState(10);
+  const [showAdModal, setShowAdModal] = useState(false);
+  const [adCountdown, setAdCountdown] = useState(5);
 
   const shareUrl = buildShareUrl(postcard.id);
 
@@ -43,6 +43,25 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
 
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining);
 
+  // 마운트 시 세션스토리지 조회하여 모달 표시 여부 결정
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const viewedList = sessionStorage.getItem('viewed_postcards');
+        if (viewedList) {
+          const ids = JSON.parse(viewedList);
+          if (Array.isArray(ids) && ids.includes(postcard.id)) {
+            setAdCountdown(0);
+            return;
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    setShowAdModal(true);
+  }, [postcard.id]);
+
   // 1분마다 남은 시간 갱신
   useEffect(() => {
     const timer = setInterval(() => setTimeRemaining(getTimeRemaining()), 60_000);
@@ -54,6 +73,22 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
     if (!showAdModal) return;
     if (adCountdown <= 0) {
       setShowAdModal(false);
+      if (typeof window !== 'undefined') {
+        try {
+          const viewedList = sessionStorage.getItem('viewed_postcards');
+          const ids = viewedList ? JSON.parse(viewedList) : [];
+          if (Array.isArray(ids)) {
+            if (!ids.includes(postcard.id)) {
+              ids.push(postcard.id);
+              sessionStorage.setItem('viewed_postcards', JSON.stringify(ids));
+            }
+          } else {
+            sessionStorage.setItem('viewed_postcards', JSON.stringify([postcard.id]));
+          }
+        } catch {
+          // ignore
+        }
+      }
       return;
     }
 
@@ -62,7 +97,7 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [showAdModal, adCountdown]);
+  }, [showAdModal, adCountdown, postcard.id]);
 
   const handleKakaoShare = useCallback(() => {
     shareViaKakao({
@@ -99,9 +134,7 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
     }
   }, [postcard.id, downloading]);
 
-  const handleUnlockPostcard = useCallback(() => {
-    setShowAdModal(false);
-  }, []);
+
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -247,6 +280,14 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
               <Download size={15} />
               {downloading ? '저장 중…' : '이미지 다운로드'}
             </button>
+          </div>
+
+          {/* 광고 배너 */}
+          <div className="w-full flex justify-center mt-6">
+            <KakaoAdfit
+              unit={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID || ADFIT_UNITS.MAIN_BANNER}
+              {...ADFIT_SIZES.BANNER_320x100}
+            />
           </div>
 
           {/* 엽서 직접 보기 링크 */}
