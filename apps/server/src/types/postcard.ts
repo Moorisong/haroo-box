@@ -66,7 +66,9 @@ export interface IPostcard {
   _id: string;
   image_path: string;
   filter_type: PostcardFilterType;
+  filter_intensity: number;
   effect_type: PostcardEffectType;
+  image_offset_y: number;
   message: string;
   font_family: PostcardFontFamily;
   youtube_id: string | null;

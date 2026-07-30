@@ -18,7 +18,7 @@ export default function PostcardStepper() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { imageFile, filterType, effectType, fontFamily, message, youtubeId, resetForm } =
+  const { imageFile, filterType, filterIntensity, effectType, imageOffsetY, fontFamily, message, youtubeId, resetForm } =
     usePostcardFormStore();
 
   const handleBack = useCallback(() => {
@@ -44,7 +44,9 @@ export default function PostcardStepper() {
       }
 
       formData.append('filter_type', filterType);
+      formData.append('filter_intensity', filterIntensity.toString());
       formData.append('effect_type', effectType);
+      formData.append('image_offset_y', imageOffsetY.toString());
       formData.append('font_family', fontFamily);
       formData.append('message', message.trim() || '오늘 하루도 고생했어');
       if (youtubeId) {
@@ -52,13 +54,13 @@ export default function PostcardStepper() {
       }
 
       const result = await createPostcardApi(formData);
-      router.push(`/postcard/ad-gate/${result.id}`);
+      router.push(`/postcard/share/${result.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : '엽서 생성에 실패했습니다. 다시 시도해 주세요.');
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, imageFile, filterType, fontFamily, message, youtubeId, router]);
+  }, [isSubmitting, imageFile, filterType, filterIntensity, effectType, imageOffsetY, fontFamily, message, youtubeId, router]);
 
   return (
     <div

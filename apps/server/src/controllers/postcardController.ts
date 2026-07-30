@@ -35,9 +35,11 @@ export const createPostcard = async (
       return;
     }
 
-    const { filter_type, effect_type, message, font_family, youtube_url } = req.body as {
+    const { filter_type, filter_intensity, effect_type, image_offset_y, message, font_family, youtube_url } = req.body as {
       filter_type?: string;
+      filter_intensity?: string;
       effect_type?: string;
+      image_offset_y?: string;
       message?: string;
       font_family?: string;
       youtube_url?: string;
@@ -55,10 +57,22 @@ export const createPostcard = async (
       ? (filter_type as PostcardFilterType)
       : 'none';
 
+    // filter_intensity 파싱 검증
+    const parsedIntensity = Number(filter_intensity);
+    const resolvedIntensity = !isNaN(parsedIntensity) && parsedIntensity >= 0 && parsedIntensity <= 100
+      ? parsedIntensity
+      : 100;
+
     // effect_type Enum 검증
     const resolvedEffect = (POSTCARD_EFFECT_TYPES as readonly string[]).includes(effect_type ?? '')
       ? (effect_type as PostcardEffectType)
       : 'none';
+
+    // image_offset_y 파싱 검증
+    const parsedOffsetY = Number(image_offset_y);
+    const resolvedOffsetY = !isNaN(parsedOffsetY) && parsedOffsetY >= 0 && parsedOffsetY <= 100
+      ? parsedOffsetY
+      : 50;
 
     // font_family Enum 검증
     const resolvedFont = (POSTCARD_FONT_FAMILIES as readonly string[]).includes(font_family ?? '')
@@ -82,7 +96,9 @@ export const createPostcard = async (
       _id: postcardId,
       image_path,
       filter_type: resolvedFilter,
+      filter_intensity: resolvedIntensity,
       effect_type: resolvedEffect,
+      image_offset_y: resolvedOffsetY,
       message: message.trim(),
       font_family: resolvedFont,
       youtube_id,
@@ -147,7 +163,9 @@ export const getPostcard = async (
         id: postcard._id,
         image_url: imageUrl,
         filter_type: postcard.filter_type,
+        filter_intensity: postcard.filter_intensity ?? 100,
         effect_type: postcard.effect_type ?? 'none',
+        image_offset_y: postcard.image_offset_y ?? 50,
         message: postcard.message,
         font_family: postcard.font_family,
         youtube_id: postcard.youtube_id,

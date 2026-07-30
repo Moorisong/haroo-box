@@ -142,7 +142,8 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
               className="w-full h-full object-cover"
               crossOrigin="anonymous"
               style={{
-                filter: getFilterCss(postcard.filter_type),
+                filter: getFilterCss(postcard.filter_type, postcard.filter_intensity),
+                objectPosition: `center ${postcard.image_offset_y}%`,
               }}
             />
             <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />

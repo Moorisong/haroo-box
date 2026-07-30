@@ -16,7 +16,9 @@ export interface IPostcardDocument extends Document<string> {
   _id: string;
   image_path: string;
   filter_type: PostcardFilterType;
+  filter_intensity: number;
   effect_type: PostcardEffectType;
+  image_offset_y: number;
   message: string;
   font_family: PostcardFontFamily;
   youtube_id: string | null;
@@ -48,11 +50,25 @@ const postcardSchema = new Schema<IPostcardDocument>(
       enum: [...POSTCARD_FILTER_TYPES],
       default: 'none',
     },
+    filter_intensity: {
+      type: Number,
+      required: true,
+      default: 100,
+      min: 0,
+      max: 100,
+    },
     effect_type: {
       type: String,
       required: true,
       enum: [...POSTCARD_EFFECT_TYPES],
       default: 'none',
+    },
+    image_offset_y: {
+      type: Number,
+      required: true,
+      default: 50,
+      min: 0,
+      max: 100,
     },
     message: {
       type: String,
