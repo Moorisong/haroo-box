@@ -77,11 +77,14 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
       {/* 3. 소복소복 은은하게 내리는 포근한 눈 (Soft Falling Snow) */}
       {effectType === 'snowfall' && (
         <div className="absolute inset-0">
-          <div className="snowflake absolute w-2.5 h-2.5 bg-white/90 rounded-full blur-[0.5px]" style={{ left: '10%', animation: 'snowFall 4.5s linear infinite' }} />
-          <div className="snowflake absolute w-3.5 h-3.5 bg-white/80 rounded-full blur-[0.7px]" style={{ left: '30%', animation: 'snowFall 6s linear infinite 1.5s' }} />
-          <div className="snowflake absolute w-2 h-2 bg-white/95 rounded-full blur-[0.3px]" style={{ left: '55%', animation: 'snowFall 3.8s linear infinite 0.5s' }} />
-          <div className="snowflake absolute w-3 h-3 bg-white/85 rounded-full blur-[0.6px]" style={{ left: '75%', animation: 'snowFall 5.2s linear infinite 2s' }} />
-          <div className="snowflake absolute w-2 h-2 bg-white/90 rounded-full blur-[0.4px]" style={{ left: '90%', animation: 'snowFall 4.2s linear infinite 1s' }} />
+          <div className="snowflake absolute w-2.5 h-2.5 bg-white/90 rounded-full blur-[0.5px]" style={{ left: '8%', animation: 'snowFall 4.5s linear infinite -1.2s' }} />
+          <div className="snowflake absolute w-3.5 h-3.5 bg-white/80 rounded-full blur-[0.7px]" style={{ left: '25%', animation: 'snowFall 6.0s linear infinite -4.2s' }} />
+          <div className="snowflake absolute w-2 h-2 bg-white/95 rounded-full blur-[0.3px]" style={{ left: '42%', animation: 'snowFall 3.8s linear infinite -2.1s' }} />
+          <div className="snowflake absolute w-3 h-3 bg-white/85 rounded-full blur-[0.6px]" style={{ left: '60%', animation: 'snowFall 5.2s linear infinite -0.8s' }} />
+          <div className="snowflake absolute w-2.5 h-2.5 bg-white/90 rounded-full blur-[0.4px]" style={{ left: '78%', animation: 'snowFall 4.2s linear infinite -3.4s' }} />
+          <div className="snowflake absolute w-1.5 h-1.5 bg-white/80 rounded-full blur-[0.3px]" style={{ left: '92%', animation: 'snowFall 5.8s linear infinite -1.9s' }} />
+          <div className="snowflake absolute w-3 h-3 bg-white/75 rounded-full blur-[0.8px]" style={{ left: '18%', animation: 'snowFall 5.0s linear infinite -3.6s' }} />
+          <div className="snowflake absolute w-2 h-2 bg-white/90 rounded-full blur-[0.4px]" style={{ left: '68%', animation: 'snowFall 4.0s linear infinite -2.7s' }} />
         </div>
       )}
 
@@ -143,19 +146,19 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
         <div className="absolute inset-0">
           <div
             className="petal absolute w-3.5 h-2.5 bg-pink-200/90 rounded-[60%_40%_70%_30%/50%_60%_40%_50%] shadow-[0_0_4px_rgba(251,207,232,0.6)]"
-            style={{ left: '10%', animation: 'petalIrregular1 7s ease-in-out infinite' }}
+            style={{ left: '10%', animation: 'petalIrregular1 7s ease-in-out infinite -1.0s' }}
           />
           <div
             className="petal absolute w-4 h-2.5 bg-rose-200/95 rounded-[50%_50%_60%_40%/60%_40%_60%_40%]"
-            style={{ left: '45%', animation: 'petalIrregular2 8.5s ease-in-out infinite 1.5s' }}
+            style={{ left: '45%', animation: 'petalIrregular2 8.5s ease-in-out infinite -4.5s' }}
           />
           <div
             className="petal absolute w-3 h-2 bg-pink-300/85 rounded-[70%_30%_50%_50%/40%_60%_50%_50%]"
-            style={{ left: '75%', animation: 'petalIrregular1 6.2s ease-in-out infinite 0.8s' }}
+            style={{ left: '75%', animation: 'petalIrregular1 6.2s ease-in-out infinite -2.8s' }}
           />
           <div
             className="petal absolute w-3.5 h-2.5 bg-pink-100/90 rounded-[40%_60%_50%_50%/50%_50%_60%_40%]"
-            style={{ left: '90%', animation: 'petalIrregular2 7.8s ease-in-out infinite 2.5s' }}
+            style={{ left: '90%', animation: 'petalIrregular2 7.8s ease-in-out infinite -6.0s' }}
           />
         </div>
       )}
@@ -212,10 +215,10 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
           50% { opacity: 1; transform: scale(1.25); }
         }
         @keyframes snowFall {
-          0% { transform: translateY(-10px) translateX(0); opacity: 0; }
-          20% { opacity: 0.9; }
-          80% { opacity: 0.9; }
-          100% { transform: translateY(240px) translateX(15px); opacity: 0; }
+          0% { transform: translateY(-20px) translateX(0); opacity: 0; }
+          15% { opacity: 0.95; }
+          85% { opacity: 0.95; }
+          100% { transform: translateY(320px) translateX(18px); opacity: 0; }
         }
         @keyframes fastRainStreak {
           0% { transform: translateY(-40px); opacity: 0; }
