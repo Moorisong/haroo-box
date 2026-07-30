@@ -3,12 +3,44 @@
  * 스키마 및 컨트롤러에서 공유하는 상수/타입 모음
  */
 
-/** 엽서 이미지 필터 타입 */
-export const POSTCARD_FILTER_TYPES = ['vintage', 'monotone', 'film-grain', 'none'] as const;
+/** 엽서 이미지 필터 8종 타입 */
+export const POSTCARD_FILTER_TYPES = [
+  'none',
+  'vintage',
+  'monotone',
+  'film-grain',
+  'warm',
+  'cool',
+  'dramatic',
+  'pastel',
+] as const;
 export type PostcardFilterType = (typeof POSTCARD_FILTER_TYPES)[number];
 
-/** 엽서 폰트 패밀리 타입 */
-export const POSTCARD_FONT_FAMILIES = ['font-1', 'font-2', 'font-3', 'font-4', 'font-5'] as const;
+/** 엽서 감성 이펙트 8종 타입 + 없음 */
+export const POSTCARD_EFFECT_TYPES = [
+  'none',
+  'sunlight',
+  'starlight',
+  'snowfall',
+  'raindrop',
+  'cherry-blossom',
+  'firefly',
+  'bubble',
+  'shooting-star',
+] as const;
+export type PostcardEffectType = (typeof POSTCARD_EFFECT_TYPES)[number];
+
+/** 엽서 폰트 패밀리 타입 (고딕 계열 4종 + 명조 계열 4종) */
+export const POSTCARD_FONT_FAMILIES = [
+  'font-1',
+  'font-2',
+  'font-3',
+  'font-4',
+  'font-5',
+  'font-6',
+  'font-7',
+  'font-8',
+] as const;
 export type PostcardFontFamily = (typeof POSTCARD_FONT_FAMILIES)[number];
 
 /** 엽서 메시지 최대 길이 */
@@ -34,6 +66,7 @@ export interface IPostcard {
   _id: string;
   image_path: string;
   filter_type: PostcardFilterType;
+  effect_type: PostcardEffectType;
   message: string;
   font_family: PostcardFontFamily;
   youtube_id: string | null;

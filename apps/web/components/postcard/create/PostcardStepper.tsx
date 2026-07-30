@@ -18,7 +18,7 @@ export default function PostcardStepper() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { imageFile, filterType, fontFamily, message, youtubeId, resetForm } =
+  const { imageFile, filterType, effectType, fontFamily, message, youtubeId, resetForm } =
     usePostcardFormStore();
 
   const handleBack = useCallback(() => {
@@ -44,6 +44,7 @@ export default function PostcardStepper() {
       }
 
       formData.append('filter_type', filterType);
+      formData.append('effect_type', effectType);
       formData.append('font_family', fontFamily);
       formData.append('message', message.trim() || '오늘 하루도 고생했어');
       if (youtubeId) {

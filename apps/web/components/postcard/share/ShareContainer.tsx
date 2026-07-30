@@ -7,6 +7,7 @@ import { toPng } from 'html-to-image';
 import { getFilterCss, getFontStyle } from '@/constants/postcard';
 import { shareViaKakao, copyToClipboard, buildShareUrl } from '@/utils/kakaoShare';
 import type { PostcardViewData } from '@/types/postcard';
+import PostcardEffectOverlay from '../create/PostcardEffectOverlay';
 
 interface ShareContainerProps {
   postcard: PostcardViewData;
@@ -119,16 +120,18 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
             aria-label="엽서 열어보기"
           >
             <div className="w-full h-full relative">
-              <img
-                src={postcard.image_url}
-                alt="완성된 엽서"
-                className="w-full object-cover transition-transform group-hover:scale-[1.02]"
-                style={{
-                  height: '65%',
-                  filter: getFilterCss(postcard.filter_type),
-                }}
-                crossOrigin="anonymous"
-              />
+              <div className="w-full relative overflow-hidden" style={{ height: '65%' }}>
+                <img
+                  src={postcard.image_url}
+                  alt="완성된 엽서"
+                  className="w-full h-full object-cover transition-transform group-hover:scale-[1.02]"
+                  style={{
+                    filter: getFilterCss(postcard.filter_type),
+                  }}
+                  crossOrigin="anonymous"
+                />
+                <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
+              </div>
               <div
                 className="p-4 bg-card flex flex-col justify-center"
                 style={{ height: '35%' }}

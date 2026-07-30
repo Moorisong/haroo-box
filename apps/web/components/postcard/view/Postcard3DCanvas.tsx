@@ -135,16 +135,18 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
             transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          <img
-            src={postcard.image_url}
-            alt="엽서"
-            className="w-full object-cover"
-            crossOrigin="anonymous"
-            style={{
-              height: '65%',
-              filter: getFilterCss(postcard.filter_type),
-            }}
-          />
+          <div className="w-full relative overflow-hidden" style={{ height: '65%' }}>
+            <img
+              src={postcard.image_url}
+              alt="엽서"
+              className="w-full h-full object-cover"
+              crossOrigin="anonymous"
+              style={{
+                filter: getFilterCss(postcard.filter_type),
+              }}
+            />
+            <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
+          </div>
           <div
             className="bg-white/95 backdrop-blur-sm flex flex-col justify-center px-5 py-4"
             style={{ height: '35%' }}

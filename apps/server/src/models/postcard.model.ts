@@ -2,10 +2,12 @@ import { Schema, Document } from 'mongoose';
 import { getPostcardConnection } from '../config/database';
 import {
   POSTCARD_FILTER_TYPES,
+  POSTCARD_EFFECT_TYPES,
   POSTCARD_FONT_FAMILIES,
   POSTCARD_MESSAGE_MAX_LENGTH,
   POSTCARD_TTL_MS,
   type PostcardFilterType,
+  type PostcardEffectType,
   type PostcardFontFamily,
 } from '../types/postcard';
 
@@ -14,6 +16,7 @@ export interface IPostcardDocument extends Document<string> {
   _id: string;
   image_path: string;
   filter_type: PostcardFilterType;
+  effect_type: PostcardEffectType;
   message: string;
   font_family: PostcardFontFamily;
   youtube_id: string | null;
@@ -43,6 +46,12 @@ const postcardSchema = new Schema<IPostcardDocument>(
       required: true,
       // 공통 타입 파일의 Enum 배열을 직접 참조하여 하드코딩 방지
       enum: [...POSTCARD_FILTER_TYPES],
+      default: 'none',
+    },
+    effect_type: {
+      type: String,
+      required: true,
+      enum: [...POSTCARD_EFFECT_TYPES],
       default: 'none',
     },
     message: {

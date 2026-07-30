@@ -6,9 +6,11 @@ import { getPostcardModel } from '../models/postcard.model';
 import { getUploadDir } from '../middlewares/uploadPostcard';
 import {
   POSTCARD_FILTER_TYPES,
+  POSTCARD_EFFECT_TYPES,
   POSTCARD_FONT_FAMILIES,
   YOUTUBE_URL_REGEX,
   type PostcardFilterType,
+  type PostcardEffectType,
   type PostcardFontFamily,
 } from '../types/postcard';
 
@@ -33,8 +35,9 @@ export const createPostcard = async (
       return;
     }
 
-    const { filter_type, message, font_family, youtube_url } = req.body as {
+    const { filter_type, effect_type, message, font_family, youtube_url } = req.body as {
       filter_type?: string;
+      effect_type?: string;
       message?: string;
       font_family?: string;
       youtube_url?: string;
@@ -50,6 +53,11 @@ export const createPostcard = async (
     // filter_type Enum 검증
     const resolvedFilter = (POSTCARD_FILTER_TYPES as readonly string[]).includes(filter_type ?? '')
       ? (filter_type as PostcardFilterType)
+      : 'none';
+
+    // effect_type Enum 검증
+    const resolvedEffect = (POSTCARD_EFFECT_TYPES as readonly string[]).includes(effect_type ?? '')
+      ? (effect_type as PostcardEffectType)
       : 'none';
 
     // font_family Enum 검증
@@ -74,6 +82,7 @@ export const createPostcard = async (
       _id: postcardId,
       image_path,
       filter_type: resolvedFilter,
+      effect_type: resolvedEffect,
       message: message.trim(),
       font_family: resolvedFont,
       youtube_id,
@@ -138,6 +147,7 @@ export const getPostcard = async (
         id: postcard._id,
         image_url: imageUrl,
         filter_type: postcard.filter_type,
+        effect_type: postcard.effect_type ?? 'none',
         message: postcard.message,
         font_family: postcard.font_family,
         youtube_id: postcard.youtube_id,
