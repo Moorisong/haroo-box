@@ -25,7 +25,8 @@
 - 컴포넌트 구조:
   - `apps/web/components/postcard/create/PostcardStepper.tsx` (반응형 12컬럼 그리드 컨테이너)
   - `apps/web/components/postcard/create/PostcardPreview.tsx` (실시간 완성 엽서 3D/필터 미리보기)
-  - `apps/web/components/postcard/create/PostcardPreview.tsx` (실시간 완성 엽서 필터/문구 미리보기)
+  - `apps/web/components/postcard/create/PostcardEffectOverlay.tsx` (감성 배경 이펙트 모듈)
+  - `apps/web/components/postcard/create/PostcardEffectStyles.tsx` (애니메이션 스타일 정의)
   - `apps/web/components/postcard/create/StepUpload.tsx` (Card UI - 사진 및 필터 효과)
   - `apps/web/components/postcard/create/StepMessage.tsx` (Card UI - 문구 및 폰트)
   - `apps/web/components/postcard/create/StepMusic.tsx` (Card UI - BGM 오디오)

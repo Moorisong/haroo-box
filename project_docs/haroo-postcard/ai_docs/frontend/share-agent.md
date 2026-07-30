@@ -14,7 +14,13 @@
 
 ### 📦 패키지 및 타깃 클래스 경로 구조
 - 라우팅 페이지: `apps/web/app/postcard/share/[id]/page.tsx`
-- 컴포넌트 경로: `apps/web/components/postcard/share/ShareContainer.tsx`
+- 컴포넌트 경로: `apps/web/components/postcard/share/` 하위
+  - `ShareContainer.tsx` (컨테이너/조립)
+  - `AdLoadingModal.tsx` (광고 로딩 모달 및 세션 제어)
+  - `ShareActionButtons.tsx` (공유 버튼 UI 그룹)
+- 커스텀 훅: `apps/web/hooks/postcard/` 하위
+  - `useShareTimer.ts` (만료 시간 카운트다운 로직)
+  - `useShareActions.ts` (카카오톡, 복사, 다운로드 액션 로직)
 - 유틸리티 파일: `apps/web/utils/kakaoShare.ts`
 
 ### 🛠️ 개발 단계 (Step-by-Step 상세 로직)
