@@ -23,23 +23,41 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-inherit z-10 select-none">
-      {/* 1. 쏟아지는 대각선 햇살 한줄기 (Sunlight God Rays) */}
+      {/* 1. 우상단에서 출발하여 좌측 하단으로 대각선 내리쬐는 햇살 (Top-Right to Bottom-Left) */}
       {effectType === 'sunlight' && (
-        <div className="absolute inset-0">
-          {/* 대각선으로 쏟아지는 강렬하면서 은은한 빛줄기 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* 회전(rotate) 및 크기 비율 오차를 원천 차단하기 위해 요소 전체(inset-0)에 CSS 대각선 그라데이션 적용.
+              'to bottom right' 방향의 50% 지점은 정확히 [우상단 ↔ 좌하단]을 잇는 대각선이 됩니다. */}
           <div
-            className="absolute -top-20 -right-20 w-[160%] h-[160%] origin-top-right rotate-[-35deg] pointer-events-none"
+            className="absolute inset-0 pointer-events-none"
             style={{
-              background:
-                'linear-gradient(90deg, transparent 0%, rgba(254,243,199,0.3) 30%, rgba(253,230,138,0.45) 50%, rgba(254,243,199,0.3) 70%, transparent 100%)',
-              filter: 'blur(16px)',
+              background: `linear-gradient(
+                to bottom right,
+                transparent 0%,
+                transparent 42%,
+                rgba(254, 240, 138, 0.1) 47%,
+                rgba(255, 251, 235, 0.5) 49.2%,
+                rgba(254, 240, 138, 0.9) 50%,
+                rgba(255, 251, 235, 0.5) 50.8%,
+                rgba(254, 240, 138, 0.1) 53%,
+                transparent 58%,
+                transparent 100%
+              )`,
+              // 우상단(광원)은 진하게, 좌하단으로 내려갈수록 빛이 자연스럽게 페이드아웃 되도록 마스킹
+              WebkitMaskImage: 'linear-gradient(to bottom left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0) 90%)',
+              maskImage: 'linear-gradient(to bottom left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0) 90%)',
+              filter: 'blur(6px)',
               mixBlendMode: 'screen',
               animation: 'sunbeamPulse 5s ease-in-out infinite alternate',
             }}
           />
+          {/* 우상단 광원 앰비언트 글로우 */}
           <div
-            className="absolute top-0 right-0 w-36 h-36 bg-amber-100/50 rounded-full blur-2xl animate-pulse"
-            style={{ animationDuration: '3.5s' }}
+            className="absolute -top-12 -right-12 w-52 h-52 rounded-full bg-amber-100/70 blur-2xl pointer-events-none"
+            style={{
+              mixBlendMode: 'screen',
+              animation: 'sunbeamPulse 5s ease-in-out infinite alternate',
+            }}
           />
         </div>
       )}
@@ -186,8 +204,8 @@ export default function PostcardEffectOverlay({ effectType }: PostcardEffectOver
       {/* 애니메이션 스타일 정의 */}
       <style>{`
         @keyframes sunbeamPulse {
-          0% { opacity: 0.55; transform: rotate(-35deg) scale(0.98); }
-          100% { opacity: 0.95; transform: rotate(-35deg) scale(1.05); }
+          0% { opacity: 0.6; transform: scale(0.98); }
+          100% { opacity: 0.95; transform: scale(1.03); }
         }
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(0.8); }
