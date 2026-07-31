@@ -9,58 +9,19 @@ import type { PostcardFontFamily } from '@/types/postcard';
  * Step 2: 문구 입력 & 폰트 선택 (명확한 구분선 반영)
  */
 export default function StepMessage() {
-  const { message, fontFamily, setMessage, setFontFamily } = usePostcardFormStore();
-
-  const handleMessageChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value.slice(0, POSTCARD_MESSAGE_MAX_LENGTH);
-      setMessage(value);
-    },
-    [setMessage]
-  );
+  const { fontFamily, setFontFamily } = usePostcardFormStore();
 
   const handleFontSelect = useCallback(
     (id: PostcardFontFamily) => setFontFamily(id),
     [setFontFamily]
   );
 
-  const isNearLimit = message.length >= POSTCARD_MESSAGE_MAX_LENGTH - 10;
-
   return (
     <section
       className="bg-card border border-border/80 rounded-2xl p-5 shadow-xs space-y-4"
       style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
     >
-      {/* Step 헤더 */}
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-          2
-        </div>
-        <h2 className="text-sm font-bold text-foreground">문구 및 서체</h2>
-      </div>
 
-      {/* 텍스트 입력 영역 */}
-      <div>
-        <div className="relative">
-          <textarea
-            value={message}
-            onChange={handleMessageChange}
-            placeholder="마음을 담은 한 줄을 적어보세요"
-            maxLength={POSTCARD_MESSAGE_MAX_LENGTH}
-            rows={4}
-            id="postcard-message-input"
-            className="w-full p-3.5 rounded-xl bg-muted/20 text-sm resize-none outline-none border border-border focus:border-primary transition-colors placeholder:text-muted-foreground/50"
-            style={getFontStyle(fontFamily)}
-          />
-          <div
-            className={`text-right text-[11px] mt-1 font-medium ${
-              isNearLimit ? 'text-rose-500' : 'text-muted-foreground'
-            }`}
-          >
-            {message.length} / {POSTCARD_MESSAGE_MAX_LENGTH}자
-          </div>
-        </div>
-      </div>
 
       {/* 폰트 선택 영역 */}
       <div className="space-y-3">

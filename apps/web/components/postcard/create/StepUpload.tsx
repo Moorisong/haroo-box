@@ -5,49 +5,18 @@ import { POSTCARD_FILTERS, POSTCARD_EFFECTS } from '@/constants/postcard';
 import { usePostcardFormStore } from '@/store/usePostcardFormStore';
 import type { PostcardFilterType, PostcardEffectType } from '@/types/postcard';
 
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
-const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
-
 /**
  * Step 1: 사진 업로드 & 필터 선택
  */
 export default function StepUpload() {
   const {
-    imagePreviewUrl,
     filterType,
     filterIntensity,
     effectType,
-    setImageFile,
     setFilterType,
     setFilterIntensity,
     setEffectType,
   } = usePostcardFormStore();
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-
-      if (!(ALLOWED_TYPES as readonly string[]).includes(file.type)) {
-        alert('JPEG, PNG, WEBP 형식의 이미지만 업로드 가능합니다.');
-        return;
-      }
-
-      if (file.size > MAX_SIZE_BYTES) {
-        alert('파일 크기는 5MB 이하만 가능합니다.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const previewUrl = ev.target?.result as string;
-        setImageFile(file, previewUrl);
-      };
-      reader.readAsDataURL(file);
-    },
-    [setImageFile]
-  );
 
   const handleFilterSelect = useCallback(
     (id: PostcardFilterType) => setFilterType(id),
@@ -64,62 +33,7 @@ export default function StepUpload() {
       className="bg-card border border-border/80 rounded-2xl p-5 shadow-xs space-y-4"
       style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
     >
-      {/* Step 헤더 */}
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-          1
-        </div>
-        <h2 className="text-sm font-bold text-foreground">사진 및 필터 효과</h2>
-      </div>
 
-      {/* 사진 업로드 박스 */}
-      <div
-        className={`w-full py-4 rounded-xl border border-dashed transition-all cursor-pointer relative group flex flex-col items-center justify-center overflow-hidden ${
-          imagePreviewUrl
-            ? 'border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/10'
-            : 'border-border/80 bg-muted/20 hover:bg-muted/40'
-        }`}
-        onClick={() => fileRef.current?.click()}
-        role="button"
-        aria-label="사진 업로드"
-        id="postcard-image-upload-area"
-      >
-        {imagePreviewUrl ? (
-          <div className="flex flex-col items-center justify-center gap-1.5 p-3 text-center">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-blue-600">
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>사진 업로드 완료</span>
-            </div>
-            <span className="text-[11px] text-muted-foreground underline decoration-muted-foreground/40 underline-offset-2 group-hover:text-foreground">
-              다른 사진으로 변경하기
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground p-4 text-center">
-            <span className="text-xs font-medium text-foreground">
-              클릭하여 사진 업로드
-            </span>
-            <span className="text-[10px] text-muted-foreground">
-              JPG, PNG, WEBP (최대 5MB)
-            </span>
-          </div>
-        )}
-      </div>
-
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        className="hidden"
-        onChange={handleFileChange}
-        id="postcard-file-input"
-      />
 
       {/* 필터 선택 영역 (8종 필터 + 강도 조절 프로그레스 바만 표시) */}
       <div className="space-y-3">

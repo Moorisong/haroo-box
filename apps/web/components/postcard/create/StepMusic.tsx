@@ -34,15 +34,9 @@ export default function StepMusic() {
       className="bg-card border border-border/80 rounded-2xl p-5 shadow-xs space-y-4"
       style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
     >
-      {/* Step 헤더 */}
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-          3
-        </div>
-        <h2 className="text-sm font-bold text-foreground">
-          배경음악 선택 <span className="text-[11px] font-normal text-muted-foreground">(선택)</span>
-        </h2>
-      </div>
+      <label className="text-xs font-semibold text-foreground block">
+        배경음악 선택 <span className="text-[10px] font-normal text-muted-foreground">(선택)</span>
+      </label>
 
       {/* 유튜브 링크 입력창 */}
       <div>
