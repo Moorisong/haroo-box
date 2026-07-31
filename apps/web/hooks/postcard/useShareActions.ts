@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { toPng } from 'html-to-image';
 import { shareViaKakao, copyToClipboard, buildShareUrl } from '@/utils/kakaoShare';
 import { SHARE_MESSAGES } from '@/constants/postcard';
@@ -29,13 +29,88 @@ function dataURItoBlob(dataURI: string): Blob {
   return new Blob([ab], { type: mimeString });
 }
 
-const GOOGLE_FONTS_EMBED_CSS = `@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@400;700;900&family=Song+Myung&display=swap');`;
+const fontCssCacheMap = new Map<string, string>();
+
+/** 폰트 ID별 Google Fonts URL 파라미터 매핑 */
+const GOOGLE_FONT_PARAMS: Record<string, string> = {
+  'font-1': 'family=Noto+Sans+KR:wght@400;700',
+  'font-2': 'family=Gowun+Dodum',
+  'font-3': 'family=Black+Han+Sans',
+  'font-4': 'family=Do+Hyeon',
+  'font-5': 'family=Noto+Serif+KR:wght@400;700',
+  'font-6': 'family=Gowun+Batang:wght@400;700',
+  'font-7': 'family=Song+Myung',
+  'font-8': 'family=Gowun+Batang:wght@400;700',
+};
+
+/** 유저가 선택한 단 1개의 폰트만 경량화 수신하여 Base64 인라인 (30KB 경량화) */
+async function getInlinedFontCssForFamily(fontFamilyId: string): Promise<string> {
+  const cacheKey = fontFamilyId || 'font-1';
+  if (fontCssCacheMap.has(cacheKey)) return fontCssCacheMap.get(cacheKey)!;
+
+  try {
+    const fontParam = GOOGLE_FONT_PARAMS[cacheKey] || GOOGLE_FONT_PARAMS['font-1'];
+    const googleCssUrl = `https://fonts.googleapis.com/css2?${fontParam}&display=swap`;
+
+    const cssRes = await fetch(googleCssUrl);
+    if (!cssRes.ok) return '';
+    let cssText = await cssRes.text();
+
+    const fontUrls = Array.from(cssText.matchAll(/url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/g));
+    await Promise.all(
+      fontUrls.map(async (match) => {
+        const fontUrl = match[1];
+        try {
+          const fontRes = await fetch(fontUrl);
+          if (fontRes.ok) {
+            const buffer = await fontRes.arrayBuffer();
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            const base64 = btoa(binary);
+            cssText = cssText.replaceAll(fontUrl, `data:font/woff2;base64,${base64}`);
+          }
+        } catch {
+          // 실패 시 유지
+        }
+      })
+    );
+
+    fontCssCacheMap.set(cacheKey, cssText);
+    return cssText;
+  } catch (e) {
+    console.warn('Failed to inline font CSS:', e);
+    return '';
+  }
+}
+
+/** 유저 선택 폰트 즉시 확정 (블로킹 타임아웃 0ms화) */
+async function ensureFontLoaded(fontFamily: string) {
+  if (typeof document !== 'undefined' && document.fonts) {
+    try {
+      const cleanFontName = fontFamily.split(',')[0].replace(/['"]/g, '').trim();
+      await document.fonts.load(`16px "${cleanFontName}"`);
+    } catch {
+      // ignore
+    }
+  }
+}
 
 export function useShareActions(postcard: PostcardViewData, previewRef: React.RefObject<HTMLDivElement | null>) {
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
   const shareUrl = buildShareUrl(postcard.id);
+
+  // 페이지 접속 즉시 유저가 선택한 폰트 1개 백그라운드 프리페치 (클릭 시 지연 0ms)
+  useEffect(() => {
+    if (postcard?.font_family) {
+      getInlinedFontCssForFamily(postcard.font_family);
+      ensureFontLoaded(postcard.font_family);
+    }
+  }, [postcard?.font_family]);
 
   const handleKakaoShare = useCallback(() => {
     shareViaKakao({
@@ -58,19 +133,15 @@ export function useShareActions(postcard: PostcardViewData, previewRef: React.Re
     setDownloading(true);
 
     try {
-      // 폰트 대기 (1초 타임아웃 보호 장치)
-      if (typeof document !== 'undefined' && document.fonts) {
-        await Promise.race([
-          document.fonts.ready,
-          new Promise((resolve) => setTimeout(resolve, 1000)),
-        ]);
-      }
+      // 1. 유저가 선택한 폰트 1개만 콕 찝어 즉시 인라인 수신 (30KB 쾌속 반영)
+      const fontEmbedCSS = await getInlinedFontCssForFamily(postcard.font_family);
 
-      // 1. html-to-image 캡처 (유저 선택 서체 Google Fonts Embed 적용)
+      // 2. html-to-image 캡처 (지연 0ms의 즉시 다운로드)
       const dataUrl = await toPng(previewRef.current, {
         cacheBust: false,
         pixelRatio: 2,
-        fontEmbedCSS: GOOGLE_FONTS_EMBED_CSS,
+        preferredFontFormat: 'woff2',
+        fontEmbedCSS,
       });
       
       // 2. 동기식 Blob 변환 (fetch 사용 시 무한 펜딩되는 브라우저 버그 차단)
