@@ -55,7 +55,7 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   rm -rf docs .antigravity && \
   npm install && \
   rm -rf .next && \
-  NEXT_PUBLIC_BASE_URL=\"https://box.haroo.site\" npm run build && \
+  NEXT_PUBLIC_BASE_URL=\"https://box.haroo.site\" NEXT_PUBLIC_API_URL=\"https://box-api.haroo.site\" npm run build && \
   (pm2 delete box-fe || true) && \
   pm2 start ecosystem.config.js
 "
