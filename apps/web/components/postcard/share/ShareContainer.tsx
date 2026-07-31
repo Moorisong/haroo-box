@@ -102,14 +102,7 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
             </div>
           </div>
 
-          {/* 공유 링크 표시 */}
-          <div
-            className="flex items-center gap-2 px-4 py-3 bg-muted rounded-xl mb-5 text-[11px] text-muted-foreground"
-            style={{ animation: 'fadeIn 0.6s 0.2s ease both' }}
-          >
-            <Link2 size={13} className="flex-shrink-0" />
-            <span className="flex-1 truncate">{shareUrl}</span>
-          </div>
+
 
           {/* 공유 액션 버튼 그룹 분리 */}
           <ShareActionButtons

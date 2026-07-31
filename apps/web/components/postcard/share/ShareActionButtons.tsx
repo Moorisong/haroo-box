@@ -19,7 +19,7 @@ export default function ShareActionButtons({
 }: ShareActionButtonsProps) {
   return (
     <div
-      className="flex flex-col gap-2.5"
+      className="flex flex-col gap-2.5 w-full max-w-[280px] mx-auto"
       style={{ animation: 'fadeInUp 0.6s 0.3s ease both' }}
     >
       {/* 카카오톡 공유 */}
@@ -37,7 +37,8 @@ export default function ShareActionButtons({
       <button
         onClick={onCopy}
         id="postcard-share-copy"
-        className="w-full py-4 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 bg-secondary text-secondary-foreground border border-border transition-transform active:scale-[0.98]"
+        className="w-full py-4 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 transition-transform active:scale-[0.98] shadow-sm"
+        style={{ background: '#6C5CE7', color: '#FFFFFF' }}
       >
         <Copy size={15} />
         {copied ? SHARE_MESSAGES.COPY_SUCCESS : SHARE_MESSAGES.COPY_DEFAULT}
@@ -48,7 +49,8 @@ export default function ShareActionButtons({
         onClick={onDownload}
         disabled={downloading}
         id="postcard-share-download"
-        className="w-full py-4 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 bg-muted text-muted-foreground transition-transform active:scale-[0.98] disabled:opacity-60"
+        className="w-full py-4 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 transition-transform active:scale-[0.98] disabled:opacity-60"
+        style={{ background: '#F8FAFC', color: '#64748B', border: '1px solid #E2E8F0' }}
       >
         <Download size={15} />
         {downloading ? SHARE_MESSAGES.DOWNLOADING : SHARE_MESSAGES.DOWNLOAD_DEFAULT}
