@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 import AudioConsentModal from './AudioConsentModal';
 import AudioPlayerBar from './AudioPlayerBar';
 import Postcard3DCanvas from './Postcard3DCanvas';
@@ -21,10 +22,11 @@ interface ViewContainerProps {
  * - 유튜브 iframe: 1×1 픽셀 숨김 플레이어 (autoplay 정책 우회)
  */
 export default function ViewContainer({ postcard, expired }: ViewContainerProps) {
-  const [musicModal, setMusicModal] = useState(true);
+  const hasYoutubeId = Boolean(postcard?.youtube_id);
+  const [musicModal, setMusicModal] = useState(hasYoutubeId);
   const [withMusic, setWithMusic] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [cardVisible, setCardVisible] = useState(false);
+  const [cardVisible, setCardVisible] = useState(!hasYoutubeId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // 유튜브 iframe postMessage로 재생/일시정지 제어
@@ -127,22 +129,33 @@ export default function ViewContainer({ postcard, expired }: ViewContainerProps)
           />
         )}
 
-        {/* 바이럴 배너 */}
-        <div className="mx-5 mb-8 px-4 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-lg flex items-center justify-between">
-          <span
-            className="text-xs text-white/80"
-            style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
-          >
-            나도 하루엽서 만들러 가기 →
-          </span>
-          <Link
-            href="/postcard"
-            className="text-xs px-3.5 py-1.5 rounded-full text-white hover:text-white font-medium shadow-md transition-transform active:scale-95"
-            style={{ background: 'linear-gradient(135deg, #7C5CE7 0%, #6C5CE7 100%)' }}
-            id="postcard-view-viral"
-          >
-            만들기
-          </Link>
+        <div className="w-full px-5 mb-4 flex justify-center">
+          <div className="w-full max-w-[390px] px-4 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-lg flex items-center justify-between">
+            <span
+              className="text-xs text-white/80"
+              style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+            >
+              나도 하루엽서 만들러 가기 →
+            </span>
+            <Link
+              href="/postcard"
+              className="text-xs px-3.5 py-1.5 rounded-full text-white hover:text-white font-medium shadow-md transition-transform active:scale-95"
+              style={{ background: 'linear-gradient(135deg, #7C5CE7 0%, #6C5CE7 100%)' }}
+              id="postcard-view-viral"
+            >
+              만들기
+            </Link>
+          </div>
+        </div>
+
+        {/* Adfit AD Banner */}
+        <div className="w-full px-5 mb-8 flex justify-center">
+          <div className="w-full max-w-[390px] flex justify-center bg-white/5 rounded-2xl overflow-hidden backdrop-blur-md border border-white/10 p-3 shadow-lg">
+            <KakaoAdfit 
+              unit={process.env.NEXT_PUBLIC_ADFIT_UNIT_ID || ADFIT_UNITS.MAIN_BANNER} 
+              {...ADFIT_SIZES.BANNER_320x100} 
+            />
+          </div>
         </div>
       </div>
 
