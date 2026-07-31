@@ -35,7 +35,7 @@ export const createPostcard = async (
       return;
     }
 
-    const { filter_type, filter_intensity, effect_type, image_offset_y, message, font_family, youtube_url } = req.body as {
+    const { filter_type, filter_intensity, effect_type, image_offset_y, font_family, youtube_url } = req.body as {
       filter_type?: string;
       filter_intensity?: string;
       effect_type?: string;
@@ -45,8 +45,13 @@ export const createPostcard = async (
       youtube_url?: string;
     };
 
-    // 필수 필드 유효성 검증
-    if (!message || message.trim().length === 0) {
+    // 필수 필드 유효성 검증 및 줄바꿈 정규화 (CRLF -> LF)
+    let message = req.body.message as string | undefined;
+    if (message) {
+      message = message.replace(/\r\n/g, '\n').trim();
+    }
+
+    if (!message || message.length === 0) {
       fs.promises.unlink(file.path).catch(() => null);
       res.status(400).json({ success: false, message: '문구(message)는 필수입니다.' });
       return;
