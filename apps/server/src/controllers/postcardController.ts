@@ -41,6 +41,7 @@ export const createPostcard = async (
     const webpPath = path.join(path.dirname(file.path), webpFilename);
 
     await sharp(file.path)
+      .rotate() // EXIF Orientation 메타데이터를 파싱하여 정방향 회전
       .resize({ width: 1200, withoutEnlargement: true })
       .webp({ quality: 80 })
       .toFile(webpPath);
