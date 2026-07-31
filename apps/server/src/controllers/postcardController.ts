@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { nanoid } from 'nanoid';
+import sharp from 'sharp';
 import { getPostcardModel } from '../models/postcard.model';
 import { getUploadDir } from '../middlewares/uploadPostcard';
 import {
@@ -34,6 +35,23 @@ export const createPostcard = async (
       res.status(400).json({ success: false, message: '이미지 파일이 필요합니다.' });
       return;
     }
+
+    // --- WebP 변환 및 리사이징 ---
+    const webpFilename = `${file.filename.replace(path.extname(file.filename), '')}.webp`;
+    const webpPath = path.join(path.dirname(file.path), webpFilename);
+
+    await sharp(file.path)
+      .resize({ width: 1200, withoutEnlargement: true })
+      .webp({ quality: 80 })
+      .toFile(webpPath);
+
+    // 원본 파일 삭제
+    fs.promises.unlink(file.path).catch(() => null);
+
+    // file 객체 경로를 새 webp 파일로 업데이트 (이후 에러 처리 시 삭제 등 참조)
+    file.path = webpPath;
+    file.filename = webpFilename;
+    // -------------------------------
 
     const { filter_type, filter_intensity, effect_type, image_offset_y, font_family, youtube_url } = req.body as {
       filter_type?: string;

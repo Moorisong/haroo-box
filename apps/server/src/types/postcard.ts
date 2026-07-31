@@ -58,8 +58,8 @@ export const YOUTUBE_URL_REGEX = /(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/
 /** 지원 이미지 MIME 타입 목록 */
 export const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
-/** 최대 파일 업로드 크기 (5MB) */
-export const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+/** 최대 파일 업로드 크기 (20MB) */
+export const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 
 /** Mongoose Document 인터페이스 (IPostcard) */
 export interface IPostcard {
