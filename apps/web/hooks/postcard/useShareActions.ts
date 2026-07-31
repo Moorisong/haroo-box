@@ -98,9 +98,17 @@ async function ensureFontLoaded(fontFamily: string) {
   }
 }
 
+/** 카카오톡/네이버/인스타그램 등 인앱 브라우저 여부 감지 */
+export function isKakaoTalkInAppBrowser(): boolean {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  return /KAKAOTALK|NAVER|Instagram|FB_IAB|FB4A|FB_MD/i.test(ua);
+}
+
 export function useShareActions(postcard: PostcardViewData, previewRef: React.RefObject<HTMLDivElement | null>) {
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [inAppImageUrl, setInAppImageUrl] = useState<string | null>(null);
 
   const shareUrl = buildShareUrl(postcard.id);
 
@@ -143,11 +151,20 @@ export function useShareActions(postcard: PostcardViewData, previewRef: React.Re
         preferredFontFormat: 'woff2',
         fontEmbedCSS,
       });
-      
-      // 2. 동기식 Blob 변환 (fetch 사용 시 무한 펜딩되는 브라우저 버그 차단)
-      const blob = dataURItoBlob(dataUrl);
 
-      // 3. ObjectURL 생성 후 앵커 즉시 클릭 다운로드
+      // 3. 카카오톡/인앱 브라우저 대응 (인앱 환경이면 롱프레스 모달 오픈)
+      if (isKakaoTalkInAppBrowser()) {
+        setInAppImageUrl(dataUrl);
+
+        // 카카오톡 외부 브라우저 강제 전환 시도
+        if (/KAKAOTALK/i.test(navigator.userAgent || '')) {
+          const targetUrl = window.location.href;
+          window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(targetUrl)}`;
+        }
+      }
+      
+      // 4. 일반 브라우저 다운로드 앵커 실행
+      const blob = dataURItoBlob(dataUrl);
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.download = `haroo-postcard-${postcard.id}.png`;
@@ -164,12 +181,18 @@ export function useShareActions(postcard: PostcardViewData, previewRef: React.Re
     } finally {
       setDownloading(false);
     }
-  }, [postcard.id, downloading, previewRef]);
+  }, [postcard.id, postcard.font_family, downloading, previewRef]);
+
+  const closeInAppModal = useCallback(() => {
+    setInAppImageUrl(null);
+  }, []);
 
   return {
     shareUrl,
     copied,
     downloading,
+    inAppImageUrl,
+    closeInAppModal,
     handleKakaoShare,
     handleCopy,
     handleDownload,

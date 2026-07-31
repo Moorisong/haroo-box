@@ -13,6 +13,8 @@ import AudioConsentModal from './AudioConsentModal';
 import AudioPlayerBar from './AudioPlayerBar';
 import Postcard3DCanvas from './Postcard3DCanvas';
 import ExpiredCard from './ExpiredCard';
+import ImageSaveModal from '../share/ImageSaveModal';
+import { useInAppBrowserRedirect } from '@/hooks/useInAppBrowserRedirect';
 import type { PostcardViewData } from '@/types/postcard';
 
 interface ViewContainerProps {
@@ -27,6 +29,9 @@ interface ViewContainerProps {
  * - 유튜브 iframe: 1×1 픽셀 숨김 플레이어 (autoplay 정책 우회)
  */
 export default function ViewContainer({ postcard, expired }: ViewContainerProps) {
+  // 인앱 브라우저 진입 시 밖 브라우저(Safari/Chrome)로 자동 이탈
+  useInAppBrowserRedirect();
+
   const hasYoutubeId = Boolean(postcard?.youtube_id);
   const [musicModal, setMusicModal] = useState(hasYoutubeId);
   const [withMusic, setWithMusic] = useState(false);
@@ -38,7 +43,12 @@ export default function ViewContainer({ postcard, expired }: ViewContainerProps)
   // 훅 호출은 조건부 렌더링(만료 카드) 이전에 위치해야 하므로 더미 데이터 활용
   const safePostcard = postcard || ({} as PostcardViewData);
   const timeRemaining = useShareTimer(safePostcard.expires_at || new Date().toISOString());
-  const { downloading, handleDownload } = useShareActions(safePostcard, captureRef);
+  const {
+    downloading,
+    inAppImageUrl,
+    closeInAppModal,
+    handleDownload,
+  } = useShareActions(safePostcard, captureRef);
 
   // 유튜브 iframe postMessage로 재생/일시정지 제어
   const sendPlayerCommand = useCallback((command: 'playVideo' | 'pauseVideo') => {
@@ -81,6 +91,12 @@ export default function ViewContainer({ postcard, expired }: ViewContainerProps)
         background: 'radial-gradient(circle at 50% 30%, #222536 0%, #151620 60%, #0E0F17 100%)',
       }}
     >
+      {/* 카카오톡/인앱 브라우저 다운로드 보조 모달 */}
+      <ImageSaveModal
+        isOpen={Boolean(inAppImageUrl)}
+        imageUrl={inAppImageUrl || ''}
+        onClose={closeInAppModal}
+      />
       {/* Share 페이지와 100% 동일한 2D 엽서 캡처 전용 정적 프레임 (3D transform 영향 차단 및 동적 높이 반영) */}
       <div className="fixed -top-[9999px] -left-[9999px] pointer-events-none aria-hidden">
         <div

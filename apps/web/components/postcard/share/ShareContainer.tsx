@@ -13,12 +13,18 @@ import ShareActionButtons from './ShareActionButtons';
 
 import { useShareTimer } from '@/hooks/postcard/useShareTimer';
 import { useShareActions } from '@/hooks/postcard/useShareActions';
+import { useInAppBrowserRedirect } from '@/hooks/useInAppBrowserRedirect';
+
+import ImageSaveModal from './ImageSaveModal';
 
 interface ShareContainerProps {
   postcard: PostcardViewData;
 }
 
 export default function ShareContainer({ postcard }: ShareContainerProps) {
+  // 인앱 브라우저 진입 시 밖 브라우저(Safari/Chrome)로 자동 이탈
+  useInAppBrowserRedirect();
+
   const router = useRouter();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isAdModalOpen, setIsAdModalOpen] = useState(true);
@@ -31,6 +37,8 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
     shareUrl,
     copied,
     downloading,
+    inAppImageUrl,
+    closeInAppModal,
     handleKakaoShare,
     handleCopy,
     handleDownload,
@@ -38,6 +46,13 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
 
   return (
     <div className="min-h-screen bg-background relative">
+      {/* 카카오톡/인앱 브라우저 다운로드 보조 모달 */}
+      <ImageSaveModal
+        isOpen={Boolean(inAppImageUrl)}
+        imageUrl={inAppImageUrl || ''}
+        onClose={closeInAppModal}
+      />
+
       {/* 광고 팝업 모달 */}
       <AdLoadingModal 
         postcardId={postcard.id} 
