@@ -121,10 +121,9 @@ export default function Postcard3DCanvas({ postcard, visible, captureRef }: Post
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="w-full max-w-[390px]"
+        className="w-full max-w-[390px] min-h-[520px]"
         style={{
           perspective: `${CARD_3D_CONFIG.perspective}px`,
-          aspectRatio: '3/4',
         }}
       >
         <div
@@ -135,8 +134,8 @@ export default function Postcard3DCanvas({ postcard, visible, captureRef }: Post
             transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          <div ref={captureRef} className="w-full h-full relative flex flex-col bg-[#F4F4F5]">
-            <div className="w-full relative overflow-hidden" style={{ height: '55%' }}>
+          <div ref={captureRef} className="w-full h-full relative flex flex-col" style={{ background: 'linear-gradient(135deg, #FAF7F0 0%, #ECE6D5 100%)' }}>
+            <div className="w-full relative overflow-hidden aspect-[4/3] shrink-0">
               <img
                 src={postcard.image_url}
                 alt="엽서"
@@ -149,20 +148,18 @@ export default function Postcard3DCanvas({ postcard, visible, captureRef }: Post
               />
               <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
             </div>
-            <div
-              className="px-5 py-5 flex flex-col"
-              style={{ height: '45%' }}
-            >
-              <div className="w-full h-full overflow-y-auto scrollbar-thin flex flex-col">
+            <div className="px-5 py-5 flex flex-col flex-1">
+              <div className="w-full h-full flex flex-col">
                 <div className="mt-auto mb-auto w-full">
                   <p
-                    className="text-sm leading-[1.85] whitespace-pre-line text-[#27272A]"
+                    className="text-sm leading-[1.85] whitespace-pre-wrap break-words text-[#4A3F35]"
+
                     style={getFontStyle(postcard.font_family)}
                   >
                     {postcard.message}
                   </p>
                   <div
-                    className="mt-3 text-[10px] text-[#A1A1AA] tracking-wider text-right"
+                    className="mt-3 text-[10px] text-[#9A8C7E] tracking-wider text-right"
                     style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
                   >
                     [하루엽서]

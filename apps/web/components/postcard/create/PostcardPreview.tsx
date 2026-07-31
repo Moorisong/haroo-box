@@ -79,7 +79,7 @@ export default function PostcardPreview() {
 
       {/* 엽서 카드 메인 프레임 */}
       <div
-        className="w-full max-w-[340px] aspect-[3/4] rounded-2xl p-4 bg-[#F4F4F5] border border-[#E4E4E7] shadow-xs flex flex-col justify-between relative overflow-hidden select-none"
+        className="w-full max-w-[340px] min-h-[453px] rounded-2xl p-4 bg-[#F4F4F5] border border-[#E4E4E7] shadow-xs flex flex-col justify-between relative overflow-hidden select-none"
         style={{
           fontFamily: "'Nanum Gothic', sans-serif",
         }}
@@ -87,7 +87,7 @@ export default function PostcardPreview() {
         {/* 상단: 이미지 영역 (드래그로 위아래 위치 조절 가능) */}
         <div
           ref={imgContainerRef}
-          className={`w-full h-[55%] rounded-xl overflow-hidden bg-[#E4E4E7] relative border border-dashed border-[#D4D4D8] ${
+          className={`w-full aspect-[4/3] shrink-0 rounded-xl overflow-hidden bg-[#E4E4E7] relative border border-dashed border-[#D4D4D8] ${
             imagePreviewUrl ? 'cursor-grab active:cursor-grabbing' : ''
           }`}
           onMouseDown={handleDragStart}
@@ -134,8 +134,8 @@ export default function PostcardPreview() {
         </div>
 
         {/* 하단: 메시지 본문 영역 */}
-        <div className="w-full h-[45%] pt-5 pb-1 flex flex-col justify-between">
-          <div className="overflow-y-auto max-h-[110px] pr-1 scrollbar-thin">
+        <div className="w-full flex-1 pt-5 pb-1 flex flex-col justify-between">
+          <div className="pr-1 pb-4">
             <p
               className="text-sm leading-relaxed text-[#27272A] whitespace-pre-wrap break-words"
               style={getFontStyle(fontFamily)}
@@ -144,7 +144,7 @@ export default function PostcardPreview() {
             </p>
           </div>
 
-          <div className="pt-2 border-t border-[#E4E4E7] flex items-center justify-between text-[10px] text-[#A1A1AA]">
+          <div className="pt-2 mt-auto border-t border-[#E4E4E7] flex items-center justify-between text-[10px] text-[#A1A1AA]">
             <span className="tracking-widest font-medium">HAROO POSTCARD</span>
             <span>2일간 유효</span>
           </div>
