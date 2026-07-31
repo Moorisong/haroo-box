@@ -69,13 +69,13 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
           <div className="flex justify-center mb-6" style={{ animation: 'fadeInUp 0.7s 0.1s ease both' }}>
             <div
               ref={previewRef}
-              className="w-[240px] min-h-[320px] rounded-2xl overflow-hidden shadow-xl cursor-pointer group flex flex-col"
-
+              className="w-[340px] rounded-2xl overflow-hidden shadow-xl cursor-pointer group flex flex-col"
+              style={{ background: 'linear-gradient(135deg, #FAF7F0 0%, #ECE6D5 100%)' }}
               onClick={() => router.push(`/postcard/view/${postcard.id}`)}
               role="button"
               aria-label="엽서 열어보기"
             >
-              <div className="w-full flex-1 relative flex flex-col" style={{ background: 'linear-gradient(135deg, #FAF7F0 0%, #ECE6D5 100%)' }}>
+              <div className="w-full relative flex flex-col">
                 <div className="w-full relative overflow-hidden aspect-[4/3] shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -90,16 +90,18 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
                   />
                   <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
                 </div>
-                <div className="px-4 py-5 flex flex-col flex-1">
-                  <div className="w-full h-full flex flex-col">
-                    <div className="mt-auto mb-auto w-full">
-                      <p
-                        className="text-xs leading-relaxed whitespace-pre-wrap break-words text-[#4A3F35]"
-                        style={getFontStyle(postcard.font_family)}
-                      >
-                        {postcard.message}
-                      </p>
-                    </div>
+                <div className="px-5 py-5 flex flex-col">
+                  <p
+                    className="text-sm leading-[1.85] whitespace-pre-wrap break-words text-[#4A3F35]"
+                    style={getFontStyle(postcard.font_family)}
+                  >
+                    {postcard.message}
+                  </p>
+                  <div
+                    className="mt-3 text-[10px] text-[#9A8C7E] tracking-wider text-right"
+                    style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+                  >
+                    [하루엽서]
                   </div>
                 </div>
               </div>

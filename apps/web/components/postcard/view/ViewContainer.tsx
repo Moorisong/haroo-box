@@ -7,7 +7,8 @@ import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adf
 import { Download } from 'lucide-react';
 import { useShareTimer } from '@/hooks/postcard/useShareTimer';
 import { useShareActions } from '@/hooks/postcard/useShareActions';
-import { SHARE_MESSAGES } from '@/constants/postcard';
+import PostcardEffectOverlay from '../create/PostcardEffectOverlay';
+import { getFilterCss, getFontStyle, SHARE_MESSAGES } from '@/constants/postcard';
 import AudioConsentModal from './AudioConsentModal';
 import AudioPlayerBar from './AudioPlayerBar';
 import Postcard3DCanvas from './Postcard3DCanvas';
@@ -80,6 +81,44 @@ export default function ViewContainer({ postcard, expired }: ViewContainerProps)
         background: 'radial-gradient(circle at 50% 30%, #222536 0%, #151620 60%, #0E0F17 100%)',
       }}
     >
+      {/* Share 페이지와 100% 동일한 2D 엽서 캡처 전용 정적 프레임 (3D transform 영향 차단 및 동적 높이 반영) */}
+      <div className="fixed -top-[9999px] -left-[9999px] pointer-events-none aria-hidden">
+        <div
+          ref={captureRef}
+          className="w-[340px] rounded-2xl overflow-hidden flex flex-col"
+          style={{ background: 'linear-gradient(135deg, #FAF7F0 0%, #ECE6D5 100%)' }}
+        >
+          <div className="w-full relative overflow-hidden aspect-[4/3] shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={postcard.image_url}
+              alt="엽서"
+              className="w-full h-full object-cover"
+              crossOrigin="anonymous"
+              style={{
+                filter: getFilterCss(postcard.filter_type, postcard.filter_intensity),
+                objectPosition: `center ${postcard.image_offset_y}%`,
+              }}
+            />
+            <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
+          </div>
+          <div className="px-5 py-5 flex flex-col">
+            <p
+              className="text-sm leading-[1.85] whitespace-pre-wrap break-words text-[#4A3F35]"
+              style={getFontStyle(postcard.font_family)}
+            >
+              {postcard.message}
+            </p>
+            <div
+              className="mt-3 text-[10px] text-[#9A8C7E] tracking-wider text-right"
+              style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+            >
+              [하루엽서]
+            </div>
+          </div>
+        </div>
+      </div>
+      
       {/* 이미지 색조 앰비언트 후광 (Ambient Blur Glow) */}
       <div
         className="absolute inset-0 scale-125 origin-center pointer-events-none"
@@ -127,7 +166,7 @@ export default function ViewContainer({ postcard, expired }: ViewContainerProps)
         </div>
 
         {/* 3D 엽서 캔버스 */}
-        <Postcard3DCanvas postcard={postcard} visible={cardVisible} captureRef={captureRef} />
+        <Postcard3DCanvas postcard={postcard} visible={cardVisible} />
 
         {/* 오디오 플레이어 바 (BGM이 있고 음악 선택한 경우) */}
         {withMusic && postcard.youtube_id && (
