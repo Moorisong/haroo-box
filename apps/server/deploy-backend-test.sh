@@ -51,7 +51,8 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   cd $REMOTE_DIR && \
   npm install && \
   npm run build && \
-  pm2 reload box-be-test --update-env || pm2 start ecosystem-test.config.js
+  (pm2 delete box-be-test || true) && \
+  pm2 start ecosystem-test.config.js
 "
 
 echo "✅ 테스트 백엔드 배포 완료!"

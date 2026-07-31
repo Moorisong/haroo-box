@@ -7,7 +7,7 @@ LOCAL_HOST="192.168.0.6"     # 집 (LAN)
 REMOTE_HOST="125.190.25.48"  # 외부 (WAN)
 SSH_PORT_LOCAL="22"
 SSH_PORT_WAN="2222"
-REMOTE_DIR="~/haroo-box/apps/server"
+REMOTE_DIR="~/srv/box"
 LOCAL_SERVER_ROOT="."
 
 # --- 네트워크 자동 감지 ---
@@ -28,13 +28,15 @@ fi
 # 0. 서버에 디렉토리가 없으면 생성
 ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "mkdir -p $REMOTE_DIR"
 
-# 1. 로컬 백엔드 파일 서버로 동기화 (삭제된 파일도 서버에서 제거)
+# 1. 로컬 프론트엔드 파일 서버로 동기화 (삭제된 파일도 서버에서 제거)
 echo "📤 파일 동기화 중 (rsync)..."
 rsync -avz --delete --progress -e "$RSYNC_SSH" \
   --exclude 'node_modules' \
-  --exclude 'dist' \
+  --exclude '.next' \
   --exclude '.git' \
   --exclude '.env' \
+  --exclude 'docs' \
+  --exclude '.antigravity' \
   $LOCAL_SERVER_ROOT/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_DIR
 
 # 2. 서버에서 빌드 및 실행 명령 전달
@@ -50,9 +52,11 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   echo \"사용중인 Node 버전: \$(node -v)\"
   
   cd $REMOTE_DIR && \
+  rm -rf docs .antigravity && \
   npm install && \
-  npm run build && \
-  (pm2 delete box-be || true) && \
+  rm -rf .next && \
+  NEXT_PUBLIC_BASE_URL=\"https://box.haroo.site\" npm run build && \
+  (pm2 delete box-fe || true) && \
   pm2 start ecosystem.config.js
 "
 

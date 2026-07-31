@@ -56,7 +56,8 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   npm install && \
   rm -rf .next && \
   NEXT_PUBLIC_BASE_URL=\"https://test-box.haroo.site\" npm run build && \
-  pm2 restart box-fe-test --update-env || pm2 start ecosystem-test.config.js
+  (pm2 delete box-fe-test || true) && \
+  pm2 start ecosystem-test.config.js
 "
 
 echo "✅ 테스트 프론트엔드 배포 완료!"
