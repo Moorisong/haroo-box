@@ -22,9 +22,9 @@ export default function AudioConsentModal({
   onWithoutMusic,
 }: AudioConsentModalProps) {
   return (
-    <div className="absolute inset-0 z-50 bg-black/50 backdrop-blur-md flex items-end justify-center">
+    <div className="absolute inset-0 z-50 bg-black/50 backdrop-blur-md flex items-end justify-center sm:items-center pb-12 sm:pb-0">
       <div
-        className="w-full max-w-[390px] bg-[#1E202B] border-t border-white/15 rounded-t-3xl px-6 pt-5 pb-10 shadow-2xl"
+        className="w-full max-w-[390px] bg-[#1E202B] border border-white/15 rounded-3xl px-6 pt-5 pb-8 shadow-2xl"
         style={{ animation: 'slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both' }}
       >
         {/* 드래그 핸들 */}
@@ -39,10 +39,6 @@ export default function AudioConsentModal({
               className="w-full h-36 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            <div className="absolute bottom-3 left-4 right-4 flex items-center gap-2 text-white/90 text-xs">
-              <Music size={14} className="text-[#A29BFE]" />
-              <span className="truncate">배경음악이 포함되어 있습니다</span>
-            </div>
           </div>
         ) : (
           <div className="w-full h-24 rounded-2xl bg-white/5 border border-white/10 mb-6 flex items-center justify-center">
@@ -70,7 +66,7 @@ export default function AudioConsentModal({
               boxShadow: '0 8px 20px -4px rgba(108, 92, 231, 0.5)',
             }}
           >
-            🎧 음악과 함께 엽서 열기
+            음악과 함께 엽서 열기
           </button>
 
           {/* 조용히 보기 */}
@@ -79,7 +75,7 @@ export default function AudioConsentModal({
             id="postcard-view-without-music"
             className="w-full py-3.5 rounded-2xl text-sm font-medium text-white/70 bg-white/8 border border-white/10 hover:bg-white/12 transition-transform active:scale-[0.98]"
           >
-            🤫 조용히 엽서만 볼래요
+            조용히 엽서만 볼래요
           </button>
         </div>
       </div>
