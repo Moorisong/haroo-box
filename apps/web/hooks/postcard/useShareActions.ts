@@ -7,7 +7,7 @@ import type { PostcardViewData } from '@/types/postcard';
 /**
  * 공유하기 액션(카카오, 복사, 다운로드) 처리 훅
  */
-export function useShareActions(postcard: PostcardViewData, previewRef: React.RefObject<HTMLDivElement>) {
+export function useShareActions(postcard: PostcardViewData, previewRef: React.RefObject<HTMLDivElement | null>) {
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
 

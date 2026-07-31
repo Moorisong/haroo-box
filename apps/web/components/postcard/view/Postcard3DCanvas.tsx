@@ -16,7 +16,7 @@ const CARD_3D_CONFIG = {
 interface Postcard3DCanvasProps {
   postcard: PostcardViewData;
   visible: boolean;
-  captureRef?: React.RefObject<HTMLDivElement>;
+  captureRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
