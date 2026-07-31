@@ -63,8 +63,13 @@ export interface KakaoShareParams {
 export const shareViaKakao = (params: KakaoShareParams): boolean => {
   if (!initKakao()) return false;
 
+  const baseUrl =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_BASE_URL ?? POSTCARD_BASE_URL;
+
   const kakao = window.Kakao as unknown as KakaoSDK;
-  const viewUrl = `${POSTCARD_BASE_URL}/postcard/view/${params.postcardId}`;
+  const viewUrl = `${baseUrl}/postcard/view/${params.postcardId}`;
   const summary = params.message.length > 30
     ? `${params.message.slice(0, 30)}…`
     : params.message;
@@ -116,6 +121,12 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
   }
 };
 
-/** 엽서 공유 URL 생성 */
-export const buildShareUrl = (postcardId: string): string =>
-  `${POSTCARD_BASE_URL}/postcard/view/${postcardId}`;
+/** 엽서 공유 URL 생성 (로컬/테스트/운영 환경 자동 동기화) */
+export const buildShareUrl = (postcardId: string): string => {
+  const baseUrl =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_BASE_URL ?? POSTCARD_BASE_URL;
+
+  return `${baseUrl}/postcard/view/${postcardId}`;
+};
