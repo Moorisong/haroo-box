@@ -58,7 +58,7 @@ export default function LandingSection() {
 
         {/* TTL 안내 문구 */}
         <p
-          className="text-xs text-muted-foreground text-center mb-8"
+          className="text-xs text-muted-foreground text-center"
           style={{ animation: 'fadeIn 1s 0.55s ease both' }}
         >
           생성된 엽서는{' '}
@@ -66,7 +66,7 @@ export default function LandingSection() {
         </p>
 
         {/* inline CTA 버튼 */}
-        <div className="w-full max-w-[390px] px-2" style={{ animation: 'fadeInUp 0.8s 0.65s ease both' }}>
+        <div className="w-full max-w-[390px] px-2 my-12" style={{ animation: 'fadeInUp 0.8s 0.65s ease both' }}>
           <Link
             href="/postcard/create"
             className="block w-full py-4 rounded-2xl text-sm font-medium tracking-wide text-white hover:text-white shadow-lg text-center transition-all active:scale-[0.97] hover:scale-[1.01]"
@@ -81,7 +81,7 @@ export default function LandingSection() {
 
         {/* Adfit AD Banner */}
         <div 
-          className="w-full flex justify-center mt-6"
+          className="w-full flex justify-center"
           style={{ animation: 'fadeIn 1.2s 0.75s ease both' }}
         >
           <KakaoAdfit 
