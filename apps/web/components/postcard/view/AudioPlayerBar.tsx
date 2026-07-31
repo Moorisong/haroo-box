@@ -21,7 +21,7 @@ export default function AudioPlayerBar({
   onTogglePlay,
 }: AudioPlayerBarProps) {
   return (
-    <div className="w-full px-5 mt-6 mb-4 flex justify-center">
+    <div className="w-full px-5 mt-6 flex justify-center">
       <div className="w-full max-w-[390px] p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-lg flex items-center gap-3">
       {/* 썸네일 */}
       <img

@@ -79,7 +79,7 @@ export default function PostcardPreview() {
 
       {/* 엽서 카드 메인 프레임 */}
       <div
-        className="w-full max-w-[340px] aspect-[3/4] rounded-2xl p-4 bg-card border border-border/80 shadow-xs flex flex-col justify-between relative overflow-hidden select-none"
+        className="w-full max-w-[340px] aspect-[3/4] rounded-2xl p-4 bg-[#F4F4F5] border border-[#E4E4E7] shadow-xs flex flex-col justify-between relative overflow-hidden select-none"
         style={{
           fontFamily: "'Nanum Gothic', sans-serif",
         }}
@@ -87,7 +87,7 @@ export default function PostcardPreview() {
         {/* 상단: 이미지 영역 (드래그로 위아래 위치 조절 가능) */}
         <div
           ref={imgContainerRef}
-          className={`w-full h-[62%] rounded-xl overflow-hidden bg-muted relative border border-dashed border-border/60 ${
+          className={`w-full h-[55%] rounded-xl overflow-hidden bg-[#E4E4E7] relative border border-dashed border-[#D4D4D8] ${
             imagePreviewUrl ? 'cursor-grab active:cursor-grabbing' : ''
           }`}
           onMouseDown={handleDragStart}
@@ -134,17 +134,17 @@ export default function PostcardPreview() {
         </div>
 
         {/* 하단: 메시지 본문 영역 */}
-        <div className="w-full h-[35%] pt-3 flex flex-col justify-between">
-          <div className="overflow-y-auto max-h-[85px] pr-1 scrollbar-thin">
+        <div className="w-full h-[45%] pt-5 pb-1 flex flex-col justify-between">
+          <div className="overflow-y-auto max-h-[110px] pr-1 scrollbar-thin">
             <p
-              className="text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words"
+              className="text-sm leading-relaxed text-[#27272A] whitespace-pre-wrap break-words"
               style={getFontStyle(fontFamily)}
             >
               {message.trim() || '마음을 담은 한 줄을 적어보세요'}
             </p>
           </div>
 
-          <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[10px] text-muted-foreground">
+          <div className="pt-2 border-t border-[#E4E4E7] flex items-center justify-between text-[10px] text-[#A1A1AA]">
             <span className="tracking-widest font-medium">HAROO POSTCARD</span>
             <span>2일간 유효</span>
           </div>

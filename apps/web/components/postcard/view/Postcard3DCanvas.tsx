@@ -16,6 +16,7 @@ const CARD_3D_CONFIG = {
 interface Postcard3DCanvasProps {
   postcard: PostcardViewData;
   visible: boolean;
+  captureRef?: React.RefObject<HTMLDivElement>;
 }
 
 /**
@@ -26,7 +27,7 @@ interface Postcard3DCanvasProps {
  * - useFrame 스타일의 lerp 감쇄 처리 (CSS transition으로 구현)
  * - Aspect Ratio 자동 갱신 (가로/세로 회전 대응)
  */
-export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvasProps) {
+export default function Postcard3DCanvas({ postcard, visible, captureRef }: Postcard3DCanvasProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -112,7 +113,7 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
   if (!visible) return null;
 
   return (
-    <div className="flex-1 flex items-center justify-center px-10">
+    <div className="flex-1 flex items-center justify-center px-5">
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -120,13 +121,12 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="w-full max-w-[270px]"
+        className="w-full max-w-[390px]"
         style={{
           perspective: `${CARD_3D_CONFIG.perspective}px`,
           aspectRatio: '3/4',
         }}
       >
-        {/* 3D 기울기 애니메이션 (lerp 감쇄는 CSS transition으로 구현) */}
         <div
           className="w-full h-full rounded-3xl overflow-hidden shadow-2xl"
           style={{
@@ -135,34 +135,40 @@ export default function Postcard3DCanvas({ postcard, visible }: Postcard3DCanvas
             transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          <div className="w-full relative overflow-hidden" style={{ height: '65%' }}>
-            <img
-              src={postcard.image_url}
-              alt="엽서"
-              className="w-full h-full object-cover"
-              crossOrigin="anonymous"
-              style={{
-                filter: getFilterCss(postcard.filter_type, postcard.filter_intensity),
-                objectPosition: `center ${postcard.image_offset_y}%`,
-              }}
-            />
-            <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
-          </div>
-          <div
-            className="bg-white/95 backdrop-blur-sm flex flex-col justify-center px-5 py-4"
-            style={{ height: '35%' }}
-          >
-            <p
-              className="text-sm leading-[1.85] whitespace-pre-line text-foreground/80"
-              style={getFontStyle(postcard.font_family)}
-            >
-              {postcard.message}
-            </p>
+          <div ref={captureRef} className="w-full h-full relative flex flex-col bg-[#F4F4F5]">
+            <div className="w-full relative overflow-hidden" style={{ height: '55%' }}>
+              <img
+                src={postcard.image_url}
+                alt="엽서"
+                className="w-full h-full object-cover"
+                crossOrigin="anonymous"
+                style={{
+                  filter: getFilterCss(postcard.filter_type, postcard.filter_intensity),
+                  objectPosition: `center ${postcard.image_offset_y}%`,
+                }}
+              />
+              <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
+            </div>
             <div
-              className="mt-3 text-[10px] text-muted-foreground/50 tracking-wider"
-              style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+              className="px-5 py-5 flex flex-col"
+              style={{ height: '45%' }}
             >
-              — 하루엽서
+              <div className="w-full h-full overflow-y-auto scrollbar-thin flex flex-col">
+                <div className="mt-auto mb-auto w-full">
+                  <p
+                    className="text-sm leading-[1.85] whitespace-pre-line text-[#27272A]"
+                    style={getFontStyle(postcard.font_family)}
+                  >
+                    {postcard.message}
+                  </p>
+                  <div
+                    className="mt-3 text-[10px] text-[#A1A1AA] tracking-wider text-right"
+                    style={{ fontFamily: "'Nanum Gothic', sans-serif" }}
+                  >
+                    [하루엽서]
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -75,8 +75,8 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
               role="button"
               aria-label="엽서 열어보기"
             >
-              <div className="w-full h-full relative">
-                <div className="w-full relative overflow-hidden" style={{ height: '65%' }}>
+              <div className="w-full h-full relative bg-[#F4F4F5]">
+                <div className="w-full relative overflow-hidden" style={{ height: '55%' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={postcard.image_url}
@@ -90,13 +90,17 @@ export default function ShareContainer({ postcard }: ShareContainerProps) {
                   />
                   <PostcardEffectOverlay effectType={postcard.effect_type ?? 'none'} />
                 </div>
-                <div className="p-4 bg-card flex flex-col justify-center" style={{ height: '35%' }}>
-                  <p
-                    className="text-xs leading-relaxed whitespace-pre-line text-foreground/80"
-                    style={getFontStyle(postcard.font_family)}
-                  >
-                    {postcard.message}
-                  </p>
+                <div className="px-4 py-5 flex flex-col" style={{ height: '45%' }}>
+                  <div className="w-full h-full overflow-y-auto scrollbar-thin flex flex-col">
+                    <div className="mt-auto mb-auto w-full">
+                      <p
+                        className="text-xs leading-relaxed whitespace-pre-line text-[#27272A]"
+                        style={getFontStyle(postcard.font_family)}
+                      >
+                        {postcard.message}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
