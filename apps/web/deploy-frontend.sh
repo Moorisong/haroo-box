@@ -7,7 +7,7 @@ LOCAL_HOST="192.168.0.6"     # 집 (LAN)
 REMOTE_HOST="125.190.25.48"  # 외부 (WAN)
 SSH_PORT_LOCAL="22"
 SSH_PORT_WAN="8193"
-REMOTE_DIR="~/srv/box-test"
+REMOTE_DIR="~/srv/box"
 LOCAL_SERVER_ROOT="."
 
 # --- 네트워크 자동 감지 ---
@@ -17,12 +17,12 @@ if ping -c 1 -W 2 "$LOCAL_HOST" > /dev/null 2>&1; then
   SSH_PORT="$SSH_PORT_LOCAL"
   SSH_OPT=""
   RSYNC_SSH="ssh"
-  echo "🏠 집 네트워크 감지됨 → LAN($REMOTE_HOST) 테스트 서버 배포"
+  echo "🏠 집 네트워크 감지됨 → LAN($REMOTE_HOST) 배포"
 else
   SSH_PORT="$SSH_PORT_WAN"
   SSH_OPT="-p $SSH_PORT"
   RSYNC_SSH="ssh -p $SSH_PORT"
-  echo "🌐 외부 네트워크 감지됨 → WAN($REMOTE_HOST:$SSH_PORT) 테스트 서버 배포"
+  echo "🌐 외부 네트워크 감지됨 → WAN($REMOTE_HOST:$SSH_PORT) 배포"
 fi
 
 # 0. 서버에 디렉토리가 없으면 생성
@@ -55,8 +55,9 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   rm -rf docs .antigravity && \
   npm install && \
   rm -rf .next && \
-  NEXT_PUBLIC_BASE_URL=\"https://test-box.haroo.site\" npm run build && \
-  pm2 restart box-fe-test --update-env || pm2 start ecosystem-test.config.js
+  NEXT_PUBLIC_BASE_URL=\"https://box.haroo.site\" NEXT_PUBLIC_API_URL=\"https://box-api.haroo.site\" npm run build && \
+  (pm2 delete box-fe || true) && \
+  pm2 start ecosystem.config.js
 "
 
-echo "✅ 테스트 프론트엔드 배포 완료!"
+echo "✅ 배포 완료!"
