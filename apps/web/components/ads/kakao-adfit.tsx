@@ -86,5 +86,5 @@ export const ADFIT_SIZES = {
 
 // 사용자의 광고 단위 ID
 export const ADFIT_UNITS = {
-    MAIN_BANNER: 'DAN-CgWk2fSDQ4BK75tg',
+    MAIN_BANNER: 'DAN-87mFY15Lo8RvlTFJ',
 } as const;
