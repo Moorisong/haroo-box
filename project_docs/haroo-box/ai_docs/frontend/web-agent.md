@@ -25,3 +25,4 @@
 - **[300줄 분리 규칙]:** 단일 컴포넌트나 파일의 코드는 **300줄**을 절대 초과할 수 없다. 코드가 길어질 조짐이 보이면 즉시 Sub-component로 쪼개거나 비즈니스/상태 로직을 Custom Hook(`hooks/` 또는 `lib/`)으로 분리한다.
 - **[Client Component 최소화]:** Vercel React Best Practices를 따라 최상단부터 클라이언트 컴포넌트를 쓰지 말고, 상태가 필요한 하위 트리(Leaf Node)에서만 선언하여 SSR 이점을 극대화한다.
 - **[하드코딩 금지]:** API 주소, 주요 키 값 등은 반드시 `.env` 환경변수를 통해 주입받아 사용해야 한다.
+- **[SEO 및 사이트맵 동기화]:** 신규 서비스 라우트가 추가되거나 변경될 경우, 검색 엔진 크롤링 최적화를 위해 `apps/web/app/sitemap.ts`에 해당 URL과 우선순위(priority)를 반드시 반영하고, `public/robots.txt`에 sitemap 경로가 보존되도록 유지한다.

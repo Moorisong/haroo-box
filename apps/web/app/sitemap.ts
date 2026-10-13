@@ -8,7 +8,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
             url: baseUrl,
             lastModified: new Date(),
             changeFrequency: 'daily',
-            priority: 1,
+            priority: 1.0,
+        },
+        {
+            url: `${baseUrl}/puzzle`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/htsm`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/u-know`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/login`,
@@ -17,10 +35,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.5,
         },
         {
-            url: `${baseUrl}/htsm`,
+            url: `${baseUrl}/terms`,
             lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 0.8,
+            changeFrequency: 'yearly',
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/privacy`,
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 0.3,
         },
     ]
 }
