@@ -77,13 +77,14 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Script
+      <head>
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7385326156685780"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QKK7S8Z3Z5"
           strategy="afterInteractive"
