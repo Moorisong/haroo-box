@@ -3,7 +3,7 @@ ssh -p 22 ksh@192.168.0.6 << 'REMOTE_SCRIPT'
 set -e
 
 echo "=== 1. Nginx 설정 변경 ==="
-sudo sed -i 's/claw-addict-server.haroo.site/box-api.haroo.site/g' /etc/nginx/sites-available/claw-addict
+sudo sed -i 's/claw-addict-server.harooo.co.kr/box-api.harooo.co.kr/g' /etc/nginx/sites-available/claw-addict
 sudo mv /etc/nginx/sites-available/claw-addict /etc/nginx/sites-available/box-api
 sudo rm -f /etc/nginx/sites-enabled/claw-addict
 sudo ln -sf /etc/nginx/sites-available/box-api /etc/nginx/sites-enabled/
@@ -11,7 +11,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 echo "=== 2. SSL 인증서 발급 ==="
-sudo certbot --nginx -d box-api.haroo.site --non-interactive || sudo certbot --nginx -d box-api.haroo.site --non-interactive --register-unsafely-without-email --agree-tos
+sudo certbot --nginx -d box-api.harooo.co.kr --non-interactive || sudo certbot --nginx -d box-api.harooo.co.kr --non-interactive --register-unsafely-without-email --agree-tos
 
 echo "=== 3. Frontend .env 변경 ==="
 sed -i 's/claw-addict-server/box-api/g' ~/srv/box/.env

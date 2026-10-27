@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.haroo.site';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.harooo.co.kr';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

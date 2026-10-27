@@ -13,7 +13,7 @@ module.exports = {
                 MONGODB_URI: process.env.MONGODB_URI,
                 HTSM_MONGODB_URI: process.env.HTSM_MONGODB_URI,
                 SIGNATURE_SECRET: process.env.SIGNATURE_SECRET,
-                CLIENT_URL: 'https://test-box.haroo.site'
+                CLIENT_URL: 'https://test-box.harooo.co.kr'
             }
         }
     ]
