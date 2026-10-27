@@ -7,7 +7,7 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.haroo.site';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.harooo.co.kr';
 
 export const metadata: Metadata = {
     title: '하루상자 | 즐거움이 가득한 일일 콘텐츠 플랫폼',
@@ -73,7 +73,7 @@ export default function Home() {
             title: '롤링페이퍼',
             description: '친구들과 추억을 나누는 익명 롤링페이퍼.\n마음을 전하는 따뜻한 시간!',
             image: '/sample/r-paper-logo.png',
-            link: 'https://r-paper-web.haroo.site',
+            link: 'https://r-paper-web.harooo.co.kr',
             badge: 'Hot',
             badgeType: styles.badgeHot,
             active: true,

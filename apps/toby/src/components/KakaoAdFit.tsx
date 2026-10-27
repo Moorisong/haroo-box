@@ -47,7 +47,7 @@ export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfi
                          data-ad-unit="${unit}" 
                          data-ad-width="${width}" 
                          data-ad-height="${height}"></ins>
-                    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+                    <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
                 </body>
                 </html>
             `);
@@ -87,5 +87,5 @@ export const ADFIT_SIZES = {
 // 사용자의 광고 단위 ID 
 // (하루상자 메인 배너와 동일한 단위 사용, 필요시 변경 가능)
 export const ADFIT_UNITS = {
-    MAIN_BANNER: 'DAN-CgWk2fSDQ4BK75tg',
+    MAIN_BANNER: 'DAN-87mFY15Lo8RvlTFJ',
 } as const;

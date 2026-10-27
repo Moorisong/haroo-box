@@ -40,9 +40,9 @@
 배포 포트 및 도메인 설정을 기반으로 한 네트워크 포트 맵입니다.
 
 * **도메인 맵**:
-  * 프론트엔드 도메인: `https://box.haroo.site` (포트 `3002` 프록시)
-  * 백엔드 API 도메인: `https://box-api.haroo.site` (포트 `3000` 프록시)
-  * 롤링페이퍼 연동 도메인: `https://r-paper-web.haroo.site`
+  * 프론트엔드 도메인: `https://box.harooo.co.kr` (포트 `3002` 프록시)
+  * 백엔드 API 도메인: `https://box-api.harooo.co.kr` (포트 `3000` 프록시)
+  * 롤링페이퍼 연동 도메인: `https://r-paper-web.harooo.co.kr`
 * **프록시 패스 설정**:
   * 외부 SSL 통신(Port 443) 수신 후, Nginx 등 리버스 프록시 장비가 SSL Offloading을 수행하여 홈서버의 각 내부 포트로 트래픽을 토스합니다.
 

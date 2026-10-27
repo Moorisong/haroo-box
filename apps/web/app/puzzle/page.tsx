@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const puzzle = res.data;
     const imageUrl = puzzle.imageUrl.startsWith('http') 
       ? puzzle.imageUrl 
-      : `https://box.haroo.site${puzzle.imageUrl}`;
+      : `https://box.harooo.co.kr${puzzle.imageUrl}`;
     
     return {
       title: {
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
       openGraph: {
         title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
         description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
-        url: 'https://box.haroo.site/puzzle',
+        url: 'https://box.harooo.co.kr/puzzle',
         type: 'website',
         images: [
           {

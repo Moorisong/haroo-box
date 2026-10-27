@@ -7,7 +7,7 @@ export const ROUTES = {
     HOME: '/',
     LOGIN: '/login',
     MYPAGE: '/mypage',
-    ROLLING_PAPER: 'https://r-paper-web.haroo.site/',
+    ROLLING_PAPER: 'https://r-paper-web.harooo.co.kr/',
     HTSM: '/htsm',
     U_KNOW: '/u-know',
     TOBY: '/toby',

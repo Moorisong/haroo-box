@@ -55,7 +55,7 @@ ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
   rm -rf docs .antigravity && \
   npm install && \
   rm -rf .next && \
-  NEXT_PUBLIC_BASE_URL=\"https://test-box.haroo.site\" npm run build && \
+  NEXT_PUBLIC_BASE_URL=\"https://test-box.harooo.co.kr\" npm run build && \
   pm2 restart box-fe-test --update-env || pm2 start ecosystem-test.config.js
 "
 

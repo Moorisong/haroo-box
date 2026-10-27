@@ -17,7 +17,7 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
   'http://127.0.0.1:5173',
-  'https://box.haroo.site',
+  'https://box.harooo.co.kr',
   process.env.CLIENT_URL,
 ].filter(Boolean) as string[];
 

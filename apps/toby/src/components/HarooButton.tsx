@@ -23,7 +23,7 @@ const HarooButton: React.FC = () => {
 
     return (
         <a
-            href="https://box.haroo.site"
+            href="https://box.harooo.co.kr"
             target="_blank"
             rel="noopener noreferrer"
             onMouseEnter={() => setHovered(true)}
