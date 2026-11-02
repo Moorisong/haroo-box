@@ -45,27 +45,40 @@ export const metadata: Metadata = {
     },
 };
 
+interface ContentItem {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    link: string;
+    badge?: string;
+    badgeType?: string;
+    newTab?: boolean;
+    active: boolean;
+}
+
 export default function Home() {
-    const contents = [
+    const contents: ContentItem[] = [
         {
-            id: 'puzzle',
-            title: '하루퍼즐',
-            description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
-            image: '/puzzle-logo.png',
-            link: ROUTES.PUZZLE,
+            id: 'gamss',
+            title: '감쓰.exe',
+            description: '참지 마. 여기다 버려.\n쓰고 버리는 감정쓰레기통!',
+            image: '/sample/gamss-icon.png',
+            link: ROUTES.GAMSS,
             badge: 'New',
             badgeType: styles.badgeNew,
             newTab: true,
             active: true,
         },
         {
-            id: 'u-know',
-            title: '너잘알',
-            description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
-            image: '/u-know-logo-v2.png',
-            link: ROUTES.U_KNOW,
+            id: 'puzzle',
+            title: '하루퍼즐',
+            description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
+            image: '/sample/puzzle-logo-balanced.png',
+            link: ROUTES.PUZZLE,
             badge: 'New',
             badgeType: styles.badgeNew,
+            newTab: true,
             active: true,
         },
         {
@@ -85,6 +98,14 @@ export default function Home() {
             image: '/sample/toby-logo.png',
             link: '/toby',
             newTab: true,
+            active: true,
+        },
+        {
+            id: 'u-know',
+            title: '너잘알',
+            description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
+            image: '/u-know-logo-v2.png',
+            link: ROUTES.U_KNOW,
             active: true,
         },
         {
@@ -111,7 +132,7 @@ export default function Home() {
                             href={content.link}
                             key={content.id}
                             className={styles.card}
-                            {...((content as any).newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                            {...(content.newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                         >
                             <div className={styles.cardImageWrapper}>
                                 {content.badge && (

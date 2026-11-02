@@ -12,6 +12,7 @@ export const ROUTES = {
     U_KNOW: '/u-know',
     TOBY: '/toby',
     PUZZLE: '/puzzle',
+    GAMSS: 'https://dumpit-web.harooo.co.kr',
     TERMS: '/terms',
     PRIVACY: '/privacy',
 } as const;
