@@ -687,3 +687,95 @@
   .cardContent { padding: 12px 10px; }
   .cardDescription { font-size: 10px; }
 }
+
+/* Compact, bespoke title treatment instead of a stock marketing hero. */
+.sectionHead {
+  align-items: end;
+  margin-bottom: 24px;
+  gap: 14px;
+}
+.sectionIntro {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  min-width: 0;
+}
+.sectionMark {
+  display: grid;
+  grid-template-columns: repeat(2, 11px);
+  grid-template-rows: repeat(2, 11px);
+  gap: 3px;
+  flex: none;
+  margin-top: 7px;
+  transform: rotate(-8deg);
+}
+.sectionMark span { border-radius: 3px; background: #0c3bbf; }
+.sectionMark span:nth-child(2) { background: #ffce60; }
+.sectionMark span:nth-child(3) { background: #9b5370; }
+.sectionMark span:nth-child(4) { background: #c4d2fc; }
+.sectionCopy { min-width: 0; }
+.sectionKicker {
+  margin: 0 0 6px;
+  color: #8b5267;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -.015em;
+}
+.sectionTitle {
+  margin: 0;
+  color: #1b2440;
+  font-size: clamp(25px, 2.8vw, 35px);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: 1.27;
+  word-break: keep-all;
+}
+.titleHighlight {
+  color: #073bc1;
+  background: linear-gradient(transparent 76%, #f8db91 76%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.sectionSubcopy {
+  margin: 8px 0 0;
+  color: #70717a;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+.contentCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  padding-bottom: 3px;
+}
+.countDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a45c73;
+}
+@media (max-width: 760px) {
+  .sectionHead { align-items: end; margin-bottom: 20px; }
+  .sectionIntro { gap: 12px; }
+  .sectionMark { grid-template-columns: repeat(2, 9px); grid-template-rows: repeat(2, 9px); gap: 3px; margin-top: 5px; }
+  .sectionTitle { font-size: clamp(22px, 4.3vw, 28px); }
+  .sectionKicker { font-size: 10px; }
+  .sectionSubcopy { font-size: 11px; }
+}
+@media (max-width: 480px) {
+  .sectionHead { align-items: flex-end; gap: 8px; }
+  .sectionIntro { gap: 10px; }
+  .sectionMark { grid-template-columns: repeat(2, 8px); grid-template-rows: repeat(2, 8px); gap: 2px; margin-top: 4px; }
+  .sectionTitle { font-size: clamp(20px, 5.3vw, 25px); }
+  .sectionSubcopy { margin-top: 6px; font-size: 10px; }
+  .contentCount { gap: 4px; padding-bottom: 2px; }
+  .contentCount strong { font-size: 10px; white-space: nowrap; }
+  .countDot { width: 5px; height: 5px; }
+}
+@media (max-width: 370px) {
+  .sectionHead { flex-wrap: wrap; }
+  .contentCount { margin-left: 30px; }
+}
