@@ -37,12 +37,5 @@ export const MESSAGES = {
     },
 } as const;
 
-// 네비게이션 링크
-export const NAV_LINKS = [
-    { href: '/puzzle', label: '하루퍼즐', newTab: true },
-    { href: '/u-know', label: '너잘알' },
-    { href: 'https://r-paper-web.harooo.co.kr/', label: '롤링페이퍼', newTab: true },
-    { href: '/toby', label: 'TOBY', newTab: true },
-    { href: '/htsm', label: '자아탐험' },
-] as const;
+
 
