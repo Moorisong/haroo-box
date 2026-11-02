@@ -160,7 +160,6 @@ export default function Home() {
                             const cardBody = (
                                 <>
                                     <div className={styles.cardImageWrapper}>
-                                        <span className={styles.cardCategory}>{content.category}</span>
                                         {content.badge && (
                                             <span className={[styles.badge, content.badgeType || ''].join(' ')}>
                                                 {content.badge}
