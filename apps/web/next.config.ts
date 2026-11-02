@@ -7,16 +7,15 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
   async rewrites() {
+    const isDev = process.env.NODE_ENV !== 'production';
     return [
       {
         source: '/toby',
-        destination: '/toby/index.html',
+        destination: isDev ? 'http://localhost:5173/toby/' : '/toby/index.html',
       },
       {
         source: '/toby/:path*',
-        destination: (process.env.NODE_ENV === 'production'
-          ? '/toby/:path*'
-          : 'http://localhost:5173/toby/:path*'),
+        destination: isDev ? 'http://localhost:5173/toby/:path*' : '/toby/:path*',
       },
     ];
   },

@@ -1,13 +1,18 @@
 import { useEffect, useRef } from 'react';
 
 interface KakaoAdfitProps {
-    unit: string;
-    width: number | string;
-    height: number | string;
+    unit?: string;
+    width?: number;
+    height?: number;
     className?: string;
 }
 
-export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfitProps) {
+export default function KakaoAdfit({
+    unit = ADFIT_UNITS.TOBY_BANNER,
+    width = ADFIT_SIZES.BANNER_320x100.width,
+    height = ADFIT_SIZES.BANNER_320x100.height,
+    className
+}: KakaoAdfitProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -18,12 +23,13 @@ export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfi
 
         // iframe 생성
         const iframe = document.createElement('iframe');
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
+        iframe.style.width = `${width}px`;
+        iframe.style.height = `${height}px`;
         iframe.style.border = 'none';
         iframe.style.overflow = 'hidden';
-        iframe.width = String(width === '100%' ? '100%' : width);
-        iframe.height = String(height === '100%' ? '100%' : height);
+        iframe.setAttribute('scrolling', 'no');
+        iframe.width = String(width);
+        iframe.height = String(height);
 
         container.appendChild(iframe);
 
@@ -33,12 +39,26 @@ export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfi
             doc.open();
             doc.write(`
                 <!DOCTYPE html>
-                <html>
+                <html lang="ko">
                 <head>
                     <meta charset="utf-8">
                     <style>
-                        body { margin: 0; padding: 0; width: 100%; height: 100%; background: transparent; display: flex; justify-content: center; align-items: center; }
-                        .kakao_ad_area { display: block; width: 100%; height: 100%; }
+                        html, body {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: transparent;
+                            display: flex;
+                            justifyContent: center;
+                            align-items: center;
+                            overflow: hidden;
+                        }
+                        .kakao_ad_area {
+                            display: block;
+                            width: ${width}px;
+                            height: ${height}px;
+                        }
                     </style>
                 </head>
                 <body>
@@ -47,7 +67,7 @@ export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfi
                          data-ad-unit="${unit}" 
                          data-ad-width="${width}" 
                          data-ad-height="${height}"></ins>
-                    <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+                    <script type="text/javascript" src="https://t1.kakaocdn.net/kas/static/ba.min.js" async></script>
                 </body>
                 </html>
             `);
@@ -64,13 +84,14 @@ export default function KakaoAdfit({ unit, width, height, className }: KakaoAdfi
             ref={containerRef}
             className={className}
             style={{
-                width: typeof width === 'number' ? `${width}px` : width,
-                height: typeof height === 'number' ? `${height}px` : height,
+                width: `${width}px`,
+                height: `${height}px`,
                 margin: '0 auto',
                 overflow: 'hidden',
                 maxWidth: '100%',
                 display: 'flex',
                 justifyContent: 'center',
+                alignItems: 'center',
             }}
         />
     );

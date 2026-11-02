@@ -210,7 +210,7 @@ const SeatRandom: React.FC = () => {
                     <div style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'center', padding: '0 1rem' }}>
                         <KakaoAdfit
                             unit={ADFIT_UNITS.TOBY_BANNER}
-                            width="100%"
+                            width={ADFIT_SIZES.BANNER_320x100.width}
                             height={ADFIT_SIZES.BANNER_320x100.height}
                         />
                     </div>

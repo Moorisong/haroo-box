@@ -1,5 +1,5 @@
 import { Ball } from './Ball';
-import {
+import type {
     ObstacleHole, ObstacleGear, ObstacleBumper, ObstacleSpring,
     ObstacleVibrator, ObstacleTrap, ObstacleWind, ObstacleBoostZone,
     ObstacleSpinZone, ObstaclePortal, ObstacleLauncher, ObstacleRotator,
@@ -183,7 +183,7 @@ export class CollisionResolver {
         const dx = ball.x - line.x1, dy = ball.y - line.y1;
         const lx = line.x2 - line.x1, ly = line.y2 - line.y1;
         const lenSq = lx * lx + ly * ly;
-        let t = Math.max(0, Math.min(1, (dx * lx + dy * ly) / lenSq));
+        const t = Math.max(0, Math.min(1, (dx * lx + dy * ly) / lenSq));
         const cx = line.x1 + t * lx, cy = line.y1 + t * ly;
         const distX = ball.x - cx, distY = ball.y - cy;
         const dist = Math.sqrt(distX * distX + distY * distY);

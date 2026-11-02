@@ -1,5 +1,5 @@
-import React from 'react';
-import { SeatMode } from '../../hooks/useSeatRandom';
+import type { FC } from 'react';
+import type { SeatMode } from '../../hooks/useSeatRandom';
 
 interface SeatConfigPanelProps {
     mode: SeatMode;
@@ -17,7 +17,7 @@ interface SeatConfigPanelProps {
     setShowNameInput: (show: boolean) => void;
 }
 
-const SeatConfigPanel: React.FC<SeatConfigPanelProps> = ({
+const SeatConfigPanel: FC<SeatConfigPanelProps> = ({
     mode, handleModeChange,
     pairsPerRowInput, handlePairsPerRowChange, handlePairsPerRowBlur,
     pairRowsInput, handlePairRowsChange, handlePairRowsBlur,

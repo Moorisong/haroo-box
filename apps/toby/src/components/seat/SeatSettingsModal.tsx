@@ -1,5 +1,5 @@
-import React from 'react';
-import { SeatMode } from '../../hooks/useSeatRandom';
+import type { FC } from 'react';
+import type { SeatMode } from '../../hooks/useSeatRandom';
 
 interface SeatSettingsModalProps {
     selectedSeat: { row: number, pair: number, seat: number } | null;
@@ -12,7 +12,7 @@ interface SeatSettingsModalProps {
     setSelectedSeat: (seat: { row: number, pair: number, seat: number } | null) => void;
 }
 
-const SeatSettingsModal: React.FC<SeatSettingsModalProps> = ({
+const SeatSettingsModal: FC<SeatSettingsModalProps> = ({
     selectedSeat, mode, names, fixedSeats, emptySeats, toggleEmptySeat, setFixedSeat, setSelectedSeat
 }) => {
     if (!selectedSeat) return null;
