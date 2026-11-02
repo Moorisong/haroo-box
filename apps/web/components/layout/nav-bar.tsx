@@ -1,18 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
 import { ROUTES } from '@/constants';
-
+import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 import styles from './nav-bar.module.css';
 
+interface NavLinkItem {
+  label: string;
+  href: string;
+  newTab?: boolean;
+}
+
 // The single ordered source for both desktop and mobile content menus.
 // Match the homepage cards exactly, including the external 감쓰.exe link.
-const CONTENT_MENU_LINKS = [
+const CONTENT_MENU_LINKS: readonly NavLinkItem[] = [
   { label: '감쓰.exe', href: ROUTES.GAMSS, newTab: true },
   { label: '하루퍼즐', href: ROUTES.PUZZLE, newTab: true },
   { label: '롤링페이퍼', href: ROUTES.ROLLING_PAPER, newTab: true },
@@ -39,6 +45,7 @@ export default function NavBar() {
 
   const handleSignOut = async () => {
     closeMenu();
+    setSharedSessionCookie(false);
     try {
       const { clearAllPuzzleState } = await import('@/lib/puzzle-db');
       await clearAllPuzzleState();
@@ -100,7 +107,7 @@ export default function NavBar() {
                         closeMenu();
                         setIsDropdownOpen(false);
                       }}
-                      {...((link as any).newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      {...(link.newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     >
                       {link.label}
                     </Link>
@@ -116,7 +123,7 @@ export default function NavBar() {
                   href={link.href}
                   className={`${styles.navLink} ${pathname === link.href ? styles.active : ''}`}
                   onClick={closeMenu}
-                  {...((link as any).newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  {...(link.newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   {link.label}
                 </Link>
