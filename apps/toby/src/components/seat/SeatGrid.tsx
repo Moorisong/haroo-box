@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
-import { SeatData, SeatMode } from '../../hooks/useSeatRandom';
+import { forwardRef } from 'react';
+import type { SeatData, SeatMode } from '../../hooks/useSeatRandom';
 
 interface SeatGridProps {
     seats: (SeatData | null)[][];

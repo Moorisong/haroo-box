@@ -9,6 +9,9 @@ export const API = {
 
 // 외부 API URL
 export const getApiBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
   if (process.env.NODE_ENV === 'development') {
     if (typeof window !== 'undefined') {
       const host = window.location.hostname;
@@ -16,7 +19,7 @@ export const getApiBaseUrl = () => {
     }
     return 'http://localhost:3000';
   }
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  return 'http://localhost:3000';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

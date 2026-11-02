@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import { Trophy, Archive, User, LogIn, LogOut, Menu, X, Puzzle } from 'lucide-react';
+import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 export default function Header() {
   const pathname = usePathname();
@@ -18,6 +19,7 @@ export default function Header() {
   ];
 
   const handleSignOut = async () => {
+    setSharedSessionCookie(false);
     try {
       const { clearAllPuzzleState } = await import('@/lib/puzzle-db');
       await clearAllPuzzleState();

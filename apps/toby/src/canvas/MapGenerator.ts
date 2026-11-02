@@ -1,4 +1,4 @@
-import { Obstacle, ObstacleLine } from './types';
+import type { Obstacle } from './types';
 
 export class MapGenerator {
     static addWallBumpers(obstacles: Obstacle[], width: number, startY: number, endY: number, spacing: number) {
@@ -189,7 +189,7 @@ export class MapGenerator {
         return cy;
     }
 
-    static initRandomMaze(width: number, height: number, worldHeight: number): Obstacle[] {
+    static initRandomMaze(width: number, _height: number, worldHeight: number): Obstacle[] {
         const obstacles: Obstacle[] = [];
         
         this.addStaticLine(obstacles, 0, 0, width * 0.4, 120);
@@ -241,7 +241,7 @@ export class MapGenerator {
         return obstacles;
     }
 
-    static initFixedMaze(width: number, height: number, worldHeight: number): Obstacle[] {
+    static initFixedMaze(width: number, _height: number, worldHeight: number): Obstacle[] {
         const obstacles: Obstacle[] = [];
         const W = width;
 

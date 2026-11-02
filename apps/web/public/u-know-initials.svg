@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+  <title>너잘알 초성 ㄴㅈㅇ</title>
+  <!-- Three initials in one horizontal row, with a shared visual baseline. -->
+  <g stroke="#665185" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 58V102H48"/>
+    <path d="M63 59H102M83 60C83 80 77 92 63 102M83 75L101 102"/>
+    <circle cx="133" cy="81" r="18"/>
+  </g>
+</svg>

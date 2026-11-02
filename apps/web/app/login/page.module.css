@@ -108,3 +108,10 @@
 .noticeLink:hover {
   color: var(--puzzle-primary-hover, #60a5fa);
 }
+/* Haroo Box brand refresh */
+.container { background: #fbf7ee; }
+.card { background: #fffdf9; border: 1px solid #e7e2d9; box-shadow: 0 12px 34px rgba(27,33,59,.07); backdrop-filter: none; }
+.card:hover { box-shadow: 0 15px 36px rgba(27,33,59,.1); }
+.title { color: #18203a; }
+.subtitle, .notice { color: #646a77; }
+.noticeLink, .noticeLink:hover { color: #073bc1; }

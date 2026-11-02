@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../components/Header';
-import MyorokBanner from '../components/MyorokBanner';
 import KakaoAdfit, { ADFIT_UNITS, ADFIT_SIZES } from '../components/KakaoAdFit';
 import { APP_TITLES } from '../constants/app';
 import { useBallPicker } from '../hooks/useBallPicker';
@@ -90,15 +89,12 @@ const BallPicker: React.FC = () => {
                 </div>
 
                 <div style={{ marginTop: '2.5rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '0 1rem' }}>
+                    <div style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'center', padding: '0 1rem' }}>
                         <KakaoAdfit
-                            unit={ADFIT_UNITS.MAIN_BANNER}
-                            width="100%"
+                            unit={ADFIT_UNITS.TOBY_BANNER}
+                            width={ADFIT_SIZES.BANNER_320x100.width}
                             height={ADFIT_SIZES.BANNER_320x100.height}
                         />
-                        <div style={{ width: '100%', margin: '0' }}>
-                            <MyorokBanner />
-                        </div>
                     </div>
                 </div>
             </div>

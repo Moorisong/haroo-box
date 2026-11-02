@@ -1,5 +1,5 @@
 import { Ball } from './Ball';
-import { Obstacle, GameMode } from './types';
+import type { Obstacle, GameMode } from './types';
 import { MapGenerator } from './MapGenerator';
 import { CollisionResolver } from './CollisionResolver';
 import { PhysicsRenderer } from './PhysicsRenderer';

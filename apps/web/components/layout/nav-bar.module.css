@@ -548,3 +548,36 @@
     justify-content: center;
   }
 }
+/* Shared Haroo Box header identity: used by home, login, legal and service pages. */
+.header {
+  background: rgba(251, 247, 238, 0.97);
+  border-bottom: 1px solid #e8e1d5;
+  box-shadow: none;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav { max-width: 1208px; padding-left: 26px; padding-right: 26px; gap: 36px; }
+.logo { color: #073bc1; gap: 10px; }
+.logoIcon { width: 37px; height: 37px; }
+.logoText {
+  background: none;
+  color: #073bc1;
+  -webkit-text-fill-color: currentColor;
+  font-weight: 900;
+  letter-spacing: -.055em;
+}
+.navLink, .dropdownToggle { color: #303a53; font-size: 14px; font-weight: 750; }
+.navLink:hover, .dropdownToggle:hover { color: #073bc1; background: #ecedfc; }
+.navLink.active { color: #073bc1; }
+.navLink.active::after { background: #073bc1; }
+.dropdownMenu { background: #fffdf8; border-color: #e8e1d5; box-shadow: 0 14px 30px rgba(25,32,57,.1); }
+.dropdownItem:hover, .dropdownItemActive { color: #073bc1; background: #eff2fc; }
+.loginButton { background: #073bc1; color: #fff !important; box-shadow: none; }
+.loginButton:hover { background: #052c94; box-shadow: 0 5px 16px rgba(7,59,193,.16); }
+.hamburger:hover { background: #ecedfc; }
+.hamburgerLine { background: #303a53; }
+@media (max-width: 768px) {
+  .nav { padding-left: 18px; padding-right: 18px; }
+  .logoIcon { width: 34px; height: 34px; }
+  .navLinks { background: #fbf7ee; border-color: #e8e1d5; }
+}

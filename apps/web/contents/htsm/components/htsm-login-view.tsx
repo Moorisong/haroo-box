@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { signIn } from 'next-auth/react';
+import { markSharedLoginStarted } from '@/lib/shared-session-cookie';
 import Image from 'next/image';
 import styles from '../styles.module.css';
 
@@ -19,6 +20,7 @@ export default function HtsmLoginView({
     description = '테스트를 생성하려면 로그인이 필요합니다.\n카카오 로그인으로 간편하게 시작하세요.'
 }: HtsmLoginViewProps) {
     const handleLogin = () => {
+        markSharedLoginStarted();
         signIn('kakao', { callbackUrl });
     };
 

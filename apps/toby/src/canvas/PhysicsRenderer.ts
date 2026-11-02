@@ -1,5 +1,5 @@
 import { Ball } from './Ball';
-import { Obstacle } from './types';
+import type { Obstacle } from './types';
 
 export class PhysicsRenderer {
     static draw(

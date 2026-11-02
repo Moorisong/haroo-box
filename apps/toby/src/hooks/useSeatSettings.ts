@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { SeatMode } from './useSeatRandom';
+import type { SeatMode } from './useSeatRandom';
 
 const STORAGE_KEY_PAIRS = 'TRT_SEAT_PAIRS';
 const STORAGE_KEY_COLS = 'TRT_SEAT_COLS';

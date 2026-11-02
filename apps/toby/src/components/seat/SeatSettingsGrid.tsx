@@ -1,5 +1,5 @@
-import React from 'react';
-import { SeatMode } from '../../hooks/useSeatRandom';
+import type { FC } from 'react';
+import type { SeatMode } from '../../hooks/useSeatRandom';
 
 interface SeatSettingsGridProps {
     pairRows: number;
@@ -12,7 +12,7 @@ interface SeatSettingsGridProps {
     getDisplayText: (idx: number) => string;
 }
 
-const SeatSettingsGrid: React.FC<SeatSettingsGridProps> = ({
+const SeatSettingsGrid: FC<SeatSettingsGridProps> = ({
     pairRows, pairsPerRow, mode, studentCount, fixedSeats, emptySeats, handleSeatClick, getDisplayText
 }) => {
     return (
