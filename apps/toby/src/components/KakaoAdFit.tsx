@@ -84,8 +84,7 @@ export const ADFIT_SIZES = {
     BANNER_728x90: { width: 728, height: 90 },
 } as const;
 
-// 사용자의 광고 단위 ID 
-// (하루상자 메인 배너와 동일한 단위 사용, 필요시 변경 가능)
 export const ADFIT_UNITS = {
     MAIN_BANNER: 'DAN-87mFY15Lo8RvlTFJ',
+    TOBY_BANNER: 'DAN-YLUgqW52t1oDIAmF',
 } as const;

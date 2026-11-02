@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import MyorokBanner from '../components/MyorokBanner';
 import KakaoAdfit, { ADFIT_UNITS, ADFIT_SIZES } from '../components/KakaoAdFit';
 import { useSeatSettings } from '../hooks/useSeatSettings';
 import SeatSettingsGrid from '../components/seat/SeatSettingsGrid';
@@ -218,15 +217,12 @@ const SeatSettings: React.FC = () => {
                 </div>
 
                 <div style={{ marginTop: '3.5rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '0 1rem' }}>
+                    <div style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'center', padding: '0 1rem' }}>
                         <KakaoAdfit
-                            unit={ADFIT_UNITS.MAIN_BANNER}
+                            unit={ADFIT_UNITS.TOBY_BANNER}
                             width="100%"
                             height={ADFIT_SIZES.BANNER_320x100.height}
                         />
-                        <div style={{ width: '100%', margin: '0' }}>
-                            <MyorokBanner />
-                        </div>
                     </div>
                 </div>
             </div>
