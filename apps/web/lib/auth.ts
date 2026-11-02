@@ -33,6 +33,26 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30일
   },
+  cookies: {
+    sessionToken: {
+      name:
+        process.env.NODE_ENV === 'production' &&
+        (process.env.NEXTAUTH_URL?.startsWith('https://') ||
+          process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://'))
+          ? '__Secure-next-auth.session-token'
+          : 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure:
+          process.env.NODE_ENV === 'production' &&
+          (process.env.NEXTAUTH_URL?.startsWith('https://') ||
+            process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://')),
+        domain: process.env.NEXTAUTH_COOKIE_DOMAIN || undefined,
+      },
+    },
+  },
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'kakao') {
