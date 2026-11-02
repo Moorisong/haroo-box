@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import { ROUTES } from '@/constants';
 import AdBanner from '@/components/ads/ad-banner';
 import styles from './page.module.css';
-import './home-chrome.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -144,9 +143,7 @@ export default function Home() {
                 <section className={styles.collection} aria-labelledby="contents-heading">
                     <div className={styles.sectionHead}>
                         <div className={styles.sectionIntro}>
-                            <span className={styles.sectionMark} aria-hidden="true"><span /><span /><span /><span /></span>
                             <div className={styles.sectionCopy}>
-                                <p className={styles.sectionKicker}>하루상자에서 놀기</p>
                                 <h2 id="contents-heading" className={styles.sectionTitle}>마음 가는 대로, <span className={styles.titleHighlight}>하나 골라.</span></h2>
                                 <p className={styles.sectionSubcopy}>작은 재미부터 쓸모 있는 도구까지.</p>
                             </div>
