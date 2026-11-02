@@ -25,5 +25,5 @@
 - **[300줄 분리 규칙]:** 단일 컴포넌트나 파일의 코드는 **300줄**을 절대 초과할 수 없다. 코드가 길어질 조짐이 보이면 즉시 Sub-component로 쪼개거나 비즈니스/상태 로직을 Custom Hook(`hooks/` 또는 `lib/`)으로 분리한다.
 - **[Client Component 최소화]:** Vercel React Best Practices를 따라 최상단부터 클라이언트 컴포넌트를 쓰지 말고, 상태가 필요한 하위 트리(Leaf Node)에서만 선언하여 SSR 이점을 극대화한다.
 - **[하드코딩 금지]:** API 주소, 주요 키 값 등은 반드시 `.env` 환경변수를 통해 주입받아 사용해야 한다.
-- **[서브도메인 쿠키 및 새 창 보안]:** 서브도메인 간 세션 공유는 URL 파라미터가 아닌 루트 도메인 쿠키(`NEXTAUTH_COOKIE_DOMAIN`, `HttpOnly`, `Secure`, `SameSite=Lax`)를 통해 안전하게 유지하며, 모든 새 창 이동(`target="_blank"`)에는 `rel="noopener noreferrer"`를 강제 적용하여 Reverse Tabnabbing 및 토큰 유출을 원천 방어한다.
+- **[외부 서비스 로그인 연동 및 새 창 보안]:** 감쓰.exe(`dumpit-web` 서브도메인)는 Supabase Auth + 별도 카카오 앱으로 인증하는 독립 시스템이므로 NextAuth 쿠키를 공유하지 않는다(세션 쿠키의 `Domain` 확장 금지). 하루상자 → 감쓰 이동 링크에는 인증 정보가 없는 진입 표시(`?from=haroo-box`)만 붙이고, 감쓰가 카카오 `prompt=none` 무음 로그인으로 세션을 복원한다. URL에 토큰·세션 값을 절대 싣지 않으며, 모든 새 창 이동(`target="_blank"`)에는 `rel="noopener noreferrer"`를 적용한다.
 - **[SEO 및 사이트맵 동기화]:** 신규 서비스 라우트가 추가되거나 변경될 경우, 검색 엔진 크롤링 최적화를 위해 `apps/web/app/sitemap.ts`에 해당 URL과 우선순위(priority)를 반드시 반영하고, `public/robots.txt`에 sitemap 경로가 보존되도록 유지한다.

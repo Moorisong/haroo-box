@@ -22,6 +22,14 @@ declare module 'next-auth/jwt' {
   }
 }
 
+// 카카오 프로필 중 이름 추출에 쓰는 필드만 정의
+interface KakaoProfileFields {
+  kakao_account?: {
+    name?: string;
+    profile?: { nickname?: string };
+  };
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({
@@ -33,26 +41,6 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30일
   },
-  cookies: {
-    sessionToken: {
-      name:
-        process.env.NODE_ENV === 'production' &&
-        (process.env.NEXTAUTH_URL?.startsWith('https://') ||
-          process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://'))
-          ? '__Secure-next-auth.session-token'
-          : 'next-auth.session-token',
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure:
-          process.env.NODE_ENV === 'production' &&
-          (process.env.NEXTAUTH_URL?.startsWith('https://') ||
-            process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://')),
-        domain: process.env.NEXTAUTH_COOKIE_DOMAIN || undefined,
-      },
-    },
-  },
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'kakao') {
@@ -61,7 +49,7 @@ export const authOptions: NextAuthOptions = {
           const users = db.collection('users');
 
           // 카카오 프로필에서 이름(실명) 또는 닉네임 추출
-          const kakaoProfile = profile as any;
+          const kakaoProfile = profile as KakaoProfileFields | undefined;
           const kakaoName = kakaoProfile?.kakao_account?.name || kakaoProfile?.kakao_account?.profile?.nickname || user.name;
 
           // 통합 유저 스키마에 맞춰 upsert
@@ -88,7 +76,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user, account }) {
       if (account?.provider === 'kakao') {
         token.kakaoId = account.providerAccountId;
 
