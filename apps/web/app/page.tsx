@@ -116,7 +116,7 @@ const contents: ContentItem[] = [
         id: 'u-know',
         title: '너잘알',
         description: '친구들의 반응을 예상해 보고\n진짜 답과 비교하는 관계 놀이.',
-        image: '/sample/u-know-logo-v3.png',
+        image: '/u-know-initials.svg',
         link: ROUTES.U_KNOW,
         category: '친구와 함께',
         tone: 'uknow',
@@ -144,12 +144,11 @@ export default function Home() {
                     <div className={styles.sectionHead}>
                         <div className={styles.sectionIntro}>
                             <div className={styles.sectionCopy}>
-                                <h2 id="contents-heading" className={styles.sectionTitle}>마음 가는 대로, <span className={styles.titleHighlight}>하나 골라.</span></h2>
+                                <h1 id="contents-heading" className={styles.sectionTitle}>마음 가는 대로, <span className={styles.titleHighlight}>하나 골라.</span></h1>
                                 <p className={styles.sectionSubcopy}>작은 재미부터 쓸모 있는 도구까지.</p>
                             </div>
                         </div>
                         <div className={styles.contentCount} aria-label={'콘텐츠 ' + activeCount + '개'}>
-                            <span className={styles.countDot} aria-hidden="true" />
                             <strong>{activeCount}개의 콘텐츠</strong>
                         </div>
                     </div>
@@ -165,7 +164,6 @@ export default function Home() {
                                                 {content.badge}
                                             </span>
                                         )}
-                                        <span className={styles.imageAccent} aria-hidden="true" />
                                         <Image
                                             src={content.image}
                                             alt=""

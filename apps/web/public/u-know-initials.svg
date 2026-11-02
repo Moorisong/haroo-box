@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+  <title>ㄴㅈㅇ</title>
+  <!-- Outlined initials keep the lettering identical on every device. -->
+  <g stroke="#665185" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 46V83H60"/>
+    <path d="M87 46H131M109 47C109 66 99 76 86 85M108 62L132 85"/>
+    <circle cx="80" cy="119" r="20"/>
+  </g>
+</svg>
