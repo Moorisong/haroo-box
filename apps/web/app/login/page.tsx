@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
+import { markSharedLoginStarted } from '@/lib/shared-session-cookie';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import Link from 'next/link';
@@ -27,6 +28,7 @@ function LoginContent() {
   */
 
   const handleKakaoLogin = () => {
+    markSharedLoginStarted();
     signIn('kakao', { callbackUrl });
   };
 
