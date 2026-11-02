@@ -81,7 +81,7 @@ const contents: ContentItem[] = [
         id: 'puzzle',
         title: '하루퍼즐',
         description: '매주 찾아오는 퍼즐을 맞추고\n기록과 랭킹에도 도전해요.',
-        image: '/sample/puzzle-logo-balanced.png',
+        image: '/sample/puzzle-logo-v2.png',
         link: ROUTES.PUZZLE,
         category: '퍼즐 게임',
         tone: 'puzzle',
@@ -117,7 +117,7 @@ const contents: ContentItem[] = [
         id: 'u-know',
         title: '너잘알',
         description: '친구들의 반응을 예상해 보고\n진짜 답과 비교하는 관계 놀이.',
-        image: '/u-know-logo-v2.png',
+        image: '/sample/u-know-logo-v3.png',
         link: ROUTES.U_KNOW,
         category: '친구와 함께',
         tone: 'uknow',
@@ -172,7 +172,6 @@ export default function Home() {
                                             width={160}
                                             height={160}
                                             className={styles.cardImage}
-                                            style={content.id === 'puzzle' ? { mixBlendMode: 'multiply' } : undefined}
                                             priority={index < 3}
                                         />
                                     </div>
