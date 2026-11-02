@@ -141,46 +141,6 @@ export default function Home() {
     return (
         <div className={styles.container}>
             <div className={styles.pageInner}>
-                <header className={styles.hero}>
-                    <div className={styles.heroCopy}>
-                        <p className={styles.eyebrow}>
-                            <span className={styles.eyebrowDot} aria-hidden="true" />
-                            A LITTLE JOY, EVERY DAY
-                        </p>
-                        <h1 className={styles.title}>
-                            심심한 하루에,<br />
-                            <span className={styles.titleAccent}>작은 재미 한 상자.</span>
-                        </h1>
-                        <p className={styles.subtitle}>
-                            잠깐 쉬어가고 싶을 때도, 누군가와 놀고 싶을 때도.<br className={styles.desktopBreak} />
-                            가볍게 즐길 거리부터 일상에 유용한 도구까지 담았어요.
-                        </p>
-                        <div className={styles.heroFootnote}>
-                            <span className={styles.heroFootnoteLine} aria-hidden="true" />
-                            오늘은 어떤 걸 열어볼까요?
-                        </div>
-                    </div>
-
-                    <div className={styles.heroVisual} aria-hidden="true">
-                        <span className={styles.visualHalo} />
-                        <span className={styles.visualSun} />
-                        <span className={styles.visualRayOne} />
-                        <span className={styles.visualRayTwo} />
-                        <span className={styles.visualRayThree} />
-                        <div className={styles.visualBackCard} />
-                        <div className={styles.visualMainCard}>
-                            <span className={styles.visualCardTop} />
-                            <span className={styles.visualCardDot} />
-                            <span className={styles.visualCardArc} />
-                            <span className={styles.visualCardBar} />
-                        </div>
-                        <div className={styles.visualFrontCard}>
-                            <span className={styles.visualFrontStar}>✳</span>
-                        </div>
-                        <span className={styles.visualScribble}>↗</span>
-                    </div>
-                </header>
-
                 <section className={styles.collection} aria-labelledby="contents-heading">
                     <div className={styles.sectionHead}>
                         <div>
