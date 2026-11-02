@@ -553,3 +553,6 @@
 .cardImage { padding: 8px; }
 .card { border-color: #e9e5de; box-shadow: 0 3px 14px rgba(31, 38, 61, .045); }
 .card:hover { border-color: #d8dce9; box-shadow: 0 10px 24px rgba(31, 38, 61, .09); }
+
+/* Transparent artwork area; keep the service icon and card body intact. */
+.cardImageWrapper { background: transparent; }
