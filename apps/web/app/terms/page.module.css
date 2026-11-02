@@ -205,3 +205,15 @@
         font-size: var(--font-size-xl);
     }
 }
+/* Shared Haroo Box editorial legal-page skin */
+.container { background: #fbf7ee; color: #18203a; }
+.header { border-bottom: 1px solid #e8e1d5; }
+.title { background: none; -webkit-text-fill-color: #073bc1; color: #073bc1; letter-spacing: -.045em; }
+.lastUpdated, .footer p, .smallText { color: #646a77; }
+.notice { background: #f2f4fc; border: 1px solid #dfe5f6; color: #26334f; }
+.notice strong, .tocList a, .orderedList strong, .emailLink { color: #073bc1; }
+.toc, .article { background: #fffdf9; border: 1px solid #e8e1d5; border-radius: 18px; box-shadow: 0 3px 16px rgba(27,33,59,.035); }
+.tocTitle, .articleTitle, .article p, .orderedList li, .footer strong, .contactBox p { color: #18203a; }
+.articleTitle, .footer { border-color: #e8e1d5; }
+.article:target { border-color: #073bc1; box-shadow: 0 0 0 2px #dbe5ff; }
+.tocList a:hover, .emailLink:hover { color: #052c94; }

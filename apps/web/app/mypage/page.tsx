@@ -9,13 +9,13 @@ export default function MyPage() {
             flexDirection: 'column',
             alignItems: 'center',
             padding: '4rem 2rem',
-            background: '#f7fafc',
+            background: '#fbf7ee',
         }}>
             <header style={{ textAlign: 'center', marginBottom: '4rem' }}>
                 <h1 style={{
                     fontSize: '2.5rem',
                     fontWeight: 800,
-                    color: '#2d3748',
+                    color: '#18203a',
                     marginBottom: '1rem'
                 }}>마이페이지</h1>
             </header>
@@ -24,26 +24,26 @@ export default function MyPage() {
                 background: 'white',
                 padding: '3rem',
                 borderRadius: '20px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
+                boxShadow: '0 10px 28px rgba(27,33,59,0.07)',
                 textAlign: 'center',
                 maxWidth: '500px',
                 width: '100%'
             }}>
                 <div style={{
-                    width: '100px', height: '100px', background: '#edf2f7', borderRadius: '50%', margin: '0 auto 1.5rem',
+                    width: '100px', height: '100px', background: '#e8edfa', borderRadius: '50%', margin: '0 auto 1.5rem',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem'
                 }}>
                     👤
                 </div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#2d3748' }}>GUEST</h2>
-                <p style={{ color: '#718096', marginBottom: '2rem' }}>로그인 정보가 없습니다.</p>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#18203a' }}>GUEST</h2>
+                <p style={{ color: '#646a77', marginBottom: '2rem' }}>로그인 정보가 없습니다.</p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <Link
                         href={ROUTES.LOGIN}
                         style={{
                             padding: '12px',
-                            background: '#4299e1',
+                            background: '#073bc1',
                             color: 'white',
                             fontWeight: 'bold',
                             borderRadius: '10px',
@@ -59,7 +59,7 @@ export default function MyPage() {
                             padding: '12px',
                             background: 'white',
                             border: '1px solid #e2e8f0',
-                            color: '#4a5568',
+                            color: '#394869',
                             borderRadius: '10px',
                             textDecoration: 'none'
                         }}
