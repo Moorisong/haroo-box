@@ -556,3 +556,9 @@
 
 /* Transparent artwork area; keep the service icon and card body intact. */
 .cardImageWrapper { background: transparent; }
+
+/* Subtle contrast between transparent artwork and description panel. */
+.cardContent {
+  background: #f7f5f0;
+  border-top: 1px solid #ece8e0;
+}
