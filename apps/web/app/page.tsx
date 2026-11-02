@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { ROUTES } from '@/constants';
 import AdBanner from '@/components/ads/ad-banner';
 import styles from './page.module.css';
+import './home-chrome.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,140 +46,213 @@ export const metadata: Metadata = {
     },
 };
 
+
+type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'uknow' | 'htsm';
+
 interface ContentItem {
     id: string;
     title: string;
     description: string;
     image: string;
     link: string;
+    category: string;
+    tone: CardTone;
     badge?: string;
     badgeType?: string;
     newTab?: boolean;
     active: boolean;
 }
 
+const contents: ContentItem[] = [
+    {
+        id: 'gamss',
+        title: '감쓰.exe',
+        description: '쌓인 감정을 쓱 적고 버려요.\n오늘의 답답함은 여기까지.',
+        image: '/sample/gamss-icon.png',
+        link: ROUTES.GAMSS,
+        category: '마음 정리',
+        tone: 'gamss',
+        badge: 'NEW',
+        badgeType: styles.badgeNew,
+        newTab: true,
+        active: true,
+    },
+    {
+        id: 'puzzle',
+        title: '하루퍼즐',
+        description: '매주 찾아오는 퍼즐을 맞추고\n기록과 랭킹에도 도전해요.',
+        image: '/sample/puzzle-logo-balanced.png',
+        link: ROUTES.PUZZLE,
+        category: '퍼즐 게임',
+        tone: 'puzzle',
+        badge: 'NEW',
+        badgeType: styles.badgeNew,
+        newTab: true,
+        active: true,
+    },
+    {
+        id: 'rolling-paper',
+        title: '롤링페이퍼',
+        description: '익명으로 마음을 전하고\n친구들과 추억을 이어가요.',
+        image: '/sample/r-paper-logo.png',
+        link: 'https://r-paper-web.harooo.co.kr',
+        category: '마음 나누기',
+        tone: 'rolling',
+        badge: 'HOT',
+        badgeType: styles.badgeHot,
+        active: true,
+    },
+    {
+        id: 'toby',
+        title: 'TOBY',
+        description: '수업과 학급 관리에 필요한\n선생님을 위한 도구 모음.',
+        image: '/sample/toby-logo.png',
+        link: '/toby',
+        category: '선생님 도구',
+        tone: 'toby',
+        newTab: true,
+        active: true,
+    },
+    {
+        id: 'u-know',
+        title: '너잘알',
+        description: '친구들의 반응을 예상해 보고\n진짜 답과 비교하는 관계 놀이.',
+        image: '/u-know-logo-v2.png',
+        link: ROUTES.U_KNOW,
+        category: '친구와 함께',
+        tone: 'uknow',
+        active: true,
+    },
+    {
+        id: 'htsm',
+        title: '자아탐험',
+        description: '친구들의 익명 평가로\n몰랐던 내 모습을 발견해요.',
+        image: '/htsm-logo-v6.png',
+        link: '/htsm',
+        category: '나 알아보기',
+        tone: 'htsm',
+        active: true,
+    },
+];
+
 export default function Home() {
-    const contents: ContentItem[] = [
-        {
-            id: 'gamss',
-            title: '감쓰.exe',
-            description: '참지 마. 여기다 버려.\n쓰고 버리는 감정쓰레기통!',
-            image: '/sample/gamss-icon.png',
-            link: ROUTES.GAMSS,
-            badge: 'New',
-            badgeType: styles.badgeNew,
-            newTab: true,
-            active: true,
-        },
-        {
-            id: 'puzzle',
-            title: '하루퍼즐',
-            description: '매주 찾아오는 고요하고 평화로운 퍼즐.\n나만의 기록으로 주간 랭킹 도전!',
-            image: '/sample/puzzle-logo-balanced.png',
-            link: ROUTES.PUZZLE,
-            badge: 'New',
-            badgeType: styles.badgeNew,
-            newTab: true,
-            active: true,
-        },
-        {
-            id: 'rolling-paper',
-            title: '롤링페이퍼',
-            description: '친구들과 추억을 나누는 익명 롤링페이퍼.\n마음을 전하는 따뜻한 시간!',
-            image: '/sample/r-paper-logo.png',
-            link: 'https://r-paper-web.harooo.co.kr',
-            badge: 'Hot',
-            badgeType: styles.badgeHot,
-            active: true,
-        },
-        {
-            id: 'toby',
-            title: 'TOBY',
-            description: '학교 선생님들을 위한 서비스 툴 모음.\n수업과 학급 관리에 유용한 도구들!',
-            image: '/sample/toby-logo.png',
-            link: '/toby',
-            newTab: true,
-            active: true,
-        },
-        {
-            id: 'u-know',
-            title: '너잘알',
-            description: '친구 반응 예상하고 실제 답변과 비교!\n단톡방 투척용 병맛 관계 놀이 ㅋㅋ',
-            image: '/u-know-logo-v2.png',
-            link: ROUTES.U_KNOW,
-            active: true,
-        },
-        {
-            id: 'htsm',
-            title: '자아탐험',
-            description: '친구들의 익명 평가로 발견하는 나.\nJohari Window 기반 심리 분석!',
-            image: '/htsm-logo-v6.png',
-            link: '/htsm',
-            active: true,
-        },
-    ];
+    const activeCount = contents.filter((content) => content.active).length;
 
     return (
         <div className={styles.container}>
-            <header className={styles.header}>
-                <h1 className={styles.title}>하루상자</h1>
-                <p className={styles.subtitle}>매일 새로운 즐거움과 유익함이 담긴 곳</p>
-            </header>
-
-            <div className={styles.grid}>
-                {contents.map((content) => (
-                    content.active ? (
-                        <Link
-                            href={content.link}
-                            key={content.id}
-                            className={styles.card}
-                            {...(content.newTab || content.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                        >
-                            <div className={styles.cardImageWrapper}>
-                                {content.badge && (
-                                    <div className={styles.badgeGroup}>
-                                        <span className={`${styles.badge} ${content.badgeType || ''}`}>{content.badge}</span>
-                                    </div>
-                                )}
-
-                                <Image
-                                    src={content.image}
-                                    alt={content.title}
-                                    width={140}
-                                    height={140}
-                                    className={styles.cardImage}
-                                    style={content.id === 'puzzle' ? { mixBlendMode: 'multiply' } : undefined}
-                                    priority
-                                />
-                            </div>
-                            <div className={styles.cardContent}>
-                                <h2 className={styles.cardTitle}>{content.title}</h2>
-                                <p className={styles.cardDescription}>{content.description}</p>
-                            </div>
-                        </Link>
-                    ) : (
-                        <div key={content.id} className={`${styles.card} ${styles.disabled}`}>
-                            <div className={styles.cardImageWrapper}>
-                                <Image
-                                    src={content.image}
-                                    alt={content.title}
-                                    width={140}
-                                    height={140}
-                                    className={styles.cardImage}
-                                    style={{ filter: 'grayscale(100%)', opacity: 0.5 }}
-                                />
-                            </div>
-                            <div className={styles.cardContent}>
-                                <h2 className={styles.cardTitle}>{content.title}</h2>
-                                <p className={styles.cardDescription}>{content.description}</p>
-                            </div>
+            <div className={styles.pageInner}>
+                <header className={styles.hero}>
+                    <div className={styles.heroCopy}>
+                        <p className={styles.eyebrow}>
+                            <span className={styles.eyebrowDot} aria-hidden="true" />
+                            A LITTLE JOY, EVERY DAY
+                        </p>
+                        <h1 className={styles.title}>
+                            심심한 하루에,<br />
+                            <span className={styles.titleAccent}>작은 재미 한 상자.</span>
+                        </h1>
+                        <p className={styles.subtitle}>
+                            잠깐 쉬어가고 싶을 때도, 누군가와 놀고 싶을 때도.<br className={styles.desktopBreak} />
+                            가볍게 즐길 거리부터 일상에 유용한 도구까지 담았어요.
+                        </p>
+                        <div className={styles.heroFootnote}>
+                            <span className={styles.heroFootnoteLine} aria-hidden="true" />
+                            오늘은 어떤 걸 열어볼까요?
                         </div>
-                    )
-                ))}
-            </div>
+                    </div>
 
-            <AdBanner className={styles.adBanner} />
+                    <div className={styles.heroVisual} aria-hidden="true">
+                        <span className={styles.visualHalo} />
+                        <span className={styles.visualSun} />
+                        <span className={styles.visualRayOne} />
+                        <span className={styles.visualRayTwo} />
+                        <span className={styles.visualRayThree} />
+                        <div className={styles.visualBackCard} />
+                        <div className={styles.visualMainCard}>
+                            <span className={styles.visualCardTop} />
+                            <span className={styles.visualCardDot} />
+                            <span className={styles.visualCardArc} />
+                            <span className={styles.visualCardBar} />
+                        </div>
+                        <div className={styles.visualFrontCard}>
+                            <span className={styles.visualFrontStar}>✳</span>
+                        </div>
+                        <span className={styles.visualScribble}>↗</span>
+                    </div>
+                </header>
+
+                <section className={styles.collection} aria-labelledby="contents-heading">
+                    <div className={styles.sectionHead}>
+                        <div>
+                            <span className={styles.sectionOverline}>PICK YOUR LITTLE JOY</span>
+                            <h2 id="contents-heading" className={styles.sectionTitle}>오늘은 뭘 해볼까?</h2>
+                            <p className={styles.sectionDescription}>끌리는 카드를 골라보세요. 즐거움은 생각보다 가까이 있어요.</p>
+                        </div>
+                        <div className={styles.contentCount} aria-label={'콘텐츠 ' + activeCount + '개'}>
+                            <strong>{String(activeCount).padStart(2, '0')}</strong>
+                            <span>CONTENTS</span>
+                        </div>
+                    </div>
+
+                    <div className={styles.grid}>
+                        {contents.map((content, index) => {
+                            const cardClass = [styles.card, styles[content.tone]].join(' ');
+                            const cardBody = (
+                                <>
+                                    <div className={styles.cardImageWrapper}>
+                                        <span className={styles.cardCategory}>{content.category}</span>
+                                        {content.badge && (
+                                            <span className={[styles.badge, content.badgeType || ''].join(' ')}>
+                                                {content.badge}
+                                            </span>
+                                        )}
+                                        <span className={styles.imageAccent} aria-hidden="true" />
+                                        <Image
+                                            src={content.image}
+                                            alt=""
+                                            width={160}
+                                            height={160}
+                                            className={styles.cardImage}
+                                            style={content.id === 'puzzle' ? { mixBlendMode: 'multiply' } : undefined}
+                                            priority={index < 3}
+                                        />
+                                    </div>
+                                    <div className={styles.cardContent}>
+                                        <div className={styles.cardHeadingRow}>
+                                            <h3 className={styles.cardTitle}>{content.title}</h3>
+                                            <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
+                                        </div>
+                                        <p className={styles.cardDescription}>{content.description}</p>
+                                        <div className={styles.cardBottom}>
+                                            <span>{content.active ? '열어보기' : '준비 중'}</span>
+                                            <span className={styles.cardArrow} aria-hidden="true">↗</span>
+                                        </div>
+                                    </div>
+                                </>
+                            );
+
+                            return content.active ? (
+                                <Link
+                                    href={content.link}
+                                    key={content.id}
+                                    className={cardClass}
+                                    {...(content.newTab || content.link.startsWith('http')
+                                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                                        : {})}
+                                >
+                                    {cardBody}
+                                </Link>
+                            ) : (
+                                <div key={content.id} className={[cardClass, styles.disabled].join(' ')}>
+                                    {cardBody}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+
+                <AdBanner className={styles.adBanner} />
+            </div>
         </div>
     );
 }
-
