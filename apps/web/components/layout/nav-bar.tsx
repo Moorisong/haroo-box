@@ -45,7 +45,6 @@ export default function NavBar() {
 
   const handleSignOut = async () => {
     closeMenu();
-    setSharedSessionCookie(false);
     try {
       const { clearAllPuzzleState } = await import('@/lib/puzzle-db');
       await clearAllPuzzleState();
@@ -54,7 +53,13 @@ export default function NavBar() {
     }
     // 자아탐험 관련 페이지에서 로그아웃 시 자아탐험 랜딩 페이지로 이동
     const redirectUrl = pathname.startsWith('/htsm') ? '/htsm' : pathname;
-    signOut({ callbackUrl: redirectUrl });
+    try {
+      await signOut({ redirect: false, callbackUrl: redirectUrl });
+      setSharedSessionCookie(false);
+      window.location.assign(redirectUrl);
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+    }
   };
 
   // Toby 및 puzzle 서비스에서는 헤더를 보이지 않게 처리
