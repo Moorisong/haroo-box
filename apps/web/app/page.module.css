@@ -173,3 +173,8 @@
   .card, .cardArrow { transition: none; }
   .card:not(.disabled):hover, .card:not(.disabled):hover .cardArrow { transform: none; }
 }
+
+/* More breathing room between the mobile heading and the content cards. */
+@media (max-width: 480px) {
+  .sectionHead { margin-bottom: 26px; }
+}
