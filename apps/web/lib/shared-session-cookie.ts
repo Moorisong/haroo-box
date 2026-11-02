@@ -1,15 +1,18 @@
 /**
- * 서브도메인 간(하루상자 <-> 감쓰.exe) 로그인/로그아웃 상태 동기화용 신호 쿠키
- * 민감한 토큰/개인정보는 절대 포함하지 않고 오직 boolean 플래그('true' | 'false')만 관리
+ * 하루상자와 감쓰.exe가 같은 상위 도메인에서 공유하는 세션 상태 신호.
+ * 인증 토큰이 아닌 상태 표시만 저장하며, 실제 인증은 각 서비스가 검증한다.
  */
+const COOKIE_NAME = 'haroo_session_active';
+const LOGIN_INTENT_KEY = 'haroo-box:shared-login-started';
+const LOGIN_INTENT_TTL_MS = 15 * 60 * 1000;
 
 export function getCookieDomain(): string {
   if (typeof window === 'undefined') return '';
   const hostname = window.location.hostname;
-  if (hostname.endsWith('harooo.co.kr')) {
+  if (hostname === 'harooo.co.kr' || hostname.endsWith('.harooo.co.kr')) {
     return '; Domain=.harooo.co.kr';
   }
-  if (hostname.endsWith('haroo.site')) {
+  if (hostname === 'haroo.site' || hostname.endsWith('.haroo.site')) {
     return '; Domain=.haroo.site';
   }
   return '';
@@ -18,19 +21,43 @@ export function getCookieDomain(): string {
 export function setSharedSessionCookie(active: boolean): void {
   if (typeof document === 'undefined') return;
   const domain = getCookieDomain();
-  const secure = typeof window !== 'undefined' && window.location.protocol === 'https:' ? '; Secure' : '';
-  if (active) {
-    document.cookie = `haroo_session_active=true; Path=/; SameSite=Lax${domain}${secure}; max-age=2592000`;
-  } else {
-    // 로그아웃 시 공용 세션 쿠키 즉시 삭제 (과거 'false' 쿠키 잔여물도 제거)
-    document.cookie = `haroo_session_active=; Path=/; SameSite=Lax${domain}${secure}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-    // 도메인 없이 생성되었을 수 있는 로컬 호스트 쿠키도 함께 삭제
-    document.cookie = `haroo_session_active=; Path=/; SameSite=Lax${secure}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  const expired = 'Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+
+  // Remove an older host-only cookie that could shadow the shared domain cookie.
+  document.cookie = `${COOKIE_NAME}=; Path=/; SameSite=Lax${secure}; ${expired}`;
+  // Do not delete on logout: other subdomains need a durable 'false' signal.
+  document.cookie = `${COOKIE_NAME}=${active ? 'true' : 'false'}; Path=/; SameSite=Lax${domain}${secure}; Max-Age=2592000`;
+}
+
+export function getSharedSessionStatus(): 'true' | 'false' | null {
+  if (typeof document === 'undefined') return null;
+  const values = document.cookie.split(';').map(part => part.trim())
+    .filter(part => part.startsWith(`${COOKIE_NAME}=`))
+    .map(part => part.slice(COOKIE_NAME.length + 1));
+  // Fail closed if a leftover cookie conflicts with an explicit logout.
+  if (values.includes('false')) return 'false';
+  if (values.includes('true')) return 'true';
+  return null;
+}
+
+/** Register an explicit Kakao login, so a successful new login can replace a previous logout. */
+export function markSharedLoginStarted(): void {
+  try {
+    sessionStorage.setItem(LOGIN_INTENT_KEY, String(Date.now()));
+  } catch {
+    // Session storage is optional; never block the actual OAuth login.
   }
 }
 
-export function getSharedSessionStatus(): string | null {
-  if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(/(?:^|;\s*)haroo_session_active=([^;]+)/);
-  return match ? match[1] : null;
+export function consumeSharedLoginStarted(): boolean {
+  try {
+    const timestamp = sessionStorage.getItem(LOGIN_INTENT_KEY);
+    sessionStorage.removeItem(LOGIN_INTENT_KEY);
+    return timestamp !== null && Number.isFinite(Number(timestamp)) &&
+      Date.now() - Number(timestamp) >= 0 &&
+      Date.now() - Number(timestamp) <= LOGIN_INTENT_TTL_MS;
+  } catch {
+    return false;
+  }
 }
