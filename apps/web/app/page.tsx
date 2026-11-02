@@ -144,13 +144,10 @@ export default function Home() {
                 <section className={styles.collection} aria-labelledby="contents-heading">
                     <div className={styles.sectionHead}>
                         <div>
-                            <span className={styles.sectionOverline}>PICK YOUR LITTLE JOY</span>
-                            <h2 id="contents-heading" className={styles.sectionTitle}>오늘은 뭘 해볼까?</h2>
-                            <p className={styles.sectionDescription}>끌리는 카드를 골라보세요. 즐거움은 생각보다 가까이 있어요.</p>
+                            <h2 id="contents-heading" className={styles.sectionTitle}>골라서, 바로 즐겨요.</h2>
                         </div>
                         <div className={styles.contentCount} aria-label={'콘텐츠 ' + activeCount + '개'}>
-                            <strong>{String(activeCount).padStart(2, '0')}</strong>
-                            <span>CONTENTS</span>
+                            <strong>{activeCount}개의 콘텐츠</strong>
                         </div>
                     </div>
 

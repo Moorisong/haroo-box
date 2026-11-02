@@ -562,3 +562,128 @@
   background: #f7f5f0;
   border-top: 1px solid #ece8e0;
 }
+
+/* Compact editorial card grid — home page only. */
+.container {
+  background: #fbf8f1;
+  background-image: none;
+  padding: 0 24px 56px;
+}
+.pageInner { max-width: 1160px; }
+.collection { padding-top: 34px; }
+.sectionHead {
+  align-items: baseline;
+  margin-bottom: 20px;
+  padding: 0 1px;
+}
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(22px, 2.1vw, 28px);
+  font-weight: 850;
+  letter-spacing: -.055em;
+}
+.contentCount {
+  padding: 0;
+  color: #7a7b80;
+}
+.contentCount strong {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.card {
+  border-radius: 16px;
+  background: #fffdf9;
+  box-shadow: 0 3px 12px rgba(31,38,61,.035);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 21px rgba(31,38,61,.085);
+}
+.cardImageWrapper {
+  height: 138px;
+  min-height: 138px;
+  flex: none;
+  background: transparent;
+}
+.cardImage { width: 116px; height: 116px; padding: 4px; }
+.badge {
+  top: 12px;
+  right: 12px;
+  padding: 5px 7px;
+  font-size: 9px;
+  border-radius: 6px;
+}
+.cardContent {
+  min-height: 158px;
+  padding: 16px 17px 14px;
+  background: #f7f5f0;
+  border-top: 1px solid #efebe4;
+}
+.cardTitle { font-size: 17px; }
+.cardIndex { font-size: 10px; }
+.cardDescription {
+  min-height: 38px;
+  margin-top: 8px;
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+.cardBottom {
+  padding-top: 14px;
+  font-size: 11px;
+}
+.cardArrow { width: 27px; height: 27px; font-size: 16px; }
+.adBanner { margin-top: 44px; }
+@media (max-width: 1080px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .container { padding: 0 18px 42px; }
+  .collection { padding-top: 27px; }
+  .sectionHead { margin-bottom: 17px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .cardImageWrapper { height: 132px; min-height: 132px; }
+  .cardImage { width: 110px; height: 110px; }
+  .cardContent { min-height: 155px; padding: 14px; }
+  .cardDescription { font-size: 11px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 14px 34px; }
+  .collection { padding-top: 24px; }
+  .sectionHead { margin-bottom: 16px; gap: 10px; }
+  .sectionTitle { font-size: 23px; }
+  .contentCount strong { font-size: 11px; }
+  .grid { grid-template-columns: 1fr; gap: 11px; }
+  .card {
+    display: grid;
+    grid-template-columns: 112px minmax(0,1fr);
+    align-items: stretch;
+    min-height: 136px;
+    border-radius: 14px;
+  }
+  .cardImageWrapper { height: 100%; min-height: 136px; }
+  .cardImage { width: 91px; height: 91px; padding: 2px; }
+  .badge { top: 8px; right: auto; left: 8px; padding: 4px 5px; font-size: 8px; }
+  .cardContent {
+    border-top: 0;
+    border-left: 1px solid #efebe4;
+    min-height: 136px;
+    padding: 14px 13px 11px;
+  }
+  .cardTitle { font-size: 17px; }
+  .cardIndex { font-size: 10px; }
+  .cardDescription { min-height: 0; font-size: 11px; margin-top: 6px; line-height: 1.5; }
+  .cardBottom { padding-top: 8px; font-size: 10.5px; }
+  .cardArrow { width: 23px; height: 23px; font-size: 14px; }
+  .adBanner { margin-top: 34px; }
+}
+@media (max-width: 340px) {
+  .card { grid-template-columns: 93px minmax(0,1fr); }
+  .cardImage { width: 77px; height: 77px; }
+  .cardContent { padding: 12px 10px; }
+  .cardDescription { font-size: 10px; }
+}
