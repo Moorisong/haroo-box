@@ -50,11 +50,13 @@
 
 ## 4. TOBY 교사 지원 툴 배포 (`apps/toby`)
 
-TOBY 웹 도구는 정적 파일(Static Web Asset)로 빌드되므로 **Vercel**을 통해 배포되고 있습니다.
-* **설정 파일**: `apps/toby/vercel.json`
+TOBY 웹 도구는 Vite 기반 정적 파일(Static Web Asset)로 빌드되며, 홈서버의 하루상자 메인 웹 앱(`apps/web`) 하위의 `public/toby`로 동기화되어 Next.js rewrites(`/toby` -> `/toby/index.html`)를 통해 서빙됩니다. (Vercel 배포 설정 포함)
 * **빌드 설정**:
   * 빌드 명령어: `npm run build` (Vite 빌드, 결과물 `dist/` 폴더 저장)
   * 빌드 프레임워크: `vite`
+* **배포 자동화 연동**:
+  * `apps/web/deploy-frontend.sh` 실행 시 배포 시작 전 `apps/toby`의 `npm run build`를 자동 실행하고 결과물을 `apps/web/public/toby/`로 rsync 동기화한 뒤 홈서버로 전송합니다.
+* **설정 파일**: `apps/toby/vercel.json` (외부 Vercel 배포 시)
 * **라우팅 처리**:
   * SPA의 특성상 React Router DOM을 사용하기 때문에 모든 URL 경로로의 접근을 `index.html`로 프록시 포워딩하는 rewrite 규칙 설정.
   ```json
@@ -65,3 +67,4 @@ TOBY 웹 도구는 정적 파일(Static Web Asset)로 빌드되므로 **Vercel**
       }
   ]
   ```
+
