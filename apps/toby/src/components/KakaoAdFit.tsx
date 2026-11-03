@@ -106,6 +106,6 @@ export const ADFIT_SIZES = {
 } as const;
 
 export const ADFIT_UNITS = {
-    MAIN_BANNER: 'DAN-87mFY15Lo8RvlTFJ',
-    TOBY_BANNER: 'DAN-YLUgqW52t1oDIAmF',
+    MAIN_BANNER: 'DAN-3vC1efIl2P6hH2DY',
+    TOBY_BANNER: 'DAN-3vC1efIl2P6hH2DY',
 } as const;
