@@ -9,7 +9,7 @@ import { HTSM_STORAGE_KEY } from './constants';
 import { fetchStats, HtsmStats, fetchMyTest } from './api';
 import { generateFingerprint } from './utils/fingerprint';
 
-import MyorokBanner from '@/components/common/banners/myorok-banner';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 import HtsmLoginView from './components/htsm-login-view';
 
 import styles from './styles.module.css';
@@ -234,7 +234,7 @@ export default function LandingPage() {
             </section>
 
             <section style={{ maxWidth: '640px', width: '100%', margin: '0 auto', paddingBottom: '3rem', paddingLeft: '1rem', paddingRight: '1rem', position: 'relative', zIndex: 2 }}>
-                <MyorokBanner />
+                <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
             </section>
 
             {/* Login Modal */}
