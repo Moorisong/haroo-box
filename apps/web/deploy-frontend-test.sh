@@ -25,7 +25,13 @@ else
   echo "🌐 외부 네트워크 감지됨 → WAN($REMOTE_HOST:$SSH_PORT) 테스트 서버 배포"
 fi
 
-# 0. 서버에 디렉토리가 없으면 생성
+# 0. toby 정적 빌드 및 public 동기화
+echo "🔨 TOBY 빌드 및 정적 에셋 동기화 중..."
+(cd ../toby && npm install && npm run build)
+mkdir -p "$LOCAL_SERVER_ROOT/public/toby"
+rsync -av --delete ../toby/dist/ "$LOCAL_SERVER_ROOT/public/toby/"
+
+# 0-1. 서버에 디렉토리가 없으면 생성
 ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "mkdir -p $REMOTE_DIR"
 
 # 1. 로컬 프론트엔드 파일 서버로 동기화 (삭제된 파일도 서버에서 제거)
