@@ -136,10 +136,10 @@ export default function PuzzlePageClient() {
       {/* 최하단 광고 배너 */}
       <div className="flex justify-center mt-12 w-full">
         <div className="block sm:hidden">
-          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+          <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
         </div>
         <div className="hidden sm:block">
-          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_728x90} />
+          <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
         </div>
       </div>
     </div>
