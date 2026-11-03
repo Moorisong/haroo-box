@@ -21,58 +21,21 @@ export default function KakaoAdfit({
         const container = containerRef.current;
         container.innerHTML = '';
 
-        // iframe 생성
-        const iframe = document.createElement('iframe');
-        iframe.style.width = `${width}px`;
-        iframe.style.height = `${height}px`;
-        iframe.style.border = 'none';
-        iframe.style.overflow = 'hidden';
-        iframe.setAttribute('scrolling', 'no');
-        iframe.width = String(width);
-        iframe.height = String(height);
+        // Render AdFit in the page document rather than an isolated iframe.
+        // Kakao's loader discovers ins.kakao_ad_area in the current document.
+        const ins = document.createElement('ins');
+        ins.className = 'kakao_ad_area';
+        ins.style.display = 'none';
+        ins.setAttribute('data-ad-unit', unit);
+        ins.setAttribute('data-ad-width', String(width));
+        ins.setAttribute('data-ad-height', String(height));
+        container.appendChild(ins);
 
-        container.appendChild(iframe);
-
-        // iframe 내부 문서에 광고 코드 주입
-        const doc = iframe.contentWindow?.document;
-        if (doc) {
-            doc.open();
-            doc.write(`
-                <!DOCTYPE html>
-                <html lang="ko">
-                <head>
-                    <meta charset="utf-8">
-                    <style>
-                        html, body {
-                            margin: 0;
-                            padding: 0;
-                            width: 100%;
-                            height: 100%;
-                            background: transparent;
-                            display: flex;
-                            justifyContent: center;
-                            align-items: center;
-                            overflow: hidden;
-                        }
-                        .kakao_ad_area {
-                            display: block;
-                            width: ${width}px;
-                            height: ${height}px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <ins class="kakao_ad_area" 
-                         style="display:none;" 
-                         data-ad-unit="${unit}" 
-                         data-ad-width="${width}" 
-                         data-ad-height="${height}"></ins>
-                    <script type="text/javascript" src="https://t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-                </body>
-                </html>
-            `);
-            doc.close();
-        }
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://t1.kakaocdn.net/kas/static/ba.min.js';
+        script.async = true;
+        container.appendChild(script);
 
         return () => {
             container.innerHTML = '';
