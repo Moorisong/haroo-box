@@ -240,7 +240,7 @@ export default function RankingPage() {
 
           {/* Adfit AD Banner on Mobile (Below Leaderboard) */}
           <div className="order-3 lg:order-none block lg:hidden my-4 flex justify-center">
-            <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+            <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
           </div>
         </div>
 
@@ -266,7 +266,7 @@ export default function RankingPage() {
 
           {/* Adfit AD Banner on PC (Below Percentile Chart - changed to 320x100 to reduce height) */}
           <div className="order-4 lg:order-none hidden lg:block flex justify-center">
-            <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+            <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
           </div>
         </div>
       </div>
