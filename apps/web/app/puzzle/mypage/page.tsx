@@ -211,7 +211,7 @@ export default function MyPage() {
           {(!mounted || !isMobile) && (
             <div className="hidden md:flex md:flex-col md:gap-4">
               <div className="flex justify-center">
-                <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+                <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
               </div>
               <SettingsPanel
                 onClearData={handleClearData}
@@ -260,7 +260,7 @@ export default function MyPage() {
           {(mounted && isMobile) && (
             <div className="flex flex-col gap-4 mt-6 md:hidden">
               <div className="flex justify-center">
-                <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+                <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
               </div>
               <SettingsPanel
                 onClearData={handleClearData}

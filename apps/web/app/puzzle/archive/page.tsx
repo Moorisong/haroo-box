@@ -226,10 +226,10 @@ export default function ArchivePage() {
       {/* Adfit AD Banner (Placed above ArchiveGrid to catch attention naturally) */}
       <div className="mb-8 flex justify-center">
         <div className="block md:hidden">
-          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
+          <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
         </div>
         <div className="hidden md:block">
-          <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_728x90} />
+          <KakaoAdfit unit={ADFIT_UNITS.PUZZLE_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
         </div>
       </div>
 

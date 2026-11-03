@@ -8,7 +8,7 @@ import { fetchResult, HtsmResult } from './api';
 import ResultShareSection from './result-share-section';
 import JohariCard from './johari-card';
 import styles from './styles.module.css';
-import MyorokBanner from '@/components/common/banners/myorok-banner';
+import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 interface ResultPageProps {
     shareId: string;
@@ -139,8 +139,8 @@ export default function ResultPage({ shareId }: ResultPageProps) {
                     {/* New Share Section (Result Page Spec) */}
                     <ResultShareSection shareId={shareId} name={result.name} />
 
-                    {/* Myorok Banner */}
-                    <MyorokBanner />
+                    {/* Kakao AdFit Banner */}
+                    <KakaoAdfit unit={ADFIT_UNITS.MAIN_BANNER} {...ADFIT_SIZES.BANNER_320x100} />
 
 
                 </div>
