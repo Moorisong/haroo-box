@@ -28,3 +28,19 @@ test('archive displays DB English title and localized navigation', async ({ page
   await expect(page.getByText('퍼즐 아카이브', { exact: true })).toHaveCount(0);
   await expect(page.getByText('전체', { exact: true })).toHaveCount(0);
 });
+
+test('home page uses English branding and DB puzzle metadata', async ({ page }) => {
+  await page.goto('/puzzle');
+  await expect(page.getByText('Haroo Puzzle').first()).toBeVisible();
+  await expect(page.getByText('Beautiful Cosmic Nebula').first()).toBeVisible();
+  await expect(page.getByText('Puzzle of the week').first()).toBeVisible();
+  await expect(page.getByText('하루퍼즐', { exact: true })).toHaveCount(0);
+});
+
+test('signed-out profile and gameplay keep English locale', async ({ page }) => {
+  await page.goto('/puzzle/mypage');
+  await expect(page.getByText('Sign in required')).toBeVisible();
+  await page.goto('/puzzle/play/puzzle-mock-id-001?diff=novice');
+  await expect(page.getByRole('button', { name: /Switch to Korean/ })).toBeVisible();
+  await expect(page.getByText('Beautiful Cosmic Nebula').first()).toBeVisible({ timeout: 15000 });
+});
