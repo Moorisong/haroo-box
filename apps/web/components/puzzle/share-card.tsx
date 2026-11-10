@@ -27,7 +27,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
 
   const handleShare = async () => {
     if (!useKakaoShare) {
-      const data = { title: t('하루퍼즐', 'Haroo Puzzle'), text: t('이번 주 퍼즐을 함께 맞춰요!', 'Try this week’s puzzle!'), url: window.location.origin + '/puzzle' };
+      const data = { title: t('puzzle.components.puzzle.share.card.001'), text: t('puzzle.components.puzzle.share.card.002'), url: window.location.origin + '/puzzle' };
       if (navigator.share) {
         try { await navigator.share(data); return; } catch (error) { if ((error as Error).name === 'AbortError') return; }
       }
@@ -51,8 +51,8 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
             Kakao.Share.sendDefault({
               objectType: 'feed',
               content: {
-                title: t('[하루퍼즐] 이번 주 퍼즐 도착!', '[Haroo Puzzle] This week’s puzzle is here!'),
-                description: t('바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕', 'Take a little puzzle break! ☕'),
+                title: t('puzzle.components.puzzle.share.card.003'),
+                description: t('puzzle.components.puzzle.share.card.004'),
                 imageUrl: absImgUrl,
                 link: {
                   mobileWebUrl: window.location.origin + '/puzzle',
@@ -61,7 +61,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
               },
               buttons: [
                 {
-                  title: t('함께 플레이하기', 'Play together'),
+                  title: t('puzzle.components.puzzle.share.card.005'),
                   link: {
                     mobileWebUrl: window.location.origin + '/puzzle',
                     webUrl: window.location.origin + '/puzzle',
@@ -83,7 +83,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
 
   const handleCopyLink = async () => {
     if (typeof window !== 'undefined') {
-      try { await navigator.clipboard.writeText(window.location.origin + '/puzzle'); } catch { window.prompt(t('링크를 복사해 주세요', 'Copy this link'), window.location.origin + '/puzzle'); return; }
+      try { await navigator.clipboard.writeText(window.location.origin + '/puzzle'); } catch { window.prompt(t('puzzle.components.puzzle.share.card.006'), window.location.origin + '/puzzle'); return; }
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -104,10 +104,10 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
     >
       <div>
         <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          {t('친구에게 자랑하기', 'Share with friends')}
+          {t('puzzle.components.puzzle.share.card.007')}
         </p>
         <p className="mt-1 text-xs font-semibold leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('매주 갱신되는 퍼즐을 친구들과 함께 즐겨요.', 'A fresh puzzle every week. Invite your friends to play!')}
+          {t('puzzle.components.puzzle.share.card.008')}
         </p>
       </div>
 
@@ -127,7 +127,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
           }}
         >
           <Share2 size={13} strokeWidth={2.5} />
-          {useKakaoShare ? t('카카오톡으로 공유', 'Share on KakaoTalk') : t('공유하기', 'Share')}
+          {useKakaoShare ? t('puzzle.components.puzzle.share.card.009') : t('puzzle.components.puzzle.share.card.010')}
         </button>
 
         <button
@@ -149,12 +149,12 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
           {isCopied ? (
             <>
               <Check size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-              {t('링크 복사 완료', 'Link copied')}
+              {t('puzzle.components.puzzle.share.card.011')}
             </>
           ) : (
             <>
               <Link2 size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-              {t('공유 링크 복사하기', 'Copy share link')}
+              {t('puzzle.components.puzzle.share.card.012')}
             </>
           )}
         </button>
