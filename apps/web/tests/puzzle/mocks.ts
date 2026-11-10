@@ -40,6 +40,8 @@ export async function setupBaseMocks(page: Page) {
           {
             _id: 'puzzle-mock-id-001',
             title: '아름다운 우주 성운',
+            title_en: 'Beautiful Cosmic Nebula',
+            week: 24,
             imageUrl: '/sample/puzzle.png',
             participantCount: 125,
             startDate: '2026-06-01T00:00:00Z',
