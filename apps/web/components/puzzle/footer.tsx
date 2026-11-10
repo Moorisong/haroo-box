@@ -35,7 +35,7 @@ export default function Footer() {
               className="text-base tracking-tight font-extrabold"
               style={{ color: 'var(--puzzle-card-foreground)' }}
             >
-              하루퍼즐
+              {t('하루퍼즐', 'Haroo Puzzle')}
             </span>
           </div>
 
@@ -66,10 +66,10 @@ export default function Footer() {
           style={{ borderTop: '1px solid var(--puzzle-border)' }}
         >
           <p className="text-xs font-medium" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            © {new Date().getFullYear()} 하루퍼즐. All rights reserved.
+            © {new Date().getFullYear()} {t('하루퍼즐', 'Haroo Puzzle')}. All rights reserved.
           </p>
           <p className="text-xs font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
-            🧘 당신의 고요한 일상을 지켜드립니다.
+            🧘 {t('당신의 고요한 일상을 지켜드립니다.', 'A quiet moment, just for you.')}
           </p>
         </div>
       </div>
