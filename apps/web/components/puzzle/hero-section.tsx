@@ -97,7 +97,7 @@ export default function HeroSection({
                 style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-primary)' }}
               >
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--puzzle-primary)' }} />
-                {t('puzzle.components.puzzle.hero.section.001')} · {t(`${puzzle.week}주차`, `Week ${puzzle.week}`)}
+                {t('puzzle.components.puzzle.hero.section.001')} · {t('puzzle.ui.weekLabel', { week: puzzle.week })}
               </div>
               {hasCompleted && (
                 <div 
