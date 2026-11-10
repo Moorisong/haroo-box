@@ -1,0 +1,267 @@
+[
+  {
+    "key": "puzzle.components.puzzle.ranking.table.001",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.002",
+    "ko": "닉네임",
+    "en": "Nickname"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.003",
+    "ko": "기록",
+    "en": "Time"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.004",
+    "ko": "날짜",
+    "en": "Date"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.005",
+    "ko": "아직 랭킹에 도전한 사용자가 없습니다.",
+    "en": "No challengers yet."
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.006",
+    "ko": "더보기",
+    "en": "Show more"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.007",
+    "ko": "총",
+    "en": "A total of"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.table.008",
+    "ko": "명의 챌린저가 완주했습니다.",
+    "en": "challengers completed the puzzle."
+  },
+  {
+    "key": "puzzle.components.puzzle.record.chart.001",
+    "ko": "최근 완주 기록 추이",
+    "en": "Recent completion times"
+  },
+  {
+    "key": "puzzle.components.puzzle.record.chart.002",
+    "ko": "최근 기록일수록 우측에 표시되며, 세로 높이가 높을수록 단시간 내 완성하여 성적이 우수함을 의미합니다!",
+    "en": "Newer results appear on the right; taller bars mean faster completion times."
+  },
+  {
+    "key": "puzzle.components.puzzle.settings.panel.001",
+    "ko": "하루상자 메인으로 가기",
+    "en": "Go to Haroo Box"
+  },
+  {
+    "key": "puzzle.components.puzzle.settings.panel.002",
+    "ko": "로그아웃",
+    "en": "Log out"
+  },
+  {
+    "key": "puzzle.components.puzzle.settings.panel.003",
+    "ko": "모든 퍼즐 데이터 초기화",
+    "en": "Reset all puzzle data"
+  },
+  {
+    "key": "puzzle.components.puzzle.settings.panel.004",
+    "ko": "계정 탈퇴",
+    "en": "Delete account"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.001",
+    "ko": "하루퍼즐",
+    "en": "Haroo Puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.002",
+    "ko": "이번 주 퍼즐을 함께 맞춰요!",
+    "en": "Try this week’s puzzle!"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.003",
+    "ko": "[하루퍼즐] 이번 주 퍼즐 도착!",
+    "en": "[Haroo Puzzle] This week’s puzzle is here!"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.004",
+    "ko": "바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕",
+    "en": "Take a little puzzle break! ☕"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.005",
+    "ko": "함께 플레이하기",
+    "en": "Play together"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.006",
+    "ko": "링크를 복사해 주세요",
+    "en": "Copy this link"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.007",
+    "ko": "친구에게 자랑하기",
+    "en": "Share with friends"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.008",
+    "ko": "매주 갱신되는 퍼즐을 친구들과 함께 즐겨요.",
+    "en": "A fresh puzzle every week. Invite your friends to play!"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.009",
+    "ko": "카카오톡으로 공유",
+    "en": "Share on KakaoTalk"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.010",
+    "ko": "공유하기",
+    "en": "Share"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.011",
+    "ko": "링크 복사 완료",
+    "en": "Link copied"
+  },
+  {
+    "key": "puzzle.components.puzzle.share.card.012",
+    "ko": "공유 링크 복사하기",
+    "en": "Copy share link"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.001",
+    "ko": "링크가 복사되었습니다! 기본 브라우저에 붙여넣어 주세요.",
+    "en": "Link copied! Paste it into your browser."
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.002",
+    "ko": "링크 복사에 실패했습니다.",
+    "en": "Could not copy the link."
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.003",
+    "ko": "원활한 플레이를 위해",
+    "en": "For the best experience"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.004",
+    "ko": "기본 브라우저로 이동해주세요!",
+    "en": "Open this in your regular browser!"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.005",
+    "ko": "현재 사용 중인 브라우저에서는",
+    "en": "This in-app browser may"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.006",
+    "ko": "퍼즐 화면이 좁아져 정상적인 플레이가 어렵습니다.",
+    "en": "not display the puzzle correctly."
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.007",
+    "ko": "아래 버튼을 눌러 링크를 복사한 뒤,",
+    "en": "Copy the link below and open it in"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.008",
+    "ko": "사파리나 크롬",
+    "en": "Safari or Chrome"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.009",
+    "ko": "에서 열어주세요.",
+    "en": "."
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.010",
+    "ko": "복사 완료!",
+    "en": "Copied!"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.011",
+    "ko": "링크 복사하기",
+    "en": "Copy link"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.012",
+    "ko": "또는 화면 우측 상단의 [더보기] 메뉴를 눌러",
+    "en": "Or open the menu in the top-right corner"
+  },
+  {
+    "key": "puzzle.components.puzzle.sns.browser.fallback.013",
+    "ko": "'다른 브라우저로 열기'를 선택해 주세요.",
+    "en": "and select Open in browser."
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.001",
+    "ko": "주간 퍼즐 완성",
+    "en": "Weekly completions"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.002",
+    "ko": "명",
+    "en": "players"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.003",
+    "ko": "누적 플레이 수",
+    "en": "Total plays"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.004",
+    "ko": "회",
+    "en": "plays"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.005",
+    "ko": "아카이브 퍼즐",
+    "en": "Archived puzzles"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.006",
+    "ko": "개",
+    "en": "puzzles"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.007",
+    "ko": "평균 퍼즐 완성률",
+    "en": "Average completion rate"
+  },
+  {
+    "key": "puzzle.components.puzzle.stats.card.008",
+    "ko": "서비스 현황",
+    "en": "Service overview"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.001",
+    "ko": "퍼즐 이어서 맞추기",
+    "en": "Resume puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.002",
+    "ko": "어떤 진행 기록으로 시작할까요?",
+    "en": "Which progress would you like to keep?"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.003",
+    "ko": "방금 플레이한 기록 (로컬)",
+    "en": "Current session (this device)"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.004",
+    "ko": "덮어쓰기",
+    "en": "Keep this progress"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.005",
+    "ko": "이전에 저장된 기록 (서버)",
+    "en": "Previously saved progress (server)"
+  },
+  {
+    "key": "puzzle.components.puzzle.sync.choice.modal.006",
+    "ko": "불러오기",
+    "en": "Restore"
+  }
+]
