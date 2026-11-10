@@ -55,7 +55,7 @@ export const connectDatabase = async (): Promise<void> => {
   try {
     // 기본 DB 연결 (haroo-box)
     await mongoose.connect(mongoUri);
-    console.log('Connected to MongoDB (main):', mongoUri);
+    console.log('Connected to MongoDB (main)');
 
     // HTSM 전용 DB 연결
     const htsmUri = buildHtsmUri(mongoUri);
