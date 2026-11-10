@@ -45,8 +45,8 @@ export default function Header() {
     >
       <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
         {/* Logo & Sub Link */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Link href="/puzzle" className="flex items-center gap-2 group">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <Link href="/puzzle" className="flex items-center gap-2 group min-w-0">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105"
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
@@ -54,10 +54,10 @@ export default function Header() {
               <Puzzle size={16} color="white" strokeWidth={2.5} />
             </div>
             <span
-              className="text-lg tracking-tight font-extrabold"
+              className="text-base sm:text-lg tracking-tight font-extrabold whitespace-nowrap"
               style={{ color: 'var(--puzzle-card-foreground)' }}
             >
-              하루퍼즐
+              {t('하루퍼즐', 'Haroo Puzzle')}
             </span>
           </Link>
           <div className="w-px h-3.5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -65,7 +65,7 @@ export default function Header() {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5"
+            className="text-[10px] sm:text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5 whitespace-nowrap"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
             <span>{t('하루상자', 'Haroo Box')}</span>
