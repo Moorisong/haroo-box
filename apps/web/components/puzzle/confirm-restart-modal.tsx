@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 interface ConfirmRestartModalProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ export default function ConfirmRestartModal({
   onClose,
   onConfirm,
 }: ConfirmRestartModalProps) {
+  const { t } = useLanguage();
   return (
     <div 
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 animate-fade-in"
