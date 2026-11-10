@@ -166,7 +166,7 @@ export default function RankingTable({
           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
         >
-          더보기 ({rankings.length}/{totalParticipants})
+          {t('더보기', 'Show more')} ({rankings.length}/{totalParticipants})
         </button>
       )}
 
@@ -180,7 +180,7 @@ export default function RankingTable({
             backgroundColor: 'var(--puzzle-muted)'
           }}
         >
-          총 {totalParticipants.toLocaleString()}명의 챌린저가 완주했습니다.
+          {t('총', 'A total of')} {totalParticipants.toLocaleString()} {t('명의 챌린저가 완주했습니다.', 'challengers completed the puzzle.')}
         </div>
       )}
     </div>
