@@ -65,6 +65,7 @@ export default function LandscapeToolbar({
 
       {/* 오른쪽: 확대/축소 + 판 엎기 + 저장 */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 max-w-[65%] overflow-x-auto"
+      >
         {/* 모드 선택 (플레이 / 이동) */}
         <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200/80 mr-1">
           <button
