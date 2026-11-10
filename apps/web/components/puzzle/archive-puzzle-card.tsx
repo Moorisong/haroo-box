@@ -142,7 +142,7 @@ export default function ArchivePuzzleCard({
                 color: currentStatus.color,
               }}
             >
-              {currentStatus.label}
+              {t(currentStatus.label, status === 'current' ? 'In progress' : status === 'completed' ? 'Completed' : 'Not played')}
             </span>
             {new Date(puzzle.startDate) <= new Date() && new Date() <= new Date(puzzle.endDate) && (
               <span
