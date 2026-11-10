@@ -1,10 +1,12 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState } from 'react';
 import Button from '@/components/ui/button';
 import { useToast } from '@/lib/hooks/use-toast';
 
 export default function SNSBrowserFallback() {
+  const { t } = useLanguage();
     const { showToast } = useToast();
     const [isCopied, setIsCopied] = useState(false);
 
@@ -12,9 +14,9 @@ export default function SNSBrowserFallback() {
         try {
             await navigator.clipboard.writeText(window.location.href);
             setIsCopied(true);
-            showToast('링크가 복사되었습니다! 기본 브라우저에 붙여넣어 주세요.', 'success');
+            showToast(t('링크가 복사되었습니다! 기본 브라우저에 붙여넣어 주세요.', 'Link copied! Paste it into your browser.'), 'success');
         } catch (err) {
-            showToast('링크 복사에 실패했습니다.', 'error');
+            showToast(t('링크 복사에 실패했습니다.', 'Could not copy the link.'), 'error');
         }
     };
 
@@ -32,7 +34,7 @@ export default function SNSBrowserFallback() {
                 onClick={handleCopyLink}
                 className="w-full max-w-sm mb-4"
             >
-                {isCopied ? '복사 완료!' : '링크 복사하기'}
+                {isCopied ? t('복사 완료!', 'Copied!') : t('링크 복사하기', 'Copy link')}
             </Button>
             <p className="text-sm text-gray-500">
                 또는 화면 우측 상단의 [더보기] 메뉴를 눌러{'\n'}
