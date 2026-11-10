@@ -159,7 +159,7 @@ export default function PieceDrawerModal({
             </h3>
             {isOrganizeMode ? (
               <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
-                ● 조각 터치 후, 이동할 바구니를 선택하세요.
+                ● {t('조각 터치 후, 이동할 바구니를 선택하세요.', 'Select a piece, then choose a basket.')}
               </p>
             ) : (
               <>
@@ -184,7 +184,7 @@ export default function PieceDrawerModal({
                 color: isOrganizeMode ? '#60a5fa' : '#9ca3af',
               }}
             >
-              분류 모드 {isOrganizeMode ? 'ON' : 'OFF'}
+              {t('분류 모드', 'Organize mode')} {isOrganizeMode ? 'ON' : 'OFF'}
             </button>
             {onGuideClick && (
               <button
@@ -195,7 +195,7 @@ export default function PieceDrawerModal({
                 }}
                 className="p-1.5 rounded-lg text-xs font-black transition-colors"
                 style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-foreground)' }}
-                title="가이드 보기"
+                title={t('가이드 보기', 'Show guide')}
               >
                 <Eye size={18} />
               </button>
