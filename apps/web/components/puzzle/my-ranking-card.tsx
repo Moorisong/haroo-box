@@ -21,12 +21,12 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
   const stats = [
     {
       label: t('현재 내 순위', 'My rank'),
-      value: myRanking && myRanking.myRank !== null ? `🎖️ ${myRanking.myRank}위` : '-',
+      value: myRanking && myRanking.myRank !== null ? `🎖️ ${t('순위', 'Rank')} ${myRanking.myRank}` : '-',
       highlight: false,
     },
     {
       label: t('백분율 범위', 'Percentile'),
-      value: myRanking && myRanking.topPercent !== null ? `상위 ${myRanking.topPercent}%` : '-',
+      value: myRanking && myRanking.topPercent !== null ? `${t('상위', 'Top')} ${myRanking.topPercent}%` : '-',
       highlight: true,
     },
     {
