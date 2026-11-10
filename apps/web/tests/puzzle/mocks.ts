@@ -1,11 +1,19 @@
 import { Page } from '@playwright/test';
+import locale01 from '../../../server/src/data/puzzle-ui-translations-01.json';
+import locale02 from '../../../server/src/data/puzzle-ui-translations-02.json';
+import locale03 from '../../../server/src/data/puzzle-ui-translations-03.json';
+import locale04 from '../../../server/src/data/puzzle-ui-translations-04.json';
+import locale05 from '../../../server/src/data/puzzle-ui-translations-05.json';
+import locale06 from '../../../server/src/data/puzzle-ui-translations-06.json';
+
+const puzzleUiTranslations = [...locale01, ...locale02, ...locale03, ...locale04, ...locale05, ...locale06];
 
 // 1. 공통 Mock API 정의 함수
 export async function setupBaseMocks(page: Page) {
   await page.addInitScript(() => window.localStorage.setItem('haroo-language', 'ko'));
   await page.route('**/api/puzzle/translations?lang=*', async (route) => {
     const lang = new URL(route.request().url()).searchParams.get('lang') === 'en' ? 'en' : 'ko';
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, locale: lang, data: {} }) });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, locale: lang, data: Object.fromEntries(puzzleUiTranslations.map(row => [row.key, row[lang]])) }) });
   });
   // 현재 활성 퍼즐 Mock
   await page.route('**/api/puzzle/current', async (route) => {
