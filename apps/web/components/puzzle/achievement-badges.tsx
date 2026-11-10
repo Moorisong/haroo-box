@@ -1,3 +1,5 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 import React from 'react';
 import { Award } from 'lucide-react';
 
