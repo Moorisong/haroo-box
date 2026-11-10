@@ -47,16 +47,16 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       }}
     >
       <p className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        내 최고 기록
+        {t('내 최고 기록', 'My best time')}
       </p>
 
       {!isLoggedIn ? (
         <div className="py-4 sm:py-6 text-center">
           <p className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            비로그인 상태입니다.
+            {t('비로그인 상태입니다.', 'You're not logged in.')}
           </p>
           <p className="text-[10px] sm:text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            로그인하시면 랭킹 경쟁에 참여할 수 있습니다. 🏆
+            {t('로그인하시면 랭킹 경쟁에 참여할 수 있습니다. 🏆', 'Log in to join the rankings. 🏆')}
           </p>
         </div>
       ) : myRanking && myRanking.myRank !== null ? (
@@ -103,10 +103,10 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       ) : (
         <div className="py-4 sm:py-6 text-center">
           <p className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            아직 완주 기록이 없습니다.
+            {t('아직 완주 기록이 없습니다.', 'No completed puzzles yet.')}
           </p>
           <p className="text-[10px] sm:text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘
+            {t('퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘', 'Finish a puzzle to see your rank! 🧘')}
           </p>
         </div>
       )}
