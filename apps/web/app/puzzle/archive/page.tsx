@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
@@ -11,6 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function ArchivePage() {
+  const { t } = useLanguage();
   const { data: session, status: sessionStatus } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -129,9 +131,9 @@ export default function ArchivePage() {
       {/* Stats Summary row */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: '전체 아카이브', value: `${puzzles.length}개` },
-          { label: '내가 완성한 퍼즐', value: `${totalCompleted}개` },
-          { label: '주간 최고 등수', value: bestRank ? `${bestRank}위` : '-' },
+          { label: t('전체 아카이브', 'All puzzles'), value: `${puzzles.length}개` },
+          { label: t('내가 완성한 퍼즐', 'My completed puzzles'), value: `${totalCompleted}개` },
+          { label: t('주간 최고 등수', 'Best weekly rank'), value: bestRank ? `${bestRank}위` : '-' },
         ].map(({ label, value }) => (
           <div
             key={label}
