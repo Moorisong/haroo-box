@@ -5,6 +5,7 @@
 
 export const ROUTES = {
     HOME: '/',
+    ADVENT: 'https://advent-calendar.harooo.co.kr/',
     LOGIN: '/login',
     MYPAGE: '/mypage',
     ROLLING_PAPER: 'https://r-paper-web.harooo.co.kr/',
@@ -23,6 +24,7 @@ export type RoutePath = (typeof ROUTES)[RouteKey];
 
 // Shared ordering for desktop and mobile content menus, matching homepage cards.
 export const NAV_LINKS = [
+  { label: '어드벤트 초콜릿', href: ROUTES.ADVENT, newTab: true },
   { label: '감쓰.exe', href: ROUTES.GAMSS, newTab: true },
   { label: '하루퍼즐', href: ROUTES.PUZZLE, newTab: true },
   { label: '롤링페이퍼', href: ROUTES.ROLLING_PAPER, newTab: true },
