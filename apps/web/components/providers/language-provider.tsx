@@ -10,6 +10,8 @@ type LanguageContextValue = {
   language: Language;
   isReady: boolean;
   hasTranslationError: boolean;
+  translationErrorDetail: string | null;
+  retryTranslations: () => void;
   setLanguage: (language: Language) => void;
   t: (key: string, variablesOrEnglish?: TranslationVariables | string) => string;
 };
@@ -17,6 +19,8 @@ const LanguageContext = createContext<LanguageContextValue>({
   language: 'ko',
   isReady: false,
   hasTranslationError: false,
+  translationErrorDetail: null,
+  retryTranslations: () => {},
   setLanguage: () => {},
   t: () => '',
 });
@@ -28,6 +32,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const [loadedLanguage, setLoadedLanguage] = useState<Language | null>(null);
   const [hasTranslationError, setHasTranslationError] = useState(false);
+  const [translationErrorDetail, setTranslationErrorDetail] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const [messages, setMessages] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -46,9 +52,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const controller = new AbortController();
     setLoadedLanguage(null);
     setHasTranslationError(false);
+    setTranslationErrorDetail(null);
     setMessages({});
     fetch(`${API_BASE_URL}/api/puzzle/translations?lang=${language}`, { signal: controller.signal })
-      .then(res => res.ok ? res.json() : Promise.reject(new Error('Translations request failed')))
+      .then(res => res.ok ? res.json() : Promise.reject(new Error(`Translation API returned HTTP ${res.status}`)))
       .then(result => {
         if (!result.success || result.locale !== language || !result.data || Object.keys(result.data).length === 0) {
           throw new Error('Puzzle locale database is missing translations');
@@ -61,10 +68,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       .catch(error => {
         if (controller.signal.aborted) return;
         console.error('Puzzle translations could not be loaded:', error);
+        setTranslationErrorDetail(error instanceof Error ? error.message : 'Unknown translation error');
         setHasTranslationError(true);
       });
     return () => controller.abort();
-  }, [hydrated, inPuzzle, language]);
+  }, [hydrated, inPuzzle, language, retryCount]);
 
   const setLanguage = (next: Language) => {
     updateLanguage(next);
@@ -90,7 +98,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   return (
     <LanguageContext.Provider value={{
       language, isReady: hydrated && (!inPuzzle || loadedLanguage === language),
-      hasTranslationError, setLanguage, t,
+      hasTranslationError, translationErrorDetail,
+      retryTranslations: () => setRetryCount(count => count + 1), setLanguage, t,
     }}>
       {children}
     </LanguageContext.Provider>
