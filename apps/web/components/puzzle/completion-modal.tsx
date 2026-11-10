@@ -114,13 +114,13 @@ export default function CompletionModal({
           className="mb-2 text-2xl font-black"
           style={{ color: 'var(--puzzle-card-foreground)' }}
         >
-          {t('퍼즐 완성! 🎉', 'Puzzle complete! 🎉')}
+          {t('puzzle.components.puzzle.completion.modal.001')}
         </h2>
         <p
           className="mb-6 text-sm font-semibold leading-relaxed"
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
-          {t('멋진 집중력이 돋보이네요.', 'Great focus!')}
+          {t('puzzle.components.puzzle.completion.modal.002')}
         </p>
 
         {/* Completion Time Badge */}
@@ -129,7 +129,7 @@ export default function CompletionModal({
           style={{ backgroundColor: 'var(--puzzle-muted)', border: '1px solid var(--puzzle-border)' }}
         >
           <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {t('소요 시간', 'Time')}
+            {t('puzzle.components.puzzle.completion.modal.003')}
           </p>
           <p
             className="tabular-nums font-black"
@@ -148,16 +148,16 @@ export default function CompletionModal({
             style={{ backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}
           >
             <div className="text-center">
-              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('현재 내 순위', 'My rank')}</p>
+              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.completion.modal.004')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                🎖️ {t('순위', 'Rank')} {myRanking.myRank}
+                🎖️ {t('puzzle.components.puzzle.completion.modal.005')} {myRanking.myRank}
               </p>
             </div>
             <div className="w-px h-10" style={{ backgroundColor: 'var(--puzzle-border)' }} />
             <div className="text-center">
-              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('백분율 범위', 'Percentile')}</p>
+              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.completion.modal.006')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-primary)' }}>
-                {t('상위', 'Top')} {myRanking.topPercent}%
+                {t('puzzle.components.puzzle.completion.modal.007')} {myRanking.topPercent}%
               </p>
             </div>
           </div>
@@ -170,12 +170,12 @@ export default function CompletionModal({
               {isSaving ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) transparent' }} />
-                  <span>{t('기록 저장/제출 중...', 'Saving your result...')}</span>
+                  <span>{t('puzzle.components.puzzle.completion.modal.008')}</span>
                 </>
               ) : errorMessage ? (
                 <span>⚠️ {errorMessage}</span>
               ) : isSaved ? (
-                <span>{t('✓ 저장/제출 완료', '✓ Result saved')}</span>
+                <span>{t('puzzle.components.puzzle.completion.modal.009')}</span>
               ) : null}
             </div>
           ) : (
@@ -185,7 +185,7 @@ export default function CompletionModal({
               style={{ backgroundColor: '#EF4444' }}
             >
               <LogIn size={16} strokeWidth={2.5} />
-              <span>{t('로그인하고 저장/제출', 'Log in to save')}</span>
+              <span>{t('puzzle.components.puzzle.completion.modal.010')}</span>
             </button>
           )}
 
@@ -201,7 +201,7 @@ export default function CompletionModal({
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FEE500'; }}
             >
               <Share2 size={15} strokeWidth={2.5} />
-              {t('카카오톡으로 자랑하기', 'Share your result')}
+              {t('puzzle.components.puzzle.completion.modal.011')}
             </button>
           )}
 
@@ -215,7 +215,7 @@ export default function CompletionModal({
             }}
           >
             <Home size={15} strokeWidth={2} />
-            {t('메인 페이지로 이동', 'Back to home')}
+            {t('puzzle.components.puzzle.completion.modal.012')}
           </button>
         </div>
       </div>
