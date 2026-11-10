@@ -8,7 +8,6 @@ declare module 'next-auth' {
       name?: string | null;
       image?: string | null;
       kakaoId?: string;
-    provider?: 'kakao' | 'google';
       provider?: 'kakao' | 'google';
       nickname?: string | null;
       nicknameUpdatedAt?: string | null;
@@ -19,6 +18,7 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     kakaoId?: string;
+    provider?: 'kakao' | 'google';
     nickname?: string | null;
     nicknameUpdatedAt?: string | null;
   }
