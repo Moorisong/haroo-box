@@ -78,7 +78,7 @@ export default function FloatingToolbar({
           }}
         >
           {showOriginal ? <EyeOff size={15} /> : <Eye size={15} />}
-          <span className="hidden sm:inline">원본 {showOriginal ? t('끄기', 'Hide') : t('보기', 'View')}</span>
+          <span className="hidden sm:inline">{t('원본', 'Reference')} {showOriginal ? t('끄기', 'Hide') : t('보기', 'View')}</span>
         </button>
 
         <div className="w-px h-5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
