@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/components/providers/language-provider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
@@ -29,6 +30,7 @@ const CONTENT_MENU_LINKS: readonly NavLinkItem[] = [
 ] as const;
 
 export default function NavBar() {
+  const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
@@ -74,13 +76,13 @@ export default function NavBar() {
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
             <img src="/logo.png" alt="Logo" className={styles.logoIcon} />
-            <span className={styles.logoText}>하루상자</span>
+            <span className={styles.logoText}>{t('하루상자', 'Haroo Box')}</span>
           </Link>
 
           <button
             className={styles.hamburger}
             onClick={toggleMenu}
-            aria-label="메뉴 열기"
+            aria-label={t('메뉴 열기', 'Open menu')}
             aria-expanded={isMenuOpen}
           >
             <span className={`${styles.hamburgerLine} ${isMenuOpen ? styles.active : ''}`} />
@@ -88,6 +90,7 @@ export default function NavBar() {
             <span className={`${styles.hamburgerLine} ${isMenuOpen ? styles.active : ''}`} />
           </button>
 
+          <button type="button" className={styles.languageSwitch} aria-label="Switch language" onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')}>{language === 'ko' ? 'EN' : 'KO'}</button>
           <ul className={`${styles.navLinks} ${isMenuOpen ? styles.open : ''}`}>
             {/* PC: Dropdown Menu */}
             <li
@@ -101,7 +104,7 @@ export default function NavBar() {
                 aria-haspopup="true"
                 aria-expanded={isDropdownOpen}
               >
-                콘텐츠 <span className={`${styles.arrow} ${isDropdownOpen ? styles.arrowRotate : ''}`}>▾</span>
+                {t('콘텐츠', 'Explore')} <span className={`${styles.arrow} ${isDropdownOpen ? styles.arrowRotate : ''}`}>▾</span>
               </button>
               <ul className={`${styles.dropdownMenu} ${isDropdownOpen ? styles.show : ''}`}>
                 {CONTENT_MENU_LINKS.map((link) => (
@@ -115,7 +118,7 @@ export default function NavBar() {
                       }}
                       {...(link.newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     >
-                      {link.label}
+                      {language === 'en' ? ({'어드벤트 초콜릿':'Advent Chocolate','감쓰.exe':'Dumpit.exe','하루퍼즐':'Haroo Puzzle','롤링페이퍼':'Rolling Paper','TOBY':'TOBY','너잘알':'Know Me','자아탐험':'Self Discovery'} as Record<string,string>)[link.label] || link.label : link.label}
                     </Link>
                   </li>
                 ))}
@@ -141,7 +144,7 @@ export default function NavBar() {
               ) : session ? (
                 <div className={styles.userMenu}>
                   <button onClick={handleSignOut} className={styles.logoutButton}>
-                    로그아웃
+                    {t('로그아웃', 'Log out')}
                   </button>
                 </div>
 
@@ -151,7 +154,7 @@ export default function NavBar() {
                   className={styles.loginButton}
                   onClick={closeMenu}
                 >
-                  로그인
+                  {t('로그인', 'Log in')}
                 </Link>
               )}
             </li>
