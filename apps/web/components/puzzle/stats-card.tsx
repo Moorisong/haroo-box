@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 interface StatsCardProps {
   participantCount: number;
@@ -13,11 +14,12 @@ export default function StatsCard({
   totalPuzzles, 
   completionRate 
 }: StatsCardProps) {
+  const { t } = useLanguage();
   const stats = [
-    { label: '주간 퍼즐 완성', value: `${participantCount.toLocaleString()}명` },
-    { label: '누적 플레이 수', value: `${totalPlayCount.toLocaleString()}회` },
-    { label: '아카이브 퍼즐', value: `${totalPuzzles}개` },
-    { label: '평균 퍼즐 완성률', value: completionRate },
+    { label: t('주간 퍼즐 완성', 'Weekly completions'), value: `${participantCount.toLocaleString()}명` },
+    { label: t('누적 플레이 수', 'Total plays'), value: `${totalPlayCount.toLocaleString()}회` },
+    { label: t('아카이브 퍼즐', 'Archived puzzles'), value: `${totalPuzzles}개` },
+    { label: t('평균 퍼즐 완성률', 'Average completion rate'), value: completionRate },
   ];
 
   return (
