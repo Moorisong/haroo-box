@@ -129,7 +129,7 @@ export default function ArchivePuzzleCard({
       <div className="relative overflow-hidden h-44">
         <img
           src={puzzle.imageUrl}
-          alt={puzzleTitle(puzzle, language)}
+          alt={puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {/* Status Badge */}
@@ -163,7 +163,7 @@ export default function ArchivePuzzleCard({
             className="text-base font-extrabold line-clamp-1 mb-2"
             style={{ color: 'var(--puzzle-card-foreground)' }}
           >
-            {puzzleTitle(puzzle, language)}
+            {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           </h3>
 
           <div className="flex flex-col gap-1.5 mb-4">
