@@ -34,7 +34,7 @@ export function HeroActionButtons({
           }}
         >
           <Play size={16} strokeWidth={2.5} />
-          {t('이어하기', 'Resume')} ({progress}%)
+          {t('puzzle.components.puzzle.hero.action.buttons.001')} ({progress}%)
         </button>
 
         <Link
@@ -50,7 +50,7 @@ export function HeroActionButtons({
           }}
         >
           <Trophy size={16} className="inline mr-1" strokeWidth={2.5} />
-          {t('결과 및 랭킹 보기', 'Results & rankings')}
+          {t('puzzle.components.puzzle.hero.action.buttons.002')}
         </Link>
 
         <button
@@ -65,7 +65,7 @@ export function HeroActionButtons({
             whiteSpace: 'nowrap',
           }}
         >
-          {t('새로 도전하기', 'Try again')}
+          {t('puzzle.components.puzzle.hero.action.buttons.003')}
         </button>
       </>
     );
@@ -84,7 +84,7 @@ export function HeroActionButtons({
           }}
         >
           <Trophy size={16} strokeWidth={2.5} />
-          {t('결과 및 랭킹 보기', 'Results & rankings')}
+          {t('puzzle.components.puzzle.hero.action.buttons.004')}
         </Link>
 
         <button
@@ -98,7 +98,7 @@ export function HeroActionButtons({
             fontWeight: 650,
           }}
         >
-          {t('다시 도전하기', 'Try again')}
+          {t('puzzle.components.puzzle.hero.action.buttons.005')}
         </button>
       </>
     );
@@ -117,7 +117,7 @@ export function HeroActionButtons({
           }}
         >
           <Play size={16} strokeWidth={2.5} />
-          {t('이어하기', 'Resume')} ({progress}%)
+          {t('puzzle.components.puzzle.hero.action.buttons.006')} ({progress}%)
         </button>
 
         <button
@@ -131,7 +131,7 @@ export function HeroActionButtons({
             fontWeight: 650,
           }}
         >
-          {t('새로 시작하기', 'Start over')}
+          {t('puzzle.components.puzzle.hero.action.buttons.007')}
         </button>
       </>
     );
@@ -148,7 +148,7 @@ export function HeroActionButtons({
       }}
     >
       <Play size={16} strokeWidth={2.5} />
-      {t('퍼즐 시작하기', 'Start puzzle')}
+      {t('puzzle.components.puzzle.hero.action.buttons.008')}
     </button>
   );
 }
