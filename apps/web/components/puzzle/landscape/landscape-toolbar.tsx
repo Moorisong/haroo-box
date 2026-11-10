@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { ZoomIn, ZoomOut, Shuffle, Save, Check } from 'lucide-react';
 
@@ -33,6 +34,7 @@ export default function LandscapeToolbar({
   puzzleTitle,
   difficulty,
 }: LandscapeToolbarProps) {
+  const { t } = useLanguage();
   const roundedZoom = Math.round(zoom * 10) / 10;
 
   return (
@@ -125,7 +127,7 @@ export default function LandscapeToolbar({
           title="판 엎기"
         >
           <Shuffle size={12} />
-          <span className="hidden lg:inline text-[11px]">셔플</span>
+          <span className="hidden lg:inline text-[11px]">{t('셔플', 'Shuffle')}</span>
         </button>
 
         <div className="w-px h-3 mx-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0.08)' }} />
@@ -155,7 +157,7 @@ export default function LandscapeToolbar({
             <Save size={12} />
           )}
           <span className="hidden lg:inline text-[11px]">
-            {saveStatus === 'saving' ? '저장 중' : saveStatus === 'saved' ? '완료' : '저장'}
+            {saveStatus === 'saving' ? t('저장 중', 'Saving') : saveStatus === 'saved' ? t('완료', 'Saved') : t('저장', 'Save')}
           </span>
         </button>
       </div>
