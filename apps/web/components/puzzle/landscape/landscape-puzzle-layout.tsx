@@ -1,5 +1,6 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -81,7 +82,7 @@ export default function LandscapePuzzleLayout({
   onZoomOut,
   selectTrayPiece,
 }: LandscapePuzzleLayoutProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const router = useRouter();
 
   const {
@@ -144,7 +145,7 @@ export default function LandscapePuzzleLayout({
         saveStatus={manualSaveStatus}
         timerFormatted={formatTime(timerSeconds)}
         progressPercent={progressPercent}
-        puzzleTitle={puzzle.title}
+        puzzleTitle={puzzleTitle(puzzle, language)}
         difficulty={difficultyLabel}
       />
 
