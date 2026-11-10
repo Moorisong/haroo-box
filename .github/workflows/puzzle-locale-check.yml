@@ -28,6 +28,9 @@ jobs:
       - name: Typecheck server
         working-directory: apps/server
         run: npx tsc --noEmit
+      - name: Audit hardcoded Korean JSX in puzzle pages
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-visible-text.ts
       - name: Install web dependencies
         working-directory: apps/web
         run: npm ci
