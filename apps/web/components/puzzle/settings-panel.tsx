@@ -27,25 +27,25 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
   const menuItems = [
     { 
       icon: Home, 
-      label: t('하루상자 메인으로 가기', 'Go to Haroo Box'), 
+      label: t('puzzle.components.puzzle.settings.panel.001'), 
       color: 'var(--puzzle-foreground)', 
       onClick: () => window.open('/', '_blank') 
     },
     { 
       icon: LogOut, 
-      label: t('로그아웃', 'Log out'), 
+      label: t('puzzle.components.puzzle.settings.panel.002'), 
       color: 'var(--puzzle-foreground)', 
       onClick: handleSignOut 
     },
     { 
       icon: Trash2, 
-      label: t('모든 퍼즐 데이터 초기화', 'Reset all puzzle data'), 
+      label: t('puzzle.components.puzzle.settings.panel.003'), 
       color: '#F59E0B', 
       onClick: onClearData 
     },
     { 
       icon: UserX, 
-      label: t('계정 탈퇴', 'Delete account'), 
+      label: t('puzzle.components.puzzle.settings.panel.004'), 
       color: 'var(--puzzle-destructive, #EF4444)', 
       onClick: onDeleteAccount 
     },
