@@ -16,9 +16,9 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { label: t('랭킹', 'Rankings'), href: '/puzzle/ranking', icon: Trophy },
-    { label: t('아카이브', 'Archive'), href: '/puzzle/archive', icon: Archive },
-    { label: t('마이페이지', 'My Page'), href: '/puzzle/mypage', icon: User },
+    { label: t('puzzle.components.puzzle.header.001'), href: '/puzzle/ranking', icon: Trophy },
+    { label: t('puzzle.components.puzzle.header.002'), href: '/puzzle/archive', icon: Archive },
+    { label: t('puzzle.components.puzzle.header.003'), href: '/puzzle/mypage', icon: User },
   ];
 
   const handleSignOut = async () => {
@@ -57,7 +57,7 @@ export default function Header() {
               className="text-base sm:text-lg tracking-tight font-extrabold whitespace-nowrap"
               style={{ color: 'var(--puzzle-card-foreground)' }}
             >
-              {t('하루퍼즐', 'Haroo Puzzle')}
+              {t('puzzle.components.puzzle.header.004')}
             </span>
           </Link>
           <div className="w-px h-3.5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -68,7 +68,7 @@ export default function Header() {
             className="text-[10px] sm:text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5 whitespace-nowrap"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
-            <span>{t('하루상자', 'Haroo Box')}</span>
+            <span>{t('puzzle.components.puzzle.header.005')}</span>
             <span className="text-[10px] opacity-70">↗</span>
           </Link>
         </div>
@@ -110,7 +110,7 @@ export default function Header() {
               }}
             >
               <LogOut size={15} strokeWidth={2} />
-              <span>{t('로그아웃', 'Log out')}</span>
+              <span>{t('puzzle.components.puzzle.header.006')}</span>
             </button>
           ) : (
             <Link
@@ -122,7 +122,7 @@ export default function Header() {
               }}
             >
               <LogIn size={15} strokeWidth={2} />
-              <span>{t('로그인', 'Log in')}</span>
+              <span>{t('puzzle.components.puzzle.header.007')}</span>
             </Link>
           )}
         </nav>
@@ -179,7 +179,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-foreground)' }}
               >
                 <LogOut size={18} strokeWidth={2} />
-                <span>{t('로그아웃', 'Log out')}</span>
+                <span>{t('puzzle.components.puzzle.header.008')}</span>
               </button>
             ) : (
               <Link
@@ -189,7 +189,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-primary)', color: 'var(--puzzle-primary-foreground)' }}
               >
                 <LogIn size={18} strokeWidth={2} />
-                <span>{t('로그인', 'Log in')}</span>
+                <span>{t('puzzle.components.puzzle.header.009')}</span>
               </Link>
             )}
           </nav>
