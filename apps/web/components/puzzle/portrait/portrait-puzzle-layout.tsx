@@ -107,7 +107,7 @@ export default function PortraitPuzzleLayout({
             {puzzleTitle(puzzle, language)}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
-            {difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)')} · 🏆 랭킹 도전
+            {difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)')} · 🏆 {t('랭킹 도전', 'Ranked challenge')}
           </span>
         </div>
 
