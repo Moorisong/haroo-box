@@ -123,7 +123,7 @@ export default function DifficultySelectModal({
                   {t('일반', 'Normal')}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-auto inline-flex justify-center items-center flex-shrink-0">
-                  <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.BEGINNER]}조각</span>
+                  <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.BEGINNER]} {t('조각', 'pieces')}</span>
                 </span>
               </div>
             </button>
