@@ -1,11 +1,14 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { Puzzle as PuzzleIcon, Trophy } from 'lucide-react';
 
 interface HistoryEntry {
   puzzleId: string;
   title: string;
+  title_en?: string;
+  week?: number;
   imageUrl: string;
   difficulty: 'novice' | 'beginner' | 'expert';
   completionTime: number;
@@ -19,7 +22,7 @@ interface HistoryListProps {
 }
 
 export default function HistoryList({ history }: HistoryListProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const formatDuration = (seconds: number) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
     const sec = (seconds % 60).toString().padStart(2, '0');
@@ -46,7 +49,7 @@ export default function HistoryList({ history }: HistoryListProps) {
             color: 'var(--puzzle-muted-foreground)'
           }}
         >
-          아직 완성 기록 히스토리가 존재하지 않습니다.
+          {t('아직 완성 기록 히스토리가 존재하지 않습니다.', 'No completed puzzle history yet.')}
         </div>
       ) : (
         history.map((item, idx) => {
@@ -74,7 +77,7 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Thumbnail */}
               <img
                 src={item.imageUrl}
-                alt={item.title}
+                alt={puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language)}
                 className="w-16 h-12 object-cover rounded-xl flex-shrink-0 border"
                 style={{ borderColor: 'var(--puzzle-border)' }}
               />
@@ -82,7 +85,7 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-extrabold truncate mb-1" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                  {item.title}
+                  {puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language)}
                 </p>
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
