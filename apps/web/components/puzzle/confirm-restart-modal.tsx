@@ -26,10 +26,10 @@ export default function ConfirmRestartModal({
         }}
       >
         <h3 className="text-xl font-black mb-3 text-red-500 flex items-center gap-2">
-          {t('⚠️ 새로 시작하시겠습니까?', '⚠️ Start over?')}
+          {t('puzzle.components.puzzle.confirm.restart.modal.001')}
         </h3>
         <p className="text-sm font-medium leading-relaxed mb-6" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시면', 'You have an unfinished puzzle. Starting again will')} <strong className="text-red-500 font-bold">{t('기존 진행 데이터는 삭제', 'delete your current progress')}</strong>{t('됩니다.', '.')}
+          {t('puzzle.components.puzzle.confirm.restart.modal.002')} <strong className="text-red-500 font-bold">{t('puzzle.components.puzzle.confirm.restart.modal.003')}</strong>{t('puzzle.components.puzzle.confirm.restart.modal.004')}
         </p>
         <div className="flex gap-3">
           <button
@@ -41,7 +41,7 @@ export default function ConfirmRestartModal({
               borderColor: 'var(--puzzle-border)',
             }}
           >
-            {t('취소', 'Cancel')}
+            {t('puzzle.components.puzzle.confirm.restart.modal.005')}
           </button>
           <button
             onClick={onConfirm}
@@ -50,7 +50,7 @@ export default function ConfirmRestartModal({
               boxShadow: 'var(--puzzle-shadow-md)',
             }}
           >
-            {t('새로 시작', 'Start over')}
+            {t('puzzle.components.puzzle.confirm.restart.modal.006')}
           </button>
         </div>
       </div>
