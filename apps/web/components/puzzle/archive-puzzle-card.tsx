@@ -142,7 +142,7 @@ export default function ArchivePuzzleCard({
                 color: currentStatus.color,
               }}
             >
-              {t(currentStatus.label, status === 'current' ? 'In progress' : status === 'completed' ? 'Completed' : 'Not played')}
+              {status === 'current' ? t('도전 중', 'In progress') : status === 'completed' ? t('완료', 'Completed') : t('미참여', 'Not played')}
             </span>
             {new Date(puzzle.startDate) <= new Date() && new Date() <= new Date(puzzle.endDate) && (
               <span
