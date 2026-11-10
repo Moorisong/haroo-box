@@ -17,7 +17,7 @@ interface ProfileCardProps {
 }
 
 export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const formatDuration = (seconds: number | null) => {
     if (seconds === null) return '-';
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -28,15 +28,15 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return `${date.getFullYear()}년 ${date.getMonth() + 1}월 가입`;
+      return language === 'en' ? `Joined ${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(date)}` : `${date.getFullYear()}년 ${date.getMonth() + 1}월 가입`;
     } catch {
       return dateStr;
     }
   };
 
   const stats = [
-    { icon: Puzzle, label: t('완주 수', 'Completed'), value: `${statistics.totalCompleted}개` },
-    { icon: Trophy, label: t('최고 순위', 'Best rank'), value: statistics.bestRank ? `${statistics.bestRank}위` : '-' },
+    { icon: Puzzle, label: t('완주 수', 'Completed'), value: `${statistics.totalCompleted} ${t('개', 'puzzles')}` },
+    { icon: Trophy, label: t('최고 순위', 'Best rank'), value: statistics.bestRank ? `${t('순위', 'Rank')} ${statistics.bestRank}` : '-' },
     { icon: Clock, label: t('최고 기록', 'Best time'), value: formatDuration(statistics.bestTimeBeginner) },
   ];
 
