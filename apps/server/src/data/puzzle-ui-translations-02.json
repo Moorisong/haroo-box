@@ -1,0 +1,312 @@
+[
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.001",
+    "ko": "도전 중",
+    "en": "In progress"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.002",
+    "ko": "완료",
+    "en": "Completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.003",
+    "ko": "미참여",
+    "en": "Not played"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.004",
+    "ko": "이번주 대회",
+    "en": "This week’s challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.005",
+    "ko": "명 완주",
+    "en": "completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.006",
+    "ko": "내 기록",
+    "en": "My result"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.007",
+    "ko": "위",
+    "en": "th"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.008",
+    "ko": "재도전",
+    "en": "Try again"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.009",
+    "ko": "이어서 하기",
+    "en": "Resume"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.010",
+    "ko": "새로 시작",
+    "en": "Start over"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.011",
+    "ko": "퍼즐 플레이",
+    "en": "Play puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.012",
+    "ko": "이어서 하기",
+    "en": "Resume"
+  },
+  {
+    "key": "puzzle.components.puzzle.archive.puzzle.card.013",
+    "ko": "플레이 시작",
+    "en": "Start playing"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.001",
+    "ko": "퍼즐 완성! 🎉",
+    "en": "Puzzle complete! 🎉"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.002",
+    "ko": "멋진 집중력이 돋보이네요.",
+    "en": "Great focus!"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.003",
+    "ko": "소요 시간",
+    "en": "Time"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.004",
+    "ko": "현재 내 순위",
+    "en": "My rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.005",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.006",
+    "ko": "백분율 범위",
+    "en": "Percentile"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.007",
+    "ko": "상위",
+    "en": "Top"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.008",
+    "ko": "기록 저장/제출 중...",
+    "en": "Saving your result..."
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.009",
+    "ko": "✓ 저장/제출 완료",
+    "en": "✓ Result saved"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.010",
+    "ko": "로그인하고 저장/제출",
+    "en": "Log in to save"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.011",
+    "ko": "카카오톡으로 자랑하기",
+    "en": "Share your result"
+  },
+  {
+    "key": "puzzle.components.puzzle.completion.modal.012",
+    "ko": "메인 페이지로 이동",
+    "en": "Back to home"
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.001",
+    "ko": "⚠️ 새로 시작하시겠습니까?",
+    "en": "⚠️ Start over?"
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.002",
+    "ko": "이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시면",
+    "en": "You have an unfinished puzzle. Starting again will"
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.003",
+    "ko": "기존 진행 데이터는 삭제",
+    "en": "delete your current progress"
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.004",
+    "ko": "됩니다.",
+    "en": "."
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.005",
+    "ko": "취소",
+    "en": "Cancel"
+  },
+  {
+    "key": "puzzle.components.puzzle.confirm.restart.modal.006",
+    "ko": "새로 시작",
+    "en": "Start over"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.001",
+    "ko": "플레이 옵션 설정",
+    "en": "Play options"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.002",
+    "ko": "난이도 선택",
+    "en": "Choose difficulty"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.003",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.004",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.005",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.006",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.007",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.008",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.009",
+    "ko": "자유 연습 모드",
+    "en": "Free practice"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.010",
+    "ko": "이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!",
+    "en": "You have already completed this difficulty. Practice again without affecting your rank."
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.011",
+    "ko": "랭킹 도전 모드",
+    "en": "Ranked challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.012",
+    "ko": "기록을 제출하고 주간 랭킹에 도전하세요!",
+    "en": "Submit your time to join the weekly leaderboard!"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.013",
+    "ko": "로그인 후 완료하셔야 공식 랭킹에 등록됩니다.",
+    "en": "Log in before finishing to join the official leaderboard."
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.014",
+    "ko": "새로 시작할 경우 기존에 기록 중이던 퍼즐판 진행 데이터가 완전히 초기화됩니다. 계속하시겠습니까?",
+    "en": "Starting over erases your progress. Continue?"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.015",
+    "ko": "취소",
+    "en": "Cancel"
+  },
+  {
+    "key": "puzzle.components.puzzle.difficulty.select.modal.016",
+    "ko": "도전 시작하기",
+    "en": "Start challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.001",
+    "ko": "빨강",
+    "en": "Red"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.002",
+    "ko": "파랑",
+    "en": "Blue"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.003",
+    "ko": "초록",
+    "en": "Green"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.004",
+    "ko": "노랑",
+    "en": "Yellow"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.005",
+    "ko": "보라",
+    "en": "Purple"
+  },
+  {
+    "key": "puzzle.components.puzzle.drawer.basket.tabs.006",
+    "ko": "개",
+    "en": "pcs"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.001",
+    "ko": "원본",
+    "en": "Reference"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.002",
+    "ko": "끄기",
+    "en": "Hide"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.003",
+    "ko": "보기",
+    "en": "View"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.004",
+    "ko": "판 엎기",
+    "en": "Shuffle"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.005",
+    "ko": "수동 저장해야 서버에 백업됩니다!",
+    "en": "Save manually to back up to the server!"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.006",
+    "ko": "닫기",
+    "en": "Close"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.007",
+    "ko": "저장/제출 중...",
+    "en": "Saving..."
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.008",
+    "ko": "저장/제출 완료!",
+    "en": "Saved!"
+  },
+  {
+    "key": "puzzle.components.puzzle.floating.toolbar.009",
+    "ko": "저장/제출",
+    "en": "Save / submit"
+  }
+]
