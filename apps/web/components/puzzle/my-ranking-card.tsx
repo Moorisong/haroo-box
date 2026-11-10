@@ -20,17 +20,17 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
 
   const stats = [
     {
-      label: t('현재 내 순위', 'My rank'),
-      value: myRanking && myRanking.myRank !== null ? `🎖️ ${t('순위', 'Rank')} ${myRanking.myRank}` : '-',
+      label: t('puzzle.components.puzzle.my.ranking.card.001'),
+      value: myRanking && myRanking.myRank !== null ? `🎖️ ${t('puzzle.components.puzzle.my.ranking.card.002')} ${myRanking.myRank}` : '-',
       highlight: false,
     },
     {
-      label: t('백분율 범위', 'Percentile'),
-      value: myRanking && myRanking.topPercent !== null ? `${t('상위', 'Top')} ${myRanking.topPercent}%` : '-',
+      label: t('puzzle.components.puzzle.my.ranking.card.003'),
+      value: myRanking && myRanking.topPercent !== null ? `${t('puzzle.components.puzzle.my.ranking.card.004')} ${myRanking.topPercent}%` : '-',
       highlight: true,
     },
     {
-      label: t('내 최고 기록', 'My best time'),
+      label: t('puzzle.components.puzzle.my.ranking.card.005'),
       value: myRanking ? formatDuration(myRanking.completionTime) : '-',
       highlight: false,
     },
@@ -47,22 +47,22 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       }}
     >
       <p className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        {t('내 최고 기록', 'My best time')}
+        {t('puzzle.components.puzzle.my.ranking.card.006')}
       </p>
 
       {!isLoggedIn ? (
         <div className="py-4 sm:py-6 text-center">
           <p className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {t('비로그인 상태입니다.', "You are not logged in.")}
+            {t('puzzle.components.puzzle.my.ranking.card.007')}
           </p>
           <p className="text-[10px] sm:text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {t('로그인하시면 랭킹 경쟁에 참여할 수 있습니다. 🏆', 'Log in to join the rankings. 🏆')}
+            {t('puzzle.components.puzzle.my.ranking.card.008')}
           </p>
         </div>
       ) : myRanking && myRanking.myRank !== null ? (
         <div className="flex flex-row lg:flex-col gap-2 lg:gap-3 mt-3 lg:mt-4">
           {stats.map(({ label, value, highlight }) => {
-            const isRank = label === t('현재 내 순위', 'My rank');
+            const isRank = label === t('puzzle.components.puzzle.my.ranking.card.009');
             return (
               <div
                 key={label}
@@ -103,10 +103,10 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       ) : (
         <div className="py-4 sm:py-6 text-center">
           <p className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {t('아직 완주 기록이 없습니다.', 'No completed puzzles yet.')}
+            {t('puzzle.components.puzzle.my.ranking.card.010')}
           </p>
           <p className="text-[10px] sm:text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {t('퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘', 'Finish a puzzle to see your rank! 🧘')}
+            {t('puzzle.components.puzzle.my.ranking.card.011')}
           </p>
         </div>
       )}
