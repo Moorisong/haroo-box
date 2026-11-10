@@ -51,8 +51,8 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
             Kakao.Share.sendDefault({
               objectType: 'feed',
               content: {
-                title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
-                description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
+                title: t('[하루퍼즐] 이번 주 퍼즐 도착!', '[Haroo Puzzle] This week’s puzzle is here!'),
+                description: t('바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕', 'Take a little puzzle break! ☕'),
                 imageUrl: absImgUrl,
                 link: {
                   mobileWebUrl: window.location.origin + '/puzzle',
@@ -61,7 +61,7 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
               },
               buttons: [
                 {
-                  title: '함께 플레이하기',
+                  title: t('함께 플레이하기', 'Play together'),
                   link: {
                     mobileWebUrl: window.location.origin + '/puzzle',
                     webUrl: window.location.origin + '/puzzle',
