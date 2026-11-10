@@ -8,6 +8,8 @@ declare module 'next-auth' {
       name?: string | null;
       image?: string | null;
       kakaoId?: string;
+    provider?: 'kakao' | 'google';
+      provider?: 'kakao' | 'google';
       nickname?: string | null;
       nicknameUpdatedAt?: string | null;
     };
@@ -79,6 +81,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (account?.provider === 'kakao') {
         token.kakaoId = account.providerAccountId;
+        token.provider = 'kakao';
 
         // 로그인 시 DB에서 닉네임 조회
         try {
@@ -103,6 +106,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.kakaoId = token.kakaoId;
+        session.user.provider = token.provider;
         session.user.nickname = token.nickname;
         session.user.nicknameUpdatedAt = token.nicknameUpdatedAt;
       }
