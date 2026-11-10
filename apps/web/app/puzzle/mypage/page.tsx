@@ -71,7 +71,7 @@ export default function MyPage() {
   }, [token, status]);
 
   const handleClearData = async () => {
-    if (window.confirm(t('모든 퍼즐 진행도와 완주 기록을 초기화하시겠습니까?\n(이 작업은 되돌릴 수 없습니다.)', 'Delete all puzzle progress and completion history?\nThis cannot be undone.'))) {
+    if (window.confirm(t('puzzle.app.puzzle.mypage.page.001'))) {
       try {
         // 1. 로그인 상태 시 서버 데이터베이스 진행 상황 및 완주 기록 삭제
         if (token) {
@@ -88,30 +88,30 @@ export default function MyPage() {
           bestRank: null
         });
 
-        showToast(t('모든 퍼즐 데이터가 초기화되었습니다.', 'All puzzle data has been reset.'), 'success');
+        showToast(t('puzzle.app.puzzle.mypage.page.002'), 'success');
         router.refresh();
       } catch (e) {
         console.error('Failed to clear puzzle data:', e);
-        alert(t('데이터 초기화 중 문제가 발생했습니다.', 'Could not reset puzzle data.'));
+        alert(t('puzzle.app.puzzle.mypage.page.003'));
       }
     }
   };
 
   const handleDeleteAccount = async () => {
     if (!token) return;
-    if (window.confirm(t('정말로 회원 탈퇴를 진행하시겠습니까?\n\n이 작업 진행 시 사용자의 카카오 로그인 프로필 연동이 끊어지며, 저장된 모든 완료 랭킹 기록, 실시간 퍼즐 진행 상황 및 토큰 로그가 데이터베이스에서 CASCADE 영구 일괄 삭제됩니다. 이 작업은 절대 복구할 수 없습니다.', 'Delete your account permanently?\n\nYour linked profile, rankings, puzzle progress, and challenge records will all be deleted. This cannot be undone.'))) {
+    if (window.confirm(t('puzzle.app.puzzle.mypage.page.004'))) {
       try {
         const res = await deleteMyAccount(token);
         if (res.success) {
           await clearAllPuzzleState();
-          alert(t('회원 탈퇴 및 모든 정보 삭제가 성공적으로 완료되었습니다. 그동안 하루퍼즐을 이용해 주셔서 진심으로 감사드립니다.', 'Your account and data have been deleted. Thank you for playing Haroo Puzzle.'));
+          alert(t('puzzle.app.puzzle.mypage.page.005'));
           signOut({ callbackUrl: '/puzzle' });
         } else {
-          alert(res.error || t('회원 탈퇴 처리 중 문제가 발생했습니다.', 'Could not delete your account.'));
+          alert(res.error || t('puzzle.app.puzzle.mypage.page.006'));
         }
       } catch (e) {
         console.error(e);
-        alert(t('회원 탈퇴 중 알 수 없는 에러가 발생했습니다.', 'An unexpected error occurred while deleting your account.'));
+        alert(t('puzzle.app.puzzle.mypage.page.007'));
       }
     }
   };
@@ -120,7 +120,7 @@ export default function MyPage() {
     return (
       <div className={`${styles.container} flex items-center justify-center min-h-[60vh] flex-col gap-3 font-semibold select-none`}>
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('내 프로필 카드를 정리하는 중...', 'Loading your profile...')}</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.mypage.page.008')}</span>
       </div>
     );
   }
@@ -153,14 +153,14 @@ export default function MyPage() {
             className="text-xl font-black mb-3" 
             style={{ color: 'var(--puzzle-card-foreground)', letterSpacing: '-0.02em' }}
           >
-            {t('로그인이 필요한 서비스입니다', 'Sign in required')}
+            {t('puzzle.app.puzzle.mypage.page.009')}
           </h2>
           
           <p 
             className="text-xs font-medium leading-relaxed mb-8 max-w-[280px]" 
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
-            {t('마이페이지에서는 나만의 완성 통계와 상세한 퍼즐 플레이 기록 히스토리를 확인하고 관리할 수 있습니다.', 'Sign in to see your puzzle statistics and detailed play history.')}
+            {t('puzzle.app.puzzle.mypage.page.010')}
           </p>
 
           <Link
@@ -171,7 +171,7 @@ export default function MyPage() {
               boxShadow: '0 4px 14px rgba(79, 142, 247, 0.4)'
             }}
           >
-            {t('로그인하기', 'Sign in')}
+            {t('puzzle.app.puzzle.mypage.page.011')}
           </Link>
         </div>
       </div>
@@ -187,10 +187,10 @@ export default function MyPage() {
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {t('마이페이지', 'My Page')}
+            {t('puzzle.app.puzzle.mypage.page.012')}
           </h1>
           <p className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {t('내 개인 통계 정보와 아카이브 완주 기록을 한눈에 관리해 보세요.', 'Manage your stats and completed archive puzzles in one place.')}
+            {t('puzzle.app.puzzle.mypage.page.013')}
           </p>
         </div>
       </div>
@@ -227,14 +227,14 @@ export default function MyPage() {
         <div className="md:col-span-2 flex flex-col gap-4">
           <div className="flex items-center justify-between mb-1">
             <h2 className="text-lg font-extrabold flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
-              {t('완주 기록 히스토리', 'Completion history')}
+              {t('puzzle.app.puzzle.mypage.page.014')}
             </h2>
             <div
               className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold"
               style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-muted-foreground)' }}
             >
               <TrendingUp size={12} />
-              <span>{completedHistory.length} {t('개 완주', 'completed')}</span>
+              <span>{completedHistory.length} {t('puzzle.app.puzzle.mypage.page.015')}</span>
             </div>
           </div>
 
@@ -254,7 +254,7 @@ export default function MyPage() {
                 boxShadow: 'var(--puzzle-shadow-sm)',
               }}
             >
-              {t('더보기', 'Show more')} ⬇️
+              {t('puzzle.app.puzzle.mypage.page.016')} ⬇️
             </button>
           )}
 
