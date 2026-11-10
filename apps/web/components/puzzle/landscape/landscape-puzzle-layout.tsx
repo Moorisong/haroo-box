@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -80,6 +81,7 @@ export default function LandscapePuzzleLayout({
   onZoomOut,
   selectTrayPiece,
 }: LandscapePuzzleLayoutProps) {
+  const { t } = useLanguage();
   const router = useRouter();
 
   const {
@@ -116,7 +118,7 @@ export default function LandscapePuzzleLayout({
   );
 
   const difficultyLabel =
-    difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)';
+    difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)');
   const gridSize = difficulty === 'novice' ? 6 : difficulty === 'beginner' ? 10 : 16;
 
   const calculatedZoom = zoom;
@@ -158,15 +160,15 @@ export default function LandscapePuzzleLayout({
           className="flex items-center gap-1 text-xs font-semibold transition-colors text-black/60 hover:text-black"
         >
           <ArrowLeft size={13} strokeWidth={2.5} />
-          <span>뒤로가기</span>
+          <span>{t('뒤로가기', 'Back')}</span>
         </Link>
 
         <span
           className="ml-3 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-gray-500/10 text-gray-600"
         >
           {interactionMode === 'play' 
-            ? "조각 클릭 후 퍼즐판의 빈 칸을 터치" 
-            : "퍼즐판이나 가이드를 드래그로 이동 / 우하단 핸들로 크기를 조절"}
+            ? t('조각 클릭 후 퍼즐판의 빈 칸을 터치', 'Tap a piece, then an empty spot on the board') 
+            : t('퍼즐판이나 가이드를 드래그로 이동 / 우하단 핸들로 크기를 조절', 'Drag the board or guide to move; use the bottom-right handle to resize')}
         </span>
       </div>
 
