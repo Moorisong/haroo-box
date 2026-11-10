@@ -268,5 +268,15 @@
     "key": "puzzle.metadata.untranslated_title",
     "ko": "제목 미정",
     "en": "Untitled puzzle"
+  },
+  {
+    "key": "puzzle.ui.rankingMonthWeek",
+    "ko": "{{month}} {{week}}주차",
+    "en": "Week {{week}} · {{month}}"
+  },
+  {
+    "key": "puzzle.ui.profileJoined",
+    "ko": "{{date}} 가입",
+    "en": "Joined {{date}}"
   }
 ]
