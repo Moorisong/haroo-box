@@ -49,7 +49,7 @@ export function DrawerBasketTabs({
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full border border-white/10 shrink-0" style={{ backgroundColor: meta.color }} />
               <span className="text-[10px] font-black transition-colors" style={{ color: isActive || isHovered ? '#60a5fa' : '#94a3b8' }}>
-                {t(meta.label, key === 'basket1' ? 'Red' : key === 'basket2' ? 'Blue' : key === 'basket3' ? 'Green' : key === 'basket4' ? 'Yellow' : 'Purple')}
+                {key === 'basket1' ? t('빨강', 'Red') : key === 'basket2' ? t('파랑', 'Blue') : key === 'basket3' ? t('초록', 'Green') : key === 'basket4' ? t('노랑', 'Yellow') : t('보라', 'Purple')}
               </span>
             </div>
             <span className="text-[9px] font-bold text-slate-400">({count} {t('개', 'pcs')})</span>
