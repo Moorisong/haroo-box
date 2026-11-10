@@ -49,7 +49,7 @@ export default function HistoryList({ history }: HistoryListProps) {
             color: 'var(--puzzle-muted-foreground)'
           }}
         >
-          {t('아직 완성 기록 히스토리가 존재하지 않습니다.', 'No completed puzzle history yet.')}
+          {t('puzzle.components.puzzle.history.list.001')}
         </div>
       ) : (
         history.map((item, idx) => {
@@ -90,7 +90,7 @@ export default function HistoryList({ history }: HistoryListProps) {
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
                   <span className="flex items-center gap-1">
-                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? `${t('초보', 'Easy')} (36 ${t('조각', 'pieces')})` : item.difficulty === 'beginner' ? `${t('일반', 'Normal')} (100 ${t('조각', 'pieces')})` : `${t('고수', 'Expert')} (256 ${t('조각', 'pieces')})`}
+                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? `${t('puzzle.components.puzzle.history.list.002')} (36 ${t('puzzle.components.puzzle.history.list.003')})` : item.difficulty === 'beginner' ? `${t('puzzle.components.puzzle.history.list.004')} (100 ${t('puzzle.components.puzzle.history.list.005')})` : `${t('puzzle.components.puzzle.history.list.006')} (256 ${t('puzzle.components.puzzle.history.list.007')})`}
                   </span>
                 </div>
               </div>
@@ -109,11 +109,11 @@ export default function HistoryList({ history }: HistoryListProps) {
                     }}
                   >
                     <Trophy size={9} />
-                    <span>{t('순위', 'Rank')} {item.myRank}</span>
+                    <span>{t('puzzle.components.puzzle.history.list.008')} {item.myRank}</span>
                   </div>
                 ) : (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-muted-foreground)' }}>
-                    {t('일반 플레이', 'Free play')}
+                    {t('puzzle.components.puzzle.history.list.009')}
                   </span>
                 )}
               </div>
