@@ -57,7 +57,7 @@ export default function RecordChart({ history }: RecordChartProps) {
       }}
     >
       <p className="text-sm font-extrabold mb-4" style={{ color: 'var(--puzzle-card-foreground)' }}>
-        최근 완주 기록 추이
+        {t('최근 완주 기록 추이', 'Recent completion times')}
       </p>
 
       {/* Bar Chart Container */}
@@ -96,7 +96,7 @@ export default function RecordChart({ history }: RecordChartProps) {
       </div>
       
       <p className="text-[10px] mt-4 text-center font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        💡 최근 기록일수록 우측에 표시되며, 세로 높이가 높을수록 단시간 내 완성하여 성적이 우수함을 의미합니다!
+        💡 {t('최근 기록일수록 우측에 표시되며, 세로 높이가 높을수록 단시간 내 완성하여 성적이 우수함을 의미합니다!', 'Newer results appear on the right; taller bars mean faster completion times.')}
       </p>
     </div>
   );
