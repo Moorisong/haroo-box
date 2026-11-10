@@ -90,7 +90,7 @@ export default function ArchivePage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('아카이브 보관함을 열고 있습니다...', 'Loading archive...')}</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.archive.page.001')}</span>
       </div>
     );
   }
@@ -118,22 +118,22 @@ export default function ArchivePage() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          {t('퍼즐 아카이브', 'Puzzle Archive')}
+          {t('puzzle.app.puzzle.archive.page.002')}
         </h1>
         <p className="text-sm font-semibold mb-3.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.', 'Replay past puzzles and keep the challenge going!')}
+          {t('puzzle.app.puzzle.archive.page.003')}
         </p>
         <span className="inline-block text-[11px] font-extrabold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--puzzle-border)', color: 'var(--puzzle-primary)', backgroundColor: 'var(--puzzle-glass-bg)' }}>
-          ℹ️ {t('올해 출시된 아카이브 퍼즐만 표시됩니다.', 'Only puzzles released this year are shown.')}
+          ℹ️ {t('puzzle.app.puzzle.archive.page.004')}
         </span>
       </div>
 
       {/* Stats Summary row */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: t('전체 아카이브', 'All puzzles'), value: `${puzzles.length} ${t('개', 'puzzles')}` },
-          { label: t('내가 완성한 퍼즐', 'My completed puzzles'), value: `${totalCompleted} ${t('개', 'puzzles')}` },
-          { label: t('주간 최고 등수', 'Best weekly rank'), value: bestRank ? `${t('순위', 'Rank')} ${bestRank}` : '-' },
+          { label: t('puzzle.app.puzzle.archive.page.005'), value: `${puzzles.length} ${t('puzzle.app.puzzle.archive.page.006')}` },
+          { label: t('puzzle.app.puzzle.archive.page.007'), value: `${totalCompleted} ${t('puzzle.app.puzzle.archive.page.008')}` },
+          { label: t('puzzle.app.puzzle.archive.page.009'), value: bestRank ? `${t('puzzle.app.puzzle.archive.page.010')} ${bestRank}` : '-' },
         ].map(({ label, value }) => (
           <div
             key={label}
@@ -187,7 +187,7 @@ export default function ArchivePage() {
                   : { color: 'var(--puzzle-muted-foreground)' }
               }
             >
-              {t('전체', 'All')}
+              {t('puzzle.app.puzzle.archive.page.011')}
             </button>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
               const isAvailable = availableMonths.includes(m);
@@ -238,7 +238,7 @@ export default function ArchivePage() {
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
-          {selectedMonth ? t(`${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.`, `No archived puzzles released in ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1))}.`) : t('아직 발행된 아카이브 퍼즐이 존재하지 않습니다.', 'No archived puzzles have been published yet.')}
+          {selectedMonth ? t(`${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.`, `No archived puzzles released in ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1))}.`) : t('puzzle.app.puzzle.archive.page.012')}
         </div>
       ) : (
         <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
