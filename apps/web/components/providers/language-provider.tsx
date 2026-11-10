@@ -37,6 +37,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       : navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en';
     updateLanguage(next);
     document.documentElement.lang = next;
+    document.cookie = `haroo-language=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
     setHydrated(true);
   }, []);
 
@@ -69,6 +70,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     updateLanguage(next);
     window.localStorage.setItem('haroo-language', next);
     document.documentElement.lang = next;
+    document.cookie = `haroo-language=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
   };
 
   const t = (key: string, variablesOrEnglish?: TranslationVariables | string) => {
