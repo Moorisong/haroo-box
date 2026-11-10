@@ -1,6 +1,7 @@
+'use client';
 import Link from 'next/link';
+import { useLanguage } from '@/components/providers/language-provider';
 import Image from 'next/image';
-import type { Metadata } from 'next';
 import { ROUTES } from '@/constants';
 import AdBanner from '@/components/ads/ad-banner';
 import styles from './page.module.css';
@@ -8,42 +9,6 @@ import styles from './page.module.css';
 export const dynamic = 'force-dynamic';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.harooo.co.kr';
-
-export const metadata: Metadata = {
-    title: '하루상자 | 즐거움과 유익함이 가득한 일일 콘텐츠 플랫폼',
-    description: '힐링 퍼즐, 감정 배출 유틸리티, 소통형 미니게임, 그리고 교사를 위한 서비스 툴까지. 하루상자에서 매일 새로운 즐거움과 유용한 도구를 만나보세요.',
-    keywords: [
-        '하루상자', 'Haroo Box', '미니콘텐츠', '웹 플랫폼',
-        '감쓰', '감쓰.exe', '감정쓰레기통', '스트레스 해소',
-        '하루퍼즐', '주간 랭킹', '직소퍼즐', '웹 퍼즐 게임', '힐링 게임',
-        '롤링페이퍼', '온라인 롤링페이퍼', '익명 롤링페이퍼',
-        '너잘알', '친구 테스트', '단톡방 게임', '자아탐험', '조하리의 창',
-        'TOBY', '토비', '교사 도구', '교사 전용 툴', '선생님 도구', '학급 관리'
-    ],
-    alternates: {
-        canonical: '/',
-    },
-    openGraph: {
-        title: '하루상자 | 즐거움과 유익함이 가득한 일일 콘텐츠 플랫폼',
-        description: '퍼즐, 감쓰, 롤링페이퍼부터 교사 도구(TOBY)까지! 즐거움과 유익함이 공존하는 하루상자.',
-        url: baseUrl,
-        type: 'website',
-        images: [
-            {
-                url: '/haroo-og-image-v2.png',
-                width: 1200,
-                height: 630,
-                alt: '하루상자 메인 이미지',
-            },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: '하루상자 | 즐거움과 유익함이 가득한 일일 콘텐츠 플랫폼',
-        description: '퍼즐, 감쓰, 롤링페이퍼부터 교사 도구(TOBY)까지! 즐거움과 유익함이 공존하는 하루상자.',
-        images: ['/haroo-og-image-v2.png'],
-    },
-};
 
 
 type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'uknow' | 'htsm' | 'advent';
@@ -152,6 +117,7 @@ const contents: ContentItem[] = [
 ];
 
 export default function Home() {
+    const { language, t } = useLanguage();
     const activeCount = contents.filter((content) => content.active).length;
 
     return (
@@ -161,12 +127,12 @@ export default function Home() {
                     <div className={styles.sectionHead}>
                         <div className={styles.sectionIntro}>
                             <div className={styles.sectionCopy}>
-                                <h1 id="contents-heading" className={styles.sectionTitle}>마음 가는 대로, <span className={styles.titleHighlight}>하나 골라.</span></h1>
-                                <p className={styles.sectionSubcopy}>작은 재미부터 쓸모 있는 도구까지.</p>
+                                <h1 id="contents-heading" className={styles.sectionTitle}>{t('마음 가는 대로, ', 'Pick your next ')}<span className={styles.titleHighlight}>{t('하나 골라.', 'little joy.')}</span></h1>
+                                <p className={styles.sectionSubcopy}>{t('작은 재미부터 쓸모 있는 도구까지.', 'Little joys and useful tools, all in one place.')}</p>
                             </div>
                         </div>
                         <div className={styles.contentCount} aria-label={'콘텐츠 ' + activeCount + '개'}>
-                            <strong>{activeCount}개의 콘텐츠</strong>
+                            <strong>{activeCount} {t('개의 콘텐츠', 'experiences')}</strong>
                         </div>
                     </div>
 
@@ -195,12 +161,12 @@ export default function Home() {
                                     </div>
                                     <div className={styles.cardContent}>
                                         <div className={styles.cardHeadingRow}>
-                                            <h3 className={styles.cardTitle}>{content.title}</h3>
+                                            <h3 className={styles.cardTitle}>{language === 'en' ? ({advent:'Advent Chocolate',gamss:'Dumpit.exe',puzzle:'Haroo Puzzle','rolling-paper':'Rolling Paper',toby:'TOBY','u-know':'Know Me',htsm:'Self Discovery'} as Record<string,string>)[content.id] : content.title}</h3>
                                             <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
                                         </div>
-                                        <p className={styles.cardDescription}>{content.description}</p>
+                                        <p className={styles.cardDescription}>{language === 'en' ? ({advent:'Create a chocolate calendar and collect secret messages from friends.',gamss:'Write it out, let it go, and feel a little lighter.',puzzle:'Solve a new puzzle every week and climb the rankings.','rolling-paper':'Share anonymous notes and make memories together.',toby:'Helpful classroom tools for teachers.','u-know':'See how well your friends know you.',htsm:'Discover yourself through anonymous feedback.'} as Record<string,string>)[content.id] : content.description}</p>
                                         <div className={styles.cardBottom}>
-                                            <span>{content.active ? '열어보기' : '준비 중'}</span>
+                                            <span>{content.active ? t('열어보기', 'Explore') : t('준비 중', 'Coming soon')}</span>
                                             <span className={styles.cardArrow} aria-hidden="true">↗</span>
                                         </div>
                                     </div>
