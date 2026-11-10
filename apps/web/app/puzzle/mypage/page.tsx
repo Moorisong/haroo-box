@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -17,6 +18,7 @@ import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adf
 import { AchievementBadges } from '@/components/puzzle/achievement-badges';
 
 export default function MyPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const { data: session, status } = useSession();
   const token = session?.user?.kakaoId;
@@ -86,11 +88,11 @@ export default function MyPage() {
           bestRank: null
         });
 
-        showToast('모든 퍼즐 데이터가 초기화되었습니다.', 'success');
+        showToast(t('모든 퍼즐 데이터가 초기화되었습니다.', 'All puzzle data has been reset.'), 'success');
         router.refresh();
       } catch (e) {
         console.error('Failed to clear puzzle data:', e);
-        alert('데이터 초기화 중 문제가 발생했습니다.');
+        alert(t('데이터 초기화 중 문제가 발생했습니다.', 'Could not reset puzzle data.'));
       }
     }
   };
@@ -102,14 +104,14 @@ export default function MyPage() {
         const res = await deleteMyAccount(token);
         if (res.success) {
           await clearAllPuzzleState();
-          alert('회원 탈퇴 및 모든 정보 삭제가 성공적으로 완료되었습니다. 그동안 하루퍼즐을 이용해 주셔서 진심으로 감사드립니다.');
+          alert(t('회원 탈퇴 및 모든 정보 삭제가 성공적으로 완료되었습니다. 그동안 하루퍼즐을 이용해 주셔서 진심으로 감사드립니다.', 'Your account and data have been deleted. Thank you for playing Haroo Puzzle.'));
           signOut({ callbackUrl: '/puzzle' });
         } else {
-          alert(res.error || '회원 탈퇴 처리 중 문제가 발생했습니다.');
+          alert(res.error || t('회원 탈퇴 처리 중 문제가 발생했습니다.', 'Could not delete your account.'));
         }
       } catch (e) {
         console.error(e);
-        alert('회원 탈퇴 중 알 수 없는 에러가 발생했습니다.');
+        alert(t('회원 탈퇴 중 알 수 없는 에러가 발생했습니다.', 'An unexpected error occurred while deleting your account.'));
       }
     }
   };
@@ -118,7 +120,7 @@ export default function MyPage() {
     return (
       <div className={`${styles.container} flex items-center justify-center min-h-[60vh] flex-col gap-3 font-semibold select-none`}>
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>내 프로필 카드를 정리하는 중...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('내 프로필 카드를 정리하는 중...', 'Loading your profile...')}</span>
       </div>
     );
   }
