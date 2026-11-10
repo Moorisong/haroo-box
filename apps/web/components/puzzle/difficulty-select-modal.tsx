@@ -71,7 +71,7 @@ export default function DifficultySelectModal({
           <div>
             <h3 className="text-2xl font-black flex items-center gap-2 text-left" style={{ color: 'var(--puzzle-card-foreground)' }}>
               <Play size={22} className="text-emerald-500 fill-emerald-500/20" />
-              플레이 옵션 설정
+              {t('플레이 옵션 설정', 'Play options')}
             </h3>
           </div>
           <button 
@@ -87,7 +87,7 @@ export default function DifficultySelectModal({
         <div className="mb-6 landscape-short-space">
           <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5 landscape-short-space" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
-            난이도 선택
+            {t('난이도 선택', 'Choose difficulty')}
           </h4>
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {/* Novice Card */}
@@ -101,7 +101,7 @@ export default function DifficultySelectModal({
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
                 <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.NOVICE ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
-                  초보
+                  {t('초보', 'Easy')}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 w-auto inline-flex justify-center items-center flex-shrink-0">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.NOVICE]}조각</span>
@@ -120,7 +120,7 @@ export default function DifficultySelectModal({
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
                 <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.BEGINNER ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
-                  일반
+                  {t('일반', 'Normal')}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-auto inline-flex justify-center items-center flex-shrink-0">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.BEGINNER]}조각</span>
@@ -139,7 +139,7 @@ export default function DifficultySelectModal({
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
                 <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.EXPERT ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
-                  고수
+                  {t('고수', 'Expert')}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-auto inline-flex justify-center items-center flex-shrink-0">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.EXPERT]}조각</span>
@@ -163,22 +163,22 @@ export default function DifficultySelectModal({
                 <>
                   <div className="flex items-center gap-2">
                     <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                      자유 연습 모드
+                      {t('자유 연습 모드', 'Free practice')}
                     </span>
                   </div>
                   <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!
+                    {t('이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!', 'You've already completed this difficulty. Practice again without affecting your rank.')}
                   </p>
                 </>
               ) : (
                 <>
                   <div className="flex items-center gap-2">
                     <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                      랭킹 도전 모드
+                      {t('랭킹 도전 모드', 'Ranked challenge')}
                     </span>
                   </div>
                   <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    기록을 제출하고 주간 랭킹에 도전하세요!
+                    {t('기록을 제출하고 주간 랭킹에 도전하세요!', 'Submit your time to join the weekly leaderboard!')}
                   </p>
                 </>
               )}
@@ -194,7 +194,7 @@ export default function DifficultySelectModal({
           >
             <Flame size={16} className="flex-shrink-0 mt-0.5" />
             <span>
-              로그인 후 완료하셔야 공식 랭킹에 등록됩니다.
+              {t('로그인 후 완료하셔야 공식 랭킹에 등록됩니다.', 'Log in before finishing to join the official leaderboard.')}
             </span>
           </div>
         )}
@@ -207,7 +207,7 @@ export default function DifficultySelectModal({
           >
             <AlertTriangle size={16} className="flex-shrink-0 mt-0.5" />
             <span>
-              새로 시작할 경우 기존에 기록 중이던 퍼즐판 진행 데이터가 완전히 초기화됩니다. 계속하시겠습니까?
+              {t('새로 시작할 경우 기존에 기록 중이던 퍼즐판 진행 데이터가 완전히 초기화됩니다. 계속하시겠습니까?', 'Starting over erases your progress. Continue?')}
             </span>
           </div>
         )}
@@ -223,7 +223,7 @@ export default function DifficultySelectModal({
               borderColor: 'var(--puzzle-border)',
             }}
           >
-            취소
+            {t('취소', 'Cancel')}
           </button>
           <button
             onClick={onLaunch}
