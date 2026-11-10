@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Trophy, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ interface RankingPreviewProps {
 }
 
 export default function RankingPreview({ rankings, isLoading, difficulty, onDifficultyChange }: RankingPreviewProps) {
+  const { t } = useLanguage();
   const getMedal = (rank: number) => {
     if (rank === 1) return '🥇';
     if (rank === 2) return '🥈';
@@ -76,7 +78,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
           className="flex items-center gap-0.5 text-sm font-bold transition-all duration-200"
           style={{ color: 'var(--puzzle-primary)' }}
         >
-          <span>전체 보기</span>
+          <span>{t('전체 보기', 'View all')}</span>
           <ChevronRight size={14} strokeWidth={2.5} />
         </Link>
       </div>
