@@ -133,7 +133,7 @@ export default function RankingPage() {
             {t('puzzle.app.puzzle.ranking.page.007')}
           </h1>
           <p className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {getFormatDate(currentPuzzle.startDate)} · {puzzleTitle(currentPuzzle, language)}
+            {getFormatDate(currentPuzzle.startDate)} · {puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
           </p>
         </div>
 
@@ -204,7 +204,7 @@ export default function RankingPage() {
             >
               <img
                 src={currentPuzzle.imageUrl}
-                alt={puzzleTitle(currentPuzzle, language)}
+                alt={puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
                 className="w-16 h-12 sm:w-20 sm:h-14 object-cover rounded-xl flex-shrink-0 border transition-transform duration-300 group-hover:scale-[1.02]"
                 style={{ borderColor: 'var(--puzzle-border)' }}
               />
@@ -213,7 +213,7 @@ export default function RankingPage() {
                   className="truncate mb-1 text-sm font-extrabold transition-colors duration-200 group-hover:text-[var(--puzzle-primary)]"
                   style={{ color: 'var(--puzzle-card-foreground)' }}
                 >
-                  {puzzleTitle(currentPuzzle, language)}
+                  {puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
                 </p>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   <span className="flex items-center gap-1 text-[11px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
