@@ -318,5 +318,30 @@
     "key": "puzzle.game.submit.serverError",
     "ko": "기록 업로드 중 서버 오류가 발생했습니다.",
     "en": "A server error occurred while submitting your result."
+  },
+  {
+    "key": "puzzle.ui.switchToKorean",
+    "ko": "한국어로 전환",
+    "en": "Switch to Korean"
+  },
+  {
+    "key": "puzzle.ui.switchToEnglish",
+    "ko": "영어로 전환",
+    "en": "Switch to English"
+  },
+  {
+    "key": "puzzle.metadata.pageTitle",
+    "ko": "하루퍼즐 | 주간 랭킹 퍼즐",
+    "en": "Haroo Puzzle | Weekly Puzzle Challenge"
+  },
+  {
+    "key": "puzzle.metadata.description",
+    "ko": "바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕",
+    "en": "Take a break and enjoy a weekly jigsaw puzzle. ☕"
+  },
+  {
+    "key": "puzzle.metadata.shareTitle",
+    "ko": "[하루퍼즐] 이번 주 퍼즐 도착!",
+    "en": "[Haroo Puzzle] This week's puzzle is here!"
   }
 ]
