@@ -13,7 +13,7 @@ export function TrayDisabledOverlay() {
         <div className="flex flex-col gap-1">
           <p className="text-xs font-bold text-slate-800">{t('보관함 비활성화', 'Tray unavailable')}</p>
           <p className="text-[10px] text-slate-500 leading-relaxed">
-            이동 모드 해제 후 사용 가능
+            {t('이동 모드 해제 후 사용 가능', 'Exit move mode to use the tray')}
           </p>
         </div>
       </div>
