@@ -53,7 +53,7 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       {!isLoggedIn ? (
         <div className="py-4 sm:py-6 text-center">
           <p className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {t('비로그인 상태입니다.', 'You're not logged in.')}
+            {t('비로그인 상태입니다.', "You are not logged in.")}
           </p>
           <p className="text-[10px] sm:text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             {t('로그인하시면 랭킹 경쟁에 참여할 수 있습니다. 🏆', 'Log in to join the rankings. 🏆')}
