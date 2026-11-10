@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import styles from './page.module.css';
+import { EnglishLegal, KoreanLegal } from '@/components/legal/legal-language';
 
 export const metadata: Metadata = {
     title: '개인정보처리방침',
@@ -11,6 +12,7 @@ export default function PrivacyPage() {
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
+                <KoreanLegal>
                 <header className={styles.header}>
                     <h1 className={styles.title}>개인정보처리방침</h1>
                     <p className={styles.lastUpdated}>최종 업데이트: 2026년 1월 1일</p>
@@ -61,8 +63,8 @@ export default function PrivacyPage() {
                                         <td>회원가입 시 자동 수집</td>
                                     </tr>
                                     <tr>
-                                        <td>서비스 이용 기록</td>
-                                        <td>게임 점수, 콘텐츠 이용 기록, 접속 일시</td>
+                                        <td>서비스 이용 기록 (하루퍼즐·롤링페이퍼·어드벤트 캘린더 등)</td>
+                                        <td>게임 점수·랭킹, 콘텐츠 이용 기록, 이용자가 작성한 메시지·응답, 접속 일시 (서비스별 상이)</td>
                                         <td>서비스 이용 중 자동 수집</td>
                                     </tr>
                                     <tr>
@@ -274,6 +276,8 @@ export default function PrivacyPage() {
                 <footer className={styles.footer}>
                     <p>본 방침은 <strong>2026년 1월 1일</strong>부터 시행됩니다.</p>
                 </footer>
+                </KoreanLegal>
+                <EnglishLegal kind="privacy" />
             </div>
         </div>
     );
