@@ -160,7 +160,7 @@ export default function GuideImagePanel({
         <div className="flex-1 min-h-0 w-full relative">
           <img
             src={imageUrl}
-            alt={t('원본 가이드 이미지', 'Original reference image')}
+            alt={t('puzzle.components.puzzle.landscape.guide.image.panel.001')}
             className="w-full h-full"
             style={{ objectFit: 'contain', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
             draggable={false}
@@ -174,7 +174,7 @@ export default function GuideImagePanel({
           data-resize-handle="br"
           onPointerDown={handleResizePointerDown}
           className="absolute bottom-1 right-1 w-9 h-9 z-[99] flex items-center justify-center cursor-se-resize rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg border border-white transition-all scale-100 hover:scale-105"
-          title={t('크기 조절 (드래그)', 'Resize (drag)')}
+          title={t('puzzle.components.puzzle.landscape.guide.image.panel.002')}
         >
           <svg
             width="12"
@@ -197,7 +197,7 @@ export default function GuideImagePanel({
             className="absolute bottom-11 right-0 bg-blue-600/95 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg pointer-events-none whitespace-nowrap animate-bounce"
             style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.15))' }}
           >
-            ↔ {t('크기 조절', 'Resize')}
+            ↔ {t('puzzle.components.puzzle.landscape.guide.image.panel.003')}
             <div className="absolute top-full right-4 w-1.5 h-1.5 bg-blue-600/95 rotate-45 transform -translate-y-0.5" />
           </div>
         </div>
