@@ -43,10 +43,10 @@ export default function Header() {
         boxShadow: 'var(--puzzle-shadow-sm)'
       }}
     >
-      <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-2">
         {/* Logo & Sub Link */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <Link href="/puzzle" className="flex items-center gap-2 group min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-1 md:flex-none overflow-hidden">
+          <Link href="/puzzle" className="flex items-center gap-2 group min-w-0 flex-shrink-0">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105"
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
@@ -65,7 +65,7 @@ export default function Header() {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] sm:text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5 whitespace-nowrap"
+            className="text-[10px] sm:text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors hidden min-[380px]:flex items-center gap-0.5 whitespace-nowrap min-w-0"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
             <span>{t('puzzle.components.puzzle.header.005')}</span>
@@ -74,7 +74,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1 min-w-0">
           {navItems.map(({ label, href, icon: Icon }) => {
             const isActive = pathname === href;
             return (
@@ -127,10 +127,10 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2"><PuzzleLanguageToggle />
+        <div className="flex items-center gap-1.5 flex-shrink-0"><PuzzleLanguageToggle />
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-2 rounded-lg transition-colors"
+          className="lg:hidden p-2 rounded-lg transition-colors flex-shrink-0"
           style={{ color: 'var(--puzzle-foreground)' }}
           onClick={() => setMenuOpen(!menuOpen)}
         >
@@ -141,7 +141,7 @@ export default function Header() {
       {/* Mobile Menu Drawer */}
       {menuOpen && (
         <div
-          className="md:hidden absolute top-16 left-0 right-0 border-b border-border shadow-lg"
+          className="lg:hidden absolute top-16 left-0 right-0 border-b border-border shadow-lg"
           style={{ 
             backgroundColor: 'var(--puzzle-background)',
             borderBottom: '1px solid var(--puzzle-border)'
