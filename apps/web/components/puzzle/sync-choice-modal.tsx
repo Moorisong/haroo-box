@@ -43,10 +43,10 @@ export default function SyncChoiceModal({
         }}
       >
         <h3 className="text-lg font-black mb-1" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          {t('퍼즐 이어서 맞추기', 'Resume puzzle')}
+          {t('puzzle.components.puzzle.sync.choice.modal.001')}
         </h3>
         <p className="text-xs font-semibold mb-6" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('어떤 진행 기록으로 시작할까요?', 'Which progress would you like to keep?')}
+          {t('puzzle.components.puzzle.sync.choice.modal.002')}
         </p>
 
         {/* 2-Option Card Container */}
@@ -63,7 +63,7 @@ export default function SyncChoiceModal({
           >
             <div>
               <span className="block text-xs font-bold mb-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                {t('방금 플레이한 기록 (로컬)', 'Current session (this device)')}
+                {t('puzzle.components.puzzle.sync.choice.modal.003')}
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="text-xl font-black text-emerald-500">{localProgress}%</span>
@@ -74,7 +74,7 @@ export default function SyncChoiceModal({
               </div>
             </div>
             <div className="px-3.5 py-2 rounded-xl text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
-              {t('덮어쓰기', 'Keep this progress')}
+              {t('puzzle.components.puzzle.sync.choice.modal.004')}
             </div>
           </button>
 
@@ -89,7 +89,7 @@ export default function SyncChoiceModal({
           >
             <div>
               <span className="block text-xs font-bold mb-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                {t('이전에 저장된 기록 (서버)', 'Previously saved progress (server)')}
+                {t('puzzle.components.puzzle.sync.choice.modal.005')}
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="text-xl font-black text-blue-500">{serverProgress}%</span>
@@ -100,7 +100,7 @@ export default function SyncChoiceModal({
               </div>
             </div>
             <div className="px-3.5 py-2 rounded-xl text-xs font-extrabold text-zinc-700 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors">
-              {t('불러오기', 'Restore')}
+              {t('puzzle.components.puzzle.sync.choice.modal.006')}
             </div>
           </button>
 
