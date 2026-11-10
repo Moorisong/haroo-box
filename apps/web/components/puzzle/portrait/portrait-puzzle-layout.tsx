@@ -104,7 +104,7 @@ export default function PortraitPuzzleLayout({
 
         <div className="flex flex-col items-center">
           <span className="text-sm font-black truncate max-w-[200px]" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {puzzleTitle(puzzle, language)}
+            {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
             {difficulty === 'novice' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.002') : difficulty === 'beginner' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.003') : t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.004')} · 🏆 {t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.005')}
