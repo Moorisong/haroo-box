@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { use } from 'react';
 import SyncChoiceModal from '@/components/puzzle/sync-choice-modal';
@@ -11,6 +12,7 @@ interface PlayPageProps {
 }
 
 export default function PlayPage({ params }: PlayPageProps) {
+  const { t } = useLanguage();
   const { puzzleId } = use(params);
   
   const {
@@ -55,7 +57,7 @@ export default function PlayPage({ params }: PlayPageProps) {
     return (
       <div className="flex items-center justify-center min-h-screen flex-col gap-3 font-semibold select-none">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>캔버스 조각판을 세팅하는 중...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('캔버스 조각판을 세팅하는 중...', 'Setting up your puzzle board...')}</span>
 
         {syncChoiceData && (
           <SyncChoiceModal
