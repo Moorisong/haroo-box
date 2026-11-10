@@ -67,7 +67,7 @@ export default function RankingTable({
       {/* Rows */}
       {rankings.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          아직 랭킹에 도전한 사용자가 없습니다.
+          {t('아직 랭킹에 도전한 사용자가 없습니다.', 'No challengers yet.')}
         </div>
       ) : (
         rankings.map((item, idx) => {
