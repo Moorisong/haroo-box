@@ -57,7 +57,7 @@ export default function LandscapeToolbar({
         <div className="flex items-center gap-1.5 mt-0.5 text-xs font-medium text-gray-500">
           <span>{difficulty}</span>
           <span className="w-1 h-1 rounded-full bg-gray-300" />
-          <span className="text-blue-600 font-semibold">{progressPercent}% 완료</span>
+          <span className="text-blue-600 font-semibold">{progressPercent}% {t('완료', 'complete')}</span>
           <span className="w-1 h-1 rounded-full bg-gray-300" />
           <span className="font-mono text-gray-600">⏱ {timerFormatted}</span>
         </div>
@@ -75,7 +75,7 @@ export default function LandscapeToolbar({
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            플레이 모드
+            {t('플레이 모드', 'Play mode')}
           </button>
           <button
             onClick={() => onModeChange?.('move')}
@@ -85,7 +85,7 @@ export default function LandscapeToolbar({
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            이동 모드
+            {t('이동 모드', 'Move mode')}
           </button>
         </div>
 
@@ -97,7 +97,7 @@ export default function LandscapeToolbar({
             onClick={onZoomOut}
             disabled={zoom <= 0.6}
             className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-all disabled:opacity-20 disabled:pointer-events-none"
-            title="축소"
+            title={t('축소', 'Zoom out')}
           >
             <ZoomOut size={13} />
           </button>
@@ -112,7 +112,7 @@ export default function LandscapeToolbar({
             onClick={onZoomIn}
             disabled={zoom >= 2.2}
             className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-all disabled:opacity-20 disabled:pointer-events-none"
-            title="확대"
+            title={t('확대', 'Zoom in')}
           >
             <ZoomIn size={13} />
           </button>
@@ -124,7 +124,7 @@ export default function LandscapeToolbar({
         <button
           onClick={onShuffle}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-red-500 hover:bg-red-500/10 transition-all"
-          title="판 엎기"
+          title={t('판 엎기', 'Shuffle pieces')}
         >
           <Shuffle size={12} />
           <span className="hidden lg:inline text-[11px]">{t('셔플', 'Shuffle')}</span>
@@ -147,7 +147,7 @@ export default function LandscapeToolbar({
             color: saveStatus === 'saved' ? '#10b981' : saveStatus === 'saving' ? '#4f8ef7' : '#fff',
             border: saveStatus === 'saved' ? '1px solid rgba(16, 185, 129, 0.2)' : saveStatus === 'saving' ? '1px solid rgba(79, 142, 247, 0.2)' : '1px solid transparent',
           }}
-          title="저장/제출"
+          title={t('저장/제출', 'Save or submit')}
         >
           {saveStatus === 'saving' ? (
             <div className="w-3 h-3 border border-t-transparent border-current rounded-full animate-spin" />
