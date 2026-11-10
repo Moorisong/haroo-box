@@ -28,7 +28,7 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return language === 'en' ? `Joined ${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(date)}` : `${date.getFullYear()}년 ${date.getMonth() + 1}월 가입`;
+      return t('puzzle.ui.profileJoined', { date: new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { year: 'numeric', month: 'long' }).format(date) });
     } catch {
       return dateStr;
     }
