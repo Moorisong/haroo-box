@@ -149,7 +149,7 @@ export default function ArchivePuzzleCard({
                 className="px-3 py-1 rounded-full text-[10px] font-black shadow-sm text-white animate-pulse"
                 style={{ backgroundColor: 'var(--puzzle-primary)' }}
               >
-                🏆 이번주 대회
+                🏆 {t('이번주 대회', 'This week’s challenge')}
               </span>
             )}
           </div>
@@ -173,7 +173,7 @@ export default function ArchivePuzzleCard({
             </div>
             <div className="flex items-center gap-1.5 text-xs font-medium" style={{ color: 'var(--puzzle-muted-foreground)' }}>
               <Users size={13} />
-              <span>{puzzle.participantCount.toLocaleString()}명 완주</span>
+              <span>{puzzle.participantCount.toLocaleString()} {t('명 완주', 'completed')}</span>
             </div>
           </div>
         </div>
@@ -186,10 +186,10 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-muted)', border: '1px solid var(--puzzle-border)' }}
             >
               <span className="flex items-center gap-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                <Trophy size={13} style={{ color: '#F59E0B' }} /> 내 기록
+                <Trophy size={13} style={{ color: '#F59E0B' }} /> {t('내 기록', 'My result')}
               </span>
               <span style={{ color: 'var(--puzzle-card-foreground)' }}>
-                {myTime} {myRank ? `(${myRank}위)` : ''}
+                {myTime} {myRank ? `(${myRank}${t('위', 'th')})` : ''}
               </span>
             </div>
           )}
