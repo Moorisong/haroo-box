@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState } from 'react';
 import { Clock } from 'lucide-react';
@@ -20,6 +21,7 @@ export default function SyncChoiceModal({
   serverProgress,
   serverTimeFormatted,
 }: SyncChoiceModalProps) {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
