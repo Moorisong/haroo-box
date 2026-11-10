@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { LogOut, Trash2, UserX, ChevronRight, Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
@@ -10,6 +11,7 @@ interface SettingsPanelProps {
 }
 
 export default function SettingsPanel({ onClearData, onDeleteAccount }: SettingsPanelProps) {
+  const { t } = useLanguage();
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -25,25 +27,25 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
   const menuItems = [
     { 
       icon: Home, 
-      label: '하루상자 메인으로 가기', 
+      label: t('하루상자 메인으로 가기', 'Go to Haroo Box'), 
       color: 'var(--puzzle-foreground)', 
       onClick: () => window.open('/', '_blank') 
     },
     { 
       icon: LogOut, 
-      label: '로그아웃', 
+      label: t('로그아웃', 'Log out'), 
       color: 'var(--puzzle-foreground)', 
       onClick: handleSignOut 
     },
     { 
       icon: Trash2, 
-      label: '모든 퍼즐 데이터 초기화', 
+      label: t('모든 퍼즐 데이터 초기화', 'Reset all puzzle data'), 
       color: '#F59E0B', 
       onClick: onClearData 
     },
     { 
       icon: UserX, 
-      label: '계정 탈퇴', 
+      label: t('계정 탈퇴', 'Delete account'), 
       color: 'var(--puzzle-destructive, #EF4444)', 
       onClick: onDeleteAccount 
     },
