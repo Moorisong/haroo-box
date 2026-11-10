@@ -17,9 +17,9 @@ interface ArchivePuzzleCardProps {
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  current: { label: '도전 중', color: '#4F8EF7', bg: '#EBF2FF' },
-  completed: { label: '완료', color: '#22C55E', bg: '#E8F5E9' },
-  missed: { label: '미참여', color: '#777777', bg: '#F5F5F7' },
+  current: { label: t('도전 중', 'In progress'), color: '#4F8EF7', bg: '#EBF2FF' },
+  completed: { label: t('완료', 'Completed'), color: '#22C55E', bg: '#E8F5E9' },
+  missed: { label: t('미참여', 'Not played'), color: '#777777', bg: '#F5F5F7' },
 };
 
 export default function ArchivePuzzleCard({
@@ -31,6 +31,7 @@ export default function ArchivePuzzleCard({
   serverProgress,
   serverDifficulty,
 }: ArchivePuzzleCardProps) {
+  const { t } = useLanguage();
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [selectedDiff, setSelectedDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
@@ -198,7 +199,7 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
             >
               <Play size={13} strokeWidth={2.5} />
-              <span>재도전</span>
+              <span>{t('재도전', 'Try again')}</span>
             </button>
           ) : status === 'current' ? (
             <div className="flex gap-2 w-full">
@@ -207,7 +208,7 @@ export default function ArchivePuzzleCard({
                 className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200 hover:scale-[1.01]"
                 style={{ backgroundColor: 'var(--puzzle-primary)' }}
               >
-                <span>이어서 하기</span>
+                <span>{t('이어서 하기', 'Resume')}</span>
               </Link>
               <button
                 onClick={() => handlePlayStart(true)}
@@ -218,7 +219,7 @@ export default function ArchivePuzzleCard({
                   color: 'var(--puzzle-card-foreground)'
                 }}
               >
-                <span>새로 시작</span>
+                <span>{t('새로 시작', 'Start over')}</span>
               </button>
             </div>
           ) : (
@@ -228,7 +229,7 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
             >
               <Play size={13} strokeWidth={2.5} />
-              <span>퍼즐 플레이</span>
+              <span>{t('퍼즐 플레이', 'Play puzzle')}</span>
             </button>
           )}
         </div>
@@ -242,7 +243,7 @@ export default function ArchivePuzzleCard({
           selectedDiff={selectedDiff}
           setSelectedDiff={setSelectedDiff}
           showResetWarning={showResetWarning}
-          launchText={hasSavedGame && savedDifficulty === selectedDiff ? '이어서 하기' : '플레이 시작'}
+          launchText={hasSavedGame && savedDifficulty === selectedDiff ? t('이어서 하기', 'Resume') : t('플레이 시작', 'Start playing')}
         />,
         document.body
       )}
