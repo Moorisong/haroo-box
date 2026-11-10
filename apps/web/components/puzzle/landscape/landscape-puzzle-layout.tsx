@@ -145,7 +145,7 @@ export default function LandscapePuzzleLayout({
         saveStatus={manualSaveStatus}
         timerFormatted={formatTime(timerSeconds)}
         progressPercent={progressPercent}
-        puzzleTitle={puzzleTitle(puzzle, language)}
+        puzzleTitle={puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
         difficulty={difficultyLabel}
       />
 
