@@ -2,6 +2,9 @@ export interface Puzzle {
   _id: string;
   week: number;
   title: string;
+  title_en?: string;
+  description?: string;
+  description_en?: string;
   imageUrl: string;
   startDate: string;
   endDate: string;
