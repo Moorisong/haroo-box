@@ -99,7 +99,7 @@ export default function PortraitPuzzleLayout({
           onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--puzzle-muted-foreground)'; }}
         >
           <ArrowLeft size={16} strokeWidth={2.5} />
-          <span>{t('뒤로', 'Back')}</span>
+          <span>{t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.001')}</span>
         </Link>
 
         <div className="flex flex-col items-center">
@@ -107,7 +107,7 @@ export default function PortraitPuzzleLayout({
             {puzzleTitle(puzzle, language)}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
-            {difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)')} · 🏆 {t('랭킹 도전', 'Ranked challenge')}
+            {difficulty === 'novice' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.002') : difficulty === 'beginner' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.003') : t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.004')} · 🏆 {t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.005')}
           </span>
         </div>
 
@@ -142,7 +142,7 @@ export default function PortraitPuzzleLayout({
               <img src={puzzle.imageUrl} alt="Original Guide" className="w-full h-auto object-contain max-h-[70vh]" />
               <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/60 text-white font-bold text-xs flex items-center gap-1">
                 <Eye size={12} />
-                <span>{t('가이드 탭하여 닫기', 'Tap guide to close')}</span>
+                <span>{t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.006')}</span>
               </div>
             </div>
           </div>
