@@ -1,3 +1,4 @@
+'use client';
 import { useLanguage } from '@/components/providers/language-provider';
 import { Play, Users, Calendar, Trophy, Layers, X, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
