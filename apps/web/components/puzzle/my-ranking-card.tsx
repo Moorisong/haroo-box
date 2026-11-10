@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { MyRanking } from '@/types/puzzle';
 
@@ -9,6 +10,7 @@ interface MyRankingCardProps {
 }
 
 export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: MyRankingCardProps) {
+  const { t } = useLanguage();
   const formatDuration = (seconds: number | null) => {
     if (seconds === null) return '-';
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -18,17 +20,17 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
 
   const stats = [
     {
-      label: '현재 내 순위',
+      label: t('현재 내 순위', 'My rank'),
       value: myRanking && myRanking.myRank !== null ? `🎖️ ${myRanking.myRank}위` : '-',
       highlight: false,
     },
     {
-      label: '백분율 범위',
+      label: t('백분율 범위', 'Percentile'),
       value: myRanking && myRanking.topPercent !== null ? `상위 ${myRanking.topPercent}%` : '-',
       highlight: true,
     },
     {
-      label: '내 최고 기록',
+      label: t('내 최고 기록', 'My best time'),
       value: myRanking ? formatDuration(myRanking.completionTime) : '-',
       highlight: false,
     },
@@ -60,7 +62,7 @@ export default function MyRankingCard({ myRanking, isLoggedIn, onRankClick }: My
       ) : myRanking && myRanking.myRank !== null ? (
         <div className="flex flex-row lg:flex-col gap-2 lg:gap-3 mt-3 lg:mt-4">
           {stats.map(({ label, value, highlight }) => {
-            const isRank = label === '현재 내 순위';
+            const isRank = label === t('현재 내 순위', 'My rank');
             return (
               <div
                 key={label}
