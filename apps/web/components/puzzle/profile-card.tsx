@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Trophy, Clock, Puzzle } from 'lucide-react';
 
@@ -16,6 +17,7 @@ interface ProfileCardProps {
 }
 
 export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
+  const { t } = useLanguage();
   const formatDuration = (seconds: number | null) => {
     if (seconds === null) return '-';
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -33,9 +35,9 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
   };
 
   const stats = [
-    { icon: Puzzle, label: '완주 수', value: `${statistics.totalCompleted}개` },
-    { icon: Trophy, label: '최고 순위', value: statistics.bestRank ? `${statistics.bestRank}위` : '-' },
-    { icon: Clock, label: '최고 기록', value: formatDuration(statistics.bestTimeBeginner) },
+    { icon: Puzzle, label: t('완주 수', 'Completed'), value: `${statistics.totalCompleted}개` },
+    { icon: Trophy, label: t('최고 순위', 'Best rank'), value: statistics.bestRank ? `${statistics.bestRank}위` : '-' },
+    { icon: Clock, label: t('최고 기록', 'Best time'), value: formatDuration(statistics.bestTimeBeginner) },
   ];
 
   return (
@@ -73,7 +75,7 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
 
         <div className="flex flex-col items-start md:items-center min-w-0">
           <span className="text-base md:text-lg font-black truncate max-w-[150px] md:max-w-[180px]" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {profile.nickname || '사용자'}
+            {profile.nickname || t('사용자', 'Player')}
           </span>
           <span className="text-[10px] md:text-xs mt-0.5 md:mt-1 font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             {getFormatDate(profile.createdAt)}
