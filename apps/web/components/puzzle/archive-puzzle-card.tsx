@@ -1,5 +1,6 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 import { Play, Users, Calendar, Trophy, Layers, X, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -33,7 +34,7 @@ export default function ArchivePuzzleCard({
   serverProgress,
   serverDifficulty,
 }: ArchivePuzzleCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [selectedDiff, setSelectedDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
@@ -128,7 +129,7 @@ export default function ArchivePuzzleCard({
       <div className="relative overflow-hidden h-44">
         <img
           src={puzzle.imageUrl}
-          alt={puzzle.title}
+          alt={puzzleTitle(puzzle, language)}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {/* Status Badge */}
@@ -162,7 +163,7 @@ export default function ArchivePuzzleCard({
             className="text-base font-extrabold line-clamp-1 mb-2"
             style={{ color: 'var(--puzzle-card-foreground)' }}
           >
-            {puzzle.title}
+            {puzzleTitle(puzzle, language)}
           </h3>
 
           <div className="flex flex-col gap-1.5 mb-4">
