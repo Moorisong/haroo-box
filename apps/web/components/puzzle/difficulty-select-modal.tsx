@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Play, Layers, Trophy, X, Flame, AlertTriangle } from 'lucide-react';
 import { PUZZLE_DIFFICULTY, PUZZLE_PIECE_COUNT } from '@/constants/puzzle';
@@ -26,6 +27,7 @@ export default function DifficultySelectModal({
   showResetWarning = false,
   launchText = '도전 시작하기',
 }: DifficultySelectModalProps) {
+  const { t } = useLanguage();
   return (
     <div 
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in puzzle-page"
