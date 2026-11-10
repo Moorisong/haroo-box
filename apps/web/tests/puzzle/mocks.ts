@@ -15,6 +15,26 @@ export async function setupBaseMocks(page: Page) {
     const lang = new URL(route.request().url()).searchParams.get('lang') === 'en' ? 'en' : 'ko';
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, locale: lang, data: Object.fromEntries(puzzleUiTranslations.map(row => [row.key, row[lang]])) }) });
   });
+  await page.route('**/api/puzzle/puzzle-mock-id-001', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        data: {
+          _id: 'puzzle-mock-id-001',
+          title: '아름다운 우주 성운',
+          title_en: 'Beautiful Cosmic Nebula',
+          week: 24,
+          imageUrl: '/sample/puzzle.png',
+          participantCount: 125,
+          startDate: '2026-06-01T00:00:00Z',
+          endDate: '2026-06-30T00:00:00Z',
+          archived: false,
+        },
+      }),
+    });
+  });
   // 현재 활성 퍼즐 Mock
   await page.route('**/api/puzzle/current', async (route) => {
     await route.fulfill({
