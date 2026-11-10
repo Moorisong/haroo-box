@@ -77,7 +77,7 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Thumbnail */}
               <img
                 src={item.imageUrl}
-                alt={puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language)}
+                alt={puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language, t('puzzle.metadata.untranslated_title'))}
                 className="w-16 h-12 object-cover rounded-xl flex-shrink-0 border"
                 style={{ borderColor: 'var(--puzzle-border)' }}
               />
@@ -85,7 +85,7 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-extrabold truncate mb-1" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                  {puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language)}
+                  {puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language, t('puzzle.metadata.untranslated_title'))}
                 </p>
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
