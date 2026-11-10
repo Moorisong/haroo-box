@@ -158,7 +158,7 @@ export default function FloatingToolbar({
                     onClick={handleDismissTooltip}
                     className="hover:text-zinc-400 p-0.5 rounded-full cursor-pointer flex items-center justify-center flex-shrink-0"
                     role="button"
-                    aria-label="닫기"
+                    aria-label={t('닫기', 'Close')}
                   >
                     <X size={10} strokeWidth={3} />
                   </span>
