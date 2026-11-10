@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState } from 'react';
 import { X, Trophy, Share2, Home, Save, LogIn } from 'lucide-react';
@@ -58,6 +59,7 @@ export default function CompletionModal({
 
   errorMessage,
 }: CompletionModalProps) {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -146,14 +148,14 @@ export default function CompletionModal({
             style={{ backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}
           >
             <div className="text-center">
-              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>현재 내 순위</p>
+              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('현재 내 순위', 'My rank')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
                 🎖️ {myRanking.myRank}위
               </p>
             </div>
             <div className="w-px h-10" style={{ backgroundColor: 'var(--puzzle-border)' }} />
             <div className="text-center">
-              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>백분율 범위</p>
+              <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('백분율 범위', 'Percentile')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-primary)' }}>
                 상위 {myRanking.topPercent}%
               </p>
@@ -168,12 +170,12 @@ export default function CompletionModal({
               {isSaving ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) var(--puzzle-muted-foreground) transparent' }} />
-                  <span>기록 저장/제출 중...</span>
+                  <span>{t('기록 저장/제출 중...', 'Saving your result...')}</span>
                 </>
               ) : errorMessage ? (
                 <span>⚠️ {errorMessage}</span>
               ) : isSaved ? (
-                <span>✓ 저장/제출 완료</span>
+                <span>{t('✓ 저장/제출 완료', '✓ Result saved')}</span>
               ) : null}
             </div>
           ) : (
@@ -183,7 +185,7 @@ export default function CompletionModal({
               style={{ backgroundColor: '#EF4444' }}
             >
               <LogIn size={16} strokeWidth={2.5} />
-              <span>로그인하고 저장/제출</span>
+              <span>{t('로그인하고 저장/제출', 'Log in to save')}</span>
             </button>
           )}
 
