@@ -16,7 +16,7 @@ import { usePuzzleDashboard } from './hooks/use-puzzle-dashboard';
 
 export default function PuzzlePageClient() {
   const router = useRouter();
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
   const { data: session } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -68,7 +68,6 @@ export default function PuzzlePageClient() {
 
   return (
     <>
-      <div className="flex justify-end px-4 pt-3"><button type="button" onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')} className="rounded-lg border px-3 py-2 text-xs font-bold" aria-label="Switch puzzle language">{language === 'ko' ? 'EN' : 'KO'}</button></div>
       <OrientationSuggestion />
       <div className={`${styles.container} puzzle-animate-fade-in-up`}>
         {/* Hero Section */}
