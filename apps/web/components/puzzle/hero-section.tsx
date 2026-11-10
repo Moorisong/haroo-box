@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useEffect } from 'react';
 import { Clock, Users, Check } from 'lucide-react';
@@ -33,6 +34,7 @@ export default function HeroSection({
   completedDifficulty = null,
   completedDifficulties = [],
 }: HeroSectionProps) {
+  const { language, t } = useLanguage();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [tempDiff, setTempDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [showConfirmRestart, setShowConfirmRestart] = useState(false);
@@ -54,7 +56,7 @@ export default function HeroSection({
     const end = new Date(puzzle.endDate).getTime();
     const diff = end - Date.now();
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    setDaysLeft(days > 0 ? `${days}일` : '마감 임박');
+    setDaysLeft(days > 0 ? String(days) : '0');
   }, [puzzle.endDate]);
 
   const handleOpenModal = () => {
@@ -94,14 +96,14 @@ export default function HeroSection({
                 style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-primary)' }}
               >
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--puzzle-primary)' }} />
-                이번 주 퍼즐 · {puzzle.week}주차
+                {t('이번 주 퍼즐', 'Puzzle of the week')} · {t(`${puzzle.week}주차`, `Week ${puzzle.week}`)}
               </div>
               {hasCompleted && (
                 <div 
                   className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200"
                 >
                   <Check size={13} strokeWidth={3} />
-                  완료함 {completedDifficulty && `(${completedDifficulty === 'novice' ? '초보' : completedDifficulty === 'expert' ? '고수' : '일반'})`}
+                  {t('완료함', 'Completed')} {completedDifficulty && `(${completedDifficulty === 'novice' ? t('초보', 'Easy') : completedDifficulty === 'expert' ? t('고수', 'Expert') : t('일반', 'Normal')})`}
                 </div>
               )}
             </div>
@@ -117,21 +119,21 @@ export default function HeroSection({
               className="text-base mb-8 font-medium leading-relaxed"
               style={{ color: 'var(--puzzle-muted-foreground)' }}
             >
-              매주 배달되는 몽글몽글 감성 퍼즐 ✨<br />
-              한 조각 한 조각 맞추며 바쁜 일상 속 나만의 퍼즐 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결, 원하는 난이도로 지금 바로 도전해 볼까요?
+              {t('매주 배달되는 몽글몽글 감성 퍼즐 ✨', 'A fresh, cozy puzzle every week ✨')}<br />
+              {t('한 조각 한 조각 맞추며 바쁜 일상 속 나만의 퍼즐 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결, 원하는 난이도로 지금 바로 도전해 볼까요?', 'Take a break, fit the pieces together, and challenge yourself on the weekly leaderboard!')}
             </p>
 
             <div className="flex flex-wrap items-center gap-5 mb-8">
               <div className="flex items-center gap-2">
                 <Clock size={16} style={{ color: 'var(--puzzle-primary)' }} />
                 <span className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{daysLeft}</span> 남음
+                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{daysLeft}</span> {t('일 남음', 'days left')}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users size={16} style={{ color: 'var(--puzzle-primary)' }} />
                 <span className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{puzzle.participantCount.toLocaleString()}명</span> 완료함
+                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{puzzle.participantCount.toLocaleString()}</span> {t('명 완료함', 'completed')}
                 </span>
               </div>
             </div>
@@ -164,7 +166,7 @@ export default function HeroSection({
                   style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)' }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-white/80 font-bold">내 진행률</span>
+                    <span className="text-xs text-white/80 font-bold">{t('내 진행률', 'My progress')}</span>
                     <span className="text-xs text-white/85 font-extrabold">{progress}%</span>
                   </div>
                   <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
@@ -200,7 +202,7 @@ export default function HeroSection({
           isLoggedIn={isLoggedIn}
           showRankedInfo={true}
           showResetWarning={false}
-          launchText={completedDifficulties.includes(tempDiff) ? '다시 플레이하기' : '도전 시작하기'}
+          launchText={completedDifficulties.includes(tempDiff) ? t('다시 플레이하기', 'Play again') : t('도전 시작하기', 'Start challenge')}
         />
       )}
 
