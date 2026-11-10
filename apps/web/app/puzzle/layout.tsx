@@ -35,14 +35,14 @@ export default function PuzzleLayout({
   if (!isReady) return <div className="puzzle-page min-h-screen" aria-busy="true" />;
 
   if (isSnsBrowser) {
-    return <div className="puzzle-page"><div style={{ position: 'fixed', top: 12, right: 12, zIndex: 10000 }}><PuzzleLanguageToggle /></div><SNSBrowserFallback /></div>;
+    return <div className="puzzle-page"><div className="flex justify-end px-3 py-2 relative z-50"><PuzzleLanguageToggle /></div><SNSBrowserFallback /></div>;
   }
 
   if (isPlayPage) {
     return (
       <div className="puzzle-page h-screen h-[100dvh] overflow-hidden flex flex-col">
-        <div style={{ position: 'fixed', top: 12, right: 12, zIndex: 10000 }}><PuzzleLanguageToggle /></div>
-        {children}
+        <div className="flex-none flex justify-end items-center px-3 py-1.5 border-b relative z-50" style={{ backgroundColor: "var(--puzzle-background)", borderColor: "var(--puzzle-border)" }}><PuzzleLanguageToggle /></div>
+        <div className="flex-1 min-h-0 flex flex-col">{children}</div>
       </div>
     );
   }
