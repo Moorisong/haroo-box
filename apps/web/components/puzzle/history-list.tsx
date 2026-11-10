@@ -90,7 +90,7 @@ export default function HistoryList({ history }: HistoryListProps) {
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
                   <span className="flex items-center gap-1">
-                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? '초보 (36조각)' : item.difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'}
+                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? `${t('초보', 'Easy')} (36 ${t('조각', 'pieces')})` : item.difficulty === 'beginner' ? `${t('일반', 'Normal')} (100 ${t('조각', 'pieces')})` : `${t('고수', 'Expert')} (256 ${t('조각', 'pieces')})`}
                   </span>
                 </div>
               </div>
@@ -109,11 +109,11 @@ export default function HistoryList({ history }: HistoryListProps) {
                     }}
                   >
                     <Trophy size={9} />
-                    <span>{item.myRank}위</span>
+                    <span>{t('순위', 'Rank')} {item.myRank}</span>
                   </div>
                 ) : (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-muted-foreground)' }}>
-                    일반 플레이
+                    {t('일반 플레이', 'Free play')}
                   </span>
                 )}
               </div>
