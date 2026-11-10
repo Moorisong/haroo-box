@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getPuzzleTranslations } from '../controllers/puzzle-translation.controller';
 import { puzzleAuth } from '../middlewares/puzzle-auth';
 import { verifyChallenge } from '../middlewares/verify-challenge';
 import { getCurrentPuzzle, getArchivePuzzles, getPuzzleById, getServiceStats } from '../controllers/puzzle.controller';
@@ -9,6 +10,7 @@ import { getMyProfile, deleteUserAccount } from '../controllers/user.controller'
 const router = Router();
 
 // 1. 퍼즐 관련 API (공개) - 정적 경로 먼저
+router.get('/translations', getPuzzleTranslations);
 router.get('/current', getCurrentPuzzle);
 router.get('/archive', getArchivePuzzles);
 router.get('/stats', getServiceStats);
