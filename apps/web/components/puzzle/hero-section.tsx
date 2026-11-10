@@ -97,14 +97,14 @@ export default function HeroSection({
                 style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-primary)' }}
               >
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--puzzle-primary)' }} />
-                {t('이번 주 퍼즐', 'Puzzle of the week')} · {t(`${puzzle.week}주차`, `Week ${puzzle.week}`)}
+                {t('puzzle.components.puzzle.hero.section.001')} · {t(`${puzzle.week}주차`, `Week ${puzzle.week}`)}
               </div>
               {hasCompleted && (
                 <div 
                   className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200"
                 >
                   <Check size={13} strokeWidth={3} />
-                  {t('완료함', 'Completed')} {completedDifficulty && `(${completedDifficulty === 'novice' ? t('초보', 'Easy') : completedDifficulty === 'expert' ? t('고수', 'Expert') : t('일반', 'Normal')})`}
+                  {t('puzzle.components.puzzle.hero.section.002')} {completedDifficulty && `(${completedDifficulty === 'novice' ? t('puzzle.components.puzzle.hero.section.003') : completedDifficulty === 'expert' ? t('puzzle.components.puzzle.hero.section.004') : t('puzzle.components.puzzle.hero.section.005')})`}
                 </div>
               )}
             </div>
@@ -120,21 +120,21 @@ export default function HeroSection({
               className="text-base mb-8 font-medium leading-relaxed"
               style={{ color: 'var(--puzzle-muted-foreground)' }}
             >
-              {t('매주 배달되는 몽글몽글 감성 퍼즐 ✨', 'A fresh, cozy puzzle every week ✨')}<br />
-              {t('한 조각 한 조각 맞추며 바쁜 일상 속 나만의 퍼즐 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결, 원하는 난이도로 지금 바로 도전해 볼까요?', 'Take a break, fit the pieces together, and challenge yourself on the weekly leaderboard!')}
+              {t('puzzle.components.puzzle.hero.section.006')}<br />
+              {t('puzzle.components.puzzle.hero.section.007')}
             </p>
 
             <div className="flex flex-wrap items-center gap-5 mb-8">
               <div className="flex items-center gap-2">
                 <Clock size={16} style={{ color: 'var(--puzzle-primary)' }} />
                 <span className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{daysLeft}</span> {t('일 남음', 'days left')}
+                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{daysLeft}</span> {t('puzzle.components.puzzle.hero.section.008')}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users size={16} style={{ color: 'var(--puzzle-primary)' }} />
                 <span className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{puzzle.participantCount.toLocaleString()}</span> {t('명 완료함', 'completed')}
+                  <span style={{ color: 'var(--puzzle-card-foreground)', fontWeight: 750 }}>{puzzle.participantCount.toLocaleString()}</span> {t('puzzle.components.puzzle.hero.section.009')}
                 </span>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function HeroSection({
                   style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)' }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-white/80 font-bold">{t('내 진행률', 'My progress')}</span>
+                    <span className="text-xs text-white/80 font-bold">{t('puzzle.components.puzzle.hero.section.010')}</span>
                     <span className="text-xs text-white/85 font-extrabold">{progress}%</span>
                   </div>
                   <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
@@ -203,7 +203,7 @@ export default function HeroSection({
           isLoggedIn={isLoggedIn}
           showRankedInfo={true}
           showResetWarning={false}
-          launchText={completedDifficulties.includes(tempDiff) ? t('다시 플레이하기', 'Play again') : t('도전 시작하기', 'Start challenge')}
+          launchText={completedDifficulties.includes(tempDiff) ? t('puzzle.components.puzzle.hero.section.011') : t('puzzle.components.puzzle.hero.section.012')}
         />
       )}
 
