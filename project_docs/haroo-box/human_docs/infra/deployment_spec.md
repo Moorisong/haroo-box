@@ -16,32 +16,35 @@
 * **감지 알고리즘**:
   * 집 LAN 대역 IP(`192.168.0.6`)에 ping을 2초간 시도.
   * 응답 성공 시: 로컬 포트 `22`로 연결하여 고속 rsync 전송.
-  * 응답 실패 시: 외부 포트 `2222` (WAN 공인 IP `125.190.25.48`)로 포트포워딩 경로를 우회하여 SSH 접속.
-* **동기화 제외 목록**: `node_modules`, `.git`, `.env`, `.next` (프론트엔드), `dist` (백엔드)
+  * 응답 실패 시: 외부 포트(프론트엔드: `8193`, 백엔드: `2222`, WAN 공인 IP `125.190.25.48`)로 포트포워딩 경로를 통해 SSH 접속.
+* **동기화 제외 목록**: `node_modules`, `.git`, `.env`, `.next` (프론트엔드), `dist` (백엔드), `docs`, `.antigravity`
 
 ---
 
-### 2) 백엔드 프로세스 제어 (`box-be`)
+### 2) 백엔드 프로세스 제어 (`box-be` / `box-be-test`)
 * **프로세스 매니저**: PM2
-* **설정 파일**: `apps/server/ecosystem.config.js`
+* **설정 파일**: `apps/server/ecosystem.config.js` (운영), `apps/server/ecosystem-test.config.js` (테스트)
 * **구동 방식**: production 환경 모드로 `npm start` 실행 (실제 내부 entrypoint: `node dist/index.js`).
 * **환경 정보 릴로드**: 배포 스크립트를 통해 파일 전송 후 `pm2 reload box-be --update-env` 명령을 내려 무중단 서비스 리로딩 구현.
 
-### 3) 프론트엔드 프로세스 제어 (`box-fe`)
+### 3) 프론트엔드 프로세스 제어 (`box-fe` / `box-fe-test`)
 * **프로세스 매니저**: PM2
-* **설정 파일**: `apps/web/ecosystem.config.js`
-* **구동 방식**: 내부 포트 `3002`, 루프백 IP `127.0.0.1`로 고정하여 `npm start -- -p 3002 -H 127.0.0.1` 명령 실행.
+* **설정 파일**: `apps/web/ecosystem.config.js` (운영 포트 `3001`), `apps/web/ecosystem-test.config.js` (테스트 포트 `3004`)
+* **구동 방식**: Next.js 실행 바이너리(`node_modules/next/dist/bin/next`)를 루프백 IP `127.0.0.1`로 고정하여 실행.
 * **환경 정보 릴로드**: `pm2 restart box-fe --update-env` 실행.
 
 ---
 
-## 3. 네트워크 및 Nginx 프록시 설정 (추정)
+## 3. 네트워크 및 Nginx 프록시 설정 (포트 맵)
 
 배포 포트 및 도메인 설정을 기반으로 한 네트워크 포트 맵입니다.
 
 * **도메인 맵**:
-  * 프론트엔드 도메인: `https://box.harooo.co.kr` (포트 `3002` 프록시)
-  * 백엔드 API 도메인: `https://box-api.harooo.co.kr` (포트 `3000` 프록시)
+  * 프론트엔드 운영 도메인: `https://box.harooo.co.kr` (포트 `3001` 프록시)
+  * 프론트엔드 테스트 도메인: `https://test-box.harooo.co.kr` (포트 `3004` 프록시)
+  * 백엔드 API 운영 도메인: `https://box-api.harooo.co.kr` (포트 `3000` 프록시)
+  * 어드벤트 캘린더 도메인: `https://advent-calendar.harooo.co.kr`
+  * 감쓰.exe 연동 도메인: `https://dumpit-web.harooo.co.kr`
   * 롤링페이퍼 연동 도메인: `https://r-paper-web.harooo.co.kr`
 * **프록시 패스 설정**:
   * 외부 SSL 통신(Port 443) 수신 후, Nginx 등 리버스 프록시 장비가 SSL Offloading을 수행하여 홈서버의 각 내부 포트로 트래픽을 토스합니다.
