@@ -278,5 +278,45 @@
     "key": "puzzle.ui.profileJoined",
     "ko": "{{date}} 가입",
     "en": "Joined {{date}}"
+  },
+  {
+    "key": "puzzle.game.confirmShuffle",
+    "ko": "정말로 판을 엎고 처음부터 다시 시작하시겠습니까?",
+    "en": "Shuffle all pieces and restart from the beginning?"
+  },
+  {
+    "key": "puzzle.game.share.title",
+    "ko": "[하루퍼즐] 멋지게 완주 성공! 🎉",
+    "en": "[Haroo Puzzle] I completed the puzzle! 🎉"
+  },
+  {
+    "key": "puzzle.game.share.description",
+    "ko": "대박🌟 {{time}} 만에 성공했네요!",
+    "en": "I finished in {{time}}! 🌟"
+  },
+  {
+    "key": "puzzle.game.share.button",
+    "ko": "기록 도전하러 가기",
+    "en": "Try the challenge"
+  },
+  {
+    "key": "puzzle.game.share.copied",
+    "ko": "공유용 하루퍼즐 링크가 클립보드에 복사되었습니다!",
+    "en": "Puzzle link copied to clipboard!"
+  },
+  {
+    "key": "puzzle.game.setup.error",
+    "ko": "퍼즐 데이터를 불러오지 못했습니다.",
+    "en": "Could not load puzzle data."
+  },
+  {
+    "key": "puzzle.game.submit.error",
+    "ko": "기록 저장에 실패했습니다. 다시 시도해 주세요.",
+    "en": "Could not save your result. Please try again."
+  },
+  {
+    "key": "puzzle.game.submit.serverError",
+    "ko": "기록 업로드 중 서버 오류가 발생했습니다.",
+    "en": "A server error occurred while submitting your result."
   }
 ]
