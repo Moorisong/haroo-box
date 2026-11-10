@@ -167,7 +167,7 @@ export default function DifficultySelectModal({
                     </span>
                   </div>
                   <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    {t('이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!', 'You've already completed this difficulty. Practice again without affecting your rank.')}
+                    {t('이미 이번 주에 완주한 난이도입니다. 랭킹에는 반영되지 않지만 자유롭게 다시 연습해보세요!', "You have already completed this difficulty. Practice again without affecting your rank.")}
                   </p>
                 </>
               ) : (
