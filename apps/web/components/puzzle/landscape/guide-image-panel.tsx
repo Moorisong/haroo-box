@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 
@@ -28,6 +29,7 @@ export default function GuideImagePanel({
   onPositionChange,
   onSizeChange,
 }: GuideImagePanelProps) {
+  const { t } = useLanguage();
   // controlled component처럼 동작하도록 state 대신 부모의 props를 우선 사용하고 상호작용 시에만 업데이트
   const currentPosition = defaultPosition ?? { x: 0, y: 0 };
   const currentSize = defaultSize ?? initialSize;
@@ -158,7 +160,7 @@ export default function GuideImagePanel({
         <div className="flex-1 min-h-0 w-full relative">
           <img
             src={imageUrl}
-            alt="원본 가이드 이미지"
+            alt={t('원본 가이드 이미지', 'Original reference image')}
             className="w-full h-full"
             style={{ objectFit: 'contain', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
             draggable={false}
@@ -172,7 +174,7 @@ export default function GuideImagePanel({
           data-resize-handle="br"
           onPointerDown={handleResizePointerDown}
           className="absolute bottom-1 right-1 w-9 h-9 z-[99] flex items-center justify-center cursor-se-resize rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg border border-white transition-all scale-100 hover:scale-105"
-          title="크기 조절 (드래그)"
+          title={t('크기 조절 (드래그)', 'Resize (drag)')}
         >
           <svg
             width="12"
@@ -195,7 +197,7 @@ export default function GuideImagePanel({
             className="absolute bottom-11 right-0 bg-blue-600/95 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg pointer-events-none whitespace-nowrap animate-bounce"
             style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.15))' }}
           >
-            ↔ 크기 조절
+            ↔ {t('크기 조절', 'Resize')}
             <div className="absolute top-full right-4 w-1.5 h-1.5 bg-blue-600/95 rotate-45 transform -translate-y-0.5" />
           </div>
         </div>
