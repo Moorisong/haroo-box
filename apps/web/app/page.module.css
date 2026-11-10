@@ -59,6 +59,7 @@
 }
 .card:focus-visible { outline: 3px solid var(--home-blue); outline-offset: 4px; }
 .advent { --card-tint: #f6ece4; --card-ink: #a93238; }
+.advent .cardImage { width: 78px; height: 78px; padding: 4px; }
 .gamss { --card-tint: #f4e7e5; --card-ink: #934a49; }
 .puzzle { --card-tint: #e8edf6; --card-ink: #3d5996; }
 .rolling { --card-tint: #f5edda; --card-ink: #85642c; }
