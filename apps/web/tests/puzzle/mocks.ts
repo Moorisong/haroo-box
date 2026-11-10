@@ -2,6 +2,11 @@ import { Page } from '@playwright/test';
 
 // 1. 공통 Mock API 정의 함수
 export async function setupBaseMocks(page: Page) {
+  await page.addInitScript(() => window.localStorage.setItem('haroo-language', 'ko'));
+  await page.route('**/api/puzzle/translations?lang=*', async (route) => {
+    const lang = new URL(route.request().url()).searchParams.get('lang') === 'en' ? 'en' : 'ko';
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, locale: lang, data: {} }) });
+  });
   // 현재 활성 퍼즐 Mock
   await page.route('**/api/puzzle/current', async (route) => {
     await route.fulfill({
@@ -12,6 +17,8 @@ export async function setupBaseMocks(page: Page) {
         data: {
           _id: 'puzzle-mock-id-001',
           title: '아름다운 우주 성운',
+          title_en: 'Beautiful Cosmic Nebula',
+          week: 24,
           imageUrl: '/sample/puzzle.png',
           participantCount: 125,
           startDate: '2026-06-01T00:00:00Z',
@@ -42,6 +49,8 @@ export async function setupBaseMocks(page: Page) {
           {
             _id: 'puzzle-archive-002',
             title: '고요한 가을 숲',
+            title_en: 'Quiet Autumn Forest',
+            week: 23,
             imageUrl: '/sample/forest.png',
             participantCount: 89,
             startDate: '2026-05-15T00:00:00Z',
