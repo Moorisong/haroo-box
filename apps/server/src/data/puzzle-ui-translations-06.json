@@ -263,5 +263,10 @@
     "key": "puzzle.components.puzzle.sync.choice.modal.006",
     "ko": "불러오기",
     "en": "Restore"
+  },
+  {
+    "key": "puzzle.metadata.untranslated_title",
+    "ko": "제목 미정",
+    "en": "Untitled puzzle"
   }
 ]
