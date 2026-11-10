@@ -57,7 +57,7 @@ export default function PlayPage({ params }: PlayPageProps) {
     return (
       <div className="flex items-center justify-center min-h-screen flex-col gap-3 font-semibold select-none">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('캔버스 조각판을 세팅하는 중...', 'Setting up your puzzle board...')}</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.play.puzzleId.page.001')}</span>
 
         {syncChoiceData && (
           <SyncChoiceModal
