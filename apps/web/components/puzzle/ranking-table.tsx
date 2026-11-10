@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { RankingEntry } from '@/types/puzzle';
 
@@ -17,6 +18,7 @@ export default function RankingTable({
   hasMore,
   onShowMore,
 }: RankingTableProps) {
+  const { t } = useLanguage();
   const getMedal = (rank: number) => {
     if (rank === 1) return '🥇';
     if (rank === 2) return '🥈';
@@ -56,10 +58,10 @@ export default function RankingTable({
           borderColor: 'var(--puzzle-border)',
         }}
       >
-        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>순위</span>
-        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>닉네임</span>
-        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>기록</span>
-        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>날짜</span>
+        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('순위', 'Rank')}</span>
+        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('닉네임', 'Nickname')}</span>
+        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('기록', 'Time')}</span>
+        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('날짜', 'Date')}</span>
       </div>
 
       {/* Rows */}
