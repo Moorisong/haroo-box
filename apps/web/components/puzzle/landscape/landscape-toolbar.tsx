@@ -57,7 +57,7 @@ export default function LandscapeToolbar({
         <div className="flex items-center gap-1.5 mt-0.5 text-xs font-medium text-gray-500">
           <span>{difficulty}</span>
           <span className="w-1 h-1 rounded-full bg-gray-300" />
-          <span className="text-blue-600 font-semibold">{progressPercent}% {t('완료', 'complete')}</span>
+          <span className="text-blue-600 font-semibold">{progressPercent}% {t('puzzle.components.puzzle.landscape.landscape.toolbar.001')}</span>
           <span className="w-1 h-1 rounded-full bg-gray-300" />
           <span className="font-mono text-gray-600">⏱ {timerFormatted}</span>
         </div>
@@ -75,7 +75,7 @@ export default function LandscapeToolbar({
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            {t('플레이 모드', 'Play mode')}
+            {t('puzzle.components.puzzle.landscape.landscape.toolbar.002')}
           </button>
           <button
             onClick={() => onModeChange?.('move')}
@@ -85,7 +85,7 @@ export default function LandscapeToolbar({
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
-            {t('이동 모드', 'Move mode')}
+            {t('puzzle.components.puzzle.landscape.landscape.toolbar.003')}
           </button>
         </div>
 
@@ -97,7 +97,7 @@ export default function LandscapeToolbar({
             onClick={onZoomOut}
             disabled={zoom <= 0.6}
             className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-all disabled:opacity-20 disabled:pointer-events-none"
-            title={t('축소', 'Zoom out')}
+            title={t('puzzle.components.puzzle.landscape.landscape.toolbar.004')}
           >
             <ZoomOut size={13} />
           </button>
@@ -112,7 +112,7 @@ export default function LandscapeToolbar({
             onClick={onZoomIn}
             disabled={zoom >= 2.2}
             className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-all disabled:opacity-20 disabled:pointer-events-none"
-            title={t('확대', 'Zoom in')}
+            title={t('puzzle.components.puzzle.landscape.landscape.toolbar.005')}
           >
             <ZoomIn size={13} />
           </button>
@@ -124,10 +124,10 @@ export default function LandscapeToolbar({
         <button
           onClick={onShuffle}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-red-500 hover:bg-red-500/10 transition-all"
-          title={t('판 엎기', 'Shuffle pieces')}
+          title={t('puzzle.components.puzzle.landscape.landscape.toolbar.006')}
         >
           <Shuffle size={12} />
-          <span className="hidden lg:inline text-[11px]">{t('셔플', 'Shuffle')}</span>
+          <span className="hidden lg:inline text-[11px]">{t('puzzle.components.puzzle.landscape.landscape.toolbar.007')}</span>
         </button>
 
         <div className="w-px h-3 mx-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0.08)' }} />
@@ -147,7 +147,7 @@ export default function LandscapeToolbar({
             color: saveStatus === 'saved' ? '#10b981' : saveStatus === 'saving' ? '#4f8ef7' : '#fff',
             border: saveStatus === 'saved' ? '1px solid rgba(16, 185, 129, 0.2)' : saveStatus === 'saving' ? '1px solid rgba(79, 142, 247, 0.2)' : '1px solid transparent',
           }}
-          title={t('저장/제출', 'Save or submit')}
+          title={t('puzzle.components.puzzle.landscape.landscape.toolbar.008')}
         >
           {saveStatus === 'saving' ? (
             <div className="w-3 h-3 border border-t-transparent border-current rounded-full animate-spin" />
@@ -157,7 +157,7 @@ export default function LandscapeToolbar({
             <Save size={12} />
           )}
           <span className="hidden lg:inline text-[11px]">
-            {saveStatus === 'saving' ? t('저장 중', 'Saving') : saveStatus === 'saved' ? t('완료', 'Saved') : t('저장', 'Save')}
+            {saveStatus === 'saving' ? t('puzzle.components.puzzle.landscape.landscape.toolbar.009') : saveStatus === 'saved' ? t('puzzle.components.puzzle.landscape.landscape.toolbar.010') : t('puzzle.components.puzzle.landscape.landscape.toolbar.011')}
           </span>
         </button>
       </div>
