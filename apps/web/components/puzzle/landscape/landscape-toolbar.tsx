@@ -39,7 +39,7 @@ export default function LandscapeToolbar({
 
   return (
     <div
-      className="flex items-center justify-between px-6 py-2.5 border-b select-none"
+      className="flex items-center justify-between gap-3 px-3 sm:px-6 py-2.5 border-b select-none min-w-0 flex-shrink-0"
       style={{
         backgroundColor: '#ffffff',
         borderColor: 'rgba(0, 0, 0, 0.08)',
@@ -48,7 +48,7 @@ export default function LandscapeToolbar({
       onClick={(e) => e.stopPropagation()}
     >
       {/* 왼쪽: 제목 + 난이도 */}
-      <div className="flex flex-col min-w-0">
+      <div className="flex flex-col min-w-0 flex-1">
         <span
           className="text-sm font-bold tracking-tight text-gray-800 truncate max-w-[240px]"
         >
@@ -64,7 +64,7 @@ export default function LandscapeToolbar({
       </div>
 
       {/* 오른쪽: 확대/축소 + 판 엎기 + 저장 */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 max-w-[65%] overflow-x-auto"
         {/* 모드 선택 (플레이 / 이동) */}
         <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200/80 mr-1">
           <button
