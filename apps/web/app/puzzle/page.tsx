@@ -1,48 +1,58 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { cookies, headers } from 'next/headers';
 import { fetchCurrentPuzzle } from '@/lib/puzzle-api';
+import { API_BASE_URL } from '@/constants';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 import PuzzlePageClient from './page.client';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const res = await fetchCurrentPuzzle();
-  if (res.success && res.data) {
-    const puzzle = res.data;
-    const imageUrl = puzzle.imageUrl.startsWith('http') 
-      ? puzzle.imageUrl 
-      : `https://box.harooo.co.kr${puzzle.imageUrl}`;
-    
-    return {
-      title: {
-        absolute: '하루퍼즐 | 주간 랭킹 퍼즐'
-      },
-      description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
-      openGraph: {
-        title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
-        description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
-        url: 'https://box.harooo.co.kr/puzzle',
-        type: 'website',
-        images: [
-          {
-            url: imageUrl,
-            width: 1200,
-            height: 630,
-            alt: puzzle.title,
-          },
-        ],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: `[하루퍼즐] 이번 주 퍼즐 도착!`,
-        description: `바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕`,
-        images: [imageUrl],
-      },
-    };
-  }
+type Locale = 'ko' | 'en';
 
+async function getPuzzleMetadataTranslations(locale: Locale): Promise<Record<string, string>> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/puzzle/translations?lang=${locale}`, { cache: 'no-store' });
+    if (!response.ok) return {};
+    const json = await response.json();
+    return json.success && json.locale === locale && json.data ? json.data : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);
+  const preferred = cookieStore.get('haroo-language')?.value;
+  const locale: Locale = preferred === 'ko' || preferred === 'en'
+    ? preferred
+    : headerStore.get('accept-language')?.toLowerCase().startsWith('ko') ? 'ko' : 'en';
+  const [translations, current] = await Promise.all([
+    getPuzzleMetadataTranslations(locale),
+    fetchCurrentPuzzle(),
+  ]);
+  const pageTitle = translations['puzzle.metadata.pageTitle'] || '';
+  const description = translations['puzzle.metadata.description'] || '';
+  const shareTitle = translations['puzzle.metadata.shareTitle'] || '';
+  const puzzle = current.success ? current.data : undefined;
+  if (!puzzle) return { title: { absolute: pageTitle }, description };
+
+  const imageUrl = puzzle.imageUrl.startsWith('http')
+    ? puzzle.imageUrl
+    : `https://box.harooo.co.kr${puzzle.imageUrl}`;
   return {
-    title: {
-      absolute: '하루퍼즐 | 주간 랭킹 퍼즐'
+    title: { absolute: pageTitle },
+    description,
+    openGraph: {
+      title: shareTitle,
+      description,
+      url: 'https://box.harooo.co.kr/puzzle',
+      type: 'website',
+      images: [{
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: puzzleTitle(puzzle, locale, translations['puzzle.metadata.untranslated_title'] || ''),
+      }],
     },
-    description: '바쁜 일상 속 소소한 퍼즐 한 조각 어떠세요? ☕',
+    twitter: { card: 'summary_large_image', title: shareTitle, description, images: [imageUrl] },
   };
 }
 
