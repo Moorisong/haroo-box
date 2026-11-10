@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -13,6 +14,7 @@ import styles from '../puzzle-layout.module.css';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function RankingPage() {
+  const { t } = useLanguage();
   const { data: session } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -105,7 +107,7 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>주간 랭킹 보드를 동기화하는 중...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('주간 랭킹 보드를 동기화하는 중...', 'Loading weekly rankings...')}</span>
       </div>
     );
   }
@@ -114,8 +116,8 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-2 select-none">
         <span className="text-3xl">🏆</span>
-        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>현재 등록된 주간 랭킹 이벤트가 없습니다.</p>
-        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">메인 페이지</Link>
+        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('현재 등록된 주간 랭킹 이벤트가 없습니다.', 'No weekly ranking event is available.')}</p>
+        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">{t('메인 페이지', 'Home')}</Link>
       </div>
     );
   }
