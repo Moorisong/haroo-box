@@ -33,7 +33,6 @@ export default function PuzzleLayout({
   return (
     <div className="puzzle-page">
       <Header />
-      <div style={{ position: 'fixed', top: 12, right: 12, zIndex: 10000 }}><PuzzleLanguageToggle /></div>
       <div style={{ minHeight: 'calc(100vh - 140px)' }}>{children}</div>
       <Footer />
     </div>
