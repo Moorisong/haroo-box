@@ -89,7 +89,7 @@ export default function RankingPage() {
       const end = new Date(endDateStr).getTime();
       const diff = end - Date.now();
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      return days > 0 ? `${days} ${t('일 남음', 'days left')}` : t('종료 임박', 'Ending soon');
+      return days > 0 ? `${days} ${t('puzzle.app.puzzle.ranking.page.001')}` : t('puzzle.app.puzzle.ranking.page.002');
     } catch {
       return '';
     }
@@ -100,7 +100,7 @@ export default function RankingPage() {
       const date = new Date(dateStr);
       return language === 'en' ? `Week ${Math.ceil(date.getDate() / 7)} · ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date)}` : `${date.getMonth() + 1}월 ${Math.ceil(date.getDate() / 7)}주차`;
     } catch {
-      return t('주간 대회', 'Weekly challenge');
+      return t('puzzle.app.puzzle.ranking.page.003');
     }
   };
 
@@ -108,7 +108,7 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('주간 랭킹 보드를 동기화하는 중...', 'Loading weekly rankings...')}</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.ranking.page.004')}</span>
       </div>
     );
   }
@@ -117,8 +117,8 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-2 select-none">
         <span className="text-3xl">🏆</span>
-        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('현재 등록된 주간 랭킹 이벤트가 없습니다.', 'No weekly ranking event is available.')}</p>
-        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">{t('메인 페이지', 'Home')}</Link>
+        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.ranking.page.005')}</p>
+        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">{t('puzzle.app.puzzle.ranking.page.006')}</Link>
       </div>
     );
   }
@@ -130,7 +130,7 @@ export default function RankingPage() {
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold flex items-center gap-2 mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Trophy size={28} style={{ color: '#F59E0B' }} />
-            {t('주간 랭킹 경쟁', 'Weekly leaderboard')}
+            {t('puzzle.app.puzzle.ranking.page.007')}
           </h1>
           <p className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             {getFormatDate(currentPuzzle.startDate)} · {puzzleTitle(currentPuzzle, language)}
@@ -148,8 +148,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'novice' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            {t('초보', 'Easy')}
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(36 {t('조각', 'pieces')})</span>
+            {t('puzzle.app.puzzle.ranking.page.008')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(36 {t('puzzle.app.puzzle.ranking.page.009')})</span>
           </button>
           <button
             onClick={() => setSelectedDifficulty('beginner')}
@@ -160,8 +160,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'beginner' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            {t('일반', 'Normal')}
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(100 {t('조각', 'pieces')})</span>
+            {t('puzzle.app.puzzle.ranking.page.010')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(100 {t('puzzle.app.puzzle.ranking.page.011')})</span>
           </button>
           <button
             onClick={() => setSelectedDifficulty('expert')}
@@ -172,8 +172,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'expert' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            {t('고수', 'Expert')}
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(256 {t('조각', 'pieces')})</span>
+            {t('puzzle.app.puzzle.ranking.page.012')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(256 {t('puzzle.app.puzzle.ranking.page.013')})</span>
           </button>
         </div>
       </div>
@@ -217,13 +217,13 @@ export default function RankingPage() {
                 </p>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   <span className="flex items-center gap-1 text-[11px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    <Users size={11} /> {currentPuzzle.participantCount.toLocaleString()} {t('명 완주', 'completed')}
+                    <Users size={11} /> {currentPuzzle.participantCount.toLocaleString()} {t('puzzle.app.puzzle.ranking.page.014')}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     <Clock size={11} /> {getDaysLeft(currentPuzzle.endDate)}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-bold hidden sm:flex" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    <Trophy size={11} /> {selectedDifficulty === 'novice' ? `${t('초보 난이도', 'Easy')} (36 ${t('조각', 'pieces')})` : selectedDifficulty === 'beginner' ? `${t('일반 난이도', 'Normal')} (100 ${t('조각', 'pieces')})` : `${t('고수 난이도', 'Expert')} (256 ${t('조각', 'pieces')})`}
+                    <Trophy size={11} /> {selectedDifficulty === 'novice' ? `${t('puzzle.app.puzzle.ranking.page.015')} (36 ${t('puzzle.app.puzzle.ranking.page.016')})` : selectedDifficulty === 'beginner' ? `${t('puzzle.app.puzzle.ranking.page.017')} (100 ${t('puzzle.app.puzzle.ranking.page.018')})` : `${t('puzzle.app.puzzle.ranking.page.019')} (256 ${t('puzzle.app.puzzle.ranking.page.020')})`}
                   </span>
                 </div>
               </div>
