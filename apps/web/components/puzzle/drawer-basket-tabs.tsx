@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { basketMetadata } from './piece-drawer-modal';
 
 interface DrawerBasketTabsProps {
@@ -20,6 +22,7 @@ export function DrawerBasketTabs({
   isOrganizeMode,
   selectedPieceId,
 }: DrawerBasketTabsProps) {
+  const { t } = useLanguage();
   return (
     <div className="grid grid-cols-5 gap-2 p-4 border-b" style={{ borderColor: 'var(--puzzle-border)', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
       {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key) => {
@@ -49,7 +52,7 @@ export function DrawerBasketTabs({
                 {meta.label}
               </span>
             </div>
-            <span className="text-[9px] font-bold text-slate-400">({count}개)</span>
+            <span className="text-[9px] font-bold text-slate-400">({count} {t('개', 'pcs')})</span>
           </div>
         );
       })}
