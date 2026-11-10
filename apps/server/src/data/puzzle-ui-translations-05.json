@@ -1,0 +1,227 @@
+[
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.001",
+    "ko": "상위 1%",
+    "en": "Top 1%"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.002",
+    "ko": "상위 5%",
+    "en": "Top 5%"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.003",
+    "ko": "상위 10%",
+    "en": "Top 10%"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.004",
+    "ko": "상위 25%",
+    "en": "Top 25%"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.005",
+    "ko": "상위 50%",
+    "en": "Top 50%"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.006",
+    "ko": "성적 분포 분석",
+    "en": "Performance distribution"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.007",
+    "ko": "완주 챌린저",
+    "en": "Among"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.008",
+    "ko": "명",
+    "en": "players"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.009",
+    "ko": "중 현재",
+    "en": "you rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.010",
+    "ko": "위",
+    "en": "th"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.011",
+    "ko": "입니다!",
+    "en": "!"
+  },
+  {
+    "key": "puzzle.components.puzzle.percentile.chart.012",
+    "ko": "완주 후 본인의 성적 위치를 그래프로 확인해 보세요!",
+    "en": "Finish a puzzle to see where you rank!"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.001",
+    "ko": "전체 조각 모아보기",
+    "en": "All puzzle pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.002",
+    "ko": "조각 터치 후, 이동할 바구니를 선택하세요.",
+    "en": "Select a piece, then choose a basket."
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.003",
+    "ko": "조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.",
+    "en": "Drag a piece onto a basket number to organize it."
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.004",
+    "ko": "조각 드래그 시 바구니 분류 가능",
+    "en": "Drag pieces to organize baskets"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.005",
+    "ko": "분류 모드",
+    "en": "Organize mode"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.006",
+    "ko": "가이드 보기",
+    "en": "Show guide"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.007",
+    "ko": "바구니가 비어 있습니다.",
+    "en": "This basket is empty."
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.drawer.modal.008",
+    "ko": "다른 바구니에서 조각을 드래그하여 옮겨보세요!",
+    "en": "Drag pieces here from another basket."
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.001",
+    "ko": "남은 조각",
+    "en": "Pieces left"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.002",
+    "ko": "보드 격자를 터치하여 배치하세요",
+    "en": "Tap a grid cell to place a piece"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.003",
+    "ko": "모아보기",
+    "en": "View all"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.004",
+    "ko": "모든 조각이 보드에 배치되었습니다!",
+    "en": "All pieces are on the board!"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.005",
+    "ko": "바구니",
+    "en": "Basket"
+  },
+  {
+    "key": "puzzle.components.puzzle.piece.tray.006",
+    "ko": "번이 비어 있습니다. 모아보기에서 조각을 드래그해 옮겨보세요!",
+    "en": "is empty. Drag pieces here from View all!"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.001",
+    "ko": "뒤로",
+    "en": "Back"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.002",
+    "ko": "초보 (36조각)",
+    "en": "Easy (36 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.003",
+    "ko": "일반 (100조각)",
+    "en": "Normal (100 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.004",
+    "ko": "고수 (256조각)",
+    "en": "Expert (256 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.005",
+    "ko": "랭킹 도전",
+    "en": "Ranked challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.portrait.portrait.puzzle.layout.006",
+    "ko": "가이드 탭하여 닫기",
+    "en": "Tap guide to close"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.001",
+    "ko": "완주 수",
+    "en": "Completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.002",
+    "ko": "개",
+    "en": "puzzles"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.003",
+    "ko": "최고 순위",
+    "en": "Best rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.004",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.005",
+    "ko": "최고 기록",
+    "en": "Best time"
+  },
+  {
+    "key": "puzzle.components.puzzle.profile.card.006",
+    "ko": "사용자",
+    "en": "Player"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.001",
+    "ko": "랭킹 TOP 7",
+    "en": "Top 7 rankings"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.002",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.003",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.004",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.005",
+    "ko": "전체 보기",
+    "en": "View all"
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.006",
+    "ko": "아직 등록된 랭킹 기록이 없습니다.",
+    "en": "No ranking records yet."
+  },
+  {
+    "key": "puzzle.components.puzzle.ranking.preview.007",
+    "ko": "첫 번째 도전자가 되어 기록을 등록해 보세요!",
+    "en": "Be the first to set a record!"
+  }
+]
