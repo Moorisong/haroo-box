@@ -150,14 +150,14 @@ export default function CompletionModal({
             <div className="text-center">
               <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('현재 내 순위', 'My rank')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                🎖️ {myRanking.myRank}위
+                🎖️ {t('순위', 'Rank')} {myRanking.myRank}
               </p>
             </div>
             <div className="w-px h-10" style={{ backgroundColor: 'var(--puzzle-border)' }} />
             <div className="text-center">
               <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('백분율 범위', 'Percentile')}</p>
               <p className="text-lg font-black" style={{ color: 'var(--puzzle-primary)' }}>
-                상위 {myRanking.topPercent}%
+                {t('상위', 'Top')} {myRanking.topPercent}%
               </p>
             </div>
           </div>
