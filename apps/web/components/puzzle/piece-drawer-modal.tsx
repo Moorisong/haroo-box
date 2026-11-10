@@ -7,12 +7,12 @@ import { Maximize2, X, Folder, HelpCircle, Eye } from 'lucide-react';
 import PieceCell from './piece-cell';
 import { DrawerBasketTabs } from './drawer-basket-tabs';
 
-export const basketMetadata: Record<string, { label: string; color: string }> = {
-  basket1: { label: '빨강', color: '#ef4444' },
-  basket2: { label: '파랑', color: '#3b82f6' },
-  basket3: { label: '초록', color: '#22c55e' },
-  basket4: { label: '노랑', color: '#eab308' },
-  basket5: { label: '보라', color: '#a855f7' },
+export const basketMetadata: Record<string, { color: string }> = {
+  basket1: { color: '#ef4444' },
+  basket2: { color: '#3b82f6' },
+  basket3: { color: '#22c55e' },
+  basket4: { color: '#eab308' },
+  basket5: { color: '#a855f7' },
 };
 
 interface PieceDrawerModalProps {
