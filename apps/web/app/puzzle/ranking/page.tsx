@@ -98,7 +98,7 @@ export default function RankingPage() {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return language === 'en' ? `Week ${Math.ceil(date.getDate() / 7)} · ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date)}` : `${date.getMonth() + 1}월 ${Math.ceil(date.getDate() / 7)}주차`;
+      return t('puzzle.ui.rankingMonthWeek', { month: new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'long' }).format(date), week: Math.ceil(date.getDate() / 7) });
     } catch {
       return t('puzzle.app.puzzle.ranking.page.003');
     }
