@@ -1,5 +1,6 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { useState, useEffect } from 'react';
 import { Clock, Users, Check } from 'lucide-react';
@@ -112,7 +113,7 @@ export default function HeroSection({
               className="text-3xl md:text-4xl font-extrabold leading-tight mb-4"
               style={{ color: 'var(--puzzle-card-foreground)', letterSpacing: '-0.02em' }}
             >
-              {puzzle.title}
+              {puzzleTitle(puzzle, language)}
             </h1>
 
             <p 
@@ -156,7 +157,7 @@ export default function HeroSection({
             >
               <img
                 src={puzzle.imageUrl}
-                alt={puzzle.title}
+                alt={puzzleTitle(puzzle, language)}
                 className="w-full object-cover"
                 style={{ height: 'clamp(200px, 45vw, 420px)' }}
               />
