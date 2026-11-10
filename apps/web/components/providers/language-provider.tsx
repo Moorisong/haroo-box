@@ -37,7 +37,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.lang = next;
   };
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t: (ko, en) => messages[ko] ?? (language === 'en' ? en : ko) }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t: (ko, en) => messages[`${ko}␟${en}`] ?? (language === 'en' ? en : ko) }}>
       {children}
     </LanguageContext.Provider>
   );
