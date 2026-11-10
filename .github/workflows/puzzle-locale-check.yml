@@ -32,6 +32,9 @@ jobs:
       - name: Audit hardcoded Korean JSX in puzzle pages
         working-directory: apps/server
         run: npx ts-node scripts/audit-puzzle-visible-text.ts
+      - name: Audit database translation keys
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-translation-keys.ts
       - name: Install web dependencies
         working-directory: apps/web
         run: npm ci
