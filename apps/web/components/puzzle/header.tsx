@@ -1,5 +1,6 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import PuzzleLanguageToggle from './language-toggle';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -126,6 +127,7 @@ export default function Header() {
           )}
         </nav>
 
+        <div className="flex items-center gap-2"><PuzzleLanguageToggle />
         {/* Mobile Menu Toggle */}
         <button
           className="md:hidden p-2 rounded-lg transition-colors"
@@ -133,7 +135,7 @@ export default function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        </button></div>
       </div>
 
       {/* Mobile Menu Drawer */}
