@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function ArchivePage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const { data: session, status: sessionStatus } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -90,7 +90,7 @@ export default function ArchivePage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>아카이브 보관함을 열고 있습니다...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('아카이브 보관함을 열고 있습니다...', 'Loading archive...')}</span>
       </div>
     );
   }
@@ -118,22 +118,22 @@ export default function ArchivePage() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          퍼즐 아카이브
+          {t('퍼즐 아카이브', 'Puzzle Archive')}
         </h1>
         <p className="text-sm font-semibold mb-3.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.
+          {t('지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.', 'Replay past puzzles and keep the challenge going!')}
         </p>
         <span className="inline-block text-[11px] font-extrabold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--puzzle-border)', color: 'var(--puzzle-primary)', backgroundColor: 'var(--puzzle-glass-bg)' }}>
-          ℹ️ 올해 출시된 아카이브 퍼즐만 표시됩니다.
+          ℹ️ {t('올해 출시된 아카이브 퍼즐만 표시됩니다.', 'Only puzzles released this year are shown.')}
         </span>
       </div>
 
       {/* Stats Summary row */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: t('전체 아카이브', 'All puzzles'), value: `${puzzles.length}개` },
-          { label: t('내가 완성한 퍼즐', 'My completed puzzles'), value: `${totalCompleted}개` },
-          { label: t('주간 최고 등수', 'Best weekly rank'), value: bestRank ? `${bestRank}위` : '-' },
+          { label: t('전체 아카이브', 'All puzzles'), value: `${puzzles.length} ${t('개', 'puzzles')}` },
+          { label: t('내가 완성한 퍼즐', 'My completed puzzles'), value: `${totalCompleted} ${t('개', 'puzzles')}` },
+          { label: t('주간 최고 등수', 'Best weekly rank'), value: bestRank ? `${t('순위', 'Rank')} ${bestRank}` : '-' },
         ].map(({ label, value }) => (
           <div
             key={label}
@@ -187,7 +187,7 @@ export default function ArchivePage() {
                   : { color: 'var(--puzzle-muted-foreground)' }
               }
             >
-              전체
+              {t('전체', 'All')}
             </button>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
               const isAvailable = availableMonths.includes(m);
@@ -210,7 +210,7 @@ export default function ArchivePage() {
                       : { color: 'var(--puzzle-muted-foreground)' }
                   }
                 >
-                  {m}월
+                  {language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2026, m - 1, 1)) : `${m}월`}
                 </button>
               );
             })}
@@ -238,7 +238,7 @@ export default function ArchivePage() {
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
-          {selectedMonth ? `${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.` : '아직 발행된 아카이브 퍼즐이 존재하지 않습니다.'}
+          {selectedMonth ? t(`${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.`, `No archived puzzles released in ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1))}.`) : t('아직 발행된 아카이브 퍼즐이 존재하지 않습니다.', 'No archived puzzles have been published yet.')}
         </div>
       ) : (
         <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
