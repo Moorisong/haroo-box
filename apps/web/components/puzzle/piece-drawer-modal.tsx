@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -71,6 +72,7 @@ export default function PieceDrawerModal({
   handleTouchEnd,
   ignoreNextClickRef,
 }: PieceDrawerModalProps) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const drawerDragStart = useRef<{ y: number; time: number } | null>(null);
@@ -153,7 +155,7 @@ export default function PieceDrawerModal({
           >
             <h3 className="text-base font-black flex items-center gap-1.5" style={{ color: '#f8fafc' }}>
               <Folder size={18} className="text-blue-400" />
-              <span>전체 조각 모아보기</span>
+              <span>{t('전체 조각 모아보기', 'All puzzle pieces')}</span>
             </h3>
             {isOrganizeMode ? (
               <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
@@ -163,11 +165,11 @@ export default function PieceDrawerModal({
               <>
                 <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
                   <HelpCircle size={10} className="text-blue-400" />
-                  <span>조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.</span>
+                  <span>{t('조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.', 'Drag a piece onto a basket number to organize it.')}</span>
                 </p>
                 <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
                   <HelpCircle size={9} className="text-blue-400" />
-                  <span>조각 드래그 시 바구니 분류 가능</span>
+                  <span>{t('조각 드래그 시 바구니 분류 가능', 'Drag pieces to organize baskets')}</span>
                 </p>
               </>
             )}
@@ -221,8 +223,8 @@ export default function PieceDrawerModal({
         <div className={`flex-1 p-4 pb-16 scrollbar-hide ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
           {activeBasketPieces.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-center text-slate-400">
-              <span className="text-sm font-black mb-1">바구니가 비어 있습니다.</span>
-              <span className="text-xs text-slate-500">다른 바구니에서 조각을 드래그하여 옮겨보세요!</span>
+              <span className="text-sm font-black mb-1">{t('바구니가 비어 있습니다.', 'This basket is empty.')}</span>
+              <span className="text-xs text-slate-500">{t('다른 바구니에서 조각을 드래그하여 옮겨보세요!', 'Drag pieces here from another basket.')}</span>
             </div>
           ) : (
             <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 gap-2.5 justify-items-center">
