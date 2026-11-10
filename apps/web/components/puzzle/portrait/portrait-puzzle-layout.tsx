@@ -1,5 +1,6 @@
 'use client';
 import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Timer, Eye } from 'lucide-react';
@@ -71,7 +72,7 @@ export default function PortraitPuzzleLayout({
   isSaved,
   submitError,
 }: PortraitPuzzleLayoutProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   return (
     <div
       className="flex flex-col min-h-screen select-none"
@@ -103,7 +104,7 @@ export default function PortraitPuzzleLayout({
 
         <div className="flex flex-col items-center">
           <span className="text-sm font-black truncate max-w-[200px]" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {puzzle.title}
+            {puzzleTitle(puzzle, language)}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
             {difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)')} · 🏆 랭킹 도전
