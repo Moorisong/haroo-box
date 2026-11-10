@@ -155,21 +155,21 @@ export default function PieceDrawerModal({
           >
             <h3 className="text-base font-black flex items-center gap-1.5" style={{ color: '#f8fafc' }}>
               <Folder size={18} className="text-blue-400" />
-              <span>{t('전체 조각 모아보기', 'All puzzle pieces')}</span>
+              <span>{t('puzzle.components.puzzle.piece.drawer.modal.001')}</span>
             </h3>
             {isOrganizeMode ? (
               <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
-                ● {t('조각 터치 후, 이동할 바구니를 선택하세요.', 'Select a piece, then choose a basket.')}
+                ● {t('puzzle.components.puzzle.piece.drawer.modal.002')}
               </p>
             ) : (
               <>
                 <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
                   <HelpCircle size={10} className="text-blue-400" />
-                  <span>{t('조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.', 'Drag a piece onto a basket number to organize it.')}</span>
+                  <span>{t('puzzle.components.puzzle.piece.drawer.modal.003')}</span>
                 </p>
                 <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
                   <HelpCircle size={9} className="text-blue-400" />
-                  <span>{t('조각 드래그 시 바구니 분류 가능', 'Drag pieces to organize baskets')}</span>
+                  <span>{t('puzzle.components.puzzle.piece.drawer.modal.004')}</span>
                 </p>
               </>
             )}
@@ -184,7 +184,7 @@ export default function PieceDrawerModal({
                 color: isOrganizeMode ? '#60a5fa' : '#9ca3af',
               }}
             >
-              {t('분류 모드', 'Organize mode')} {isOrganizeMode ? 'ON' : 'OFF'}
+              {t('puzzle.components.puzzle.piece.drawer.modal.005')} {isOrganizeMode ? 'ON' : 'OFF'}
             </button>
             {onGuideClick && (
               <button
@@ -195,7 +195,7 @@ export default function PieceDrawerModal({
                 }}
                 className="p-1.5 rounded-lg text-xs font-black transition-colors"
                 style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-foreground)' }}
-                title={t('가이드 보기', 'Show guide')}
+                title={t('puzzle.components.puzzle.piece.drawer.modal.006')}
               >
                 <Eye size={18} />
               </button>
@@ -223,8 +223,8 @@ export default function PieceDrawerModal({
         <div className={`flex-1 p-4 pb-16 scrollbar-hide ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
           {activeBasketPieces.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-center text-slate-400">
-              <span className="text-sm font-black mb-1">{t('바구니가 비어 있습니다.', 'This basket is empty.')}</span>
-              <span className="text-xs text-slate-500">{t('다른 바구니에서 조각을 드래그하여 옮겨보세요!', 'Drag pieces here from another basket.')}</span>
+              <span className="text-sm font-black mb-1">{t('puzzle.components.puzzle.piece.drawer.modal.007')}</span>
+              <span className="text-xs text-slate-500">{t('puzzle.components.puzzle.piece.drawer.modal.008')}</span>
             </div>
           ) : (
             <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 gap-2.5 justify-items-center">
