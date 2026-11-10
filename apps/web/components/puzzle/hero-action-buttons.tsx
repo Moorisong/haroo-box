@@ -1,3 +1,5 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 import React from 'react';
 import Link from 'next/link';
 import { Play, Trophy } from 'lucide-react';
@@ -17,6 +19,7 @@ export function HeroActionButtons({
   progress,
   handleOpenModal,
 }: HeroActionButtonsProps) {
+  const { t } = useLanguage();
   if (hasCompleted && showResume) {
     return (
       <>
@@ -31,7 +34,7 @@ export function HeroActionButtons({
           }}
         >
           <Play size={16} strokeWidth={2.5} />
-          이어하기 ({progress}%)
+          {t('이어하기', 'Resume')} ({progress}%)
         </button>
 
         <Link
@@ -47,7 +50,7 @@ export function HeroActionButtons({
           }}
         >
           <Trophy size={16} className="inline mr-1" strokeWidth={2.5} />
-          결과 및 랭킹 보기
+          {t('결과 및 랭킹 보기', 'Results & rankings')}
         </Link>
 
         <button
@@ -62,7 +65,7 @@ export function HeroActionButtons({
             whiteSpace: 'nowrap',
           }}
         >
-          새로 도전하기
+          {t('새로 도전하기', 'Try again')}
         </button>
       </>
     );
@@ -81,7 +84,7 @@ export function HeroActionButtons({
           }}
         >
           <Trophy size={16} strokeWidth={2.5} />
-          결과 및 랭킹 보기
+          {t('결과 및 랭킹 보기', 'Results & rankings')}
         </Link>
 
         <button
@@ -95,7 +98,7 @@ export function HeroActionButtons({
             fontWeight: 650,
           }}
         >
-          다시 도전하기
+          {t('다시 도전하기', 'Try again')}
         </button>
       </>
     );
@@ -114,7 +117,7 @@ export function HeroActionButtons({
           }}
         >
           <Play size={16} strokeWidth={2.5} />
-          이어하기 ({progress}%)
+          {t('이어하기', 'Resume')} ({progress}%)
         </button>
 
         <button
@@ -128,7 +131,7 @@ export function HeroActionButtons({
             fontWeight: 650,
           }}
         >
-          새로 시작하기
+          {t('새로 시작하기', 'Start over')}
         </button>
       </>
     );
@@ -145,7 +148,7 @@ export function HeroActionButtons({
       }}
     >
       <Play size={16} strokeWidth={2.5} />
-      퍼즐 시작하기
+      {t('퍼즐 시작하기', 'Start puzzle')}
     </button>
   );
 }
