@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { Share2, Link2, Check } from 'lucide-react';
 import { Puzzle } from '@/types/puzzle';
 
@@ -9,6 +11,9 @@ interface ShareCardProps {
 }
 
 export default function ShareCard({ puzzle }: ShareCardProps) {
+  const { language, t } = useLanguage();
+  const { data: session } = useSession();
+  const useKakaoShare = language === 'ko' && (!session || session.user?.provider === 'kakao' || (!session.user?.provider && !!session.user?.kakaoId));
   const [isCopied, setIsCopied] = useState(false);
 
   const getAbsoluteImageUrl = (url: string) => {
@@ -20,7 +25,15 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
     return window.location.origin + url;
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
+    if (!useKakaoShare) {
+      const data = { title: t('하루퍼즐', 'Haroo Puzzle'), text: t('이번 주 퍼즐을 함께 맞춰요!', 'Try this week’s puzzle!'), url: window.location.origin + '/puzzle' };
+      if (navigator.share) {
+        try { await navigator.share(data); return; } catch (error) { if ((error as Error).name === 'AbortError') return; }
+      }
+      await handleCopyLink();
+      return;
+    }
     if (typeof window !== 'undefined') {
       const Kakao = (window as any).Kakao;
       
@@ -64,13 +77,13 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
       }
       
       // Kakao SDK 로드 또는 실행 실패 시 안내
-      alert('카카오톡 공유 기능을 불러오지 못했습니다. 아래 링크 복사 버튼을 이용해 주세요!');
+      await handleCopyLink();
     }
   };
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     if (typeof window !== 'undefined') {
-      navigator.clipboard.writeText(window.location.origin + '/puzzle');
+      try { await navigator.clipboard.writeText(window.location.origin + '/puzzle'); } catch { window.prompt(t('링크를 복사해 주세요', 'Copy this link'), window.location.origin + '/puzzle'); return; }
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -91,10 +104,10 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
     >
       <div>
         <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          친구에게 자랑하기
+          {t('친구에게 자랑하기', 'Share with friends')}
         </p>
         <p className="mt-1 text-xs font-semibold leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          매주 갱신되는 갓생 맞춤형 감성 퍼즐! 내 뇌지컬 순위 폼을 친구들한테 당당하게 인증해 보세요.
+          {t('매주 갱신되는 퍼즐을 친구들과 함께 즐겨요.', 'A fresh puzzle every week. Invite your friends to play!')}
         </p>
       </div>
 
@@ -103,18 +116,18 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
           onClick={handleShare}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl transition-all duration-200 hover:scale-[1.01] active:scale-95 text-xs font-extrabold"
           style={{
-            backgroundColor: '#FEE500',
-            color: '#191919',
+            backgroundColor: useKakaoShare ? '#FEE500' : '#284cb0',
+            color: useKakaoShare ? '#191919' : '#ffffff',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#F5DC00';
+            e.currentTarget.style.backgroundColor = useKakaoShare ? '#F5DC00' : '#1e3b90';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#FEE500';
+            e.currentTarget.style.backgroundColor = useKakaoShare ? '#FEE500' : '#284cb0';
           }}
         >
           <Share2 size={13} strokeWidth={2.5} />
-          카카오톡으로 공유
+          {useKakaoShare ? t('카카오톡으로 공유', 'Share on KakaoTalk') : t('공유하기', 'Share')}
         </button>
 
         <button
@@ -136,12 +149,12 @@ export default function ShareCard({ puzzle }: ShareCardProps) {
           {isCopied ? (
             <>
               <Check size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-              링크 복사 완료
+              {t('링크 복사 완료', 'Link copied')}
             </>
           ) : (
             <>
               <Link2 size={13} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
-              공유 링크 복사하기
+              {t('공유 링크 복사하기', 'Copy share link')}
             </>
           )}
         </button>
