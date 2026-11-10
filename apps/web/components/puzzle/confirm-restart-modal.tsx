@@ -29,7 +29,7 @@ export default function ConfirmRestartModal({
           {t('⚠️ 새로 시작하시겠습니까?', '⚠️ Start over?')}
         </h3>
         <p className="text-sm font-medium leading-relaxed mb-6" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시면 <strong className="text-red-500 font-bold">기존 진행 데이터는 삭제</strong>됩니다.
+          {t('이미 진행 중인 퍼즐이 있습니다. 처음부터 다시 시작하시면', 'You have an unfinished puzzle. Starting again will')} <strong className="text-red-500 font-bold">{t('기존 진행 데이터는 삭제', 'delete your current progress')}</strong>{t('됩니다.', '.')}
         </p>
         <div className="flex gap-3">
           <button
