@@ -49,10 +49,10 @@ export function DrawerBasketTabs({
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full border border-white/10 shrink-0" style={{ backgroundColor: meta.color }} />
               <span className="text-[10px] font-black transition-colors" style={{ color: isActive || isHovered ? '#60a5fa' : '#94a3b8' }}>
-                {key === 'basket1' ? t('빨강', 'Red') : key === 'basket2' ? t('파랑', 'Blue') : key === 'basket3' ? t('초록', 'Green') : key === 'basket4' ? t('노랑', 'Yellow') : t('보라', 'Purple')}
+                {key === 'basket1' ? t('puzzle.components.puzzle.drawer.basket.tabs.001') : key === 'basket2' ? t('puzzle.components.puzzle.drawer.basket.tabs.002') : key === 'basket3' ? t('puzzle.components.puzzle.drawer.basket.tabs.003') : key === 'basket4' ? t('puzzle.components.puzzle.drawer.basket.tabs.004') : t('puzzle.components.puzzle.drawer.basket.tabs.005')}
               </span>
             </div>
-            <span className="text-[9px] font-bold text-slate-400">({count} {t('개', 'pcs')})</span>
+            <span className="text-[9px] font-bold text-slate-400">({count} {t('puzzle.components.puzzle.drawer.basket.tabs.006')})</span>
           </div>
         );
       })}
