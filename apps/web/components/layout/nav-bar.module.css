@@ -581,3 +581,7 @@
   .logoIcon { width: 34px; height: 34px; }
   .navLinks { background: #fbf7ee; border-color: #e8e1d5; }
 }
+
+.languageSwitch { flex: none; margin-left: auto; border: 1px solid #b7c5ed; background: #fff; color: #073bc1; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-weight: 850; cursor: pointer; }
+.languageSwitch:focus-visible { outline: 2px solid #073bc1; outline-offset: 2px; }
+@media (max-width: 768px) { .languageSwitch { margin-left: auto; margin-right: 2px; } }
