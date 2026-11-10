@@ -25,7 +25,7 @@ export default function DifficultySelectModal({
   isLoggedIn = true,
   showRankedInfo = false,
   showResetWarning = false,
-  launchText = '도전 시작하기',
+  launchText,
 }: DifficultySelectModalProps) {
   const { t } = useLanguage();
   return (
@@ -104,7 +104,7 @@ export default function DifficultySelectModal({
                   {t('초보', 'Easy')}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 w-auto inline-flex justify-center items-center flex-shrink-0">
-                  <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.NOVICE]}조각</span>
+                  <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.NOVICE]} {t('조각', 'pieces')}</span>
                 </span>
               </div>
             </button>
@@ -233,7 +233,7 @@ export default function DifficultySelectModal({
               boxShadow: 'var(--puzzle-shadow-md)',
             }}
           >
-            {launchText}
+            {launchText ?? t('도전 시작하기', 'Start challenge')}
           </button>
         </div>
       </div>
