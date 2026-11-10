@@ -114,13 +114,13 @@ export default function CompletionModal({
           className="mb-2 text-2xl font-black"
           style={{ color: 'var(--puzzle-card-foreground)' }}
         >
-          퍼즐 완성! 🎉
+          {t('퍼즐 완성! 🎉', 'Puzzle complete! 🎉')}
         </h2>
         <p
           className="mb-6 text-sm font-semibold leading-relaxed"
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
-          멋진 집중력이 돋보이네요.
+          {t('멋진 집중력이 돋보이네요.', 'Great focus!')}
         </p>
 
         {/* Completion Time Badge */}
@@ -129,7 +129,7 @@ export default function CompletionModal({
           style={{ backgroundColor: 'var(--puzzle-muted)', border: '1px solid var(--puzzle-border)' }}
         >
           <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            소요 시간
+            {t('소요 시간', 'Time')}
           </p>
           <p
             className="tabular-nums font-black"
@@ -201,7 +201,7 @@ export default function CompletionModal({
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FEE500'; }}
             >
               <Share2 size={15} strokeWidth={2.5} />
-              카카오톡으로 자랑하기
+              {t('카카오톡으로 자랑하기', 'Share your result')}
             </button>
           )}
 
@@ -215,7 +215,7 @@ export default function CompletionModal({
             }}
           >
             <Home size={15} strokeWidth={2} />
-            메인 페이지로 이동
+            {t('메인 페이지로 이동', 'Back to home')}
           </button>
         </div>
       </div>
