@@ -58,12 +58,12 @@ export default function OrientationSuggestion() {
         {/* 텍스트 안내 */}
         <div className="flex flex-col gap-3">
           <h3 className="text-xl font-extrabold text-slate-900">
-            가로 모드를 권장합니다 🔄
+            {t('가로 모드를 권장합니다 🔄', 'Landscape mode recommended 🔄')}
           </h3>
           <p className="text-sm font-semibold leading-relaxed text-slate-600">
-            태블릿, 모바일같은 기기에서는<br />
-            <strong className="text-blue-600 font-bold">{t('가로 모드', 'landscape mode')}</strong>로 플레이하면<br />
-            더 넓고 쾌적한 화면에서 즐길 수 있습니다.
+            {t('태블릿, 모바일같은 기기에서는', 'On phones and tablets,')}<br />
+            <strong className="text-blue-600 font-bold">{t('가로 모드', 'landscape mode')}</strong>{t('로 플레이하면', ' makes for')}<br />
+            {t('더 넓고 쾌적한 화면에서 즐길 수 있습니다.', 'a wider, more comfortable puzzle experience.')}
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default function OrientationSuggestion() {
           onClick={handleDismiss}
           className="mt-2 text-xs font-bold text-slate-400 hover:text-slate-600 underline transition-colors"
         >
-          세로 모드로 계속 진행하기
+          {t('세로 모드로 계속 진행하기', 'Continue in portrait mode')}
         </button>
       </div>
     </div>
