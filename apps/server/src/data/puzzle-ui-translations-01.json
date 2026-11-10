@@ -298,5 +298,15 @@
     "key": "puzzle.components.puzzle.achievement.badges.006",
     "ko": "아직 획득한 훈장이 없습니다. 퍼즐을 풀고 첫 훈장을 획득하세요!",
     "en": "No badges yet. Finish a puzzle to earn your first!"
+  },
+  {
+    "key": "puzzle.ui.weekLabel",
+    "ko": "{{week}}주차",
+    "en": "Week {{week}}"
+  },
+  {
+    "key": "puzzle.ui.emptyArchiveMonth",
+    "ko": "{{month}}월에 발행된 아카이브 퍼즐이 없습니다.",
+    "en": "No archived puzzles released in {{month}}."
   }
 ]
