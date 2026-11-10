@@ -210,7 +210,7 @@ export default function ArchivePage() {
                       : { color: 'var(--puzzle-muted-foreground)' }
                   }
                 >
-                  {language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2026, m - 1, 1)) : `${m}월`}
+                  {new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'short' }).format(new Date(2026, m - 1, 1))}
                 </button>
               );
             })}
