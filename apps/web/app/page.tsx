@@ -60,6 +60,7 @@ interface ContentItem {
     badgeType?: string;
     newTab?: boolean;
     active: boolean;
+    english?: boolean;
 }
 
 const contents: ContentItem[] = [
@@ -75,6 +76,7 @@ const contents: ContentItem[] = [
         badgeType: styles.badgeNew,
         newTab: true,
         active: true,
+        english: true,
     },
     {
         id: 'gamss',
@@ -101,6 +103,7 @@ const contents: ContentItem[] = [
         badgeType: styles.badgeHot,
         newTab: true,
         active: true,
+        english: true,
     },
     {
         id: 'rolling-paper',
@@ -113,6 +116,7 @@ const contents: ContentItem[] = [
         badge: 'HOT',
         badgeType: styles.badgeHot,
         active: true,
+        english: true,
     },
     {
         id: 'toby',
@@ -176,6 +180,9 @@ export default function Home() {
                                             <span className={[styles.badge, content.badgeType || ''].join(' ')}>
                                                 {content.badge}
                                             </span>
+                                        )}
+                                        {content.english && (
+                                            <span className={styles.englishBadge} aria-label="English available">EN <span aria-hidden="true">✓</span></span>
                                         )}
                                         <Image
                                             src={content.image}
