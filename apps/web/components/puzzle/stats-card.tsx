@@ -16,9 +16,9 @@ export default function StatsCard({
 }: StatsCardProps) {
   const { t } = useLanguage();
   const stats = [
-    { label: t('주간 퍼즐 완성', 'Weekly completions'), value: `${participantCount.toLocaleString()}명` },
-    { label: t('누적 플레이 수', 'Total plays'), value: `${totalPlayCount.toLocaleString()}회` },
-    { label: t('아카이브 퍼즐', 'Archived puzzles'), value: `${totalPuzzles}개` },
+    { label: t('주간 퍼즐 완성', 'Weekly completions'), value: `${participantCount.toLocaleString()} ${t('명', 'players')}` },
+    { label: t('누적 플레이 수', 'Total plays'), value: `${totalPlayCount.toLocaleString()} ${t('회', 'plays')}` },
+    { label: t('아카이브 퍼즐', 'Archived puzzles'), value: `${totalPuzzles} ${t('개', 'puzzles')}` },
     { label: t('평균 퍼즐 완성률', 'Average completion rate'), value: completionRate },
   ];
 
@@ -33,7 +33,7 @@ export default function StatsCard({
       }}
     >
       <p className="text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        서비스 현황
+        {t('서비스 현황', 'Service overview')}
       </p>
 
       <div className="flex flex-col gap-1.5">
