@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -27,6 +28,7 @@ export default function PieceTray({
   onTrayClick,
   onGuideClick,
 }: PieceTrayProps) {
+  const { t } = useLanguage();
   const cellSize = 52;
   const drawerCellSize = 46;
 
@@ -92,7 +94,7 @@ export default function PieceTray({
       <div className="flex justify-between items-center mb-3 select-none">
         <div className="flex items-center gap-3.5 sm:gap-2">
           <span className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            남은 조각: {trayPieces.length}
+            {t('남은 조각', 'Pieces left')}: {trayPieces.length}
           </span>
           <div className="flex rounded-lg p-0.5 border ml-3 sm:ml-0" style={{ borderColor: 'var(--puzzle-border)' }}>
             {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key) => {
@@ -130,7 +132,7 @@ export default function PieceTray({
         <div className="flex items-center gap-2">
           {selectedPieceId !== null && (
             <span className="hidden sm:inline text-[10px] sm:text-xs font-bold animate-pulse" style={{ color: 'var(--puzzle-primary)' }}>
-              ● 보드 격자를 터치하여 배치하세요
+              ● {t('보드 격자를 터치하여 배치하세요', 'Tap a grid cell to place a piece')}
             </span>
           )}
           <button
@@ -143,7 +145,7 @@ export default function PieceTray({
             style={{ backgroundColor: 'var(--puzzle-primary)', color: '#fff' }}
           >
             <Maximize2 size={12} strokeWidth={2.5} />
-            <span>모아보기</span>
+            <span>{t('모아보기', 'View all')}</span>
           </button>
         </div>
       </div>
@@ -151,11 +153,11 @@ export default function PieceTray({
       <div className="flex gap-3 overflow-x-auto pt-4 pb-2 px-1 scrollbar-hide" style={{ scrollBehavior: 'smooth' }}>
         {trayPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-sm font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
-            🎉 모든 조각이 보드에 배치되었습니다!
+            🎉 {t('모든 조각이 보드에 배치되었습니다!', 'All pieces are on the board!')}
           </div>
         ) : activeBasketPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            바구니 {activeBasket.replace('basket', '')}번이 비어 있습니다. 모아보기에서 조각을 드래그해 옮겨보세요!
+            {t('바구니', 'Basket')} {activeBasket.replace('basket', '')} {t('번이 비어 있습니다. 모아보기에서 조각을 드래그해 옮겨보세요!', 'is empty. Drag pieces here from View all!')}
           </div>
         ) : (
           <>
