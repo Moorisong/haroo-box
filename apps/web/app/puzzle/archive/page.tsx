@@ -238,7 +238,7 @@ export default function ArchivePage() {
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
-          {selectedMonth ? t(`${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.`, `No archived puzzles released in ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1))}.`) : t('puzzle.app.puzzle.archive.page.012')}
+          {selectedMonth ? t('puzzle.ui.emptyArchiveMonth', { month: language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1)) : selectedMonth }) : t('puzzle.app.puzzle.archive.page.012')}
         </div>
       ) : (
         <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
