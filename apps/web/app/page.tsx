@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 
-type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'uknow' | 'htsm';
+type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'uknow' | 'htsm' | 'advent';
 
 interface ContentItem {
     id: string;
@@ -63,6 +63,19 @@ interface ContentItem {
 }
 
 const contents: ContentItem[] = [
+    {
+        id: 'advent',
+        title: '어드벤트 초콜릿',
+        description: '나만의 초콜릿 캘린더를 만들고\n친구들의 비밀 메시지를 받아요.',
+        image: '/sample/advent-logo.svg',
+        link: ROUTES.ADVENT,
+        category: '연말 이벤트',
+        tone: 'advent',
+        badge: 'NEW',
+        badgeType: styles.badgeNew,
+        newTab: true,
+        active: true,
+    },
     {
         id: 'gamss',
         title: '감쓰.exe',
