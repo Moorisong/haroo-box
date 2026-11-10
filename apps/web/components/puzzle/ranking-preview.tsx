@@ -36,7 +36,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Trophy size={18} style={{ color: 'var(--puzzle-primary)' }} />
-            랭킹 TOP 7
+            {t('랭킹 TOP 7', 'Top 7 rankings')}
           </h2>
           
           {/* Difficulty pills */}
@@ -49,7 +49,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'novice' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              초보
+              {t('초보', 'Easy')}
             </button>
             <button
               onClick={() => onDifficultyChange('beginner')}
@@ -59,7 +59,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'beginner' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              일반
+              {t('일반', 'Normal')}
             </button>
             <button
               onClick={() => onDifficultyChange('expert')}
@@ -69,7 +69,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              고수
+              {t('고수', 'Expert')}
             </button>
           </div>
         </div>
@@ -107,10 +107,10 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         ) : displayRankings.length === 0 ? (
           <div className="py-12 text-center flex flex-col items-center justify-center gap-2 md:flex-1">
             <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-              아직 등록된 랭킹 기록이 없습니다.
+              {t('아직 등록된 랭킹 기록이 없습니다.', 'No ranking records yet.')}
             </p>
             <p className="text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-              첫 번째 도전자가 되어 기록을 등록해 보세요!
+              {t('첫 번째 도전자가 되어 기록을 등록해 보세요!', 'Be the first to set a record!')}
             </p>
           </div>
         ) : (
