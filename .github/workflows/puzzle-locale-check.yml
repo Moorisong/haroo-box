@@ -12,6 +12,11 @@ on:
       - 'apps/server/src/controllers/puzzle-translation.controller.ts'
       - 'apps/server/src/models/puzzle-translation.model.ts'
       - 'apps/server/src/routes/puzzle.routes.ts'
+      - 'apps/server/src/data/puzzle-ui-translations-*.json'
+      - 'apps/server/scripts/audit-puzzle-*.ts'
+      - 'apps/server/src/services/seed-puzzle-ui-translations.ts'
+      - 'apps/web/lib/puzzle-api.ts'
+      - 'apps/web/lib/puzzle-i18n.ts'
       - '.github/workflows/puzzle-locale-check.yml'
   workflow_dispatch:
 
@@ -35,6 +40,9 @@ jobs:
       - name: Audit database translation keys
         working-directory: apps/server
         run: npx ts-node scripts/audit-puzzle-translation-keys.ts
+      - name: Audit all Korean text literals in puzzle source
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-raw-literals.ts
       - name: Install web dependencies
         working-directory: apps/web
         run: npm ci
