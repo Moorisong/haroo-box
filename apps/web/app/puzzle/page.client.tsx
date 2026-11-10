@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/components/providers/language-provider';
 import { useSession } from 'next-auth/react';
 import HeroSection from '@/components/puzzle/hero-section';
 import RankingPreview from '@/components/puzzle/ranking-preview';
@@ -15,6 +16,7 @@ import { usePuzzleDashboard } from './hooks/use-puzzle-dashboard';
 
 export default function PuzzlePageClient() {
   const router = useRouter();
+  const { language, setLanguage, t } = useLanguage();
   const { data: session } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -49,7 +51,7 @@ export default function PuzzlePageClient() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>아름다운 퍼즐 조각을 불러오는 중...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('아름다운 퍼즐 조각을 불러오는 중...', 'Loading your puzzle pieces...')}</span>
       </div>
     );
   }
@@ -58,14 +60,15 @@ export default function PuzzlePageClient() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-2 select-none">
         <span className="text-3xl">🧘</span>
-        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>이번 주 출제된 퍼즐이 없습니다.</p>
-        <Link href="/puzzle/archive" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">아카이브로 이동</Link>
+        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('이번 주 출제된 퍼즐이 없습니다.', 'No puzzle available this week.')}</p>
+        <Link href="/puzzle/archive" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">{t('아카이브로 이동', 'View archive')}</Link>
       </div>
     );
   }
 
   return (
     <>
+      <div className="flex justify-end px-4 pt-3"><button type="button" onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')} className="rounded-lg border px-3 py-2 text-xs font-bold" aria-label="Switch puzzle language">{language === 'ko' ? 'EN' : 'KO'}</button></div>
       <OrientationSuggestion />
       <div className={`${styles.container} puzzle-animate-fade-in-up`}>
         {/* Hero Section */}
@@ -122,10 +125,10 @@ export default function PuzzlePageClient() {
         >
           <div>
             <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-              지난 아카이브 퍼즐 보기
+              {t('지난 아카이브 퍼즐 보기', 'Puzzle archive')}
             </p>
             <p className="text-[10px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-              이전 주차 퍼즐 플레이 목록
+              {t('이전 주차 퍼즐 플레이 목록', 'Play puzzles from previous weeks')}
             </p>
           </div>
           <ArrowRight size={18} strokeWidth={2.5} style={{ color: 'var(--puzzle-primary)' }} />
