@@ -34,3 +34,9 @@ jobs:
       - name: Typecheck web
         working-directory: apps/web
         run: npx tsc --noEmit --project tsconfig.puzzle-check.json
+      - name: Install Chromium for localization checks
+        working-directory: apps/web
+        run: npx playwright install --with-deps chromium
+      - name: Exercise English ranking and archive
+        working-directory: apps/web
+        run: npx playwright test tests/puzzle/i18n.spec.ts --project=chromium
