@@ -21,13 +21,23 @@ async function parseJsonResponse(res: Response) {
 }
 
 export async function fetchCurrentPuzzle(): Promise<ApiResponse<Puzzle>> {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api${API_PUZZLE.CURRENT}`);
-    return await parseJsonResponse(res);
-  } catch (error) {
-    console.error('fetchCurrentPuzzle error:', error);
-    return { success: false, error: 'NETWORK_ERROR' };
+  const url = `${API_BASE_URL}/api${API_PUZZLE.CURRENT}`;
+  // During local startup, Next.js can request metadata before the API is ready.
+  // Retry connection failures briefly; never retry a successful HTTP response.
+  const maxAttempts = typeof window === 'undefined' && process.env.NODE_ENV === 'development' ? 3 : 1;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const res = await fetch(url);
+      return await parseJsonResponse(res);
+    } catch (error) {
+      if (attempt === maxAttempts) {
+        console.warn('fetchCurrentPuzzle unavailable:', error instanceof Error ? error.message : error);
+        return { success: false, error: 'NETWORK_ERROR' };
+      }
+      await new Promise(resolve => setTimeout(resolve, 250 * attempt));
+    }
   }
+  return { success: false, error: 'NETWORK_ERROR' };
 }
 
 export async function fetchArchivePuzzles(): Promise<ApiResponse<Puzzle[]>> {
