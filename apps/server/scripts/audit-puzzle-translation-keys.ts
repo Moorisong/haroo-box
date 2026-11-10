@@ -25,13 +25,15 @@ function walk(target: string) {
   if (!fs.existsSync(target)) return;
   if (fs.statSync(target).isDirectory()) {
     fs.readdirSync(target).forEach(file => walk(path.join(target, file)));
-  } else if (target.endsWith('.tsx')) files.push(target);
+  } else if (/\.tsx?$/.test(target)) files.push(target);
 }
 walk(path.join(root, 'app/puzzle'));
 walk(path.join(root, 'components/puzzle'));
+walk(path.join(root, 'lib/puzzle-api.ts'));
+walk(path.join(root, 'lib/puzzle-i18n.ts'));
 const used = new Set<string>();
 for (const file of files) {
-  const source = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const source = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true, file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
   const visit = (node: ts.Node) => {
     if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 't') {
       const first = node.arguments[0];
