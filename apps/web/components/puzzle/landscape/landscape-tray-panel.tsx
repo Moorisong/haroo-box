@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { createPortal } from 'react-dom';
 import { Folder, HelpCircle } from 'lucide-react';
@@ -31,6 +32,7 @@ export default function LandscapeTrayPanel({
   isLarge,
   isPlayMode = true,
 }: LandscapeTrayPanelProps) {
+  const { t } = useLanguage();
   const cellSize = isLarge ? 54 : 40;
 
   const {
@@ -90,7 +92,7 @@ export default function LandscapeTrayPanel({
       >
         <div className="flex items-center gap-1.5 min-w-0">
           <Folder size={14} className="text-blue-500 flex-shrink-0" />
-          <span className="text-sm font-bold text-gray-800 truncate">보관함</span>
+          <span className="text-sm font-bold text-gray-800 truncate">{t('보관함', 'Tray')}</span>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <div
@@ -99,7 +101,7 @@ export default function LandscapeTrayPanel({
               setIsOrganizeMode(!isOrganizeMode);
             }}
             className="flex items-center gap-1.5 cursor-pointer select-none group"
-            title="보관함 분류 모드"
+            title={t('보관함 분류 모드', 'Organize pieces')}
           >
             <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-700 transition-colors">
               분류
@@ -117,7 +119,7 @@ export default function LandscapeTrayPanel({
             </div>
           </div>
           <span className="text-[10px] font-medium text-gray-500">
-            대기: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
+            {t('대기', 'Waiting')}: <span className="text-gray-800 font-mono font-semibold">{trayPieces.length}</span>
           </span>
         </div>
       </div>
@@ -190,8 +192,8 @@ export default function LandscapeTrayPanel({
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping shrink-0" />
             <span>
               {selectedPieceId === null 
-                ? "① 아래 조각을 눌러 선택해주세요." 
-                : "② 위 바구니 탭을 눌러 조각을 옮기세요."}
+                ? t('① 아래 조각을 눌러 선택해주세요.', '① Select a piece below.') 
+                : t('② 위 바구니 탭을 눌러 조각을 옮기세요.', '② Tap a basket above to move it.')}
             </span>
           </p>
         </div>
@@ -200,7 +202,7 @@ export default function LandscapeTrayPanel({
           <div className="px-4 py-1.5 border-b flex-shrink-0" style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}>
             <p className="text-[10px] font-medium text-gray-500 flex items-center gap-1">
               <HelpCircle size={12} className="text-gray-400 flex-shrink-0" />
-              <span>조각 목록 스크롤 가능</span>
+              <span>{t('조각 목록 스크롤 가능', 'Scroll for more pieces')}</span>
             </p>
           </div>
         )
@@ -214,11 +216,11 @@ export default function LandscapeTrayPanel({
         {trayPieces.length === 0 && selectedPieceId === null ? (
           <div className="flex flex-col items-center justify-center h-32 text-center text-slate-400">
             <span className="text-sm font-black mb-1">🎉</span>
-            <span className="text-[10px] font-black">모든 조각 배치!</span>
+            <span className="text-[10px] font-black">{t('모든 조각 배치!', 'All pieces placed!')}</span>
           </div>
         ) : displayPieces.length === 0 && selectedPieceId === null ? (
           <div className="flex flex-col items-center justify-center h-24 text-center">
-            <span className="text-[10px] font-bold text-slate-500">바구니가 비어 있습니다.</span>
+            <span className="text-[10px] font-bold text-slate-500">{t('바구니가 비어 있습니다.', 'This basket is empty.')}</span>
           </div>
         ) : (
           <div
