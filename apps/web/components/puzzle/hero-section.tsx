@@ -113,7 +113,7 @@ export default function HeroSection({
               className="text-3xl md:text-4xl font-extrabold leading-tight mb-4"
               style={{ color: 'var(--puzzle-card-foreground)', letterSpacing: '-0.02em' }}
             >
-              {puzzleTitle(puzzle, language)}
+              {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
             </h1>
 
             <p 
@@ -157,7 +157,7 @@ export default function HeroSection({
             >
               <img
                 src={puzzle.imageUrl}
-                alt={puzzleTitle(puzzle, language)}
+                alt={puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
                 className="w-full object-cover"
                 style={{ height: 'clamp(200px, 45vw, 420px)' }}
               />
