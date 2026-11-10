@@ -11,7 +11,7 @@ type LanguageContextValue = {
   isReady: boolean;
   hasTranslationError: boolean;
   setLanguage: (language: Language) => void;
-  t: (key: string, variables?: TranslationVariables) => string;
+  t: (key: string, variablesOrEnglish?: TranslationVariables | string) => string;
 };
 const LanguageContext = createContext<LanguageContextValue>({
   language: 'ko',
@@ -71,7 +71,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.lang = next;
   };
 
-  const t = (key: string, variables?: TranslationVariables) => {
+  const t = (key: string, variablesOrEnglish?: TranslationVariables | string) => {
+    // Legacy Haroo Box pages outside /puzzle keep their own inline bilingual copy.
+    if (!inPuzzle) return language === 'en' && typeof variablesOrEnglish === 'string' ? variablesOrEnglish : key;
+    const variables = typeof variablesOrEnglish === 'object' ? variablesOrEnglish : undefined;
     const translated = messages[key];
     if (!translated) {
       if (loadedLanguage === language) console.error('Missing puzzle translation key:', key, language);
