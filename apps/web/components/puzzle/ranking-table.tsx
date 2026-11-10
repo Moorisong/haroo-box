@@ -58,16 +58,16 @@ export default function RankingTable({
           borderColor: 'var(--puzzle-border)',
         }}
       >
-        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('순위', 'Rank')}</span>
-        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('닉네임', 'Nickname')}</span>
-        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('기록', 'Time')}</span>
-        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('날짜', 'Date')}</span>
+        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.001')}</span>
+        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.002')}</span>
+        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.003')}</span>
+        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.004')}</span>
       </div>
 
       {/* Rows */}
       {rankings.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('아직 랭킹에 도전한 사용자가 없습니다.', 'No challengers yet.')}
+          {t('puzzle.components.puzzle.ranking.table.005')}
         </div>
       ) : (
         rankings.map((item, idx) => {
@@ -166,7 +166,7 @@ export default function RankingTable({
           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
         >
-          {t('더보기', 'Show more')} ({rankings.length}/{totalParticipants})
+          {t('puzzle.components.puzzle.ranking.table.006')} ({rankings.length}/{totalParticipants})
         </button>
       )}
 
@@ -180,7 +180,7 @@ export default function RankingTable({
             backgroundColor: 'var(--puzzle-muted)'
           }}
         >
-          {t('총', 'A total of')} {totalParticipants.toLocaleString()} {t('명의 챌린저가 완주했습니다.', 'challengers completed the puzzle.')}
+          {t('puzzle.components.puzzle.ranking.table.007')} {totalParticipants.toLocaleString()} {t('puzzle.components.puzzle.ranking.table.008')}
         </div>
       )}
     </div>
