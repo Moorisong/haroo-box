@@ -1,13 +1,15 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Puzzle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const links = [
-    { label: '하루상자 메인', href: '/', newTab: true },
-    { label: '이용약관', href: '/terms' },
-    { label: '개인정보처리방침', href: '/privacy' },
+    { label: t('하루상자 메인', 'Haroo Box home'), href: '/', newTab: true },
+    { label: t('이용약관', 'Terms of Service'), href: '/terms' },
+    { label: t('개인정보처리방침', 'Privacy Policy'), href: '/privacy' },
     { label: 'GitHub', href: 'https://github.com/Moorisong/haroo-box', newTab: true },
   ];
 
