@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -8,14 +9,15 @@ import { Trophy, Archive, User, LogIn, LogOut, Menu, X, Puzzle } from 'lucide-re
 import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 export default function Header() {
+  const { t } = useLanguage();
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { label: '랭킹', href: '/puzzle/ranking', icon: Trophy },
-    { label: '아카이브', href: '/puzzle/archive', icon: Archive },
-    { label: '마이페이지', href: '/puzzle/mypage', icon: User },
+    { label: t('랭킹', 'Rankings'), href: '/puzzle/ranking', icon: Trophy },
+    { label: t('아카이브', 'Archive'), href: '/puzzle/archive', icon: Archive },
+    { label: t('마이페이지', 'My Page'), href: '/puzzle/mypage', icon: User },
   ];
 
   const handleSignOut = async () => {
@@ -65,7 +67,7 @@ export default function Header() {
             className="text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
-            <span>하루상자</span>
+            <span>{t('하루상자', 'Haroo Box')}</span>
             <span className="text-[10px] opacity-70">↗</span>
           </Link>
         </div>
@@ -107,7 +109,7 @@ export default function Header() {
               }}
             >
               <LogOut size={15} strokeWidth={2} />
-              <span>로그아웃</span>
+              <span>{t('로그아웃', 'Log out')}</span>
             </button>
           ) : (
             <Link
@@ -119,7 +121,7 @@ export default function Header() {
               }}
             >
               <LogIn size={15} strokeWidth={2} />
-              <span>로그인</span>
+              <span>{t('로그인', 'Log in')}</span>
             </Link>
           )}
         </nav>
@@ -175,7 +177,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-foreground)' }}
               >
                 <LogOut size={18} strokeWidth={2} />
-                <span>로그아웃</span>
+                <span>{t('로그아웃', 'Log out')}</span>
               </button>
             ) : (
               <Link
@@ -185,7 +187,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-primary)', color: 'var(--puzzle-primary-foreground)' }}
               >
                 <LogIn size={18} strokeWidth={2} />
-                <span>로그인</span>
+                <span>{t('로그인', 'Log in')}</span>
               </Link>
             )}
           </nav>
