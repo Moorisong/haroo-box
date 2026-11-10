@@ -19,6 +19,7 @@ interface NavLinkItem {
 // The single ordered source for both desktop and mobile content menus.
 // Match the homepage cards exactly, including the external 감쓰.exe link.
 const CONTENT_MENU_LINKS: readonly NavLinkItem[] = [
+  { label: '어드벤트 초콜릿', href: ROUTES.ADVENT, newTab: true },
   { label: '감쓰.exe', href: ROUTES.GAMSS, newTab: true },
   { label: '하루퍼즐', href: ROUTES.PUZZLE, newTab: true },
   { label: '롤링페이퍼', href: ROUTES.ROLLING_PAPER, newTab: true },
