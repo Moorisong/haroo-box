@@ -1,3 +1,5 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Timer, Eye } from 'lucide-react';
@@ -69,6 +71,7 @@ export default function PortraitPuzzleLayout({
   isSaved,
   submitError,
 }: PortraitPuzzleLayoutProps) {
+  const { t } = useLanguage();
   return (
     <div
       className="flex flex-col min-h-screen select-none"
@@ -95,7 +98,7 @@ export default function PortraitPuzzleLayout({
           onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--puzzle-muted-foreground)'; }}
         >
           <ArrowLeft size={16} strokeWidth={2.5} />
-          <span>뒤로</span>
+          <span>{t('뒤로', 'Back')}</span>
         </Link>
 
         <div className="flex flex-col items-center">
@@ -103,7 +106,7 @@ export default function PortraitPuzzleLayout({
             {puzzle.title}
           </span>
           <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
-            {difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'} · 🏆 랭킹 도전
+            {difficulty === 'novice' ? t('초보 (36조각)', 'Easy (36 pieces)') : difficulty === 'beginner' ? t('일반 (100조각)', 'Normal (100 pieces)') : t('고수 (256조각)', 'Expert (256 pieces)')} · 🏆 랭킹 도전
           </span>
         </div>
 
@@ -138,7 +141,7 @@ export default function PortraitPuzzleLayout({
               <img src={puzzle.imageUrl} alt="Original Guide" className="w-full h-auto object-contain max-h-[70vh]" />
               <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/60 text-white font-bold text-xs flex items-center gap-1">
                 <Eye size={12} />
-                <span>가이드 탭하여 닫기</span>
+                <span>{t('가이드 탭하여 닫기', 'Tap guide to close')}</span>
               </div>
             </div>
           </div>
