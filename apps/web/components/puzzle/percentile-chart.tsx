@@ -16,11 +16,11 @@ export default function PercentileChart({
 }: PercentileChartProps) {
   const { t } = useLanguage();
   const levels = [
-    { label: t('상위 1%', 'Top 1%'), threshold: 1, width: 15 },
-    { label: t('상위 5%', 'Top 5%'), threshold: 5, width: 30 },
-    { label: t('상위 10%', 'Top 10%'), threshold: 10, width: 48 },
-    { label: t('상위 25%', 'Top 25%'), threshold: 25, width: 68 },
-    { label: t('상위 50%', 'Top 50%'), threshold: 50, width: 85 },
+    { label: t('puzzle.components.puzzle.percentile.chart.001'), threshold: 1, width: 15 },
+    { label: t('puzzle.components.puzzle.percentile.chart.002'), threshold: 5, width: 30 },
+    { label: t('puzzle.components.puzzle.percentile.chart.003'), threshold: 10, width: 48 },
+    { label: t('puzzle.components.puzzle.percentile.chart.004'), threshold: 25, width: 68 },
+    { label: t('puzzle.components.puzzle.percentile.chart.005'), threshold: 50, width: 85 },
   ];
 
   // 내 성적이 어느 단계에 속하는지 체크
@@ -49,7 +49,7 @@ export default function PercentileChart({
       <div className="flex items-center gap-2 mb-4">
         <TrendingUp size={16} style={{ color: 'var(--puzzle-primary)' }} />
         <p className="text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          {t('성적 분포 분석', 'Performance distribution')}
+          {t('puzzle.components.puzzle.percentile.chart.006')}
         </p>
       </div>
 
@@ -87,11 +87,11 @@ export default function PercentileChart({
 
       {myRank && totalParticipants > 0 ? (
         <p className="mt-5 text-xs font-bold text-center" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('완주 챌린저', 'Among')} <span style={{ color: 'var(--puzzle-card-foreground)' }}>{totalParticipants.toLocaleString()} {t('명', 'players')}</span> {t('중 현재', 'you rank')} <span style={{ color: 'var(--puzzle-primary)' }}>{myRank}{t('위', 'th')}</span>{t('입니다!', '!')}
+          {t('puzzle.components.puzzle.percentile.chart.007')} <span style={{ color: 'var(--puzzle-card-foreground)' }}>{totalParticipants.toLocaleString()} {t('puzzle.components.puzzle.percentile.chart.008')}</span> {t('puzzle.components.puzzle.percentile.chart.009')} <span style={{ color: 'var(--puzzle-primary)' }}>{myRank}{t('puzzle.components.puzzle.percentile.chart.010')}</span>{t('puzzle.components.puzzle.percentile.chart.011')}
         </p>
       ) : (
         <p className="mt-5 text-xs font-bold text-center" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          {t('완주 후 본인의 성적 위치를 그래프로 확인해 보세요!', 'Finish a puzzle to see where you rank!')}
+          {t('puzzle.components.puzzle.percentile.chart.012')}
         </p>
       )}
     </div>
