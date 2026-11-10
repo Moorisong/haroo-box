@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/components/providers/language-provider';
 import Header from '@/components/puzzle/header';
 import PuzzleLanguageToggle from '@/components/puzzle/language-toggle';
 import Footer from '@/components/puzzle/footer';
@@ -14,8 +15,12 @@ export default function PuzzleLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { isReady } = useLanguage();
   const isPlayPage = pathname?.includes('/play/') ?? false;
   const { isSnsBrowser } = useExternalBrowser();
+
+  // Do not render Korean UI for one frame while restoring the saved English locale.
+  if (!isReady) return <div className="puzzle-page min-h-screen" aria-busy="true" />;
 
   if (isSnsBrowser) {
     return <div className="puzzle-page"><div style={{ position: 'fixed', top: 12, right: 12, zIndex: 10000 }}><PuzzleLanguageToggle /></div><SNSBrowserFallback /></div>;
