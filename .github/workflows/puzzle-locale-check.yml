@@ -5,6 +5,7 @@ on:
     branches: [dev]
     paths:
       - 'apps/web/app/puzzle/**'
+      - 'apps/web/tests/puzzle/**'
       - 'apps/web/components/puzzle/**'
       - 'apps/web/components/providers/language-provider.tsx'
       - 'apps/web/lib/puzzle-i18n.ts'
