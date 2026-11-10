@@ -26,7 +26,7 @@ export async function fetchCurrentPuzzle(): Promise<ApiResponse<Puzzle>> {
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchCurrentPuzzle error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -36,7 +36,7 @@ export async function fetchArchivePuzzles(): Promise<ApiResponse<Puzzle[]>> {
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchArchivePuzzles error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -46,7 +46,7 @@ export async function fetchServiceStats(): Promise<ApiResponse<{ totalPlayCount:
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchServiceStats error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -56,7 +56,7 @@ export async function fetchPuzzleById(id: string): Promise<ApiResponse<Puzzle>> 
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchPuzzleById error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -69,7 +69,7 @@ export async function fetchCurrentRankings(puzzleId: string, difficulty?: 'novic
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchCurrentRankings error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -84,7 +84,7 @@ export async function fetchMyRanking(puzzleId: string, token: string, difficulty
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyRanking error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -98,7 +98,7 @@ export async function startChallenge(puzzleId: string, token: string): Promise<A
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('startChallenge error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -123,7 +123,7 @@ export async function submitResult(
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('submitResult error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -146,7 +146,7 @@ export async function saveProgress(
     };
   } catch (error) {
     console.error('saveProgress error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -161,7 +161,7 @@ export async function fetchMyProgress(
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyProgress error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -179,7 +179,7 @@ export async function fetchMyProfile(
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('fetchMyProfile error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -192,7 +192,7 @@ export async function deleteMyAccount(token: string): Promise<ApiResponse<void>>
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('deleteMyAccount error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
 
@@ -208,6 +208,6 @@ export async function clearMyProgress(token: string, puzzleId?: string): Promise
     return await parseJsonResponse(res);
   } catch (error) {
     console.error('clearMyProgress error:', error);
-    return { success: false, error: '네트워크 오류가 발생했습니다.' };
+    return { success: false, error: 'NETWORK_ERROR' };
   }
 }
