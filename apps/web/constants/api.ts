@@ -16,7 +16,8 @@ export const getApiBaseUrl = () => {
     if (typeof window !== 'undefined') {
       return `http://${window.location.hostname}:3000`;
     }
-    return 'http://localhost:3000';
+    // Use IPv4 explicitly for Node.js SSR; localhost may resolve to ::1.
+    return 'http://127.0.0.1:3000';
   }
 
   return process.env.NEXT_PUBLIC_API_URL || 'https://box-api.harooo.co.kr';
