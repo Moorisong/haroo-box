@@ -104,7 +104,7 @@ export default function LandscapeTrayPanel({
             title={t('보관함 분류 모드', 'Organize pieces')}
           >
             <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-700 transition-colors">
-              분류
+              {t('분류', 'Organize')}
             </span>
             <div
               className={`w-7 h-4 flex items-center rounded-full p-0.5 transition-colors duration-200 ${
