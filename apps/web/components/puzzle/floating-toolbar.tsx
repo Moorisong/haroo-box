@@ -78,7 +78,7 @@ export default function FloatingToolbar({
           }}
         >
           {showOriginal ? <EyeOff size={15} /> : <Eye size={15} />}
-          <span className="hidden sm:inline">{t('원본', 'Reference')} {showOriginal ? t('끄기', 'Hide') : t('보기', 'View')}</span>
+          <span className="hidden sm:inline">{t('puzzle.components.puzzle.floating.toolbar.001')} {showOriginal ? t('puzzle.components.puzzle.floating.toolbar.002') : t('puzzle.components.puzzle.floating.toolbar.003')}</span>
         </button>
 
         <div className="w-px h-5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -90,7 +90,7 @@ export default function FloatingToolbar({
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
           <Shuffle size={15} />
-          <span className="hidden sm:inline">{t('판 엎기', 'Shuffle')}</span>
+          <span className="hidden sm:inline">{t('puzzle.components.puzzle.floating.toolbar.004')}</span>
         </button>
 
         <div className="w-px h-5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -152,13 +152,13 @@ export default function FloatingToolbar({
                 <div className="relative bg-zinc-900 text-white text-[10px] sm:text-[11px] font-medium pl-3 pr-1.5 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5 border border-zinc-800 whitespace-nowrap cursor-default w-max sm:ml-[-82px]">
                   <span className="flex items-center gap-1">
                     <span>☁️</span>
-                    <span>{t('수동 저장해야 서버에 백업됩니다!', 'Save manually to back up to the server!')}</span>
+                    <span>{t('puzzle.components.puzzle.floating.toolbar.005')}</span>
                   </span>
                   <span 
                     onClick={handleDismissTooltip}
                     className="hover:text-zinc-400 p-0.5 rounded-full cursor-pointer flex items-center justify-center flex-shrink-0"
                     role="button"
-                    aria-label={t('닫기', 'Close')}
+                    aria-label={t('puzzle.components.puzzle.floating.toolbar.006')}
                   >
                     <X size={10} strokeWidth={3} />
                   </span>
@@ -182,10 +182,10 @@ export default function FloatingToolbar({
             )}
             <span className="hidden sm:inline">
               {saveStatus === 'saving' 
-                ? t('저장/제출 중...', 'Saving...') 
+                ? t('puzzle.components.puzzle.floating.toolbar.007') 
                 : saveStatus === 'saved' 
-                  ? t('저장/제출 완료!', 'Saved!') 
-                  : t('저장/제출', 'Save / submit')}
+                  ? t('puzzle.components.puzzle.floating.toolbar.008') 
+                  : t('puzzle.components.puzzle.floating.toolbar.009')}
             </span>
           </button>
       </div>
