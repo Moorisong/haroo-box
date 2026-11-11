@@ -25,7 +25,7 @@ test('puzzle translation seeds have unique keys and two complete languages', () 
       assert.ok(row.key.startsWith('puzzle.'), row.key);
       assert.ok(typeof row.ko === 'string' && row.ko.trim(), row.key);
       assert.ok(typeof row.en === 'string' && row.en.trim(), row.key);
-      const variables = value => [...value.matchAll(/\\{\\{([a-zA-Z0-9_]+)\\}\\}/g)].map(match => match[1]).sort();
+      const variables = value => [...value.matchAll(/\{\{([a-zA-Z0-9_]+)\}\}/g)].map(match => match[1]).sort();
       assert.deepEqual(variables(row.ko), variables(row.en), `Variable mismatch: ${row.key}`);
       assert.ok(!keys.has(row.key), `Duplicate translation: ${row.key}`);
       keys.add(row.key);
