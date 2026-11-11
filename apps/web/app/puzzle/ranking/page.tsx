@@ -17,7 +17,7 @@ import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adf
 export default function RankingPage() {
   const { language, t } = useLanguage();
   const { data: session } = useSession();
-  const token = session?.user?.kakaoId;
+  const token = session?.user?.providerId || session?.user?.kakaoId;
 
   const [currentPuzzle, setCurrentPuzzle] = useState<Puzzle | null>(null);
   const [rankings, setRankings] = useState<RankingEntry[]>([]);
@@ -25,9 +25,11 @@ export default function RankingPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(20);
-  const [now, setNow] = useState(() => Date.now());
+  // Keep the server and first client render identical to avoid hydration mismatches.
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    setNow(Date.now());
     const timer = window.setInterval(() => setNow(Date.now()), 60_000);
     return () => window.clearInterval(timer);
   }, []);
@@ -93,6 +95,7 @@ export default function RankingPage() {
   const getDaysLeft = (endDateStr: string) => {
     try {
       const end = new Date(endDateStr).getTime();
+      if (now === null) return '';
       const diff = end - now;
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
       return days > 0 ? `${days} ${t('puzzle.app.puzzle.ranking.page.001')}` : t('puzzle.app.puzzle.ranking.page.002');
