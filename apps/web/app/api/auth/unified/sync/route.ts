@@ -67,6 +67,8 @@ export async function POST(req: NextRequest) {
           originalUserId: unifiedUserObjId,
           provider,
           providerId: providerIdKey,
+          name: unifiedUser?.name || name || undefined,
+          profileImage: unifiedUser?.profileImage || profileImage || undefined,
           updatedAt: new Date(),
         },
         $setOnInsert: {
