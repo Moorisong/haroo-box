@@ -3,6 +3,7 @@ import { useLanguage } from '@/components/providers/language-provider';
 
 import { LogOut, Trash2, UserX, ChevronRight, Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 interface SettingsPanelProps {
   onClearData: () => void;
@@ -19,7 +20,13 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
     } catch (e) {
       console.error('Failed to clear puzzle state on signout:', e);
     }
-    await signOut({ callbackUrl: '/puzzle' });
+    try {
+      await signOut({ redirect: false, callbackUrl: '/puzzle' });
+      setSharedSessionCookie(false);
+      window.location.assign('/puzzle');
+    } catch (error) {
+      console.error('Puzzle sign-out failed:', error);
+    }
   };
 
   const menuItems = [
