@@ -24,22 +24,22 @@ export async function GET(req: NextRequest) {
 
     const db = await getDatabase();
 
-    let membership = null;
+    let targetUser = null;
     if (service && user.id) {
-      const userObjId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : user.id;
-      membership = await db.collection('unifiedservicememberships').findOne({
+      const userObjId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+      targetUser = await db.collection('users').findOne({
         service,
-        $or: [{ originalUserId: userObjId }, { originalUserId: user.id }],
+        ...(userObjId ? { _id: userObjId } : { providerId: user.providerId }),
       });
-      if (!membership && user.providerId) {
-        membership = await db.collection('unifiedservicememberships').findOne({
+      if (!targetUser && user.providerId) {
+        targetUser = await db.collection('users').findOne({
           service,
           providerId: user.providerId,
         });
       }
     }
 
-    console.log(`[UnifiedSessionEndpoint] ✅ Authenticated user=${user.id}, serviceUserId=${membership?.serviceUserId || 'none'}`);
+    console.log(`[UnifiedSessionEndpoint] ✅ Authenticated user=${user.id}, serviceUserId=${targetUser?.serviceUserId || 'none'}`);
     const res = NextResponse.json({
       authenticated: true,
       user: {
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
         image: user.image,
         provider: user.provider,
         providerId: user.providerId,
-        serviceUserId: membership?.serviceUserId || null,
+        serviceUserId: targetUser?.serviceUserId || null,
       },
     });
     return handleCors(req, res);

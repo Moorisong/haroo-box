@@ -10,7 +10,9 @@ export interface OAuthUserData {
 
 export const findOrCreateUser = async (userData: OAuthUserData): Promise<IUser> => {
   const User = getUserModel();
-  const existingUser = await User.findOne({ providerId: userData.providerId });
+  const existingUser =
+    (await User.findOne({ service: 'box', providerId: userData.providerId })) ||
+    (await User.findOne({ providerId: userData.providerId }));
 
   if (existingUser) {
     // Update user info if changed
@@ -77,6 +79,7 @@ export const findUserById = async (userId: string): Promise<IUser | null> => {
 };
 
 export const findUserByProviderId = async (providerId: string): Promise<IUser | null> => {
-  return getUserModel().findOne({ providerId });
+  const User = getUserModel();
+  return (await User.findOne({ service: 'box', providerId })) || (await User.findOne({ providerId }));
 };
 

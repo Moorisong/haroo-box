@@ -16,32 +16,20 @@
 ### 메인 데이터베이스 (`haroo-box`)
 
 #### ① `users` 컬렉션
-서비스 전체 공통 회원 본체(Unique Person) 테이블입니다.
+하루상자 생태계 전체(`box`, `dumpit`, `advent` 등)의 통합 회원 컬렉션입니다. 동일 소셜 계정이라도 서비스별로 독립된 문서를 유지합니다.
 * **Fields**:
   * `_id` (ObjectId): 고유 시스템 PK.
-  * `providerId` (String, 필수, Unique): OAuth 제공업체 측의 사용자 고유 ID (카카오 회원 ID, `google:sub` 등).
+  * `service` (String, 필수): 서비스 식별자 (`'box' | 'dumpit' | 'advent' | ...`, 기본값 `'box'`).
+  * `providerId` (String, 필수): OAuth 제공업체 측의 사용자 고유 ID (카카오 회원 ID, `google:sub` 등).
   * `provider` (String, 필수): 가입 경로 (`'kakao' | 'google' | 'guest' | 'test'`).
+  * `serviceUserId` (String, 선택): 서브 서비스 로컬 DB(Supabase Auth 등)의 사용자 고유 ID (UUID).
   * `name` (String): 제공업체에서 수집된 사용자 실제 이름/닉네임.
   * `nickname` (String): 사용자가 지정한 고유 활동명.
   * `nicknameUpdatedAt` (Date): 닉네임 수정 제한 검증용 변경 일시.
   * `profileImage` (String): 프로필 이미지 URL.
   * `createdAt` (Date) / `updatedAt` (Date): 생성/수정 타임스탬프.
 * **Indexes**:
-  * `{ providerId: 1 }` (Unique)
-
-#### ② `unifiedservicememberships` 컬렉션
-하루상자 생태계 내 각 서브 서비스(감쓰, 어드벤트, 신규 서비스 등)별 회원 가입 및 활동 증명 테이블입니다.
-* **Fields**:
-  * `_id` (ObjectId): 고유 PK.
-  * `service` (String, 필수): 서비스 식별자 (`'dumpit' | 'advent' | ...`).
-  * `serviceUserId` (String, 필수): 해당 서브 서비스 로컬 DB(Supabase Auth 등)의 사용자 고유 ID (UUID).
-  * `originalUserId` (ObjectId, 필수): 중앙 `users` 컬렉션 문서의 `_id`.
-  * `provider` (String, 필수): 소셜 인증 제공자 (`'kakao' | 'google'`).
-  * `providerId` (String, 필수): 소셜 인증 제공자 식별자.
-  * `name` (String): 해당 서비스에서 동기화된 유저 표시 이름.
-  * `profileImage` (String): 유저 프로필 사진 URL.
-  * `createdAt` (Date) / `updatedAt` (Date): 최초 등록 및 최근 동기화 시각.
-* **Indexes**:
-  * `{ service: 1, serviceUserId: 1 }` (Unique)
-  * `{ originalUserId: 1 }`
+  * `{ service: 1, providerId: 1 }` (Unique)
+  * `{ providerId: 1 }`
   * `{ service: 1 }`
+  * `{ serviceUserId: 1 }`

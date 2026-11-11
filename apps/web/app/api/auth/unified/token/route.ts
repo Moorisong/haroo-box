@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
 import { getDatabase } from '@/lib/mongodb';
 import { createSupabaseCustomToken } from '@/lib/supabase-token';
 import { randomUUID } from 'crypto';
@@ -39,36 +40,48 @@ export async function GET(req: NextRequest) {
     }
 
     const db = await getDatabase();
-    const memberships = db.collection('unifiedservicememberships');
+    const users = db.collection('users');
 
-    let membership = null;
+    let targetUser = null;
     if (user.id) {
-      membership = await memberships.findOne({
+      const userObjId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+      targetUser = await users.findOne({
         service,
-        originalUserId: user.id,
+        ...(userObjId ? { _id: userObjId } : { providerId: user.providerId }),
       });
     }
 
-    if (!membership && user.providerId) {
-      membership = await memberships.findOne({
+    if (!targetUser && user.providerId) {
+      targetUser = await users.findOne({
         service,
         providerId: user.providerId,
       });
     }
 
-    let serviceUserId = membership?.serviceUserId;
+    let serviceUserId = targetUser?.serviceUserId;
 
     if (!serviceUserId) {
       serviceUserId = randomUUID();
-      await memberships.insertOne({
-        service,
-        serviceUserId,
-        originalUserId: user.id,
-        provider: user.provider,
-        providerId: user.providerId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      if (user.providerId) {
+        await users.updateOne(
+          { service, providerId: user.providerId },
+          {
+            $set: {
+              service,
+              providerId: user.providerId,
+              provider: user.provider || 'kakao',
+              serviceUserId,
+              name: user.name || undefined,
+              profileImage: user.image || undefined,
+              updatedAt: new Date(),
+            },
+            $setOnInsert: {
+              createdAt: new Date(),
+            },
+          },
+          { upsert: true }
+        );
+      }
     }
 
     const token = await createSupabaseCustomToken(serviceUserId, jwtSecret);

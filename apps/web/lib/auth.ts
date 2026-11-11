@@ -122,11 +122,12 @@ export const authOptions: NextAuthOptions = {
             : account.providerAccountId;
 
         await users.updateOne(
-          { providerId: providerIdKey },
+          { service: 'box', providerId: providerIdKey },
           {
             $set: {
               providerId: providerIdKey,
               provider: account.provider,
+              service: 'box',
               name: displayName,
               profileImage: profileImg,
               updatedAt: new Date(),
@@ -160,7 +161,7 @@ export const authOptions: NextAuthOptions = {
         try {
           const db = await getDatabase();
           const users = db.collection('users');
-          const dbUser = await users.findOne({ providerId: providerIdKey });
+          const dbUser = await users.findOne({ service: 'box', providerId: providerIdKey });
           if (dbUser) {
             token.userId = dbUser._id.toString();
             token.nickname = dbUser.nickname || null;

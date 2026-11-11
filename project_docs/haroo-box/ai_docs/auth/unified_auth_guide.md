@@ -21,19 +21,15 @@
           │                  └──────────┬─────────┘
           │                             │ (백그라운드 동기화)
           ▼                             ▼
-   [ NextAuth 세션 ] ───► [ 하루상자 MongoDB 허브 (users & memberships) ]
+   [ NextAuth 세션 ] ───► [ 하루상자 MongoDB 허브 (users 단일 컬렉션) ]
 ```
 
-### 핵심 데이터 모델 차이
-1. **`users` (MongoDB)**:
-   - **사람(Unique Person) 1명당 1개 문서**.
-   - 소셜 로그인 고유 식별자(`providerId`: 카카오 고유번호 또는 구글 고유ID) 기준.
-   - 전체 생태계의 '순수 가입자 수'를 집계하는 기준 테이블.
-2. **`unifiedservicememberships` (MongoDB)**:
-   - **서비스별 가입/활동 증명(Membership)**.
-   - 복합 키: `(service, serviceUserId)`.
-   - 각 서비스의 로컬 유저 식별자(`serviceUserId`)와 본체(`originalUserId` -> `users._id`)를 연결.
-   - `name`, `profileImage`, `updatedAt`을 포함하여 각 서비스별 사용자 수 및 명단을 집계.
+### 핵심 데이터 모델
+1. **`users` (MongoDB 단일 컬렉션)**:
+   - **복합 유니크 키**: `{ service, providerId }` (`service`는 `'box' | 'dumpit' | 'advent' | ...`, 기본 `'box'`).
+   - 동일 인물(예: 동일 Google `sub`)이 여러 서비스에 가입하더라도 `service`별로 독립 문서가 유지되어 서로 덮어쓰지 않는다.
+   - 서브 서비스(감쓰, 어드벤트 등)는 해당 서비스의 로컬 유저 식별자(`serviceUserId`)도 함께 저장하여 매핑한다.
+   - `name`, `profileImage`, `updatedAt`을 포함해 전체 및 서비스별 사용자 수·명단을 하나의 `users` 컬렉션에서 집계한다.
 
 ---
 
@@ -73,8 +69,8 @@
      // 비즈니스 로직 수행
    }
    ```
-3. **멤버십 자동 등록**:
-   - 내부 앱이 별도의 서비스 구분이 필요하다면, 로그인 완료 후 또는 서비스 첫 진입 시 MongoDB `unifiedservicememberships`에 `{ service: 'new-service', serviceUserId: session.user.id, originalUserId: ObjectId(session.user.id) }`를 upsert 처리한다.
+3. **서비스 구분 저장**:
+   - 내부 앱이 별도의 서비스 구분이 필요하다면, 로그인 완료 후 또는 서비스 첫 진입 시 MongoDB `users`에 `{ service: 'new-service', providerId }`를 기준으로 `serviceUserId: session.user.id` 등을 함께 upsert 처리한다. (하루상자 기본 앱은 `service: 'box'` 사용)
 
 ---
 

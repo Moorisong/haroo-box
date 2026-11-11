@@ -9,11 +9,11 @@
 
 ## 🤖 2. 목적 및 개발 지침
 ### 🎯 목적
-- 공통 백엔드 보안, 통합 회원(`users`, `unifiedservicememberships`) 파이프라인 개발 및 유지 보수.
+- 공통 백엔드 보안, 통합 회원(`users` 단일 컬렉션) 파이프라인 개발 및 유지 보수.
 ### 🛠️ 개발 지침
 - 컨트롤러, 라우터, 서비스, 모델 레이어로 책임 분리 적용.
 - 통합 인증 API는 `*.harooo.co.kr` 서브도메인 간 CORS 및 `credentials: 'include'` 환경을 전제로 구현.
-- 서브 서비스 연동 시 원본 식별자 `originalUserId`는 반드시 MongoDB `ObjectId` 인스턴스로 정규화하여 저장.
+- 모든 서비스(`box`, `dumpit`, `advent`) 회원은 `users` 컬렉션에서 `(service, providerId)` 복합 유니크 키로 구분해 저장하고, 필요 시 `serviceUserId`를 함께 기록한다.
 
 ## 🚨 3. 제약 조건
 - **[300줄 분리 규칙]:** 단일 파일 코드는 300줄 초과 금지. 초과 시 서비스 로직 분리.

@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
 
     const db = await getDatabase();
     const users = db.collection('users');
-    const memberships = db.collection('unifiedservicememberships');
 
     const providerIdKey =
       provider === 'google' && !providerId.startsWith('google:')
@@ -38,11 +37,13 @@ export async function POST(req: NextRequest) {
         : providerId;
 
     const userResult = await users.findOneAndUpdate(
-      { providerId: providerIdKey },
+      { service, providerId: providerIdKey },
       {
         $set: {
           providerId: providerIdKey,
           provider,
+          service,
+          serviceUserId,
           name: name || undefined,
           profileImage: profileImage || undefined,
           updatedAt: new Date(),
@@ -54,29 +55,9 @@ export async function POST(req: NextRequest) {
       { upsert: true, returnDocument: 'after' }
     );
 
-    const unifiedUser = userResult || (await users.findOne({ providerId: providerIdKey }));
+    const unifiedUser = userResult || (await users.findOne({ service, providerId: providerIdKey }));
     const unifiedUserObjId = unifiedUser?._id;
     const unifiedUserId = unifiedUserObjId?.toString();
-
-    await memberships.updateOne(
-      { service, serviceUserId },
-      {
-        $set: {
-          service,
-          serviceUserId,
-          originalUserId: unifiedUserObjId,
-          provider,
-          providerId: providerIdKey,
-          name: unifiedUser?.name || name || undefined,
-          profileImage: unifiedUser?.profileImage || profileImage || undefined,
-          updatedAt: new Date(),
-        },
-        $setOnInsert: {
-          createdAt: new Date(),
-        },
-      },
-      { upsert: true }
-    );
 
     const token = await encode({
       token: {

@@ -15,9 +15,11 @@ export const puzzleAuth = async (req: Request, res: Response, next: NextFunction
       return;
     }
 
-    // next-auth 기반 통합 세션을 지원하기 위해, 토큰은 사용자의 providerId (카카오 고유 ID)입니다.
+    // next-auth 기반 통합 세션을 지원하기 위해, 토큰은 사용자의 providerId (카카오/구글 고유 ID)입니다.
     const User = getUserModel();
-    const user = await User.findOne({ providerId: token });
+    const user =
+      (await User.findOne({ providerId: token, service: 'box' })) ||
+      (await User.findOne({ providerId: token }));
 
     if (!user) {
       res.status(401).json({ success: false, error: '유효하지 않은 사용자 세션입니다.' });
