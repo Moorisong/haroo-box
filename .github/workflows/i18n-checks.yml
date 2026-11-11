@@ -18,3 +18,7 @@ jobs:
       - run: npm test
       - run: npm ci
       - run: npm run build
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm run build
+        working-directory: apps/web
