@@ -16,5 +16,5 @@ jobs:
         with:
           node-version: '22'
       - run: npm test
-      - run: npm ci --prefix apps/server
-      - run: npm run build --prefix apps/server
+      - run: npm ci
+      - run: npm run build
