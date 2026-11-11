@@ -38,7 +38,7 @@ interface KakaoProfileFields {
 }
 
 const cookieDomain = getSharedCookieDomain();
-const useSecure = process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.startsWith('http://localhost');
+const useSecure = process.env.NODE_ENV === 'production' && true;
 
 export const authOptions: NextAuthOptions = {
   providers: [
