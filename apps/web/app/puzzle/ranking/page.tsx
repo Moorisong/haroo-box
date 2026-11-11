@@ -25,6 +25,12 @@ export default function RankingPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(20);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     async function loadRankings() {
@@ -87,7 +93,7 @@ export default function RankingPage() {
   const getDaysLeft = (endDateStr: string) => {
     try {
       const end = new Date(endDateStr).getTime();
-      const diff = end - Date.now();
+      const diff = end - now;
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
       return days > 0 ? `${days} ${t('puzzle.app.puzzle.ranking.page.001')}` : t('puzzle.app.puzzle.ranking.page.002');
     } catch {
