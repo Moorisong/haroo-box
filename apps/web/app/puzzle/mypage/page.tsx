@@ -51,10 +51,12 @@ export default function MyPage() {
       return;
     }
     setIsLoading(true);
+    // Capture the narrowed auth token before entering the async closure.
+    const profileToken = token;
 
     async function loadProfile() {
       try {
-        const res = await fetchMyProfile(token);
+        const res = await fetchMyProfile(profileToken);
         if (res.success && res.data) {
           setProfile(res.data.profile);
           setStatistics(res.data.statistics);
