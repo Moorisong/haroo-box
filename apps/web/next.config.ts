@@ -1,10 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   compiler: {
-    // 프로덕션 환경에서만 console 로그 제거 (error, warn은 유지하여 디버깅 가능하게 함)
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
+  async headers() {
+    return [
+      {
+        source: '/api/auth/unified/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: 'https://dumpit-web.harooo.co.kr' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,POST,OPTIONS' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
+        ],
+      },
+    ];
   },
   async rewrites() {
     const isDev = process.env.NODE_ENV !== 'production';

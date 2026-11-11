@@ -4,18 +4,26 @@ import { authOptions } from '@/lib/auth';
 import { getDatabase } from '@/lib/mongodb';
 import { createSupabaseCustomToken } from '@/lib/supabase-token';
 import { randomUUID } from 'crypto';
+import { handleCors } from '@/lib/cors';
+
+export async function OPTIONS(req: NextRequest) {
+  const res = new NextResponse(null, { status: 204 });
+  return handleCors(req, res);
+}
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      const res = NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return handleCors(req, res);
     }
 
-    const service = req.nextUrl.searchParams.get('service'); // 'dumpit' | 'advent'
+    const service = req.nextUrl.searchParams.get('service');
     if (!service || (service !== 'dumpit' && service !== 'advent')) {
-      return NextResponse.json({ error: 'Invalid service' }, { status: 400 });
+      const res = NextResponse.json({ error: 'Invalid service' }, { status: 400 });
+      return handleCors(req, res);
     }
 
     const jwtSecret =
@@ -24,16 +32,16 @@ export async function GET(req: NextRequest) {
         : process.env.ADVENT_SUPABASE_JWT_SECRET;
 
     if (!jwtSecret) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { error: `JWT Secret for ${service} is not configured` },
         { status: 503 }
       );
+      return handleCors(req, res);
     }
 
     const db = await getDatabase();
     const memberships = db.collection('unifiedservicememberships');
 
-    // 1. 기존 매핑 조회
     let membership = await memberships.findOne({
       service,
       originalUserId: session.user.id,
@@ -48,7 +56,6 @@ export async function GET(req: NextRequest) {
 
     let serviceUserId = membership?.serviceUserId;
 
-    // 2. 신규 사용자일 경우 서비스 전용 UUID 자동 생성
     if (!serviceUserId) {
       serviceUserId = randomUUID();
       await memberships.insertOne({
@@ -62,10 +69,9 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 3. 서명된 Supabase JWT 토큰 발급
     const token = await createSupabaseCustomToken(serviceUserId, jwtSecret);
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       success: true,
       service,
       serviceUserId,
@@ -76,8 +82,10 @@ export async function GET(req: NextRequest) {
         image: session.user.image,
       },
     });
+    return handleCors(req, res);
   } catch (error) {
     console.error('Unified token generation error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const res = NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return handleCors(req, res);
   }
 }
