@@ -11,6 +11,15 @@ import styles from '../puzzle-layout.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
+// Shared puzzle schedule uses Korea time, regardless of the viewer's timezone.
+const getPuzzleMonthKst = (dateString: string): number => {
+  const date = new Date(dateString);
+  return Number(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    month: 'numeric',
+  }).format(date));
+};
+
 export default function ArchivePage() {
   const { language, t } = useLanguage();
   const { data: session, status: sessionStatus } = useSession();
@@ -99,8 +108,7 @@ export default function ArchivePage() {
   const availableMonths = Array.from(
     new Set(
       puzzles.map((p) => {
-        const d = new Date(p.startDate);
-        return d.getMonth() + 1;
+        return getPuzzleMonthKst(p.startDate);
       })
     )
   ).sort((a, b) => a - b);
@@ -108,8 +116,7 @@ export default function ArchivePage() {
   // 선택된 월에 따라 퍼즐 필터링
   const filteredPuzzles = selectedMonth
     ? puzzles.filter((p) => {
-        const d = new Date(p.startDate);
-        return d.getMonth() + 1 === selectedMonth;
+        return getPuzzleMonthKst(p.startDate) === selectedMonth;
       })
     : puzzles;
 
