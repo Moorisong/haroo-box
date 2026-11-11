@@ -11,15 +11,17 @@ export async function OPTIONS(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    const service = req.nextUrl.searchParams.get('service');
+    console.log(`[UnifiedSessionEndpoint] 📥 GET session check from service=${service}`);
     const user = await getAuthenticatedUser(req);
 
     if (!user) {
+      console.log(`[UnifiedSessionEndpoint] ❌ Unauthenticated check for service=${service}`);
       const res = NextResponse.json({ authenticated: false, user: null }, { status: 200 });
       return handleCors(req, res);
     }
 
     const db = await getDatabase();
-    const service = req.nextUrl.searchParams.get('service');
 
     let membership = null;
     if (service && user.id) {
@@ -35,6 +37,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    console.log(`[UnifiedSessionEndpoint] ✅ Authenticated user=${user.id}, serviceUserId=${membership?.serviceUserId || 'none'}`);
     const res = NextResponse.json({
       authenticated: true,
       user: {
