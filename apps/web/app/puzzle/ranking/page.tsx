@@ -98,7 +98,19 @@ export default function RankingPage() {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return t('puzzle.ui.rankingMonthWeek', { month: new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'long' }).format(date), week: Math.ceil(date.getDate() / 7) });
+      // Puzzle weeks follow the service's Korea-time schedule for every locale.
+      const locale = language === 'en' ? 'en-US' : 'ko-KR';
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Seoul',
+        month: 'numeric',
+        day: 'numeric',
+      }).formatToParts(date);
+      const monthNumber = Number(parts.find((part) => part.type === 'month')?.value);
+      const dayNumber = Number(parts.find((part) => part.type === 'day')?.value);
+      if (!monthNumber || !dayNumber) throw new Error('Invalid puzzle start date');
+      const month = new Intl.DateTimeFormat(locale, { month: 'long', timeZone: 'UTC' })
+        .format(new Date(Date.UTC(2024, monthNumber - 1, 1)));
+      return t('puzzle.ui.rankingMonthWeek', { month, week: Math.ceil(dayNumber / 7) });
     } catch {
       return t('puzzle.app.puzzle.ranking.page.003');
     }
