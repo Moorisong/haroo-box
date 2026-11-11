@@ -3,7 +3,6 @@ import { useLanguage } from '@/components/providers/language-provider';
 
 import { LogOut, Trash2, UserX, ChevronRight, Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 interface SettingsPanelProps {
   onClearData: () => void;
@@ -12,7 +11,6 @@ interface SettingsPanelProps {
 
 export default function SettingsPanel({ onClearData, onDeleteAccount }: SettingsPanelProps) {
   const { t } = useLanguage();
-  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
@@ -21,7 +19,7 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
     } catch (e) {
       console.error('Failed to clear puzzle state on signout:', e);
     }
-    signOut({ callbackUrl: '/puzzle' });
+    await signOut({ callbackUrl: '/puzzle' });
   };
 
   const menuItems = [
