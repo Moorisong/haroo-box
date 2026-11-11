@@ -33,5 +33,5 @@
     "./contents/**/*.ts",
     "./contents/**/*.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "tests", "playwright.config.ts"]
 }
