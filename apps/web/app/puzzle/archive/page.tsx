@@ -217,7 +217,7 @@ export default function ArchivePage() {
                       : { color: 'var(--puzzle-muted-foreground)' }
                   }
                 >
-                  {new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'short' }).format(new Date(2026, m - 1, 1))}
+                  {new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'short', timeZone: 'UTC' }).format(new Date(2026, m - 1, 1))}
                 </button>
               );
             })}
@@ -245,7 +245,7 @@ export default function ArchivePage() {
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
-          {selectedMonth ? t('puzzle.ui.emptyArchiveMonth', { month: language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2026, selectedMonth - 1, 1)) : selectedMonth }) : t('puzzle.app.puzzle.archive.page.012')}
+          {selectedMonth ? t('puzzle.ui.emptyArchiveMonth', { month: language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(new Date(2026, selectedMonth - 1, 1)) : selectedMonth }) : t('puzzle.app.puzzle.archive.page.012')}
         </div>
       ) : (
         <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />
