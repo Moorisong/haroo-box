@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { getDatabase } from '@/lib/mongodb';
 import { createSupabaseCustomToken } from '@/lib/supabase-token';
 import { randomUUID } from 'crypto';
 import { handleCors } from '@/lib/cors';
+import { getAuthenticatedUser } from '@/lib/get-token-user';
 
 export async function OPTIONS(req: NextRequest) {
   const res = new NextResponse(null, { status: 204 });
@@ -13,9 +12,9 @@ export async function OPTIONS(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getAuthenticatedUser(req);
 
-    if (!session?.user) {
+    if (!user) {
       const res = NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       return handleCors(req, res);
     }
@@ -42,15 +41,18 @@ export async function GET(req: NextRequest) {
     const db = await getDatabase();
     const memberships = db.collection('unifiedservicememberships');
 
-    let membership = await memberships.findOne({
-      service,
-      originalUserId: session.user.id,
-    });
-
-    if (!membership && session.user.providerId) {
+    let membership = null;
+    if (user.id) {
       membership = await memberships.findOne({
         service,
-        providerId: session.user.providerId,
+        originalUserId: user.id,
+      });
+    }
+
+    if (!membership && user.providerId) {
+      membership = await memberships.findOne({
+        service,
+        providerId: user.providerId,
       });
     }
 
@@ -61,9 +63,9 @@ export async function GET(req: NextRequest) {
       await memberships.insertOne({
         service,
         serviceUserId,
-        originalUserId: session.user.id,
-        provider: session.user.provider,
-        providerId: session.user.providerId,
+        originalUserId: user.id,
+        provider: user.provider,
+        providerId: user.providerId,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -77,9 +79,9 @@ export async function GET(req: NextRequest) {
       serviceUserId,
       token,
       user: {
-        id: session.user.id,
-        name: session.user.name,
-        image: session.user.image,
+        id: user.id,
+        name: user.name,
+        image: user.image,
       },
     });
     return handleCors(req, res);

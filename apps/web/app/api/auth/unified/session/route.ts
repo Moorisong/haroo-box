@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { getDatabase } from '@/lib/mongodb';
 import { getSharedCookieDomain } from '@/lib/cookie-domain';
 import { handleCors } from '@/lib/cors';
+import { getAuthenticatedUser } from '@/lib/get-token-user';
 
 export async function OPTIONS(req: NextRequest) {
   const res = new NextResponse(null, { status: 204 });
@@ -12,9 +11,9 @@ export async function OPTIONS(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getAuthenticatedUser(req);
 
-    if (!session?.user) {
+    if (!user) {
       const res = NextResponse.json({ authenticated: false, user: null }, { status: 200 });
       return handleCors(req, res);
     }
@@ -23,15 +22,15 @@ export async function GET(req: NextRequest) {
     const service = req.nextUrl.searchParams.get('service');
 
     let membership = null;
-    if (service && session.user.id) {
+    if (service && user.id) {
       membership = await db.collection('unifiedservicememberships').findOne({
         service,
-        originalUserId: session.user.id,
+        originalUserId: user.id,
       });
-      if (!membership && session.user.providerId) {
+      if (!membership && user.providerId) {
         membership = await db.collection('unifiedservicememberships').findOne({
           service,
-          providerId: session.user.providerId,
+          providerId: user.providerId,
         });
       }
     }
@@ -39,11 +38,11 @@ export async function GET(req: NextRequest) {
     const res = NextResponse.json({
       authenticated: true,
       user: {
-        id: session.user.id,
-        name: session.user.name,
-        image: session.user.image,
-        provider: session.user.provider,
-        providerId: session.user.providerId,
+        id: user.id,
+        name: user.name,
+        image: user.image,
+        provider: user.provider,
+        providerId: user.providerId,
         serviceUserId: membership?.serviceUserId || null,
       },
     });

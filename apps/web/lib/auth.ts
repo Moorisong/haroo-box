@@ -74,6 +74,27 @@ export const authOptions: NextAuthOptions = {
       }
     : undefined,
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      // Allows callback URLs on any *.harooo.co.kr or *.haroo.site subdomain
+      try {
+        const parsed = new URL(url);
+        if (
+          parsed.hostname === 'harooo.co.kr' ||
+          parsed.hostname.endsWith('.harooo.co.kr') ||
+          parsed.hostname === 'haroo.site' ||
+          parsed.hostname.endsWith('.haroo.site') ||
+          parsed.hostname === 'localhost' ||
+          parsed.hostname === '127.0.0.1'
+        ) {
+          return url;
+        }
+      } catch {
+        // invalid URL
+      }
+      return baseUrl;
+    },
     async signIn({ user, account, profile }) {
       if (!account?.provider || !account?.providerAccountId) {
         return false;
