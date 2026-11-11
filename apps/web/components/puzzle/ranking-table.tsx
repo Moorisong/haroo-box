@@ -35,6 +35,8 @@ export default function RankingTable({
   const formatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
+      if (Number.isNaN(date.getTime())) return dateStr;
+      // Viewer-local date; locale and timezone are independent.
       return `${date.getMonth() + 1}.${date.getDate()}`;
     } catch {
       return dateStr;
