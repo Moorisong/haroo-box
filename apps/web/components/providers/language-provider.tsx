@@ -37,7 +37,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [messages, setMessages] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const saved = window.localStorage.getItem('haroo-language');
+    let saved: string | null = null;
+    try { saved = window.localStorage.getItem('haroo-language'); } catch { /* Storage may be blocked. */ }
     const next: Language = saved === 'ko' || saved === 'en'
       ? saved
       : navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en';
@@ -76,7 +77,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const setLanguage = (next: Language) => {
     updateLanguage(next);
-    window.localStorage.setItem('haroo-language', next);
+    try { window.localStorage.setItem('haroo-language', next); } catch { /* Cookie still preserves preference. */ }
     document.documentElement.lang = next;
     document.cookie = `haroo-language=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
   };
@@ -85,7 +86,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // Legacy Haroo Box pages outside /puzzle keep their own inline bilingual copy.
     if (!inPuzzle) return language === 'en' && typeof variablesOrEnglish === 'string' ? variablesOrEnglish : key;
     const variables = typeof variablesOrEnglish === 'object' ? variablesOrEnglish : undefined;
-    const translated = messages[key];
+    const translated = Object.prototype.hasOwnProperty.call(messages, key) ? messages[key] : undefined;
     if (!translated) {
       if (loadedLanguage === language) console.error('Missing puzzle translation key:', key, language);
       return '';
