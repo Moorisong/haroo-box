@@ -54,8 +54,12 @@ export const getArchivePuzzles = async (req: Request, res: Response, next: NextF
     // 현재 진행 중인 퍼즐(대회 퍼즐) 및 지난 주차 아카이브 퍼즐 목록 조회
     // 단, 올해(현재 연도)의 데이터만 조회하도록 필터링
     const now = new Date();
-    const currentYear = now.getFullYear();
-    const startOfYear = new Date(Date.UTC(currentYear, 0, 1, 0, 0, 0, 0));
+    // The archive year starts at midnight in Korea (UTC+09:00).
+    const currentYear = Number(new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric',
+    }).format(now));
+    const startOfYear = new Date(`${currentYear}-01-01T00:00:00+09:00`);
 
     const puzzles = await Puzzle.find({
       startDate: { $gte: startOfYear, $lte: now }
