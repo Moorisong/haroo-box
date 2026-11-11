@@ -56,3 +56,14 @@
 * **Indexes**:
   * `{ token: 1 }` (Unique)
   * `{ expiresAt: 1 }` (TTL: expiresAt 시점 자동 삭제)
+
+
+#### ⑤ `puzzletranslations` 컬렉션
+하루퍼즐 UI 및 동적 메타데이터의 다국어(한국어, 영어) 사전 테이블입니다.
+* **Fields**:
+  * `key` (String, 필수, Unique): 다국어 리소스 고유 키 (예: `puzzle.title.archive`, `puzzle.result.time`).
+  * `ko` (String, 필수): 한국어 번역 텍스트.
+  * `en` (String, 필수): 영어 번역 텍스트.
+  * `createdAt` (Date) / `updatedAt` (Date): 생성 및 수정 시각.
+* **Indexes**:
+  * `{ key: 1 }` (Unique)
