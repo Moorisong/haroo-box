@@ -21,7 +21,8 @@ export default function MyPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const { data: session, status } = useSession();
-  const token = session?.user?.kakaoId;
+  // Google accounts do not have a kakaoId; both providers use their canonical provider ID.
+  const token = session?.user?.providerId || session?.user?.kakaoId;
   const { toast, showToast, hideToast } = useToast();
 
   const [profile, setProfile] = useState<any>(null);
@@ -44,13 +45,14 @@ export default function MyPage() {
   }, []);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (status === 'loading') return;
+    if (status === 'unauthenticated' || !token) {
       setIsLoading(false);
       return;
     }
+    setIsLoading(true);
 
     async function loadProfile() {
-      if (!token) return;
       try {
         const res = await fetchMyProfile(token);
         if (res.success && res.data) {
@@ -65,9 +67,7 @@ export default function MyPage() {
       }
     }
 
-    if (token) {
-      loadProfile();
-    }
+    loadProfile();
   }, [token, status]);
 
   const handleClearData = async () => {
