@@ -55,7 +55,8 @@ export async function POST(req: NextRequest) {
     );
 
     const unifiedUser = userResult || (await users.findOne({ providerId: providerIdKey }));
-    const unifiedUserId = unifiedUser?._id?.toString();
+    const unifiedUserObjId = unifiedUser?._id;
+    const unifiedUserId = unifiedUserObjId?.toString();
 
     await memberships.updateOne(
       { service, serviceUserId },
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
         $set: {
           service,
           serviceUserId,
-          originalUserId: unifiedUserId,
+          originalUserId: unifiedUserObjId,
           provider,
           providerId: providerIdKey,
           updatedAt: new Date(),

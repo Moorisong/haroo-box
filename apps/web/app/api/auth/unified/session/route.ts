@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
 import { getDatabase } from '@/lib/mongodb';
 import { getSharedCookieDomain } from '@/lib/cookie-domain';
 import { handleCors } from '@/lib/cors';
@@ -25,9 +26,10 @@ export async function GET(req: NextRequest) {
 
     let membership = null;
     if (service && user.id) {
+      const userObjId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : user.id;
       membership = await db.collection('unifiedservicememberships').findOne({
         service,
-        originalUserId: user.id,
+        $or: [{ originalUserId: userObjId }, { originalUserId: user.id }],
       });
       if (!membership && user.providerId) {
         membership = await db.collection('unifiedservicememberships').findOne({
