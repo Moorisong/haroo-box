@@ -151,7 +151,7 @@ export default function PieceTray({
         </div>
       </div>
 
-      <div data-testid="puzzle-piece-tray-scroll" className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] justify-items-center gap-2 max-h-[32dvh] min-h-[68px] overflow-y-auto overflow-x-hidden pt-3 pb-2 px-1 sm:flex sm:gap-3 sm:overflow-x-auto sm:overflow-y-hidden sm:max-h-none" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
+      <div data-testid="puzzle-piece-tray-scroll" className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] justify-items-center gap-2 max-h-[32dvh] min-h-[68px] overflow-y-auto overflow-x-hidden pt-3 pb-2 px-1 sm:flex sm:gap-3 sm:overflow-x-auto sm:overflow-y-hidden sm:max-h-none touch-pan-y sm:touch-pan-x" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
         {trayPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-sm font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
             🎉 {t('puzzle.components.puzzle.piece.tray.004')}
@@ -208,7 +208,7 @@ export default function PieceTray({
                     if (ignoreNextClickRef.current) { ignoreNextClickRef.current = false; return; }
                     onPieceClick(pieceId);
                   }}
-                  className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-y"
+                  className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-y sm:touch-pan-x"
                   style={{
                     transform: isSelected && draggedPiece?.id !== pieceId ? 'scale(1.08) translateY(-4px)' : 'scale(1)',
                     boxShadow: isSelected && draggedPiece?.id !== pieceId ? '0 0 0 3px var(--puzzle-primary), 0 8px 16px rgba(79, 142, 247, 0.3)' : 'none',
@@ -218,7 +218,6 @@ export default function PieceTray({
                     WebkitTapHighlightColor: 'transparent',
                     WebkitTouchCallout: 'none',
                     WebkitUserSelect: 'none',
-                    touchAction: 'pan-y',
                   }}
                 >
                   <PieceCell pieceIdx={pieceId} image={image} size={cellSize} gridSize={gridSize} small />
