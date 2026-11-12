@@ -9,7 +9,6 @@ import {
     getMyTest,
     getStats,
 } from '../controllers/htsm.controller';
-import { createMongoStore } from '../utils/rate-limit.store';
 
 const router = Router();
 
