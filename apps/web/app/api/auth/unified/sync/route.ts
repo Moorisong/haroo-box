@@ -28,6 +28,20 @@ export async function POST(req: NextRequest) {
       return handleCors(req, res);
     }
 
+    // 모의/테스트용 더미 계정(owner-123, friend-456 등)은 DB에 영구 저장하지 않고 통과 처리
+    const isMockAccount =
+      /^(owner-|friend-|timezone-|mock-|test-)/i.test(serviceUserId) ||
+      /^(owner-|friend-|timezone-|mock-|test-)/i.test(providerId);
+
+    if (isMockAccount) {
+      const res = NextResponse.json({
+        success: true,
+        unifiedUserId: 'mock-temp-user',
+        serviceUserId,
+      });
+      return handleCors(req, res);
+    }
+
     const db = await getDatabase();
     const users = db.collection('users');
 
