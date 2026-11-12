@@ -61,9 +61,11 @@ test('mobile English difficulty modal keeps labels and piece counts inside cards
         return badge && getComputedStyle(badge).whiteSpace === 'nowrap' && badge.scrollWidth <= badge.clientWidth + 2;
       });
       const rect = el.getBoundingClientRect();
-      return { count: cards.length, badgesFit, fitsViewport: rect.left >= -1 && rect.right <= window.innerWidth + 1 };
+      const actions = [...el.querySelectorAll('button')].filter(btn => /Start challenge|Cancel/.test(btn.textContent ?? ''));
+      const actionsReachable = actions.every(btn => { const r = btn.getBoundingClientRect(); return r.top >= -1 && r.bottom <= window.innerHeight + 1; });
+      return { count: cards.length, badgesFit, fitsViewport: rect.left >= -1 && rect.right <= window.innerWidth + 1, actionsReachable };
     });
-    expect(result, `modal at ${width}px`).toEqual({ count: 3, badgesFit: true, fitsViewport: true });
+    expect(result, `modal at ${width}px`).toEqual({ count: 3, badgesFit: true, fitsViewport: true, actionsReachable: true });
   }
 });
 
@@ -103,6 +105,17 @@ test('actual mobile touch swipe scrolls the piece tray without activating drag',
     await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await expect.poll(() => tray.evaluate(el => el.scrollTop)).toBeGreaterThan(5);
     await expect(tray.locator('[data-tray-piece="true"]')).toHaveCount(36);
+    const lastRow = await tray.evaluate(el => {
+      el.scrollTop = el.scrollHeight;
+      const piece = el.querySelector('[data-tray-piece="true"]:last-child');
+      if (!piece) return null;
+      const item = piece.getBoundingClientRect();
+      const bounds = el.getBoundingClientRect();
+      return { visible: item.bottom <= bounds.bottom - 1, bottomClearance: bounds.bottom - item.bottom };
+    });
+    expect(lastRow).not.toBeNull();
+    expect(lastRow!.visible).toBe(true);
+    expect(lastRow!.bottomClearance).toBeGreaterThanOrEqual(12);
   } finally {
     await context.close();
   }
