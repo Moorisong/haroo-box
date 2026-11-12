@@ -75,7 +75,7 @@ export default function PortraitPuzzleLayout({
   const { language, t } = useLanguage();
   return (
     <div
-      className="flex flex-col min-h-screen select-none"
+      className="flex flex-col min-h-[100dvh] w-full min-w-0 select-none overflow-x-hidden"
       style={{ backgroundColor: 'var(--puzzle-background)' }}
       onClick={() => {
         if (selectedTrayPiece !== null) {
@@ -84,7 +84,7 @@ export default function PortraitPuzzleLayout({
       }}
     >
       <div 
-        className="flex items-center justify-between px-4 py-3 border-b"
+        className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1 px-3 py-3 border-b sm:px-4"
         style={{ 
           backgroundColor: 'var(--puzzle-glass-bg)', 
           backdropFilter: 'var(--puzzle-glass-blur)',
@@ -93,7 +93,7 @@ export default function PortraitPuzzleLayout({
       >
         <Link
           href="/puzzle"
-          className="flex items-center gap-1 text-sm font-bold transition-colors"
+          className="flex shrink-0 items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold transition-colors"
           style={{ color: 'var(--puzzle-muted-foreground)' }}
           onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--puzzle-foreground)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--puzzle-muted-foreground)'; }}
@@ -102,17 +102,17 @@ export default function PortraitPuzzleLayout({
           <span>{t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.001')}</span>
         </Link>
 
-        <div className="flex flex-col items-center">
-          <span className="text-sm font-black truncate max-w-[200px]" style={{ color: 'var(--puzzle-card-foreground)' }}>
+        <div className="flex min-w-0 flex-col items-center overflow-hidden">
+          <span className="block w-full truncate text-center text-xs sm:text-sm font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
             {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           </span>
-          <span className="text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
+          <span className="block w-full truncate text-center text-[10px] font-bold" style={{ color: 'var(--puzzle-primary)' }}>
             {difficulty === 'novice' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.002') : difficulty === 'beginner' ? t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.003') : t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.004')} · 🏆 {t('puzzle.components.puzzle.portrait.portrait.puzzle.layout.005')}
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-sm font-bold" style={{ color: 'var(--puzzle-card-foreground)' }}>
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-4">
+          <div className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Timer size={14} style={{ color: 'var(--puzzle-primary)' }} />
             <span className="tabular-nums">{formatTime(timerSeconds)}</span>
           </div>
@@ -123,7 +123,7 @@ export default function PortraitPuzzleLayout({
       </div>
 
       <div 
-        className="w-full flex-1 min-h-0 flex flex-col items-center justify-center p-4 relative overflow-hidden"
+        className="w-full min-w-0 flex-1 min-h-[min(70vw,340px)] flex flex-col items-center justify-center p-2 sm:p-4 relative"
         onClick={() => {
           if (selectedTrayPiece !== null) {
             selectTrayPiece(null);
@@ -159,7 +159,7 @@ export default function PortraitPuzzleLayout({
         />
       </div>
 
-      <div className="p-2 sm:p-4 flex flex-col gap-2 sm:gap-4 mt-auto">
+      <div className="w-full min-w-0 p-2 sm:p-4 flex flex-col gap-2 sm:gap-4 mt-auto">
         <FloatingToolbar
           onOriginalToggle={() => setShowOriginal(!showOriginal)}
           onShuffle={handleShuffle}
