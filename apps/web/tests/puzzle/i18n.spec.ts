@@ -74,7 +74,10 @@ test('actual mobile touch swipe scrolls the piece tray without activating drag',
   const mobile = await context.newPage();
   try {
     await setupBaseMocks(mobile);
-    await mobile.addInitScript(() => window.localStorage.setItem('haroo-language', 'en'));
+    await mobile.addInitScript(() => {
+      window.localStorage.setItem('haroo-language', 'en');
+      window.sessionStorage.setItem('orientation-suggestion-dismissed', 'true');
+    });
     await mobile.goto('/puzzle/play/puzzle-mock-id-001?diff=novice');
     const tray = mobile.getByTestId('puzzle-piece-tray-scroll');
     await expect(tray.locator('[data-tray-piece]')).toHaveCount(36, { timeout: 15000 });
