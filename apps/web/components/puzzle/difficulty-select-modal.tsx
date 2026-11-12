@@ -30,8 +30,8 @@ export default function DifficultySelectModal({
   const { t } = useLanguage();
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-2 pt-3 pb-[max(8px,env(safe-area-inset-bottom))] sm:p-4 animate-fade-in puzzle-page"
-      style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', minHeight: 'auto' }}
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain px-3 py-[max(16px,env(safe-area-inset-top))] pb-[max(24px,env(safe-area-inset-bottom))] sm:p-4 animate-fade-in puzzle-page"
+      style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', minHeight: '100dvh' }}
     >
       <style>{`
         @media (max-height: 620px) {
@@ -58,7 +58,7 @@ export default function DifficultySelectModal({
         }
       `}</style>
       <div 
-        className="relative w-full max-w-lg min-w-0 rounded-t-3xl sm:rounded-3xl border px-4 py-5 sm:p-6 md:p-8 overflow-y-auto max-h-[min(94dvh,760px)] sm:max-h-[85dvh] overscroll-contain landscape-short-padding"
+        className="relative my-auto w-full max-w-lg min-w-0 shrink-0 rounded-3xl border px-4 py-4 sm:p-6 md:p-8 overflow-y-auto max-h-[calc(100dvh-64px)] sm:max-h-[calc(100dvh-48px)] overscroll-contain landscape-short-padding"
         style={{
           backgroundColor: 'var(--puzzle-background)',
           borderColor: 'var(--puzzle-border)',
@@ -213,10 +213,10 @@ export default function DifficultySelectModal({
         )}
 
         {/* Submit Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
           <button
             onClick={onClose}
-            className="w-full order-2 sm:order-1 py-3 rounded-xl border font-bold text-sm whitespace-nowrap transition-colors hover:bg-zinc-50 active:bg-zinc-100"
+            className="w-full order-1 py-3 rounded-xl border font-bold text-xs sm:text-sm whitespace-nowrap transition-colors hover:bg-zinc-50 active:bg-zinc-100"
             style={{
               backgroundColor: 'transparent',
               color: 'var(--puzzle-foreground)',
@@ -227,7 +227,7 @@ export default function DifficultySelectModal({
           </button>
           <button
             onClick={onLaunch}
-            className="w-full order-1 sm:order-2 py-3.5 rounded-xl text-white font-black text-sm whitespace-nowrap transition-all duration-200 hover-scale-effect active-scale-effect-98"
+            className="w-full order-2 py-3 rounded-xl text-white font-black text-xs sm:text-sm whitespace-nowrap transition-all duration-200 hover-scale-effect active-scale-effect-98"
             style={{
               backgroundColor: 'var(--puzzle-primary)',
               boxShadow: 'var(--puzzle-shadow-md)',
