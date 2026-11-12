@@ -26,7 +26,6 @@ const CONTENT_MENU_LINKS: readonly NavLinkItem[] = [
   { label: '하루퍼즐', href: ROUTES.PUZZLE, newTab: true, english: true },
   { label: '롤링페이퍼', href: ROUTES.ROLLING_PAPER, newTab: true, english: true },
   { label: 'TOBY', href: ROUTES.TOBY, newTab: true },
-  { label: '너잘알', href: ROUTES.U_KNOW },
   { label: '자아탐험', href: ROUTES.HTSM },
 ] as const;
 
@@ -120,7 +119,7 @@ export default function NavBar() {
                       {...(link.newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     >
                       <span className={styles.menuItemInline}>
-                      {language === 'en' ? ({'어드벤트 초콜릿':'Advent Chocolate','감쓰.exe':'Dumpit.exe','하루퍼즐':'Haroo Puzzle','롤링페이퍼':'Rolling Paper','TOBY':'TOBY','너잘알':'Know Me','자아탐험':'Self Discovery'} as Record<string,string>)[link.label] || link.label : link.label}
+                      {language === 'en' ? ({'어드벤트 초콜릿':'Advent Chocolate','감쓰.exe':'Dumpit.exe','하루퍼즐':'Haroo Puzzle','롤링페이퍼':'Rolling Paper','TOBY':'TOBY','자아탐험':'Self Discovery'} as Record<string,string>)[link.label] || link.label : link.label}
                       {link.english && <span className={styles.menuEnBadge} aria-label="English available">EN</span>}
                       </span>
                     </Link>
@@ -138,7 +137,7 @@ export default function NavBar() {
                   onClick={closeMenu}
                   {...(link.newTab || link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
-                  <span className={styles.menuItemInline}>{language === 'en' ? ({'어드벤트 초콜릿':'Advent Chocolate','감쓰.exe':'Dumpit.exe','하루퍼즐':'Haroo Puzzle','롤링페이퍼':'Rolling Paper','TOBY':'TOBY','너잘알':'Know Me','자아탐험':'Self Discovery'} as Record<string,string>)[link.label] || link.label : link.label}{link.english && <span className={styles.menuEnBadge} aria-label="English available">EN</span>}</span>
+                  <span className={styles.menuItemInline}>{language === 'en' ? ({'어드벤트 초콜릿':'Advent Chocolate','감쓰.exe':'Dumpit.exe','하루퍼즐':'Haroo Puzzle','롤링페이퍼':'Rolling Paper','TOBY':'TOBY','자아탐험':'Self Discovery'} as Record<string,string>)[link.label] || link.label : link.label}{link.english && <span className={styles.menuEnBadge} aria-label="English available">EN</span>}</span>
                 </Link>
               </li>
             ))}

@@ -3,9 +3,6 @@ import mongoose, { Connection } from 'mongoose';
 /** HTSM 전용 DB 커넥션 */
 let htsmConnection: Connection | null = null;
 
-/** u-know 전용 DB 커넥션 */
-let uknowConnection: Connection | null = null;
-
 /** 하루퍼즐 전용 DB 커넥션 */
 let puzzleConnection: Connection | null = null;
 
@@ -18,16 +15,6 @@ function buildHtsmUri(baseUri: string): string {
     return process.env.HTSM_MONGODB_URI;
   }
   return baseUri.replace(/\/[^/?]+(\?|$)/, '/htsm$1');
-}
-
-/**
- * MONGODB_URI에서 DB명을 교체하여 u-know 전용 URI 생성
- */
-function buildUKnowUri(baseUri: string): string {
-  if (process.env.UKNOW_MONGODB_URI) {
-    return process.env.UKNOW_MONGODB_URI;
-  }
-  return baseUri.replace(/\/[^/?]+(\?|$)/, '/uknow$1');
 }
 
 /**
@@ -63,12 +50,6 @@ export const connectDatabase = async (): Promise<void> => {
     await htsmConnection.asPromise();
     console.log('Connected to MongoDB (htsm)');
 
-    // u-know 전용 DB 연결
-    const uknowUri = buildUKnowUri(mongoUri);
-    uknowConnection = mongoose.createConnection(uknowUri);
-    await uknowConnection.asPromise();
-    console.log('Connected to MongoDB (uknow)');
-
     // 하루퍼즐 전용 DB 연결
     const puzzleUri = buildPuzzleUri(mongoUri);
     puzzleConnection = mongoose.createConnection(puzzleUri);
@@ -88,14 +69,6 @@ export const getHtsmConnection = (): Connection => {
   return htsmConnection;
 };
 
-/** u-know 전용 DB 커넥션 반환 */
-export const getUKnowConnection = (): Connection => {
-  if (!uknowConnection) {
-    throw new Error('UKnow DB connection not initialized. Call connectDatabase() first.');
-  }
-  return uknowConnection;
-};
-
 /** 하루퍼즐 전용 DB 커넥션 반환 */
 export const getPuzzleConnection = (): Connection => {
   if (!puzzleConnection) {
@@ -109,10 +82,6 @@ export const disconnectDatabase = async (): Promise<void> => {
   if (htsmConnection) {
     await htsmConnection.close();
     htsmConnection = null;
-  }
-  if (uknowConnection) {
-    await uknowConnection.close();
-    uknowConnection = null;
   }
   if (puzzleConnection) {
     await puzzleConnection.close();

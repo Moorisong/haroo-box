@@ -64,7 +64,6 @@
 .puzzle { --card-tint: #e8edf6; --card-ink: #3d5996; }
 .rolling { --card-tint: #f5edda; --card-ink: #85642c; }
 .toby { --card-tint: #e8eee6; --card-ink: #4b6951; }
-.uknow { --card-tint: #eeebf5; --card-ink: #665185; }
 .htsm { --card-tint: #f3e9df; --card-ink: #916346; }
 .cardImageWrapper {
   position: relative;

@@ -8,7 +8,7 @@ export function KoreanLegal({ children }: { children: ReactNode }) {
 }
 
 const terms = [
-  ['Service and scope', 'Haroo Box offers a collection of web experiences including Haroo Puzzle, Rolling Paper, Advent Chocolate Calendar, Dumpit.exe, Know Me, Self Discovery, and TOBY. Some experiences are hosted on separate subdomains and may have additional rules.'],
+  ['Service and scope', 'Haroo Box offers a collection of web experiences including Haroo Puzzle, Rolling Paper, Advent Chocolate Calendar, Dumpit.exe, Self Discovery, and TOBY. Some experiences are hosted on separate subdomains and may have additional rules.'],
   ['Accounts', 'Some features work without an account. Where sign-in is required, the available social login providers are displayed on the login page. Different providers may create separate accounts; records are not automatically merged.'],
   ['User content', 'Users are responsible for messages, puzzle participation, and other submissions. Do not post unlawful, abusive, infringing, or privacy-invasive material. Content may be moderated or removed for safety and service integrity.'],
   ['Availability', 'We may change, maintain, or discontinue features. We will provide notice where reasonably practicable.'],

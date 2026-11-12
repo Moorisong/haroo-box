@@ -111,7 +111,6 @@ export default function TermsPage() {
                                     <li>하루퍼즐 (게임 기록·주간 랭킹)</li>
                                     <li>어드벤트 초콜릿 캘린더 (캘린더 생성·메시지)</li>
                                     <li>감쓰.exe (감정 기록·배출)</li>
-                                    <li>너잘알 (친구 퀴즈)</li>
                                     <li>기타 미니콘텐츠 (추가 예정 포함)</li>
                                 </ul>
                             </li>
