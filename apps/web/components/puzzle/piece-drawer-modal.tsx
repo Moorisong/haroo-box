@@ -3,7 +3,7 @@ import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Maximize2, X, Folder, HelpCircle, Eye } from 'lucide-react';
+import { X, Folder, Eye } from 'lucide-react';
 import PieceCell from './piece-cell';
 import { DrawerBasketTabs } from './drawer-basket-tabs';
 
@@ -83,7 +83,6 @@ export default function PieceDrawerModal({
     setMounted(true);
   }, []);
 
-  console.log("PieceDrawerModal isOpen:", isOpen, "mounted:", mounted);
   if (!isOpen || !mounted || typeof document === 'undefined') return null;
 
   const handleDrawerDragStart = (e: React.PointerEvent) => {
@@ -147,68 +146,71 @@ export default function PieceDrawerModal({
           <div className="w-12 h-1 bg-slate-500/40 rounded-full" />
         </div>
 
-        <div className="flex justify-between items-center gap-2 px-3 sm:px-5 pb-3 border-b select-none min-w-0" style={{ borderColor: 'var(--puzzle-border)' }}>
-          <div
-            className="flex-1 min-w-0 cursor-ns-resize py-1 touch-none"
-            onPointerDown={handleDrawerDragStart}
-            onPointerMove={handleDrawerDragMove}
-            onPointerUp={handleDrawerDragEnd}
-            onPointerCancel={handleDrawerDragEnd}
-          >
-            <h3 className="text-sm sm:text-base font-black flex items-center gap-1.5 min-w-0" style={{ color: '#f8fafc' }}>
-              <Folder size={18} className="text-blue-400" />
-              <span>{t('puzzle.components.puzzle.piece.drawer.modal.001')}</span>
-            </h3>
-            {isOrganizeMode ? (
-              <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
-                ● {t('puzzle.components.puzzle.piece.drawer.modal.002')}
-              </p>
-            ) : (
-              <>
-                <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={10} className="text-blue-400" />
-                  <span>{t('puzzle.components.puzzle.piece.drawer.modal.003')}</span>
-                </p>
-                <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={9} className="text-blue-400" />
-                  <span>{t('puzzle.components.puzzle.piece.drawer.modal.004')}</span>
-                </p>
-              </>
-            )}
-          </div>
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <button
-              onClick={(e) => { e.stopPropagation(); setIsOrganizeMode(!isOrganizeMode); }}
-              className="px-2 py-1 rounded-lg text-[10px] sm:text-xs font-black whitespace-nowrap transition-all border select-none shrink-0"
-              style={{
-                backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-                borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255, 255, 255, 0.1)',
-                color: isOrganizeMode ? '#60a5fa' : '#9ca3af',
-              }}
+        <div className="px-4 sm:px-5 pb-3 border-b select-none min-w-0" style={{ borderColor: 'var(--puzzle-border)' }}>
+          <div className="flex items-center justify-between gap-3 min-w-0">
+            <div
+              className="flex min-w-0 flex-1 items-center gap-2 cursor-ns-resize touch-none py-1"
+              onPointerDown={handleDrawerDragStart}
+              onPointerMove={handleDrawerDragMove}
+              onPointerUp={handleDrawerDragEnd}
+              onPointerCancel={handleDrawerDragEnd}
             >
-              {t('puzzle.components.puzzle.piece.drawer.modal.005')} {isOrganizeMode ? 'ON' : 'OFF'}
-            </button>
-            {onGuideClick && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (selectedPieceId !== null) onTrayClick?.();
-                  onGuideClick();
-                }}
-                className="p-1.5 rounded-lg text-xs font-black transition-colors"
-                style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-foreground)' }}
-                title={t('puzzle.components.puzzle.piece.drawer.modal.006')}
-              >
-                <Eye size={18} />
-              </button>
-            )}
+              <Folder size={17} className="shrink-0 text-blue-400" />
+              <h3 className="min-w-0 text-sm sm:text-base font-black leading-snug" style={{ color: '#f8fafc' }}>
+                {t('puzzle.components.puzzle.piece.drawer.modal.001')}
+              </h3>
+            </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full transition-colors"
-              style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-muted-foreground)' }}
+              aria-label="Close"
+              className="shrink-0 p-2 rounded-xl transition-colors"
+              style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#e2e8f0' }}
             >
               <X size={18} />
             </button>
+          </div>
+
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            <div className="min-w-0 flex-1">
+              {isOrganizeMode ? (
+                <p className="text-[11px] font-semibold text-blue-300">
+                  {t('puzzle.components.puzzle.piece.drawer.modal.002')}
+                </p>
+              ) : (
+                <p className="text-[11px] font-medium leading-snug text-slate-400">
+                  {t('puzzle.components.puzzle.piece.drawer.modal.004')}
+                </p>
+              )}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); setIsOrganizeMode(!isOrganizeMode); }}
+                aria-pressed={isOrganizeMode}
+                className="px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-colors border"
+                style={{
+                  backgroundColor: isOrganizeMode ? 'rgba(59,130,246,0.18)' : 'rgba(255,255,255,0.06)',
+                  borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255,255,255,0.12)',
+                  color: isOrganizeMode ? '#93c5fd' : '#cbd5e1',
+                }}
+              >
+                {t('puzzle.components.puzzle.piece.drawer.modal.005')} · {isOrganizeMode ? 'ON' : 'OFF'}
+              </button>
+              {onGuideClick && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedPieceId !== null) onTrayClick?.();
+                    onGuideClick();
+                  }}
+                  className="p-2 rounded-xl transition-colors"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#e2e8f0' }}
+                  title={t('puzzle.components.puzzle.piece.drawer.modal.006')}
+                  aria-label={t('puzzle.components.puzzle.piece.drawer.modal.006')}
+                >
+                  <Eye size={17} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
