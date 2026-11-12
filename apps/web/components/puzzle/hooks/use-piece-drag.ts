@@ -53,7 +53,7 @@ export function usePieceDrag({
     isDrawerOpen,
   };
 
-  const { handleTouchStart, handleTouchMove, handleTouchEnd } = usePieceTouchDrag(ctx);
+  const { handleTouchStart, handleTouchMove, handleTouchEnd, handleTouchCancel } = usePieceTouchDrag(ctx);
   const { startDrag, handlePointerMove, handlePointerUp, handlePointerCancel } = usePieceMouseDrag(ctx);
 
   useEffect(() => {
@@ -79,6 +79,7 @@ export function usePieceDrag({
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleTouchCancel,
     handlePointerMove,
     handlePointerUp,
     handlePointerCancel,
