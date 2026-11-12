@@ -41,7 +41,7 @@ export default function PuzzleLayout({
 
   if (isPlayPage) {
     return (
-      <div className="puzzle-page h-screen h-[100dvh] overflow-hidden flex flex-col">
+      <div className="puzzle-page h-screen h-[100dvh] overflow-y-auto overflow-x-hidden landscape:overflow-hidden flex flex-col overscroll-contain">
         <div className="flex-none flex justify-end items-center px-3 py-1.5 border-b relative z-50" style={{ backgroundColor: "var(--puzzle-background)", borderColor: "var(--puzzle-border)" }}><PuzzleLanguageToggle /></div>
         <div className="flex-1 min-h-0 flex flex-col">{children}</div>
       </div>
