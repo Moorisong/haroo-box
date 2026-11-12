@@ -30,11 +30,11 @@ export default function SyncChoiceModal({
 
   return (
     <div
-      className="fixed inset-0 z-[11000] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[11000] flex items-center justify-center p-3 sm:p-4 overflow-y-auto overscroll-contain"
       style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
     >
       <div
-        className="w-full max-w-sm rounded-3xl border p-6 text-center shadow-2xl transition-all duration-300"
+        className="w-full max-w-sm min-w-0 max-h-[calc(100dvh-24px)] overflow-y-auto rounded-3xl border p-4 sm:p-6 text-center shadow-2xl transition-all duration-300"
         style={{
           backgroundColor: 'var(--puzzle-background)',
           borderColor: 'var(--puzzle-border)',
@@ -55,25 +55,25 @@ export default function SyncChoiceModal({
           {/* Option 1: Local / Keep Current */}
           <button
             onClick={onChooseKeepCurrent}
-            className="flex items-center justify-between p-4 rounded-2xl border text-left transition-all active:scale-[0.98] hover:border-emerald-500 hover:bg-emerald-50/5 dark:hover:bg-emerald-950/10"
+            className="flex items-center justify-between gap-2 p-3 sm:p-4 rounded-2xl border text-left transition-all active:scale-[0.98] hover:border-emerald-500 hover:bg-emerald-50/5 dark:hover:bg-emerald-950/10"
             style={{
               backgroundColor: 'var(--puzzle-card-background)',
               borderColor: 'var(--puzzle-border)',
             }}
           >
-            <div>
+            <div className="min-w-0 flex-1">
               <span className="block text-xs font-bold mb-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                 {t('puzzle.components.puzzle.sync.choice.modal.003')}
               </span>
-              <div className="flex items-baseline gap-2">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-xl font-black text-emerald-500">{localProgress}%</span>
-                <span className="text-[10px] font-semibold flex items-center gap-0.5 text-zinc-500">
+                <span className="text-[10px] font-semibold inline-flex items-center gap-0.5 text-zinc-500 whitespace-nowrap">
                   <Clock size={10} />
                   {localTimeFormatted}
                 </span>
               </div>
             </div>
-            <div className="px-3.5 py-2 rounded-xl text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+            <div className="shrink-0 whitespace-nowrap px-2 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
               {t('puzzle.components.puzzle.sync.choice.modal.004')}
             </div>
           </button>
@@ -81,25 +81,25 @@ export default function SyncChoiceModal({
           {/* Option 2: Server / Restore Previous */}
           <button
             onClick={onChooseLoadServer}
-            className="flex items-center justify-between p-4 rounded-2xl border text-left transition-all active:scale-[0.98] hover:border-blue-500 hover:bg-blue-50/5 dark:hover:bg-blue-950/10"
+            className="flex items-center justify-between gap-2 p-3 sm:p-4 rounded-2xl border text-left transition-all active:scale-[0.98] hover:border-blue-500 hover:bg-blue-50/5 dark:hover:bg-blue-950/10"
             style={{
               backgroundColor: 'var(--puzzle-card-background)',
               borderColor: 'var(--puzzle-border)',
             }}
           >
-            <div>
+            <div className="min-w-0 flex-1">
               <span className="block text-xs font-bold mb-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                 {t('puzzle.components.puzzle.sync.choice.modal.005')}
               </span>
-              <div className="flex items-baseline gap-2">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-xl font-black text-blue-500">{serverProgress}%</span>
-                <span className="text-[10px] font-semibold flex items-center gap-0.5 text-zinc-500">
+                <span className="text-[10px] font-semibold inline-flex items-center gap-0.5 text-zinc-500 whitespace-nowrap">
                   <Clock size={10} />
                   {serverTimeFormatted}
                 </span>
               </div>
             </div>
-            <div className="px-3.5 py-2 rounded-xl text-xs font-extrabold text-zinc-700 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors">
+            <div className="shrink-0 whitespace-nowrap px-2 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-extrabold text-zinc-700 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors">
               {t('puzzle.components.puzzle.sync.choice.modal.006')}
             </div>
           </button>
