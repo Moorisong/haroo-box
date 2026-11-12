@@ -68,7 +68,7 @@ export default function CompletionModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overscroll-contain"
       style={{ backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)' }}
     >
       {/* Confetti Layer */}
@@ -80,7 +80,7 @@ export default function CompletionModal({
 
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-md rounded-3xl border p-8 text-center"
+        className="relative w-full max-w-md min-w-0 max-h-[calc(100dvh-24px)] overflow-y-auto overscroll-contain rounded-3xl border px-4 py-6 sm:p-8 text-center"
         style={{
           backgroundColor: 'var(--puzzle-background)',
           border: '1px solid var(--puzzle-border)',
@@ -103,7 +103,7 @@ export default function CompletionModal({
 
         {/* Trophy icon container */}
         <div
-          className="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center animate-bounce"
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 sm:mb-5 flex items-center justify-center animate-bounce"
           style={{ backgroundColor: '#FFF3E0' }}
         >
           <Trophy size={36} style={{ color: '#F59E0B' }} />
@@ -111,7 +111,7 @@ export default function CompletionModal({
 
         {/* Title */}
         <h2
-          className="mb-2 text-2xl font-black"
+          className="mb-2 text-xl sm:text-2xl font-black leading-tight break-words"
           style={{ color: 'var(--puzzle-card-foreground)' }}
         >
           {t('puzzle.components.puzzle.completion.modal.001')}
@@ -144,19 +144,19 @@ export default function CompletionModal({
         {/* 랭킹 반영 수치 표시 (기록이 저장되었거나 로그인된 상태에서 랭킹 모드일 시) */}
         {myRanking && myRanking.myRank !== null && (
           <div
-            className="flex items-center justify-center gap-6 mb-8 py-4 rounded-2xl border md:max-w-[280px] md:mx-auto"
+            className="grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-center gap-2 sm:gap-6 mb-5 sm:mb-8 py-4 px-2 rounded-2xl border md:max-w-[280px] md:mx-auto"
             style={{ backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}
           >
-            <div className="text-center">
+            <div className="text-center min-w-0">
               <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.completion.modal.004')}</p>
-              <p className="text-lg font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
+              <p className="text-sm sm:text-lg font-black break-words" style={{ color: 'var(--puzzle-card-foreground)' }}>
                 🎖️ {t('puzzle.components.puzzle.completion.modal.005')} {myRanking.myRank}
               </p>
             </div>
             <div className="w-px h-10" style={{ backgroundColor: 'var(--puzzle-border)' }} />
-            <div className="text-center">
+            <div className="text-center min-w-0">
               <p className="text-xs mb-1 font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.completion.modal.006')}</p>
-              <p className="text-lg font-black" style={{ color: 'var(--puzzle-primary)' }}>
+              <p className="text-sm sm:text-lg font-black break-words" style={{ color: 'var(--puzzle-primary)' }}>
                 {t('puzzle.components.puzzle.completion.modal.007')} {myRanking.topPercent}%
               </p>
             </div>
