@@ -1,4 +1,6 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -80,6 +82,7 @@ export default function LandscapePuzzleLayout({
   onZoomOut,
   selectTrayPiece,
 }: LandscapePuzzleLayoutProps) {
+  const { language, t } = useLanguage();
   const router = useRouter();
 
   const {
@@ -116,7 +119,7 @@ export default function LandscapePuzzleLayout({
   );
 
   const difficultyLabel =
-    difficulty === 'novice' ? '초보 (36조각)' : difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)';
+    difficulty === 'novice' ? t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.001') : difficulty === 'beginner' ? t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.002') : t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.003');
   const gridSize = difficulty === 'novice' ? 6 : difficulty === 'beginner' ? 10 : 16;
 
   const calculatedZoom = zoom;
@@ -142,7 +145,7 @@ export default function LandscapePuzzleLayout({
         saveStatus={manualSaveStatus}
         timerFormatted={formatTime(timerSeconds)}
         progressPercent={progressPercent}
-        puzzleTitle={puzzle.title}
+        puzzleTitle={puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
         difficulty={difficultyLabel}
       />
 
@@ -158,15 +161,15 @@ export default function LandscapePuzzleLayout({
           className="flex items-center gap-1 text-xs font-semibold transition-colors text-black/60 hover:text-black"
         >
           <ArrowLeft size={13} strokeWidth={2.5} />
-          <span>뒤로가기</span>
+          <span>{t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.004')}</span>
         </Link>
 
         <span
           className="ml-3 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-gray-500/10 text-gray-600"
         >
           {interactionMode === 'play' 
-            ? "조각 클릭 후 퍼즐판의 빈 칸을 터치" 
-            : "퍼즐판이나 가이드를 드래그로 이동 / 우하단 핸들로 크기를 조절"}
+            ? t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.005') 
+            : t('puzzle.components.puzzle.landscape.landscape.puzzle.layout.006')}
         </span>
       </div>
 

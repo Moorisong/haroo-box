@@ -1,3 +1,6 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 import { Play, Users, Calendar, Trophy, Layers, X, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -16,10 +19,10 @@ interface ArchivePuzzleCardProps {
   serverDifficulty?: 'novice' | 'beginner' | 'expert' | null;
 }
 
-const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  current: { label: '도전 중', color: '#4F8EF7', bg: '#EBF2FF' },
-  completed: { label: '완료', color: '#22C55E', bg: '#E8F5E9' },
-  missed: { label: '미참여', color: '#777777', bg: '#F5F5F7' },
+const STATUS_LABELS: Record<string, { color: string; bg: string }> = {
+  current: { color: '#4F8EF7', bg: '#EBF2FF' },
+  completed: { color: '#22C55E', bg: '#E8F5E9' },
+  missed: { color: '#777777', bg: '#F5F5F7' },
 };
 
 export default function ArchivePuzzleCard({
@@ -31,6 +34,7 @@ export default function ArchivePuzzleCard({
   serverProgress,
   serverDifficulty,
 }: ArchivePuzzleCardProps) {
+  const { language, t } = useLanguage();
   const router = useRouter();
   const [showDiffSelect, setShowDiffSelect] = useState(false);
   const [selectedDiff, setSelectedDiff] = useState<'novice' | 'beginner' | 'expert'>('novice');
@@ -125,7 +129,7 @@ export default function ArchivePuzzleCard({
       <div className="relative overflow-hidden h-44">
         <img
           src={puzzle.imageUrl}
-          alt={puzzle.title}
+          alt={puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {/* Status Badge */}
@@ -138,14 +142,14 @@ export default function ArchivePuzzleCard({
                 color: currentStatus.color,
               }}
             >
-              {currentStatus.label}
+              {status === 'current' ? t('puzzle.components.puzzle.archive.puzzle.card.001') : status === 'completed' ? t('puzzle.components.puzzle.archive.puzzle.card.002') : t('puzzle.components.puzzle.archive.puzzle.card.003')}
             </span>
             {new Date(puzzle.startDate) <= new Date() && new Date() <= new Date(puzzle.endDate) && (
               <span
                 className="px-3 py-1 rounded-full text-[10px] font-black shadow-sm text-white animate-pulse"
                 style={{ backgroundColor: 'var(--puzzle-primary)' }}
               >
-                🏆 이번주 대회
+                🏆 {t('puzzle.components.puzzle.archive.puzzle.card.004')}
               </span>
             )}
           </div>
@@ -159,7 +163,7 @@ export default function ArchivePuzzleCard({
             className="text-base font-extrabold line-clamp-1 mb-2"
             style={{ color: 'var(--puzzle-card-foreground)' }}
           >
-            {puzzle.title}
+            {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
           </h3>
 
           <div className="flex flex-col gap-1.5 mb-4">
@@ -169,7 +173,7 @@ export default function ArchivePuzzleCard({
             </div>
             <div className="flex items-center gap-1.5 text-xs font-medium" style={{ color: 'var(--puzzle-muted-foreground)' }}>
               <Users size={13} />
-              <span>{puzzle.participantCount.toLocaleString()}명 완주</span>
+              <span>{puzzle.participantCount.toLocaleString()} {t('puzzle.components.puzzle.archive.puzzle.card.005')}</span>
             </div>
           </div>
         </div>
@@ -182,10 +186,10 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-muted)', border: '1px solid var(--puzzle-border)' }}
             >
               <span className="flex items-center gap-1" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                <Trophy size={13} style={{ color: '#F59E0B' }} /> 내 기록
+                <Trophy size={13} style={{ color: '#F59E0B' }} /> {t('puzzle.components.puzzle.archive.puzzle.card.006')}
               </span>
               <span style={{ color: 'var(--puzzle-card-foreground)' }}>
-                {myTime} {myRank ? `(${myRank}위)` : ''}
+                {myTime} {myRank ? `(${myRank}${t('puzzle.components.puzzle.archive.puzzle.card.007')})` : ''}
               </span>
             </div>
           )}
@@ -198,7 +202,7 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
             >
               <Play size={13} strokeWidth={2.5} />
-              <span>재도전</span>
+              <span>{t('puzzle.components.puzzle.archive.puzzle.card.008')}</span>
             </button>
           ) : status === 'current' ? (
             <div className="flex gap-2 w-full">
@@ -207,7 +211,7 @@ export default function ArchivePuzzleCard({
                 className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-extrabold text-white transition-all duration-200 hover:scale-[1.01]"
                 style={{ backgroundColor: 'var(--puzzle-primary)' }}
               >
-                <span>이어서 하기</span>
+                <span>{t('puzzle.components.puzzle.archive.puzzle.card.009')}</span>
               </Link>
               <button
                 onClick={() => handlePlayStart(true)}
@@ -218,7 +222,7 @@ export default function ArchivePuzzleCard({
                   color: 'var(--puzzle-card-foreground)'
                 }}
               >
-                <span>새로 시작</span>
+                <span>{t('puzzle.components.puzzle.archive.puzzle.card.010')}</span>
               </button>
             </div>
           ) : (
@@ -228,7 +232,7 @@ export default function ArchivePuzzleCard({
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
             >
               <Play size={13} strokeWidth={2.5} />
-              <span>퍼즐 플레이</span>
+              <span>{t('puzzle.components.puzzle.archive.puzzle.card.011')}</span>
             </button>
           )}
         </div>
@@ -242,7 +246,7 @@ export default function ArchivePuzzleCard({
           selectedDiff={selectedDiff}
           setSelectedDiff={setSelectedDiff}
           showResetWarning={showResetWarning}
-          launchText={hasSavedGame && savedDifficulty === selectedDiff ? '이어서 하기' : '플레이 시작'}
+          launchText={hasSavedGame && savedDifficulty === selectedDiff ? t('puzzle.components.puzzle.archive.puzzle.card.012') : t('puzzle.components.puzzle.archive.puzzle.card.013')}
         />,
         document.body
       )}

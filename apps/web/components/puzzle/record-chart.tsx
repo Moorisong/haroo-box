@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 interface HistoryEntry {
   puzzleId: string;
@@ -15,6 +16,7 @@ interface RecordChartProps {
 }
 
 export default function RecordChart({ history }: RecordChartProps) {
+  const { t } = useLanguage();
   const formatDuration = (seconds: number) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
     const sec = (seconds % 60).toString().padStart(2, '0');
@@ -55,7 +57,7 @@ export default function RecordChart({ history }: RecordChartProps) {
       }}
     >
       <p className="text-sm font-extrabold mb-4" style={{ color: 'var(--puzzle-card-foreground)' }}>
-        최근 완주 기록 추이
+        {t('puzzle.components.puzzle.record.chart.001')}
       </p>
 
       {/* Bar Chart Container */}
@@ -94,7 +96,7 @@ export default function RecordChart({ history }: RecordChartProps) {
       </div>
       
       <p className="text-[10px] mt-4 text-center font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        💡 최근 기록일수록 우측에 표시되며, 세로 높이가 높을수록 단시간 내 완성하여 성적이 우수함을 의미합니다!
+        💡 {t('puzzle.components.puzzle.record.chart.002')}
       </p>
     </div>
   );

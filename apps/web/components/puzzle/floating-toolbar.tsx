@@ -1,3 +1,5 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Shuffle, ZoomIn, ZoomOut, Save, Check, X } from 'lucide-react';
 
@@ -24,6 +26,7 @@ export default function FloatingToolbar({
   saveStatus = 'idle',
 
 }: FloatingToolbarProps) {
+  const { t } = useLanguage();
   const roundedZoom = Math.round(zoom * 10) / 10;
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -75,7 +78,7 @@ export default function FloatingToolbar({
           }}
         >
           {showOriginal ? <EyeOff size={15} /> : <Eye size={15} />}
-          <span className="hidden sm:inline">원본 {showOriginal ? '끄기' : '보기'}</span>
+          <span className="hidden sm:inline">{t('puzzle.components.puzzle.floating.toolbar.001')} {showOriginal ? t('puzzle.components.puzzle.floating.toolbar.002') : t('puzzle.components.puzzle.floating.toolbar.003')}</span>
         </button>
 
         <div className="w-px h-5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -87,7 +90,7 @@ export default function FloatingToolbar({
           style={{ color: 'var(--puzzle-muted-foreground)' }}
         >
           <Shuffle size={15} />
-          <span className="hidden sm:inline">판 엎기</span>
+          <span className="hidden sm:inline">{t('puzzle.components.puzzle.floating.toolbar.004')}</span>
         </button>
 
         <div className="w-px h-5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -149,13 +152,13 @@ export default function FloatingToolbar({
                 <div className="relative bg-zinc-900 text-white text-[10px] sm:text-[11px] font-medium pl-3 pr-1.5 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5 border border-zinc-800 whitespace-nowrap cursor-default w-max sm:ml-[-82px]">
                   <span className="flex items-center gap-1">
                     <span>☁️</span>
-                    <span>수동 저장해야 서버에 백업됩니다!</span>
+                    <span>{t('puzzle.components.puzzle.floating.toolbar.005')}</span>
                   </span>
                   <span 
                     onClick={handleDismissTooltip}
                     className="hover:text-zinc-400 p-0.5 rounded-full cursor-pointer flex items-center justify-center flex-shrink-0"
                     role="button"
-                    aria-label="닫기"
+                    aria-label={t('puzzle.components.puzzle.floating.toolbar.006')}
                   >
                     <X size={10} strokeWidth={3} />
                   </span>
@@ -179,10 +182,10 @@ export default function FloatingToolbar({
             )}
             <span className="hidden sm:inline">
               {saveStatus === 'saving' 
-                ? '저장/제출 중...' 
+                ? t('puzzle.components.puzzle.floating.toolbar.007') 
                 : saveStatus === 'saved' 
-                  ? '저장/제출 완료!' 
-                  : '저장/제출'}
+                  ? t('puzzle.components.puzzle.floating.toolbar.008') 
+                  : t('puzzle.components.puzzle.floating.toolbar.009')}
             </span>
           </button>
       </div>

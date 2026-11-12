@@ -76,6 +76,8 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
       history.push({
         puzzleId: result.puzzleId,
         title: p.title,
+        title_en: p.title_en,
+        week: p.week,
         imageUrl: p.imageUrl,
         difficulty: result.difficulty,
         completionTime: result.completionTime,
@@ -94,6 +96,8 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
       history.push({
         puzzleId: prog.puzzleId,
         title: p.title,
+        title_en: p.title_en,
+        week: p.week,
         imageUrl: p.imageUrl,
         difficulty: prog.detailState?.difficulty || 'beginner',
         completionTime: 0,

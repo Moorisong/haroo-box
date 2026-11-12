@@ -1,17 +1,18 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Maximize2, X, Folder, HelpCircle, Eye } from 'lucide-react';
+import { X, Folder, Eye } from 'lucide-react';
 import PieceCell from './piece-cell';
 import { DrawerBasketTabs } from './drawer-basket-tabs';
 
-export const basketMetadata: Record<string, { label: string; color: string }> = {
-  basket1: { label: '빨강', color: '#ef4444' },
-  basket2: { label: '파랑', color: '#3b82f6' },
-  basket3: { label: '초록', color: '#22c55e' },
-  basket4: { label: '노랑', color: '#eab308' },
-  basket5: { label: '보라', color: '#a855f7' },
+export const basketMetadata: Record<string, { color: string }> = {
+  basket1: { color: '#ef4444' },
+  basket2: { color: '#3b82f6' },
+  basket3: { color: '#22c55e' },
+  basket4: { color: '#eab308' },
+  basket5: { color: '#a855f7' },
 };
 
 interface PieceDrawerModalProps {
@@ -40,6 +41,7 @@ interface PieceDrawerModalProps {
   handleTouchStart: (e: React.TouchEvent, pieceId: number) => void;
   handleTouchMove: (e: React.TouchEvent) => void;
   handleTouchEnd: (e: React.TouchEvent, pieceId: number) => void;
+  handleTouchCancel: () => void;
   ignoreNextClickRef: React.MutableRefObject<boolean>;
 }
 
@@ -69,8 +71,10 @@ export default function PieceDrawerModal({
   handleTouchStart,
   handleTouchMove,
   handleTouchEnd,
+  handleTouchCancel,
   ignoreNextClickRef,
 }: PieceDrawerModalProps) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const drawerDragStart = useRef<{ y: number; time: number } | null>(null);
@@ -79,7 +83,6 @@ export default function PieceDrawerModal({
     setMounted(true);
   }, []);
 
-  console.log("PieceDrawerModal isOpen:", isOpen, "mounted:", mounted);
   if (!isOpen || !mounted || typeof document === 'undefined') return null;
 
   const handleDrawerDragStart = (e: React.PointerEvent) => {
@@ -129,7 +132,7 @@ export default function PieceDrawerModal({
       />
       <div
         ref={drawerRef}
-        className="relative w-full h-[85vh] flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 puzzle-animate-slide-up pb-8"
+        className="relative w-full h-[min(85dvh,900px)] min-w-0 flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 puzzle-animate-slide-up pb-[max(16px,env(safe-area-inset-bottom))] overflow-hidden"
         style={{ backgroundColor: '#1f2937', borderColor: 'var(--puzzle-border)', color: '#f8fafc' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -143,68 +146,71 @@ export default function PieceDrawerModal({
           <div className="w-12 h-1 bg-slate-500/40 rounded-full" />
         </div>
 
-        <div className="flex justify-between items-center px-5 pb-3 border-b select-none" style={{ borderColor: 'var(--puzzle-border)' }}>
-          <div
-            className="flex-1 cursor-ns-resize py-1 touch-none"
-            onPointerDown={handleDrawerDragStart}
-            onPointerMove={handleDrawerDragMove}
-            onPointerUp={handleDrawerDragEnd}
-            onPointerCancel={handleDrawerDragEnd}
-          >
-            <h3 className="text-base font-black flex items-center gap-1.5" style={{ color: '#f8fafc' }}>
-              <Folder size={18} className="text-blue-400" />
-              <span>전체 조각 모아보기</span>
-            </h3>
-            {isOrganizeMode ? (
-              <p className="text-[10px] sm:text-xs font-bold mt-0.5 text-blue-400 animate-pulse">
-                ● 조각 터치 후, 이동할 바구니를 선택하세요.
-              </p>
-            ) : (
-              <>
-                <p className="hidden sm:flex text-[10px] font-bold mt-0.5 items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={10} className="text-blue-400" />
-                  <span>조각을 길게 드래그해서 바구니 번호 위에 놓으면 분류됩니다.</span>
-                </p>
-                <p className="sm:hidden text-[9px] font-bold mt-0.5 flex items-center gap-1" style={{ color: '#9ca3af' }}>
-                  <HelpCircle size={9} className="text-blue-400" />
-                  <span>조각 드래그 시 바구니 분류 가능</span>
-                </p>
-              </>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={(e) => { e.stopPropagation(); setIsOrganizeMode(!isOrganizeMode); }}
-              className="px-2.5 py-1 rounded-lg text-xs font-black transition-all border select-none shrink-0"
-              style={{
-                backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-                borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255, 255, 255, 0.1)',
-                color: isOrganizeMode ? '#60a5fa' : '#9ca3af',
-              }}
+        <div className="px-4 sm:px-5 pb-3 border-b select-none min-w-0" style={{ borderColor: 'var(--puzzle-border)' }}>
+          <div className="flex items-center justify-between gap-3 min-w-0">
+            <div
+              className="flex min-w-0 flex-1 items-center gap-2 cursor-ns-resize touch-none py-1"
+              onPointerDown={handleDrawerDragStart}
+              onPointerMove={handleDrawerDragMove}
+              onPointerUp={handleDrawerDragEnd}
+              onPointerCancel={handleDrawerDragEnd}
             >
-              분류 모드 {isOrganizeMode ? 'ON' : 'OFF'}
-            </button>
-            {onGuideClick && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (selectedPieceId !== null) onTrayClick?.();
-                  onGuideClick();
-                }}
-                className="p-1.5 rounded-lg text-xs font-black transition-colors"
-                style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-foreground)' }}
-                title="가이드 보기"
-              >
-                <Eye size={18} />
-              </button>
-            )}
+              <Folder size={17} className="shrink-0 text-blue-400" />
+              <h3 className="min-w-0 text-sm sm:text-base font-black leading-snug" style={{ color: '#f8fafc' }}>
+                {t('puzzle.components.puzzle.piece.drawer.modal.001')}
+              </h3>
+            </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full transition-colors"
-              style={{ backgroundColor: 'var(--puzzle-secondary)', color: 'var(--puzzle-muted-foreground)' }}
+              aria-label="Close"
+              className="shrink-0 p-2 rounded-xl transition-colors"
+              style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#e2e8f0' }}
             >
               <X size={18} />
             </button>
+          </div>
+
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            <div className="min-w-0 flex-1">
+              {isOrganizeMode ? (
+                <p className="text-[11px] font-semibold text-blue-300">
+                  {t('puzzle.components.puzzle.piece.drawer.modal.002')}
+                </p>
+              ) : (
+                <p className="text-[11px] font-medium leading-snug text-slate-400">
+                  {t('puzzle.components.puzzle.piece.drawer.modal.004')}
+                </p>
+              )}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); setIsOrganizeMode(!isOrganizeMode); }}
+                aria-pressed={isOrganizeMode}
+                className="px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-colors border"
+                style={{
+                  backgroundColor: isOrganizeMode ? 'rgba(59,130,246,0.18)' : 'rgba(255,255,255,0.06)',
+                  borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255,255,255,0.12)',
+                  color: isOrganizeMode ? '#93c5fd' : '#cbd5e1',
+                }}
+              >
+                {t('puzzle.components.puzzle.piece.drawer.modal.005')} · {isOrganizeMode ? 'ON' : 'OFF'}
+              </button>
+              {onGuideClick && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedPieceId !== null) onTrayClick?.();
+                    onGuideClick();
+                  }}
+                  className="p-2 rounded-xl transition-colors"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#e2e8f0' }}
+                  title={t('puzzle.components.puzzle.piece.drawer.modal.006')}
+                  aria-label={t('puzzle.components.puzzle.piece.drawer.modal.006')}
+                >
+                  <Eye size={17} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -218,14 +224,14 @@ export default function PieceDrawerModal({
           selectedPieceId={selectedPieceId}
         />
 
-        <div className={`flex-1 p-4 pb-16 scrollbar-hide ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={`flex-1 min-h-0 p-3 sm:p-4 pb-16 overscroll-contain ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
           {activeBasketPieces.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-center text-slate-400">
-              <span className="text-sm font-black mb-1">바구니가 비어 있습니다.</span>
-              <span className="text-xs text-slate-500">다른 바구니에서 조각을 드래그하여 옮겨보세요!</span>
+              <span className="text-sm font-black mb-1">{t('puzzle.components.puzzle.piece.drawer.modal.007')}</span>
+              <span className="text-xs text-slate-500">{t('puzzle.components.puzzle.piece.drawer.modal.008')}</span>
             </div>
           ) : (
-            <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 gap-2.5 justify-items-center">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-2 sm:gap-2.5 justify-items-center">
               {activeBasketPieces.map((pieceId) => {
                 const isSelected = selectedPieceId === pieceId;
                 return (
@@ -241,6 +247,7 @@ export default function PieceDrawerModal({
                     onTouchStart={(e) => handleTouchStart(e, pieceId)}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
+                      onTouchCancel={handleTouchCancel}
                     onContextMenu={(e) => e.preventDefault()}
                     onClick={(e) => {
                       e.stopPropagation();

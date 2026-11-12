@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { usePuzzleStore } from '@/lib/stores/puzzle-store';
 import { useOrientation } from '@/lib/hooks/use-orientation';
 import { usePuzzleSetup } from '../../hooks/use-puzzle-setup';
@@ -9,6 +10,7 @@ import { usePuzzleSubmit } from '../../hooks/use-puzzle-submit';
 
 export function usePlayPage(puzzleId: string) {
   const router = useRouter();
+  const { language, t } = useLanguage();
   const { data: session, status } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -119,48 +121,51 @@ export function usePlayPage(puzzleId: string) {
   };
 
   const handleShuffle = () => {
-    if (window.confirm('정말로 판을 엎고 처음부터 다시 시작하시겠습니까?')) {
+    if (window.confirm(t('puzzle.game.confirmShuffle'))) {
       shufflePieces();
     }
   };
 
-  const handleShare = () => {
-    if (typeof window !== 'undefined') {
+  const handleShare = async () => {
+    const url = window.location.origin + '/puzzle';
+    const title = t('puzzle.game.share.title');
+    const description = t('puzzle.game.share.description', { time: formatTime(timerSeconds) });
+    const useKakaoShare = language === 'ko' &&
+      (session?.user?.provider === 'kakao' || (!session?.user?.provider && !!session?.user?.kakaoId));
+
+    if (useKakaoShare && puzzle) {
       const Kakao = (window as any).Kakao;
       if (Kakao) {
-        if (Kakao.isInitialized && !Kakao.isInitialized()) {
-          Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
-        }
-        if (Kakao.isInitialized && Kakao.isInitialized() && puzzle) {
-          const absImgUrl = puzzle.imageUrl.startsWith('http') 
-            ? puzzle.imageUrl 
-            : window.location.origin + puzzle.imageUrl;
-          Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-              title: `[하루퍼즐] 멋지게 완주 성공! 🎉`,
-              description: `대박🌟 ${formatTime(timerSeconds)} 만에 성공했네요!`,
-              imageUrl: absImgUrl,
-              link: {
-                mobileWebUrl: window.location.origin + '/puzzle',
-                webUrl: window.location.origin + '/puzzle',
-              },
-            },
-            buttons: [
-              {
-                title: '기록 도전하러 가기',
-                link: {
-                  mobileWebUrl: window.location.origin + '/puzzle',
-                  webUrl: window.location.origin + '/puzzle',
-                },
-              },
-            ],
-          });
-          return;
+        try {
+          if (Kakao.isInitialized && !Kakao.isInitialized()) Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+          if (Kakao.isInitialized && Kakao.isInitialized()) {
+            const imageUrl = puzzle.imageUrl.startsWith('http') ? puzzle.imageUrl : window.location.origin + puzzle.imageUrl;
+            Kakao.Share.sendDefault({
+              objectType: 'feed',
+              content: { title, description, imageUrl, link: { mobileWebUrl: url, webUrl: url } },
+              buttons: [{ title: t('puzzle.game.share.button'), link: { mobileWebUrl: url, webUrl: url } }],
+            });
+            return;
+          }
+        } catch (error) {
+          console.error('Kakao puzzle share failed:', error);
         }
       }
-      navigator.clipboard.writeText(window.location.origin + '/puzzle');
-      alert('공유용 하루퍼즐 링크가 클립보드에 복사되었습니다!');
+    }
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: description, url });
+        return;
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      window.alert(t('puzzle.game.share.copied'));
+    } catch (error) {
+      window.prompt(title, url);
     }
   };
 

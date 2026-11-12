@@ -1,89 +1,22 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 
-export default function Error({
-    error,
-    reset,
-}: {
-    error: Error & { digest?: string };
-    reset: () => void;
-}) {
-    useEffect(() => {
-        // 운영 환경이라면 Sentry 등의 도구로 에러를 전송하는 로직을 여기에 추가할 수 있습니다.
-        console.error('Application Error:', error);
-    }, [error]);
+type ErrorProps = { error: Error & { digest?: string }; reset: () => void };
 
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '70vh',
-            padding: '20px',
-            textAlign: 'center',
-            backgroundColor: '#0f172a',
-            color: '#f8fafc',
-            fontFamily: 'var(--font-geist-sans), sans-serif'
-        }}>
-            <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#38bdf8' }}>
-                앗! 잠시 문제가 발생했습니다
-            </h1>
-            <p style={{ marginBottom: '2rem', color: '#94a3b8', lineHeight: '1.6' }}>
-                애플리케이션을 로드하는 중 예상치 못한 오류가 발생했습니다.<br />
-                아래 버튼을 눌러 다시 시도하거나 메인 페이지로 돌아가주세요.
-            </p>
+export default function ErrorScreen({ error, reset }: ErrorProps) {
+  useEffect(() => {
+    console.error('Haroo Box application error:', error);
+  }, [error]);
 
-            <div style={{ display: 'flex', gap: '12px' }}>
-                <button
-                    onClick={() => reset()}
-                    style={{
-                        padding: '12px 24px',
-                        backgroundColor: '#38bdf8',
-                        color: '#0f172a',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'opacity 0.2s'
-                    }}
-                >
-                    다시 시도하기
-                </button>
-                <Link
-                    href="/"
-                    style={{
-                        padding: '12px 24px',
-                        backgroundColor: 'transparent',
-                        color: '#38bdf8',
-                        border: '1px solid #38bdf8',
-                        borderRadius: '8px',
-                        fontWeight: '600',
-                        textDecoration: 'none',
-                        transition: 'background-color 0.2s'
-                    }}
-                >
-                    홈으로 가기
-                </Link>
-            </div>
-
-            {process.env.NODE_ENV === 'development' && (
-                <pre style={{
-                    marginTop: '2rem',
-                    padding: '16px',
-                    backgroundColor: '#1e293b',
-                    borderRadius: '8px',
-                    fontSize: '0.8rem',
-                    textAlign: 'left',
-                    maxWidth: '100%',
-                    overflowX: 'auto',
-                    color: '#ef4444'
-                }}>
-                    {error.message}
-                </pre>
-            )}
-        </div>
-    );
+  return (
+    <main style={{ minHeight: '75vh', display: 'grid', placeItems: 'center', background: '#f8f7f3', color: '#282b31', padding: '48px 20px', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
+      <div style={{ maxWidth: 420 }}>
+        <h1 style={{ fontSize: 'clamp(24px, 5vw, 32px)', letterSpacing: '-.05em', margin: '0 0 14px' }}>하루상자, 잠깐 쉬어가는 중!</h1>
+        <p style={{ fontSize: 14, lineHeight: 1.8, color: '#6e706f', margin: '0 0 26px', wordBreak: 'keep-all' }}>페이지를 불러오는 데 잠시 문제가 생겼어요.<br />조금 뒤에 다시 찾아와 주세요.</p>
+        <button type="button" onClick={() => window.location.reload()} style={{ background: '#284cb0', color: '#fff', border: 0, borderRadius: 9, padding: '13px 24px', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>다시 불러오기 ↻</button>
+        {process.env.NODE_ENV === 'development' && <pre style={{ textAlign: 'left', marginTop: 24, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', fontSize: 12 }}>{error.message}</pre>}
+      </div>
+    </main>
+  );
 }

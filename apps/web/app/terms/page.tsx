@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import styles from './page.module.css';
+import { EnglishLegal, KoreanLegal } from '@/components/legal/legal-language';
 
 export const metadata: Metadata = {
     title: '이용약관',
@@ -11,6 +12,7 @@ export default function TermsPage() {
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
+                <KoreanLegal>
                 <header className={styles.header}>
                     <h1 className={styles.title}>이용약관</h1>
                     <p className={styles.lastUpdated}>최종 업데이트: 2026년 1월 1일</p>
@@ -106,6 +108,10 @@ export default function TermsPage() {
                                     <li>교사 전용 서비스 툴 (TOBY)</li>
                                     <li>성격 및 심리 테스트 (자아탐험 등)</li>
                                     <li>롤링페이퍼 서비스</li>
+                                    <li>하루퍼즐 (게임 기록·주간 랭킹)</li>
+                                    <li>어드벤트 초콜릿 캘린더 (캘린더 생성·메시지)</li>
+                                    <li>감쓰.exe (감정 기록·배출)</li>
+                                    <li>너잘알 (친구 퀴즈)</li>
                                     <li>기타 미니콘텐츠 (추가 예정 포함)</li>
                                 </ul>
                             </li>
@@ -120,7 +126,7 @@ export default function TermsPage() {
                                 합니다.
                             </li>
                             <li>비회원도 일부 콘텐츠를 이용할 수 있으나, 기록 저장·랭킹 등 일부 기능은 회원에게만 제공됩니다.</li>
-                            <li>하나의 소셜 계정으로는 하나의 서비스 계정만 생성할 수 있습니다.</li>
+                            <li>하나의 소셜 계정으로는 하나의 서비스 계정만 생성할 수 있습니다. 로그인 제공자별 계정은 별도로 관리되며, 자동으로 통합되지 않습니다.</li>
                             <li>
                                 이용자는 자신의 계정 정보를 타인에게 공유하거나 양도할 수 없으며, 계정 보안에 대한 책임은 이용자 본인에게
                                 있습니다.
@@ -221,6 +227,8 @@ export default function TermsPage() {
                 <footer className={styles.footer}>
                     <p>본 약관은 <strong>2026년 1월 1일</strong>부터 시행됩니다.</p>
                 </footer>
+                </KoreanLegal>
+                <EnglishLegal kind="terms" />
             </div>
         </div>
     );

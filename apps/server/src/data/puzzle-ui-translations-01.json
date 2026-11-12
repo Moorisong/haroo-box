@@ -1,0 +1,312 @@
+[
+  {
+    "key": "puzzle.app.puzzle.archive.page.001",
+    "ko": "아카이브 보관함을 열고 있습니다...",
+    "en": "Loading archive..."
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.002",
+    "ko": "퍼즐 아카이브",
+    "en": "Puzzle Archive"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.003",
+    "ko": "지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.",
+    "en": "Replay past puzzles and keep the challenge going!"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.004",
+    "ko": "올해 출시된 아카이브 퍼즐만 표시됩니다.",
+    "en": "Only puzzles released this year are shown."
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.005",
+    "ko": "전체 아카이브",
+    "en": "All puzzles"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.006",
+    "ko": "개",
+    "en": "puzzles"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.007",
+    "ko": "내가 완성한 퍼즐",
+    "en": "My completed puzzles"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.008",
+    "ko": "개",
+    "en": "puzzles"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.009",
+    "ko": "주간 최고 등수",
+    "en": "Best weekly rank"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.010",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.011",
+    "ko": "전체",
+    "en": "All"
+  },
+  {
+    "key": "puzzle.app.puzzle.archive.page.012",
+    "ko": "아직 발행된 아카이브 퍼즐이 존재하지 않습니다.",
+    "en": "No archived puzzles have been published yet."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.001",
+    "ko": "모든 퍼즐 진행도와 완주 기록을 초기화하시겠습니까?\n(이 작업은 되돌릴 수 없습니다.)",
+    "en": "Delete all puzzle progress and completion history?\nThis cannot be undone."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.002",
+    "ko": "모든 퍼즐 데이터가 초기화되었습니다.",
+    "en": "All puzzle data has been reset."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.003",
+    "ko": "데이터 초기화 중 문제가 발생했습니다.",
+    "en": "Could not reset puzzle data."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.004",
+    "ko": "정말로 회원 탈퇴를 진행하시겠습니까?\n\n이 작업 진행 시 사용자의 카카오 로그인 프로필 연동이 끊어지며, 저장된 모든 완료 랭킹 기록, 실시간 퍼즐 진행 상황 및 토큰 로그가 데이터베이스에서 CASCADE 영구 일괄 삭제됩니다. 이 작업은 절대 복구할 수 없습니다.",
+    "en": "Delete your account permanently?\n\nYour linked profile, rankings, puzzle progress, and challenge records will all be deleted. This cannot be undone."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.005",
+    "ko": "회원 탈퇴 및 모든 정보 삭제가 성공적으로 완료되었습니다. 그동안 하루퍼즐을 이용해 주셔서 진심으로 감사드립니다.",
+    "en": "Your account and data have been deleted. Thank you for playing Haroo Puzzle."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.006",
+    "ko": "회원 탈퇴 처리 중 문제가 발생했습니다.",
+    "en": "Could not delete your account."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.007",
+    "ko": "회원 탈퇴 중 알 수 없는 에러가 발생했습니다.",
+    "en": "An unexpected error occurred while deleting your account."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.008",
+    "ko": "내 프로필 카드를 정리하는 중...",
+    "en": "Loading your profile..."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.009",
+    "ko": "로그인이 필요한 서비스입니다",
+    "en": "Sign in required"
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.010",
+    "ko": "마이페이지에서는 나만의 완성 통계와 상세한 퍼즐 플레이 기록 히스토리를 확인하고 관리할 수 있습니다.",
+    "en": "Sign in to see your puzzle statistics and detailed play history."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.011",
+    "ko": "로그인하기",
+    "en": "Sign in"
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.012",
+    "ko": "마이페이지",
+    "en": "My Page"
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.013",
+    "ko": "내 개인 통계 정보와 아카이브 완주 기록을 한눈에 관리해 보세요.",
+    "en": "Manage your stats and completed archive puzzles in one place."
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.014",
+    "ko": "완주 기록 히스토리",
+    "en": "Completion history"
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.015",
+    "ko": "개 완주",
+    "en": "completed"
+  },
+  {
+    "key": "puzzle.app.puzzle.mypage.page.016",
+    "ko": "더보기",
+    "en": "Show more"
+  },
+  {
+    "key": "puzzle.app.puzzle.page.client.001",
+    "ko": "아름다운 퍼즐 조각을 불러오는 중...",
+    "en": "Loading your puzzle pieces..."
+  },
+  {
+    "key": "puzzle.app.puzzle.page.client.002",
+    "ko": "이번 주 출제된 퍼즐이 없습니다.",
+    "en": "No puzzle available this week."
+  },
+  {
+    "key": "puzzle.app.puzzle.page.client.003",
+    "ko": "아카이브로 이동",
+    "en": "View archive"
+  },
+  {
+    "key": "puzzle.app.puzzle.page.client.004",
+    "ko": "지난 아카이브 퍼즐 보기",
+    "en": "Puzzle archive"
+  },
+  {
+    "key": "puzzle.app.puzzle.page.client.005",
+    "ko": "이전 주차 퍼즐 플레이 목록",
+    "en": "Play puzzles from previous weeks"
+  },
+  {
+    "key": "puzzle.app.puzzle.play.puzzleId.page.001",
+    "ko": "캔버스 조각판을 세팅하는 중...",
+    "en": "Setting up your puzzle board..."
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.001",
+    "ko": "일 남음",
+    "en": "days left"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.002",
+    "ko": "종료 임박",
+    "en": "Ending soon"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.003",
+    "ko": "주간 대회",
+    "en": "Weekly challenge"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.004",
+    "ko": "주간 랭킹 보드를 동기화하는 중...",
+    "en": "Loading weekly rankings..."
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.005",
+    "ko": "현재 등록된 주간 랭킹 이벤트가 없습니다.",
+    "en": "No weekly ranking event is available."
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.006",
+    "ko": "메인 페이지",
+    "en": "Home"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.007",
+    "ko": "주간 랭킹 경쟁",
+    "en": "Weekly leaderboard"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.008",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.009",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.010",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.011",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.012",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.013",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.014",
+    "ko": "명 완주",
+    "en": "completed"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.015",
+    "ko": "초보 난이도",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.016",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.017",
+    "ko": "일반 난이도",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.018",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.019",
+    "ko": "고수 난이도",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.app.puzzle.ranking.page.020",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.001",
+    "ko": "달성 업적 배지",
+    "en": "Achievements"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.002",
+    "ko": "🏆 첫 완주 달성",
+    "en": "🏆 First puzzle completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.003",
+    "ko": "⚡ 스피드 챌린저",
+    "en": "⚡ Speed challenger"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.004",
+    "ko": "🌟 연속 퍼즐러",
+    "en": "🌟 Puzzle streak"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.005",
+    "ko": "💎 TOP 10 랭커",
+    "en": "💎 Top 10 ranker"
+  },
+  {
+    "key": "puzzle.components.puzzle.achievement.badges.006",
+    "ko": "아직 획득한 훈장이 없습니다. 퍼즐을 풀고 첫 훈장을 획득하세요!",
+    "en": "No badges yet. Finish a puzzle to earn your first!"
+  },
+  {
+    "key": "puzzle.ui.weekLabel",
+    "ko": "{{week}}주차",
+    "en": "Week {{week}}"
+  },
+  {
+    "key": "puzzle.ui.emptyArchiveMonth",
+    "ko": "{{month}}월에 발행된 아카이브 퍼즐이 없습니다.",
+    "en": "No archived puzzles released in {{month}}."
+  }
+]

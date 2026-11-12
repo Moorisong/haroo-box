@@ -1,4 +1,6 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
+import PuzzleLanguageToggle from './language-toggle';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -8,14 +10,15 @@ import { Trophy, Archive, User, LogIn, LogOut, Menu, X, Puzzle } from 'lucide-re
 import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 export default function Header() {
+  const { t } = useLanguage();
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { label: '랭킹', href: '/puzzle/ranking', icon: Trophy },
-    { label: '아카이브', href: '/puzzle/archive', icon: Archive },
-    { label: '마이페이지', href: '/puzzle/mypage', icon: User },
+    { label: t('puzzle.components.puzzle.header.001'), href: '/puzzle/ranking', icon: Trophy },
+    { label: t('puzzle.components.puzzle.header.002'), href: '/puzzle/archive', icon: Archive },
+    { label: t('puzzle.components.puzzle.header.003'), href: '/puzzle/mypage', icon: User },
   ];
 
   const handleSignOut = async () => {
@@ -40,10 +43,10 @@ export default function Header() {
         boxShadow: 'var(--puzzle-shadow-sm)'
       }}
     >
-      <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-2">
         {/* Logo & Sub Link */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Link href="/puzzle" className="flex items-center gap-2 group">
+        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-1 md:flex-none overflow-hidden">
+          <Link href="/puzzle" className="flex items-center gap-2 group min-w-0 flex-shrink-0">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105"
               style={{ backgroundColor: 'var(--puzzle-primary)' }}
@@ -51,10 +54,10 @@ export default function Header() {
               <Puzzle size={16} color="white" strokeWidth={2.5} />
             </div>
             <span
-              className="text-lg tracking-tight font-extrabold"
+              className="text-base sm:text-lg tracking-tight font-extrabold whitespace-nowrap"
               style={{ color: 'var(--puzzle-card-foreground)' }}
             >
-              하루퍼즐
+              {t('puzzle.components.puzzle.header.004')}
             </span>
           </Link>
           <div className="w-px h-3.5" style={{ backgroundColor: 'var(--puzzle-border)' }} />
@@ -62,16 +65,16 @@ export default function Header() {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors flex items-center gap-0.5"
+            className="text-[10px] sm:text-xs font-semibold hover:text-[var(--puzzle-primary)] transition-colors hidden min-[380px]:flex items-center gap-0.5 whitespace-nowrap min-w-0"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
-            <span>하루상자</span>
+            <span>{t('puzzle.components.puzzle.header.005')}</span>
             <span className="text-[10px] opacity-70">↗</span>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1 min-w-0">
           {navItems.map(({ label, href, icon: Icon }) => {
             const isActive = pathname === href;
             return (
@@ -107,7 +110,7 @@ export default function Header() {
               }}
             >
               <LogOut size={15} strokeWidth={2} />
-              <span>로그아웃</span>
+              <span>{t('puzzle.components.puzzle.header.006')}</span>
             </button>
           ) : (
             <Link
@@ -119,25 +122,26 @@ export default function Header() {
               }}
             >
               <LogIn size={15} strokeWidth={2} />
-              <span>로그인</span>
+              <span>{t('puzzle.components.puzzle.header.007')}</span>
             </Link>
           )}
         </nav>
 
+        <div className="flex items-center gap-1.5 flex-shrink-0"><PuzzleLanguageToggle />
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-2 rounded-lg transition-colors"
+          className="lg:hidden p-2 rounded-lg transition-colors flex-shrink-0"
           style={{ color: 'var(--puzzle-foreground)' }}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        </button></div>
       </div>
 
       {/* Mobile Menu Drawer */}
       {menuOpen && (
         <div
-          className="md:hidden absolute top-16 left-0 right-0 border-b border-border shadow-lg"
+          className="lg:hidden absolute top-16 left-0 right-0 border-b border-border shadow-lg"
           style={{ 
             backgroundColor: 'var(--puzzle-background)',
             borderBottom: '1px solid var(--puzzle-border)'
@@ -175,7 +179,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-foreground)' }}
               >
                 <LogOut size={18} strokeWidth={2} />
-                <span>로그아웃</span>
+                <span>{t('puzzle.components.puzzle.header.008')}</span>
               </button>
             ) : (
               <Link
@@ -185,7 +189,7 @@ export default function Header() {
                 style={{ backgroundColor: 'var(--puzzle-primary)', color: 'var(--puzzle-primary-foreground)' }}
               >
                 <LogIn size={18} strokeWidth={2} />
-                <span>로그인</span>
+                <span>{t('puzzle.components.puzzle.header.009')}</span>
               </Link>
             )}
           </nav>

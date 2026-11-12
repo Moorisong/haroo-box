@@ -1,0 +1,322 @@
+[
+  {
+    "key": "puzzle.components.puzzle.footer.001",
+    "ko": "하루상자 메인",
+    "en": "Haroo Box home"
+  },
+  {
+    "key": "puzzle.components.puzzle.footer.002",
+    "ko": "이용약관",
+    "en": "Terms of Service"
+  },
+  {
+    "key": "puzzle.components.puzzle.footer.003",
+    "ko": "개인정보처리방침",
+    "en": "Privacy Policy"
+  },
+  {
+    "key": "puzzle.components.puzzle.footer.004",
+    "ko": "하루퍼즐",
+    "en": "Haroo Puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.footer.005",
+    "ko": "하루퍼즐",
+    "en": "Haroo Puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.footer.006",
+    "ko": "당신의 고요한 일상을 지켜드립니다.",
+    "en": "A quiet moment, just for you."
+  },
+  {
+    "key": "puzzle.components.puzzle.header.001",
+    "ko": "랭킹",
+    "en": "Rankings"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.002",
+    "ko": "아카이브",
+    "en": "Archive"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.003",
+    "ko": "마이페이지",
+    "en": "My Page"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.004",
+    "ko": "하루퍼즐",
+    "en": "Haroo Puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.005",
+    "ko": "하루상자",
+    "en": "Haroo Box"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.006",
+    "ko": "로그아웃",
+    "en": "Log out"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.007",
+    "ko": "로그인",
+    "en": "Log in"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.008",
+    "ko": "로그아웃",
+    "en": "Log out"
+  },
+  {
+    "key": "puzzle.components.puzzle.header.009",
+    "ko": "로그인",
+    "en": "Log in"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.001",
+    "ko": "이어하기",
+    "en": "Resume"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.002",
+    "ko": "결과 및 랭킹 보기",
+    "en": "Results & rankings"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.003",
+    "ko": "새로 도전하기",
+    "en": "Try again"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.004",
+    "ko": "결과 및 랭킹 보기",
+    "en": "Results & rankings"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.005",
+    "ko": "다시 도전하기",
+    "en": "Try again"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.006",
+    "ko": "이어하기",
+    "en": "Resume"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.007",
+    "ko": "새로 시작하기",
+    "en": "Start over"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.action.buttons.008",
+    "ko": "퍼즐 시작하기",
+    "en": "Start puzzle"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.001",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.002",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.003",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.004",
+    "ko": "완료됨",
+    "en": "Completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.005",
+    "ko": "랭킹 등록 완료! 🏅",
+    "en": "Ranked result saved! 🏅"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.006",
+    "ko": "진행 중",
+    "en": "In progress"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.007",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.008",
+    "ko": "실시간 랭킹 도전",
+    "en": "Live leaderboard challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.floating.stats.009",
+    "ko": "망설임은 순위만 늦출 뿐! ⚡",
+    "en": "Every second counts! ⚡"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.001",
+    "ko": "이번 주 퍼즐",
+    "en": "Puzzle of the week"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.002",
+    "ko": "완료함",
+    "en": "Completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.003",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.004",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.005",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.006",
+    "ko": "매주 배달되는 몽글몽글 감성 퍼즐 ✨",
+    "en": "A fresh, cozy puzzle every week ✨"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.007",
+    "ko": "한 조각 한 조각 맞추며 바쁜 일상 속 나만의 퍼즐 타임을 채워보세요. 불꽃 튀는 실시간 순위 대결, 원하는 난이도로 지금 바로 도전해 볼까요?",
+    "en": "Take a break, fit the pieces together, and challenge yourself on the weekly leaderboard!"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.008",
+    "ko": "일 남음",
+    "en": "days left"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.009",
+    "ko": "명 완료함",
+    "en": "completed"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.010",
+    "ko": "내 진행률",
+    "en": "My progress"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.011",
+    "ko": "다시 플레이하기",
+    "en": "Play again"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.012",
+    "ko": "도전 시작하기",
+    "en": "Start challenge"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.001",
+    "ko": "아직 완성 기록 히스토리가 존재하지 않습니다.",
+    "en": "No completed puzzle history yet."
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.002",
+    "ko": "초보",
+    "en": "Easy"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.003",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.004",
+    "ko": "일반",
+    "en": "Normal"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.005",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.006",
+    "ko": "고수",
+    "en": "Expert"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.007",
+    "ko": "조각",
+    "en": "pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.008",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.history.list.009",
+    "ko": "일반 플레이",
+    "en": "Free play"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.guide.image.panel.001",
+    "ko": "원본 가이드 이미지",
+    "en": "Original reference image"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.guide.image.panel.002",
+    "ko": "크기 조절 (드래그)",
+    "en": "Resize (drag)"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.guide.image.panel.003",
+    "ko": "크기 조절",
+    "en": "Resize"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.001",
+    "ko": "초보 (36조각)",
+    "en": "Easy (36 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.002",
+    "ko": "일반 (100조각)",
+    "en": "Normal (100 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.003",
+    "ko": "고수 (256조각)",
+    "en": "Expert (256 pieces)"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.004",
+    "ko": "뒤로가기",
+    "en": "Back"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.005",
+    "ko": "조각 클릭 후 퍼즐판의 빈 칸을 터치",
+    "en": "Tap a piece, then an empty spot on the board"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.006",
+    "ko": "퍼즐판이나 가이드를 드래그로 이동 / 우하단 핸들로 크기를 조절",
+    "en": "Drag the board or guide to move; use the bottom-right handle to resize"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.intro.001",
+    "ko": "매주 새로운 퍼즐로 즐기는 소소한 힐링.",
+    "en": "A new puzzle every week, a little moment to unwind."
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.intro.002",
+    "ko": "조각을 맞추고 기록 경쟁에도 도전해 보세요.",
+    "en": "Fit the pieces and compete for your best time."
+  }
+]

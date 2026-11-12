@@ -1,7 +1,10 @@
+'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 import Link from 'next/link';
 import { ROUTES } from '@/constants';
 
 export default function MyPage() {
+    const { t } = useLanguage();
     return (
         <div style={{
             minHeight: '100vh',
@@ -17,7 +20,7 @@ export default function MyPage() {
                     fontWeight: 800,
                     color: '#18203a',
                     marginBottom: '1rem'
-                }}>마이페이지</h1>
+                }}>{t('마이페이지', 'My Page')}</h1>
             </header>
 
             <div style={{
@@ -36,7 +39,7 @@ export default function MyPage() {
                     👤
                 </div>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#18203a' }}>GUEST</h2>
-                <p style={{ color: '#646a77', marginBottom: '2rem' }}>로그인 정보가 없습니다.</p>
+                <p style={{ color: '#646a77', marginBottom: '2rem' }}>{t('로그인 정보가 없습니다.', 'You are not signed in.')}</p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <Link
@@ -50,7 +53,7 @@ export default function MyPage() {
                             textDecoration: 'none'
                         }}
                     >
-                        로그인
+                        {t('로그인', 'Log in')}
                     </Link>
 
                     <Link
@@ -64,7 +67,7 @@ export default function MyPage() {
                             textDecoration: 'none'
                         }}
                     >
-                        홈으로 돌아가기
+                        {t('홈으로 돌아가기', 'Back to home')}
                     </Link>
                 </div>
             </div>

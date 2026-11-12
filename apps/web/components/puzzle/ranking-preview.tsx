@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Trophy, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ interface RankingPreviewProps {
 }
 
 export default function RankingPreview({ rankings, isLoading, difficulty, onDifficultyChange }: RankingPreviewProps) {
+  const { t } = useLanguage();
   const getMedal = (rank: number) => {
     if (rank === 1) return '🥇';
     if (rank === 2) return '🥈';
@@ -34,7 +36,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Trophy size={18} style={{ color: 'var(--puzzle-primary)' }} />
-            랭킹 TOP 7
+            {t('puzzle.components.puzzle.ranking.preview.001')}
           </h2>
           
           {/* Difficulty pills */}
@@ -47,7 +49,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'novice' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              초보
+              {t('puzzle.components.puzzle.ranking.preview.002')}
             </button>
             <button
               onClick={() => onDifficultyChange('beginner')}
@@ -57,7 +59,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'beginner' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              일반
+              {t('puzzle.components.puzzle.ranking.preview.003')}
             </button>
             <button
               onClick={() => onDifficultyChange('expert')}
@@ -67,7 +69,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
                 color: difficulty === 'expert' ? '#fff' : 'var(--puzzle-muted-foreground)',
               }}
             >
-              고수
+              {t('puzzle.components.puzzle.ranking.preview.004')}
             </button>
           </div>
         </div>
@@ -76,7 +78,7 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
           className="flex items-center gap-0.5 text-sm font-bold transition-all duration-200"
           style={{ color: 'var(--puzzle-primary)' }}
         >
-          <span>전체 보기</span>
+          <span>{t('puzzle.components.puzzle.ranking.preview.005')}</span>
           <ChevronRight size={14} strokeWidth={2.5} />
         </Link>
       </div>
@@ -105,10 +107,10 @@ export default function RankingPreview({ rankings, isLoading, difficulty, onDiff
         ) : displayRankings.length === 0 ? (
           <div className="py-12 text-center flex flex-col items-center justify-center gap-2 md:flex-1">
             <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-              아직 등록된 랭킹 기록이 없습니다.
+              {t('puzzle.components.puzzle.ranking.preview.006')}
             </p>
             <p className="text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-              첫 번째 도전자가 되어 기록을 등록해 보세요!
+              {t('puzzle.components.puzzle.ranking.preview.007')}
             </p>
           </div>
         ) : (

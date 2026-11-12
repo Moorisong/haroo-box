@@ -1,13 +1,15 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Puzzle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const links = [
-    { label: '하루상자 메인', href: '/', newTab: true },
-    { label: '이용약관', href: '/terms' },
-    { label: '개인정보처리방침', href: '/privacy' },
+    { label: t('puzzle.components.puzzle.footer.001'), href: '/', newTab: true },
+    { label: t('puzzle.components.puzzle.footer.002'), href: '/terms' },
+    { label: t('puzzle.components.puzzle.footer.003'), href: '/privacy' },
     { label: 'GitHub', href: 'https://github.com/Moorisong/haroo-box', newTab: true },
   ];
 
@@ -33,7 +35,7 @@ export default function Footer() {
               className="text-base tracking-tight font-extrabold"
               style={{ color: 'var(--puzzle-card-foreground)' }}
             >
-              하루퍼즐
+              {t('puzzle.components.puzzle.footer.004')}
             </span>
           </div>
 
@@ -64,10 +66,10 @@ export default function Footer() {
           style={{ borderTop: '1px solid var(--puzzle-border)' }}
         >
           <p className="text-xs font-medium" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            © {new Date().getFullYear()} 하루퍼즐. All rights reserved.
+            © {new Date().getFullYear()} {t('puzzle.components.puzzle.footer.005')}. All rights reserved.
           </p>
           <p className="text-xs font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
-            🧘 당신의 고요한 일상을 지켜드립니다.
+            🧘 {t('puzzle.components.puzzle.footer.006')}
           </p>
         </div>
       </div>

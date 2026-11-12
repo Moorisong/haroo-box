@@ -3,6 +3,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IUser extends Document {
   providerId: string;
   provider: 'kakao' | 'google' | 'guest' | 'test';
+  service?: string;
+  serviceUserId?: string;
   name?: string;
   nickname?: string;
   nicknameUpdatedAt?: Date;
@@ -16,13 +18,21 @@ const userSchema = new Schema<IUser>(
     providerId: {
       type: String,
       required: true,
-      unique: true,
       index: true
     },
     provider: {
       type: String,
       required: true,
       enum: ['kakao', 'google', 'guest', 'test']
+    },
+    service: {
+      type: String,
+      default: 'box',
+      index: true
+    },
+    serviceUserId: {
+      type: String,
+      index: true
     },
     name: {
       type: String,
@@ -41,6 +51,8 @@ const userSchema = new Schema<IUser>(
     timestamps: true
   }
 );
+
+userSchema.index({ service: 1, providerId: 1 }, { unique: true });
 
 /**
  * 메인 DB(haroo-box) 커넥션에서 User 모델 반환

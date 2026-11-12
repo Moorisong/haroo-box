@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { usePuzzleStore } from '@/lib/stores/puzzle-store';
 import { fetchPuzzleById, fetchMyProgress, saveProgress as saveProgressApi, startChallenge, clearMyProgress } from '@/lib/puzzle-api';
@@ -7,6 +8,7 @@ import { Puzzle } from '@/types/puzzle';
 
 export function usePuzzleSetup(puzzleId: string, token: string | undefined, status: string) {
   const router = useRouter();
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -29,7 +31,7 @@ export function usePuzzleSetup(puzzleId: string, token: string | undefined, stat
       try {
         const res = await fetchPuzzleById(puzzleId);
         if (!res.success || !res.data) {
-          alert('퍼즐 데이터를 불러오지 못했습니다.');
+          alert(t('puzzle.game.setup.error'));
           router.push('/puzzle');
           return;
         }

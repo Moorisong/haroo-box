@@ -1,4 +1,6 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -13,8 +15,9 @@ import styles from '../puzzle-layout.module.css';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
 export default function RankingPage() {
+  const { language, t } = useLanguage();
   const { data: session } = useSession();
-  const token = session?.user?.kakaoId;
+  const token = session?.user?.providerId || session?.user?.kakaoId;
 
   const [currentPuzzle, setCurrentPuzzle] = useState<Puzzle | null>(null);
   const [rankings, setRankings] = useState<RankingEntry[]>([]);
@@ -22,6 +25,14 @@ export default function RankingPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<'novice' | 'beginner' | 'expert'>('novice');
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(20);
+  // Keep the server and first client render identical to avoid hydration mismatches.
+  const [now, setNow] = useState<number | null>(null);
+
+  useEffect(() => {
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     async function loadRankings() {
@@ -84,9 +95,10 @@ export default function RankingPage() {
   const getDaysLeft = (endDateStr: string) => {
     try {
       const end = new Date(endDateStr).getTime();
-      const diff = end - Date.now();
+      if (now === null) return '';
+      const diff = end - now;
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      return days > 0 ? `${days}일 남음` : '종료 임박';
+      return days > 0 ? `${days} ${t('puzzle.app.puzzle.ranking.page.001')}` : t('puzzle.app.puzzle.ranking.page.002');
     } catch {
       return '';
     }
@@ -95,9 +107,21 @@ export default function RankingPage() {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return `${date.getMonth() + 1}월 ${Math.ceil(date.getDate() / 7)}주차`;
+      // Puzzle weeks follow the service's Korea-time schedule for every locale.
+      const locale = language === 'en' ? 'en-US' : 'ko-KR';
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Seoul',
+        month: 'numeric',
+        day: 'numeric',
+      }).formatToParts(date);
+      const monthNumber = Number(parts.find((part) => part.type === 'month')?.value);
+      const dayNumber = Number(parts.find((part) => part.type === 'day')?.value);
+      if (!monthNumber || !dayNumber) throw new Error('Invalid puzzle start date');
+      const month = new Intl.DateTimeFormat(locale, { month: 'long', timeZone: 'UTC' })
+        .format(new Date(Date.UTC(2024, monthNumber - 1, 1)));
+      return t('puzzle.ui.rankingMonthWeek', { month, week: Math.ceil(dayNumber / 7) });
     } catch {
-      return '주간 대회';
+      return t('puzzle.app.puzzle.ranking.page.003');
     }
   };
 
@@ -105,7 +129,7 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>주간 랭킹 보드를 동기화하는 중...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.ranking.page.004')}</span>
       </div>
     );
   }
@@ -114,8 +138,8 @@ export default function RankingPage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-2 select-none">
         <span className="text-3xl">🏆</span>
-        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>현재 등록된 주간 랭킹 이벤트가 없습니다.</p>
-        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">메인 페이지</Link>
+        <p className="text-sm font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.ranking.page.005')}</p>
+        <Link href="/puzzle" className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-600 transition-all">{t('puzzle.app.puzzle.ranking.page.006')}</Link>
       </div>
     );
   }
@@ -127,10 +151,10 @@ export default function RankingPage() {
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold flex items-center gap-2 mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
             <Trophy size={28} style={{ color: '#F59E0B' }} />
-            주간 랭킹 경쟁
+            {t('puzzle.app.puzzle.ranking.page.007')}
           </h1>
           <p className="text-sm font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            {getFormatDate(currentPuzzle.startDate)} · {currentPuzzle.title}
+            {getFormatDate(currentPuzzle.startDate)} · {puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
           </p>
         </div>
 
@@ -145,8 +169,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'novice' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            초보
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(36조각)</span>
+            {t('puzzle.app.puzzle.ranking.page.008')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(36 {t('puzzle.app.puzzle.ranking.page.009')})</span>
           </button>
           <button
             onClick={() => setSelectedDifficulty('beginner')}
@@ -157,8 +181,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'beginner' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            일반
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(100조각)</span>
+            {t('puzzle.app.puzzle.ranking.page.010')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(100 {t('puzzle.app.puzzle.ranking.page.011')})</span>
           </button>
           <button
             onClick={() => setSelectedDifficulty('expert')}
@@ -169,8 +193,8 @@ export default function RankingPage() {
               boxShadow: selectedDifficulty === 'expert' ? 'var(--puzzle-shadow-sm)' : 'none',
             }}
           >
-            고수
-            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(256조각)</span>
+            {t('puzzle.app.puzzle.ranking.page.012')}
+            <span className="block sm:inline sm:ml-1 text-[10px] sm:text-xs opacity-80">(256 {t('puzzle.app.puzzle.ranking.page.013')})</span>
           </button>
         </div>
       </div>
@@ -201,7 +225,7 @@ export default function RankingPage() {
             >
               <img
                 src={currentPuzzle.imageUrl}
-                alt={currentPuzzle.title}
+                alt={puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
                 className="w-16 h-12 sm:w-20 sm:h-14 object-cover rounded-xl flex-shrink-0 border transition-transform duration-300 group-hover:scale-[1.02]"
                 style={{ borderColor: 'var(--puzzle-border)' }}
               />
@@ -210,17 +234,17 @@ export default function RankingPage() {
                   className="truncate mb-1 text-sm font-extrabold transition-colors duration-200 group-hover:text-[var(--puzzle-primary)]"
                   style={{ color: 'var(--puzzle-card-foreground)' }}
                 >
-                  {currentPuzzle.title}
+                  {puzzleTitle(currentPuzzle, language, t('puzzle.metadata.untranslated_title'))}
                 </p>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   <span className="flex items-center gap-1 text-[11px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    <Users size={11} /> {currentPuzzle.participantCount.toLocaleString()}명 완주
+                    <Users size={11} /> {currentPuzzle.participantCount.toLocaleString()} {t('puzzle.app.puzzle.ranking.page.014')}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     <Clock size={11} /> {getDaysLeft(currentPuzzle.endDate)}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-bold hidden sm:flex" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-                    <Trophy size={11} /> {selectedDifficulty === 'novice' ? '초보 난이도 (36조각)' : selectedDifficulty === 'beginner' ? '일반 난이도 (100조각)' : '고수 난이도 (256조각)'}
+                    <Trophy size={11} /> {selectedDifficulty === 'novice' ? `${t('puzzle.app.puzzle.ranking.page.015')} (36 ${t('puzzle.app.puzzle.ranking.page.016')})` : selectedDifficulty === 'beginner' ? `${t('puzzle.app.puzzle.ranking.page.017')} (100 ${t('puzzle.app.puzzle.ranking.page.018')})` : `${t('puzzle.app.puzzle.ranking.page.019')} (256 ${t('puzzle.app.puzzle.ranking.page.020')})`}
                   </span>
                 </div>
               </div>

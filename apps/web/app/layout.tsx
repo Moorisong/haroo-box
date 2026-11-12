@@ -5,6 +5,7 @@ import NavBar from '@/components/layout/nav-bar';
 import Footer from '@/components/layout/footer';
 import MainLayoutWrapper from '@/components/layout/main-layout-wrapper';
 import SessionProvider from '@/components/providers/session-provider';
+import { LanguageProvider } from '@/components/providers/language-provider';
 
 import './globals.css';
 
@@ -110,11 +111,13 @@ export default async function RootLayout({
           strategy="lazyOnload"
         />
         <SessionProvider>
+          <LanguageProvider>
           <NavBar />
           <MainLayoutWrapper>
             {children}
           </MainLayoutWrapper>
           <Footer />
+          </LanguageProvider>
         </SessionProvider>
 
       </body>

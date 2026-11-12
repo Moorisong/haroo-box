@@ -141,5 +141,18 @@ export function usePieceTouchDrag(ctx: DragContext) {
     }
   };
 
-  return { handleTouchStart, handleTouchMove, handleTouchEnd };
+  const handleTouchCancel = () => {
+    // iOS Safari fires touchcancel when a native scroll takes over.
+    // Cancel pending long presses so scrolling cannot turn into a delayed drag.
+    if (ctx.longPressTimeout.current) {
+      clearTimeout(ctx.longPressTimeout.current);
+      ctx.longPressTimeout.current = null;
+    }
+    if (!ctx.dragActiveRef.current) {
+      ctx.startCoords.current = null;
+      ctx.hasMovedRef.current = true;
+    }
+  };
+
+  return { handleTouchStart, handleTouchMove, handleTouchEnd, handleTouchCancel };
 }

@@ -1,9 +1,11 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useEffect } from 'react';
 import { RotateCw, Smartphone } from 'lucide-react';
 
 export default function OrientationSuggestion() {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -56,12 +58,12 @@ export default function OrientationSuggestion() {
         {/* 텍스트 안내 */}
         <div className="flex flex-col gap-3">
           <h3 className="text-xl font-extrabold text-slate-900">
-            가로 모드를 권장합니다 🔄
+            {t('puzzle.components.puzzle.orientation.suggestion.001')}
           </h3>
           <p className="text-sm font-semibold leading-relaxed text-slate-600">
-            태블릿, 모바일같은 기기에서는<br />
-            <strong className="text-blue-600 font-bold">가로 모드</strong>로 플레이하면<br />
-            더 넓고 쾌적한 화면에서 즐길 수 있습니다.
+            {t('puzzle.components.puzzle.orientation.suggestion.002')}<br />
+            <strong className="text-blue-600 font-bold">{t('puzzle.components.puzzle.orientation.suggestion.003')}</strong>{t('puzzle.components.puzzle.orientation.suggestion.004')}<br />
+            {t('puzzle.components.puzzle.orientation.suggestion.005')}
           </p>
         </div>
 
@@ -70,7 +72,7 @@ export default function OrientationSuggestion() {
           onClick={handleDismiss}
           className="mt-2 text-xs font-bold text-slate-400 hover:text-slate-600 underline transition-colors"
         >
-          세로 모드로 계속 진행하기
+          {t('puzzle.components.puzzle.orientation.suggestion.006')}
         </button>
       </div>
     </div>

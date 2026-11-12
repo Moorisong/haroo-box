@@ -1,0 +1,66 @@
+name: Puzzle localization checks
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'apps/web/app/puzzle/**'
+      - 'apps/web/tests/puzzle/**'
+      - 'apps/web/components/puzzle/**'
+      - 'apps/web/components/providers/language-provider.tsx'
+      - 'apps/web/lib/puzzle-i18n.ts'
+      - 'apps/server/src/controllers/puzzle-translation.controller.ts'
+      - 'apps/server/src/models/puzzle-translation.model.ts'
+      - 'apps/server/src/routes/puzzle.routes.ts'
+      - 'apps/server/src/data/puzzle-ui-translations-*.json'
+      - 'apps/server/scripts/audit-puzzle-*.ts'
+      - 'apps/server/src/services/seed-puzzle-ui-translations.ts'
+      - 'apps/web/lib/puzzle-api.ts'
+      - 'apps/web/lib/puzzle-i18n.ts'
+      - '.github/workflows/puzzle-locale-check.yml'
+  workflow_dispatch:
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install server dependencies
+        working-directory: apps/server
+        run: npm ci
+      - name: Typecheck server
+        working-directory: apps/server
+        run: npx tsc --noEmit
+      - name: Audit hardcoded Korean JSX in puzzle pages
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-visible-text.ts
+      - name: Audit database translation keys
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-translation-keys.ts
+      - name: Audit all Korean text literals in puzzle source
+        working-directory: apps/server
+        run: npx ts-node scripts/audit-puzzle-raw-literals.ts
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci
+      - name: Typecheck web
+        working-directory: apps/web
+        run: npx tsc --noEmit --project tsconfig.puzzle-check.json
+      - name: Install Chromium for localization checks
+        working-directory: apps/web
+        run: npx playwright install --with-deps chromium
+      - name: Exercise English ranking and archive
+        working-directory: apps/web
+        run: npx playwright test tests/puzzle/i18n.spec.ts --project=chromium
+      - name: Upload browser failure traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: puzzle-locale-traces
+          path: |
+            apps/web/test-results/
+            apps/web/playwright-report/
+          retention-days: 2

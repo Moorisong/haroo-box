@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 interface StatsCardProps {
   participantCount: number;
@@ -13,11 +14,12 @@ export default function StatsCard({
   totalPuzzles, 
   completionRate 
 }: StatsCardProps) {
+  const { t } = useLanguage();
   const stats = [
-    { label: '주간 퍼즐 완성', value: `${participantCount.toLocaleString()}명` },
-    { label: '누적 플레이 수', value: `${totalPlayCount.toLocaleString()}회` },
-    { label: '아카이브 퍼즐', value: `${totalPuzzles}개` },
-    { label: '평균 퍼즐 완성률', value: completionRate },
+    { label: t('puzzle.components.puzzle.stats.card.001'), value: `${participantCount.toLocaleString()} ${t('puzzle.components.puzzle.stats.card.002')}` },
+    { label: t('puzzle.components.puzzle.stats.card.003'), value: `${totalPlayCount.toLocaleString()} ${t('puzzle.components.puzzle.stats.card.004')}` },
+    { label: t('puzzle.components.puzzle.stats.card.005'), value: `${totalPuzzles} ${t('puzzle.components.puzzle.stats.card.006')}` },
+    { label: t('puzzle.components.puzzle.stats.card.007'), value: completionRate },
   ];
 
   return (
@@ -31,7 +33,7 @@ export default function StatsCard({
       }}
     >
       <p className="text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-        서비스 현황
+        {t('puzzle.components.puzzle.stats.card.008')}
       </p>
 
       <div className="flex flex-col gap-1.5">

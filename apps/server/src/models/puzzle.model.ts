@@ -4,6 +4,9 @@ import { getPuzzleConnection } from '../config/database';
 export interface IPuzzle extends Document {
   week: number;
   title: string;
+  title_en?: string;
+  description?: string;
+  description_en?: string;
   imageUrl: string;
   startDate: Date;
   endDate: Date;
@@ -18,6 +21,9 @@ const puzzleSchema = new Schema<IPuzzle>(
   {
     week: { type: Number, required: true, unique: true, index: true },
     title: { type: String, required: true },
+    title_en: { type: String, trim: true },
+    description: { type: String, trim: true },
+    description_en: { type: String, trim: true },
     imageUrl: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },

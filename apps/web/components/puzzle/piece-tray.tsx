@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -27,6 +28,7 @@ export default function PieceTray({
   onTrayClick,
   onGuideClick,
 }: PieceTrayProps) {
+  const { t } = useLanguage();
   const cellSize = 52;
   const drawerCellSize = 46;
 
@@ -60,6 +62,7 @@ export default function PieceTray({
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleTouchCancel,
     handlePointerMove,
     handlePointerUp,
     handlePointerCancel,
@@ -75,7 +78,7 @@ export default function PieceTray({
 
   return (
     <div
-      className="rounded-2xl border p-3 sm:p-4 shadow-inner relative"
+      className="rounded-2xl border p-2.5 sm:p-4 shadow-inner relative min-w-0"
       style={{
         backgroundColor: 'var(--puzzle-glass-bg)',
         backdropFilter: 'var(--puzzle-glass-blur)',
@@ -89,12 +92,12 @@ export default function PieceTray({
         }
       }}
     >
-      <div className="flex justify-between items-center mb-3 select-none">
-        <div className="flex items-center gap-3.5 sm:gap-2">
+      <div className="flex flex-wrap justify-between items-center gap-2 mb-2 sm:mb-3 select-none">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-2">
           <span className="text-xs sm:text-sm font-extrabold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            남은 조각: {trayPieces.length}
+            {t('puzzle.components.puzzle.piece.tray.001')}: {trayPieces.length}
           </span>
-          <div className="flex rounded-lg p-0.5 border ml-3 sm:ml-0" style={{ borderColor: 'var(--puzzle-border)' }}>
+          <div className="flex shrink-0 rounded-lg p-0.5 border ml-0" style={{ borderColor: 'var(--puzzle-border)' }}>
             {['basket1', 'basket2', 'basket3', 'basket4', 'basket5'].map((key) => {
               const isActive = activeBasket === key;
               const meta = basketMetadata[key];
@@ -130,7 +133,7 @@ export default function PieceTray({
         <div className="flex items-center gap-2">
           {selectedPieceId !== null && (
             <span className="hidden sm:inline text-[10px] sm:text-xs font-bold animate-pulse" style={{ color: 'var(--puzzle-primary)' }}>
-              ● 보드 격자를 터치하여 배치하세요
+              ● {t('puzzle.components.puzzle.piece.tray.002')}
             </span>
           )}
           <button
@@ -139,23 +142,23 @@ export default function PieceTray({
               if (selectedPieceId !== null) onTrayClick?.();
               setIsDrawerOpen(true);
             }}
-            className="px-2.5 py-1 rounded-lg text-xs font-black transition-all shadow flex items-center gap-1 hover:brightness-110 select-none"
+            className="shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg text-xs font-black transition-all shadow flex items-center gap-1 hover:brightness-110 select-none"
             style={{ backgroundColor: 'var(--puzzle-primary)', color: '#fff' }}
           >
             <Maximize2 size={12} strokeWidth={2.5} />
-            <span>모아보기</span>
+            <span>{t('puzzle.components.puzzle.piece.tray.003')}</span>
           </button>
         </div>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pt-4 pb-2 px-1 scrollbar-hide" style={{ scrollBehavior: 'smooth' }}>
+      <div data-testid="puzzle-piece-tray-scroll" className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] justify-items-center gap-2 max-h-[32dvh] min-h-[68px] overflow-y-auto overflow-x-hidden pt-3 pb-8 px-1 scroll-pb-8 sm:flex sm:gap-3 sm:overflow-x-auto sm:overflow-y-hidden sm:max-h-none touch-pan-y sm:touch-pan-x" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
         {trayPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-sm font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
-            🎉 모든 조각이 보드에 배치되었습니다!
+            🎉 {t('puzzle.components.puzzle.piece.tray.004')}
           </div>
         ) : activeBasketPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-            바구니 {activeBasket.replace('basket', '')}번이 비어 있습니다. 모아보기에서 조각을 드래그해 옮겨보세요!
+            {t('puzzle.components.puzzle.piece.tray.005')} {activeBasket.replace('basket', '')} {t('puzzle.components.puzzle.piece.tray.006')}
           </div>
         ) : (
           <>
@@ -172,7 +175,7 @@ export default function PieceTray({
                   boxShadow: '0 0 0 3px var(--puzzle-primary), 0 8px 16px rgba(79, 142, 247, 0.3)',
                   borderRadius: '6px',
                   outline: 'none',
-                  touchAction: 'none',
+                  touchAction: 'pan-y',
                 }}
               >
                 <PieceCell pieceIdx={selectedPieceId} image={image} size={cellSize} gridSize={gridSize} small />
@@ -197,6 +200,7 @@ export default function PieceTray({
                   onTouchStart={(e) => handleTouchStart(e, pieceId)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
+                  onTouchCancel={handleTouchCancel}
                   onContextMenu={(e) => e.preventDefault()}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -204,7 +208,7 @@ export default function PieceTray({
                     if (ignoreNextClickRef.current) { ignoreNextClickRef.current = false; return; }
                     onPieceClick(pieceId);
                   }}
-                  className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-x"
+                  className="relative cursor-pointer transition-all duration-200 flex-shrink-0 outline-none select-none touch-pan-y sm:touch-pan-x"
                   style={{
                     transform: isSelected && draggedPiece?.id !== pieceId ? 'scale(1.08) translateY(-4px)' : 'scale(1)',
                     boxShadow: isSelected && draggedPiece?.id !== pieceId ? '0 0 0 3px var(--puzzle-primary), 0 8px 16px rgba(79, 142, 247, 0.3)' : 'none',
@@ -214,7 +218,6 @@ export default function PieceTray({
                     WebkitTapHighlightColor: 'transparent',
                     WebkitTouchCallout: 'none',
                     WebkitUserSelect: 'none',
-                    touchAction: 'pan-x',
                   }}
                 >
                   <PieceCell pieceIdx={pieceId} image={image} size={cellSize} gridSize={gridSize} small />
@@ -275,6 +278,7 @@ export default function PieceTray({
         handleTouchStart={handleTouchStart}
         handleTouchMove={handleTouchMove}
         handleTouchEnd={handleTouchEnd}
+        handleTouchCancel={handleTouchCancel}
         ignoreNextClickRef={ignoreNextClickRef}
       />
     </div>

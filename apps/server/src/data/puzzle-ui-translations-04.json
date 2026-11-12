@@ -1,0 +1,207 @@
+[
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.001",
+    "ko": "완료",
+    "en": "complete"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.002",
+    "ko": "플레이 모드",
+    "en": "Play mode"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.003",
+    "ko": "이동 모드",
+    "en": "Move mode"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.004",
+    "ko": "축소",
+    "en": "Zoom out"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.005",
+    "ko": "확대",
+    "en": "Zoom in"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.006",
+    "ko": "판 엎기",
+    "en": "Shuffle pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.007",
+    "ko": "셔플",
+    "en": "Shuffle"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.008",
+    "ko": "저장/제출",
+    "en": "Save or submit"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.009",
+    "ko": "저장 중",
+    "en": "Saving"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.010",
+    "ko": "완료",
+    "en": "Saved"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.toolbar.011",
+    "ko": "저장",
+    "en": "Save"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.001",
+    "ko": "보관함",
+    "en": "Tray"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.002",
+    "ko": "보관함 분류 모드",
+    "en": "Organize pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.003",
+    "ko": "분류",
+    "en": "Organize"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.004",
+    "ko": "대기",
+    "en": "Waiting"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.005",
+    "ko": "① 아래 조각을 눌러 선택해주세요.",
+    "en": "① Select a piece below."
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.006",
+    "ko": "② 위 바구니 탭을 눌러 조각을 옮기세요.",
+    "en": "② Tap a basket above to move it."
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.007",
+    "ko": "조각 목록 스크롤 가능",
+    "en": "Scroll for more pieces"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.008",
+    "ko": "모든 조각 배치!",
+    "en": "All pieces placed!"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.landscape.tray.panel.009",
+    "ko": "바구니가 비어 있습니다.",
+    "en": "This basket is empty."
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.puzzle.panel.wrapper.001",
+    "ko": "크기 조절 (드래그)",
+    "en": "Resize (drag)"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.puzzle.panel.wrapper.002",
+    "ko": "크기 조절",
+    "en": "Resize"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.tray.disabled.overlay.001",
+    "ko": "보관함 비활성화",
+    "en": "Tray unavailable"
+  },
+  {
+    "key": "puzzle.components.puzzle.landscape.tray.disabled.overlay.002",
+    "ko": "이동 모드 해제 후 사용 가능",
+    "en": "Exit move mode to use the tray"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.001",
+    "ko": "현재 내 순위",
+    "en": "My rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.002",
+    "ko": "순위",
+    "en": "Rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.003",
+    "ko": "백분율 범위",
+    "en": "Percentile"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.004",
+    "ko": "상위",
+    "en": "Top"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.005",
+    "ko": "내 최고 기록",
+    "en": "My best time"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.006",
+    "ko": "내 최고 기록",
+    "en": "My best time"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.007",
+    "ko": "비로그인 상태입니다.",
+    "en": "You are not logged in."
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.008",
+    "ko": "로그인하시면 랭킹 경쟁에 참여할 수 있습니다. 🏆",
+    "en": "Log in to join the rankings. 🏆"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.009",
+    "ko": "현재 내 순위",
+    "en": "My rank"
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.010",
+    "ko": "아직 완주 기록이 없습니다.",
+    "en": "No completed puzzles yet."
+  },
+  {
+    "key": "puzzle.components.puzzle.my.ranking.card.011",
+    "ko": "퍼즐을 완성하고 공식 순위를 확인해 보세요! 🧘",
+    "en": "Finish a puzzle to see your rank! 🧘"
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.001",
+    "ko": "가로 모드를 권장합니다 🔄",
+    "en": "Landscape mode recommended 🔄"
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.002",
+    "ko": "태블릿, 모바일같은 기기에서는",
+    "en": "On phones and tablets,"
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.003",
+    "ko": "가로 모드",
+    "en": "landscape mode"
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.004",
+    "ko": "로 플레이하면",
+    "en": " makes for"
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.005",
+    "ko": "더 넓고 쾌적한 화면에서 즐길 수 있습니다.",
+    "en": "a wider, more comfortable puzzle experience."
+  },
+  {
+    "key": "puzzle.components.puzzle.orientation.suggestion.006",
+    "ko": "세로 모드로 계속 진행하기",
+    "en": "Continue in portrait mode"
+  }
+]

@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
@@ -10,7 +11,17 @@ import styles from '../puzzle-layout.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import KakaoAdfit, { ADFIT_SIZES, ADFIT_UNITS } from '@/components/ads/kakao-adfit';
 
+// Shared puzzle schedule uses Korea time, regardless of the viewer's timezone.
+const getPuzzleMonthKst = (dateString: string): number => {
+  const date = new Date(dateString);
+  return Number(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    month: 'numeric',
+  }).format(date));
+};
+
 export default function ArchivePage() {
+  const { language, t } = useLanguage();
   const { data: session, status: sessionStatus } = useSession();
   const token = session?.user?.kakaoId;
 
@@ -88,7 +99,7 @@ export default function ArchivePage() {
     return (
       <div className="flex items-center justify-center min-h-[70vh] flex-col gap-3 font-semibold">
         <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--puzzle-primary) var(--puzzle-primary) var(--puzzle-primary) transparent' }} />
-        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>아카이브 보관함을 열고 있습니다...</span>
+        <span style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.app.puzzle.archive.page.001')}</span>
       </div>
     );
   }
@@ -97,8 +108,7 @@ export default function ArchivePage() {
   const availableMonths = Array.from(
     new Set(
       puzzles.map((p) => {
-        const d = new Date(p.startDate);
-        return d.getMonth() + 1;
+        return getPuzzleMonthKst(p.startDate);
       })
     )
   ).sort((a, b) => a - b);
@@ -106,8 +116,7 @@ export default function ArchivePage() {
   // 선택된 월에 따라 퍼즐 필터링
   const filteredPuzzles = selectedMonth
     ? puzzles.filter((p) => {
-        const d = new Date(p.startDate);
-        return d.getMonth() + 1 === selectedMonth;
+        return getPuzzleMonthKst(p.startDate) === selectedMonth;
       })
     : puzzles;
 
@@ -116,22 +125,22 @@ export default function ArchivePage() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5" style={{ color: 'var(--puzzle-card-foreground)' }}>
-          퍼즐 아카이브
+          {t('puzzle.app.puzzle.archive.page.002')}
         </h1>
         <p className="text-sm font-semibold mb-3.5" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          지난 주차들의 다양한 아름다운 퍼즐을 다시 플레이하고 도전을 이어나가 보세요.
+          {t('puzzle.app.puzzle.archive.page.003')}
         </p>
         <span className="inline-block text-[11px] font-extrabold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--puzzle-border)', color: 'var(--puzzle-primary)', backgroundColor: 'var(--puzzle-glass-bg)' }}>
-          ℹ️ 올해 출시된 아카이브 퍼즐만 표시됩니다.
+          ℹ️ {t('puzzle.app.puzzle.archive.page.004')}
         </span>
       </div>
 
       {/* Stats Summary row */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: '전체 아카이브', value: `${puzzles.length}개` },
-          { label: '내가 완성한 퍼즐', value: `${totalCompleted}개` },
-          { label: '주간 최고 등수', value: bestRank ? `${bestRank}위` : '-' },
+          { label: t('puzzle.app.puzzle.archive.page.005'), value: `${puzzles.length} ${t('puzzle.app.puzzle.archive.page.006')}` },
+          { label: t('puzzle.app.puzzle.archive.page.007'), value: `${totalCompleted} ${t('puzzle.app.puzzle.archive.page.008')}` },
+          { label: t('puzzle.app.puzzle.archive.page.009'), value: bestRank ? `${t('puzzle.app.puzzle.archive.page.010')} ${bestRank}` : '-' },
         ].map(({ label, value }) => (
           <div
             key={label}
@@ -185,7 +194,7 @@ export default function ArchivePage() {
                   : { color: 'var(--puzzle-muted-foreground)' }
               }
             >
-              전체
+              {t('puzzle.app.puzzle.archive.page.011')}
             </button>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
               const isAvailable = availableMonths.includes(m);
@@ -208,7 +217,7 @@ export default function ArchivePage() {
                       : { color: 'var(--puzzle-muted-foreground)' }
                   }
                 >
-                  {m}월
+                  {new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { month: 'short', timeZone: 'UTC' }).format(new Date(2026, m - 1, 1))}
                 </button>
               );
             })}
@@ -236,7 +245,7 @@ export default function ArchivePage() {
       {/* Archive Grid */}
       {filteredPuzzles.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm rounded-2xl border" style={{ color: 'var(--puzzle-muted-foreground)', backgroundColor: 'var(--puzzle-glass-bg)', borderColor: 'var(--puzzle-border)' }}>
-          {selectedMonth ? `${selectedMonth}월에 발행된 아카이브 퍼즐이 없습니다.` : '아직 발행된 아카이브 퍼즐이 존재하지 않습니다.'}
+          {selectedMonth ? t('puzzle.ui.emptyArchiveMonth', { month: language === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(new Date(2026, selectedMonth - 1, 1)) : selectedMonth }) : t('puzzle.app.puzzle.archive.page.012')}
         </div>
       ) : (
         <ArchiveGrid puzzles={filteredPuzzles} myHistory={myHistory} isHistoryLoaded={isHistoryLoaded} />

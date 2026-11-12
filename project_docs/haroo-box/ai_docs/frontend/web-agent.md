@@ -11,7 +11,7 @@
 - Tailwind CSS 및 자체 디자인 시스템을 활용한 반응형/모던 웹 UI 컴포넌트 개발.
 
 ### 📦 패키지 및 타깃 클래스 경로 구조
-- 라우팅/페이지: `apps/web/app/` (Next.js App Router 디렉토리)
+- 라우팅/페이지: `apps/web/app/` (Next.js App Router 디렉토리, 전역 에러 핸들링 `global-error.tsx`, `error.tsx` 포함)
 - UI 컴포넌트: `apps/web/components/` (`common/`, `layout/`, `modals/`, `puzzle/` 등 도메인별 분리)
 - 상태 및 코어 로직: `apps/web/lib/` (`stores/`, `auth.ts`, `game-session.ts` 등)
 

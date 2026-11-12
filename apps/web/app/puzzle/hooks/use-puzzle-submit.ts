@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { usePuzzleStore } from '@/lib/stores/puzzle-store';
@@ -20,6 +21,7 @@ export function usePuzzleSubmit(
   puzzle: any
 ) {
   const router = useRouter();
+  const { t } = useLanguage();
   const submittingRef = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -221,13 +223,13 @@ export function usePuzzleSubmit(
         }
         await deletePuzzleState(puzzleId);
       } else {
-        setSubmitError(res.error || '기록 저장에 실패했습니다. 치팅 방지 필터에 차단되었을 수 있습니다.');
+        setSubmitError(t('puzzle.game.submit.error'));
         // submittingRef를 false로 되돌리지 않아 useEffect에 의한 자동 재시도를 차단
         // (1회용 챌린지 토큰이 이미 소비된 상태에서 재시도하면 동일 에러 무한 반복)
       }
     } catch (e) {
       console.error(e);
-      setSubmitError('기록 업로드 중 알 수 없는 서버 에러가 발생했습니다.');
+      setSubmitError(t('puzzle.game.submit.serverError'));
       // 동일 이유로 자동 재시도 차단
     } finally {
       setIsSubmitting(false);

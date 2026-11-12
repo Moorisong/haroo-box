@@ -1,10 +1,14 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
+import { puzzleTitle } from '@/lib/puzzle-i18n';
 
 import { Puzzle as PuzzleIcon, Trophy } from 'lucide-react';
 
 interface HistoryEntry {
   puzzleId: string;
   title: string;
+  title_en?: string;
+  week?: number;
   imageUrl: string;
   difficulty: 'novice' | 'beginner' | 'expert';
   completionTime: number;
@@ -18,6 +22,7 @@ interface HistoryListProps {
 }
 
 export default function HistoryList({ history }: HistoryListProps) {
+  const { language, t } = useLanguage();
   const formatDuration = (seconds: number) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
     const sec = (seconds % 60).toString().padStart(2, '0');
@@ -44,7 +49,7 @@ export default function HistoryList({ history }: HistoryListProps) {
             color: 'var(--puzzle-muted-foreground)'
           }}
         >
-          아직 완성 기록 히스토리가 존재하지 않습니다.
+          {t('puzzle.components.puzzle.history.list.001')}
         </div>
       ) : (
         history.map((item, idx) => {
@@ -72,7 +77,7 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Thumbnail */}
               <img
                 src={item.imageUrl}
-                alt={item.title}
+                alt={puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language, t('puzzle.metadata.untranslated_title'))}
                 className="w-16 h-12 object-cover rounded-xl flex-shrink-0 border"
                 style={{ borderColor: 'var(--puzzle-border)' }}
               />
@@ -80,12 +85,12 @@ export default function HistoryList({ history }: HistoryListProps) {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-extrabold truncate mb-1" style={{ color: 'var(--puzzle-card-foreground)' }}>
-                  {item.title}
+                  {puzzleTitle({ title: item.title, title_en: item.title_en, week: item.week ?? 0 }, language, t('puzzle.metadata.untranslated_title'))}
                 </p>
                 <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                   <span>{formatDate(item.savedAt)}</span>
                   <span className="flex items-center gap-1">
-                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? '초보 (36조각)' : item.difficulty === 'beginner' ? '일반 (100조각)' : '고수 (256조각)'}
+                    <PuzzleIcon size={11} /> {item.difficulty === 'novice' ? `${t('puzzle.components.puzzle.history.list.002')} (36 ${t('puzzle.components.puzzle.history.list.003')})` : item.difficulty === 'beginner' ? `${t('puzzle.components.puzzle.history.list.004')} (100 ${t('puzzle.components.puzzle.history.list.005')})` : `${t('puzzle.components.puzzle.history.list.006')} (256 ${t('puzzle.components.puzzle.history.list.007')})`}
                   </span>
                 </div>
               </div>
@@ -104,11 +109,11 @@ export default function HistoryList({ history }: HistoryListProps) {
                     }}
                   >
                     <Trophy size={9} />
-                    <span>{item.myRank}위</span>
+                    <span>{t('puzzle.components.puzzle.history.list.008')} {item.myRank}</span>
                   </div>
                 ) : (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--puzzle-muted)', color: 'var(--puzzle-muted-foreground)' }}>
-                    일반 플레이
+                    {t('puzzle.components.puzzle.history.list.009')}
                   </span>
                 )}
               </div>

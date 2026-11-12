@@ -1,8 +1,9 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { LogOut, Trash2, UserX, ChevronRight, Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { setSharedSessionCookie } from '@/lib/shared-session-cookie';
 
 interface SettingsPanelProps {
   onClearData: () => void;
@@ -10,7 +11,7 @@ interface SettingsPanelProps {
 }
 
 export default function SettingsPanel({ onClearData, onDeleteAccount }: SettingsPanelProps) {
-  const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSignOut = async () => {
     try {
@@ -19,31 +20,37 @@ export default function SettingsPanel({ onClearData, onDeleteAccount }: Settings
     } catch (e) {
       console.error('Failed to clear puzzle state on signout:', e);
     }
-    signOut({ callbackUrl: '/puzzle' });
+    try {
+      await signOut({ redirect: false, callbackUrl: '/puzzle' });
+      setSharedSessionCookie(false);
+      window.location.assign('/puzzle');
+    } catch (error) {
+      console.error('Puzzle sign-out failed:', error);
+    }
   };
 
   const menuItems = [
     { 
       icon: Home, 
-      label: '하루상자 메인으로 가기', 
+      label: t('puzzle.components.puzzle.settings.panel.001'), 
       color: 'var(--puzzle-foreground)', 
       onClick: () => window.open('/', '_blank') 
     },
     { 
       icon: LogOut, 
-      label: '로그아웃', 
+      label: t('puzzle.components.puzzle.settings.panel.002'), 
       color: 'var(--puzzle-foreground)', 
       onClick: handleSignOut 
     },
     { 
       icon: Trash2, 
-      label: '모든 퍼즐 데이터 초기화', 
+      label: t('puzzle.components.puzzle.settings.panel.003'), 
       color: '#F59E0B', 
       onClick: onClearData 
     },
     { 
       icon: UserX, 
-      label: '계정 탈퇴', 
+      label: t('puzzle.components.puzzle.settings.panel.004'), 
       color: 'var(--puzzle-destructive, #EF4444)', 
       onClick: onDeleteAccount 
     },

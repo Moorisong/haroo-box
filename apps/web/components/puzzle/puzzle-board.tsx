@@ -173,7 +173,7 @@ export default function PuzzleBoard({
 
   return (
     <div 
-      className="w-full h-full flex p-4 overflow-auto scrollbar-hide select-none"
+      className="w-full min-w-0 max-w-full h-full min-h-[min(70vw,340px)] max-h-[65dvh] flex p-2 sm:p-4 overflow-auto select-none"
       style={{ touchAction: 'pan-x pan-y' }} // 가로/세로 방향의 스크롤 및 팬(pan) 이동을 허용
     >
       <div

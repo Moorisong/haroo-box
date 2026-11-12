@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { RankingEntry } from '@/types/puzzle';
 
@@ -17,6 +18,7 @@ export default function RankingTable({
   hasMore,
   onShowMore,
 }: RankingTableProps) {
+  const { t } = useLanguage();
   const getMedal = (rank: number) => {
     if (rank === 1) return '🥇';
     if (rank === 2) return '🥈';
@@ -33,6 +35,8 @@ export default function RankingTable({
   const formatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
+      if (Number.isNaN(date.getTime())) return dateStr;
+      // Viewer-local date; locale and timezone are independent.
       return `${date.getMonth() + 1}.${date.getDate()}`;
     } catch {
       return dateStr;
@@ -56,16 +60,16 @@ export default function RankingTable({
           borderColor: 'var(--puzzle-border)',
         }}
       >
-        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>순위</span>
-        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>닉네임</span>
-        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>기록</span>
-        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>날짜</span>
+        <span className="w-8 flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.001')}</span>
+        <span className="flex-1 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.002')}</span>
+        <span className="flex-shrink-0 text-xs font-bold" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.003')}</span>
+        <span className="flex-shrink-0 w-10 text-right text-xs font-bold hidden sm:block" style={{ color: 'var(--puzzle-muted-foreground)' }}>{t('puzzle.components.puzzle.ranking.table.004')}</span>
       </div>
 
       {/* Rows */}
       {rankings.length === 0 ? (
         <div className="py-20 text-center font-bold text-sm" style={{ color: 'var(--puzzle-muted-foreground)' }}>
-          아직 랭킹에 도전한 사용자가 없습니다.
+          {t('puzzle.components.puzzle.ranking.table.005')}
         </div>
       ) : (
         rankings.map((item, idx) => {
@@ -164,7 +168,7 @@ export default function RankingTable({
           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--puzzle-muted)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
         >
-          더보기 ({rankings.length}/{totalParticipants})
+          {t('puzzle.components.puzzle.ranking.table.006')} ({rankings.length}/{totalParticipants})
         </button>
       )}
 
@@ -178,7 +182,7 @@ export default function RankingTable({
             backgroundColor: 'var(--puzzle-muted)'
           }}
         >
-          총 {totalParticipants.toLocaleString()}명의 챌린저가 완주했습니다.
+          {t('puzzle.components.puzzle.ranking.table.007')} {totalParticipants.toLocaleString()} {t('puzzle.components.puzzle.ranking.table.008')}
         </div>
       )}
     </div>

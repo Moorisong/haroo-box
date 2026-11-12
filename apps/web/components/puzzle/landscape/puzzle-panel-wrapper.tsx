@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { useRef, useCallback, useState, useEffect } from 'react';
 
@@ -30,6 +31,7 @@ export default function PuzzlePanelWrapper({
   onSizeChange,
   children,
 }: PuzzlePanelWrapperProps) {
+  const { t } = useLanguage();
   const dragging = useRef(false);
   const dragStart = useRef<{ mouseX: number; mouseY: number; posX: number; posY: number } | null>(null);
 
@@ -152,7 +154,7 @@ export default function PuzzlePanelWrapper({
           data-resize-handle="br"
           onPointerDown={handleResizePointerDown}
           className="absolute bottom-1 right-1 w-9 h-9 z-[99] flex items-center justify-center cursor-se-resize rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg border border-white transition-all scale-100 hover:scale-105"
-          title="크기 조절 (드래그)"
+          title={t('puzzle.components.puzzle.landscape.puzzle.panel.wrapper.001')}
         >
           <svg
             width="12"
@@ -175,7 +177,7 @@ export default function PuzzlePanelWrapper({
             className="absolute bottom-11 right-0 bg-blue-600/95 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg pointer-events-none whitespace-nowrap animate-bounce"
             style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.15))' }}
           >
-            ↔ 크기 조절
+            ↔ {t('puzzle.components.puzzle.landscape.puzzle.panel.wrapper.002')}
             <div className="absolute top-full right-4 w-1.5 h-1.5 bg-blue-600/95 rotate-45 transform -translate-y-0.5" />
           </div>
         </div>

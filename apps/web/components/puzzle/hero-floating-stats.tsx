@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import { useLanguage } from '@/components/providers/language-provider';
 import { Check, Layers, Trophy } from 'lucide-react';
 
 interface HeroFloatingStatsProps {
@@ -20,6 +22,8 @@ export function HeroFloatingStats({
   matchedPieces,
   totalPieces,
 }: HeroFloatingStatsProps) {
+  const { t } = useLanguage();
+  const difficulty = (value?: string | null) => value === 'novice' ? t('puzzle.components.puzzle.hero.floating.stats.001') : value === 'expert' ? t('puzzle.components.puzzle.hero.floating.stats.002') : t('puzzle.components.puzzle.hero.floating.stats.003');
   return (
     <div 
       className="absolute -top-3 -right-3 px-4 py-3 rounded-xl border border-border hidden sm:block"
@@ -34,30 +38,30 @@ export function HeroFloatingStats({
         <>
           <div className="flex items-center gap-1 text-xs font-bold text-emerald-600">
             <Check size={13} strokeWidth={3} />
-            <span>완료됨 ({completedDifficulty === 'novice' ? '초보' : completedDifficulty === 'expert' ? '고수' : '일반'})</span>
+            <span>{t('puzzle.components.puzzle.hero.floating.stats.004')} ({difficulty(completedDifficulty)})</span>
           </div>
           <p className="mt-0.5 text-sm font-extrabold text-emerald-700">
-            랭킹 등록 완료! 🏅
+            {t('puzzle.components.puzzle.hero.floating.stats.005')}
           </p>
         </>
       ) : hasSavedGame && savedDifficulty && !isSavedDifficultyCompleted ? (
         <>
           <div className="flex items-center gap-1 text-xs font-bold" style={{ color: 'var(--puzzle-primary)' }}>
             <Layers size={13} />
-            <span>진행 중 ({savedDifficulty === 'novice' ? '초보' : savedDifficulty === 'expert' ? '고수' : '일반'})</span>
+            <span>{t('puzzle.components.puzzle.hero.floating.stats.006')} ({difficulty(savedDifficulty)})</span>
           </div>
           <p className="mt-0.5 text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {matchedPieces} / {totalPieces} 조각
+            {matchedPieces} / {totalPieces} {t('puzzle.components.puzzle.hero.floating.stats.007')}
           </p>
         </>
       ) : (
         <>
           <div className="flex items-center gap-1 text-xs font-bold" style={{ color: 'var(--puzzle-primary)' }}>
             <Trophy size={13} />
-            <span>실시간 랭킹 도전</span>
+            <span>{t('puzzle.components.puzzle.hero.floating.stats.008')}</span>
           </div>
           <p className="mt-0.5 text-sm font-extrabold" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            망설임은 순위만 늦출 뿐! ⚡
+            {t('puzzle.components.puzzle.hero.floating.stats.009')}
           </p>
         </>
       )}

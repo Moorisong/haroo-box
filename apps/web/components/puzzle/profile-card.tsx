@@ -1,4 +1,5 @@
 'use client';
+import { useLanguage } from '@/components/providers/language-provider';
 
 import { Trophy, Clock, Puzzle } from 'lucide-react';
 
@@ -16,6 +17,7 @@ interface ProfileCardProps {
 }
 
 export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
+  const { language, t } = useLanguage();
   const formatDuration = (seconds: number | null) => {
     if (seconds === null) return '-';
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -26,16 +28,16 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
   const getFormatDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return `${date.getFullYear()}년 ${date.getMonth() + 1}월 가입`;
+      return t('puzzle.ui.profileJoined', { date: new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'ko-KR', { year: 'numeric', month: 'long' }).format(date) });
     } catch {
       return dateStr;
     }
   };
 
   const stats = [
-    { icon: Puzzle, label: '완주 수', value: `${statistics.totalCompleted}개` },
-    { icon: Trophy, label: '최고 순위', value: statistics.bestRank ? `${statistics.bestRank}위` : '-' },
-    { icon: Clock, label: '최고 기록', value: formatDuration(statistics.bestTimeBeginner) },
+    { icon: Puzzle, label: t('puzzle.components.puzzle.profile.card.001'), value: `${statistics.totalCompleted} ${t('puzzle.components.puzzle.profile.card.002')}` },
+    { icon: Trophy, label: t('puzzle.components.puzzle.profile.card.003'), value: statistics.bestRank ? `${t('puzzle.components.puzzle.profile.card.004')} ${statistics.bestRank}` : '-' },
+    { icon: Clock, label: t('puzzle.components.puzzle.profile.card.005'), value: formatDuration(statistics.bestTimeBeginner) },
   ];
 
   return (
@@ -73,7 +75,7 @@ export default function ProfileCard({ profile, statistics }: ProfileCardProps) {
 
         <div className="flex flex-col items-start md:items-center min-w-0">
           <span className="text-base md:text-lg font-black truncate max-w-[150px] md:max-w-[180px]" style={{ color: 'var(--puzzle-card-foreground)' }}>
-            {profile.nickname || '사용자'}
+            {profile.nickname || t('puzzle.components.puzzle.profile.card.006')}
           </span>
           <span className="text-[10px] md:text-xs mt-0.5 md:mt-1 font-semibold" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             {getFormatDate(profile.createdAt)}
