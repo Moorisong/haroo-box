@@ -82,14 +82,14 @@ export default function HeroSection({
   return (
     <section className="puzzle-animate-fade-in-up">
       <div 
-        className="puzzle-glass-card p-6 md:p-10 rounded-3xl"
+        className="puzzle-glass-card px-5 py-6 sm:p-6 md:p-10 rounded-3xl"
         style={{
           background: 'var(--puzzle-glass-bg)',
           border: '1px solid var(--puzzle-glass-border)',
           boxShadow: 'var(--puzzle-shadow-lg)',
         }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-5">
               <div 
@@ -110,18 +110,18 @@ export default function HeroSection({
             </div>
 
             <h1 
-              className="text-3xl md:text-4xl font-extrabold leading-tight mb-4"
+              className="text-[clamp(1.5rem,6.2vw,2rem)] md:text-4xl font-extrabold leading-[1.18] mb-4 break-words"
               style={{ color: 'var(--puzzle-card-foreground)', letterSpacing: '-0.02em' }}
             >
               {puzzleTitle(puzzle, language, t('puzzle.metadata.untranslated_title'))}
             </h1>
 
             <p 
-              className="text-base mb-8 font-medium leading-relaxed"
+              className="text-sm sm:text-base mb-6 md:mb-8 font-medium leading-relaxed"
               style={{ color: 'var(--puzzle-muted-foreground)' }}
             >
-              {t('puzzle.components.puzzle.hero.section.006')}<br />
-              {t('puzzle.components.puzzle.hero.section.007')}
+              {t('puzzle.components.puzzle.hero.section.intro.001')}<br />
+              {t('puzzle.components.puzzle.hero.section.intro.002')}
             </p>
 
             <div className="flex flex-wrap items-center gap-5 mb-8">
