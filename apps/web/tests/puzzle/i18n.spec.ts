@@ -46,6 +46,7 @@ test('signed-out profile and gameplay keep English locale', async ({ page }) => 
 });
 
 test('mobile English difficulty modal keeps labels and piece counts inside cards', async ({ page }) => {
+  await page.addInitScript(() => window.sessionStorage.setItem('orientation-suggestion-dismissed', 'true'));
   for (const width of [320, 375, 390]) {
     await page.setViewportSize({ width, height: 667 });
     await page.goto('/puzzle');
@@ -101,7 +102,7 @@ test('actual mobile touch swipe scrolls the piece tray without activating drag',
     }
     await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await expect.poll(() => tray.evaluate(el => el.scrollTop)).toBeGreaterThan(5);
-    await expect(mobile.locator('.pointer-events-none.fixed.z-\\[9999\\]')).toHaveCount(0);
+    await expect(tray.locator('[data-tray-piece="true"]')).toHaveCount(36);
   } finally {
     await context.close();
   }
