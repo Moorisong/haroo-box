@@ -10,7 +10,6 @@ export const ROUTES = {
     MYPAGE: '/mypage',
     ROLLING_PAPER: 'https://r-paper-web.harooo.co.kr/',
     HTSM: '/htsm',
-    U_KNOW: '/u-know',
     TOBY: '/toby',
     PUZZLE: '/puzzle',
     // from=haroo-box: 감쓰가 카카오 자동 로그인(prompt=none)을 시도하기 위한 진입 표시. 인증 정보는 담지 않는다.
@@ -29,6 +28,5 @@ export const NAV_LINKS = [
   { label: '하루퍼즐', href: ROUTES.PUZZLE, newTab: true },
   { label: '롤링페이퍼', href: ROUTES.ROLLING_PAPER, newTab: true },
   { label: 'TOBY', href: ROUTES.TOBY, newTab: true },
-  { label: '너잘알', href: ROUTES.U_KNOW },
   { label: '자아탐험', href: ROUTES.HTSM },
 ] as const;

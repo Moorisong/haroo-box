@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://box.harooo.co.kr';
 
 
-type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'uknow' | 'htsm' | 'advent';
+type CardTone = 'gamss' | 'puzzle' | 'rolling' | 'toby' | 'htsm' | 'advent';
 
 interface ContentItem {
     id: string;
@@ -95,16 +95,6 @@ const contents: ContentItem[] = [
         active: true,
     },
     {
-        id: 'u-know',
-        title: '너잘알',
-        description: '친구들의 반응을 예상해 보고\n진짜 답과 비교하는 관계 놀이.',
-        image: '/u-know-initials.svg',
-        link: ROUTES.U_KNOW,
-        category: '친구와 함께',
-        tone: 'uknow',
-        active: true,
-    },
-    {
         id: 'htsm',
         title: '자아탐험',
         description: '친구들의 익명 평가로\n몰랐던 내 모습을 발견해요.',
@@ -161,10 +151,10 @@ export default function Home() {
                                     </div>
                                     <div className={styles.cardContent}>
                                         <div className={styles.cardHeadingRow}>
-                                            <h3 className={styles.cardTitle}>{language === 'en' ? ({advent:'Advent Chocolate',gamss:'Dumpit.exe',puzzle:'Haroo Puzzle','rolling-paper':'Rolling Paper',toby:'TOBY','u-know':'Know Me',htsm:'Self Discovery'} as Record<string,string>)[content.id] : content.title}</h3>
+                                            <h3 className={styles.cardTitle}>{language === 'en' ? ({advent:'Advent Chocolate',gamss:'Dumpit.exe',puzzle:'Haroo Puzzle','rolling-paper':'Rolling Paper',toby:'TOBY',htsm:'Self Discovery'} as Record<string,string>)[content.id] : content.title}</h3>
                                             <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
                                         </div>
-                                        <p className={styles.cardDescription}>{language === 'en' ? ({advent:'Create a chocolate calendar and collect secret messages from friends.',gamss:'Write it out, let it go, and feel a little lighter.',puzzle:'Solve a new puzzle every week and climb the rankings.','rolling-paper':'Share anonymous notes and make memories together.',toby:'Helpful classroom tools for teachers.','u-know':'See how well your friends know you.',htsm:'Discover yourself through anonymous feedback.'} as Record<string,string>)[content.id] : content.description}</p>
+                                        <p className={styles.cardDescription}>{language === 'en' ? ({advent:'Create a chocolate calendar and collect secret messages from friends.',gamss:'Write it out, let it go, and feel a little lighter.',puzzle:'Solve a new puzzle every week and climb the rankings.','rolling-paper':'Share anonymous notes and make memories together.',toby:'Helpful classroom tools for teachers.',htsm:'Discover yourself through anonymous feedback.'} as Record<string,string>)[content.id] : content.description}</p>
                                         <div className={styles.cardBottom}>
                                             <span>{content.active ? t('열어보기', 'Explore') : t('준비 중', 'Coming soon')}</span>
                                             <span className={styles.cardArrow} aria-hidden="true">↗</span>
