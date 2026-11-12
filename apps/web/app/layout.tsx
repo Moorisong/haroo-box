@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     images: ['/haroo-og-image-v2.png'],
   },
   verification: {
-    google: '46025c5df5a2c939',
+    google: 'GJkux3dG0XvGE5LoRJpXkmMRtqjW8Ez5E1Zm7ORSflU',
     other: {
       'naver-site-verification': 'naverdf6af2d554af798e7a69e37a74d78c40.html',
     },
