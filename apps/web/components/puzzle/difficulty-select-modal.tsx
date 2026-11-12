@@ -30,7 +30,7 @@ export default function DifficultySelectModal({
   const { t } = useLanguage();
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in puzzle-page"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-2 pt-3 pb-[max(8px,env(safe-area-inset-bottom))] sm:p-4 animate-fade-in puzzle-page"
       style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', minHeight: 'auto' }}
     >
       <style>{`
@@ -58,7 +58,7 @@ export default function DifficultySelectModal({
         }
       `}</style>
       <div 
-        className="relative w-full max-w-lg rounded-t-3xl sm:rounded-3xl border p-6 md:p-8 overflow-y-auto max-h-[90vh] sm:max-h-[85vh] landscape-short-padding"
+        className="relative w-full max-w-lg min-w-0 rounded-t-3xl sm:rounded-3xl border px-4 py-5 sm:p-6 md:p-8 overflow-y-auto max-h-[min(94dvh,760px)] sm:max-h-[85dvh] overscroll-contain landscape-short-padding"
         style={{
           backgroundColor: 'var(--puzzle-background)',
           borderColor: 'var(--puzzle-border)',
@@ -67,16 +67,16 @@ export default function DifficultySelectModal({
         }}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between mb-6 landscape-short-space">
+        <div className="flex items-center justify-between gap-2 mb-5 sm:mb-6 landscape-short-space">
           <div>
-            <h3 className="text-2xl font-black flex items-center gap-2 text-left" style={{ color: 'var(--puzzle-card-foreground)' }}>
+            <h3 className="text-xl sm:text-2xl font-black flex items-center gap-2 text-left whitespace-nowrap" style={{ color: 'var(--puzzle-card-foreground)' }}>
               <Play size={22} className="text-emerald-500 fill-emerald-500/20" />
               {t('puzzle.components.puzzle.difficulty.select.modal.001')}
             </h3>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 rounded-xl transition-colors hover:bg-zinc-100"
+            className="p-2 shrink-0 rounded-xl transition-colors hover:bg-zinc-100"
             style={{ color: 'var(--puzzle-muted-foreground)' }}
           >
             <X size={20} />
@@ -84,26 +84,26 @@ export default function DifficultySelectModal({
         </div>
 
         {/* Difficulty Selector */}
-        <div className="mb-6 landscape-short-space">
-          <h4 className="text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5 landscape-short-space" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+        <div className="mb-5 sm:mb-6 landscape-short-space">
+          <h4 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5 landscape-short-space" style={{ color: 'var(--puzzle-muted-foreground)' }}>
             <Layers size={14} style={{ color: 'var(--puzzle-primary)' }} />
             {t('puzzle.components.puzzle.difficulty.select.modal.002')}
           </h4>
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 min-w-0">
             {/* Novice Card */}
             <button
               onClick={() => setSelectedDiff(PUZZLE_DIFFICULTY.NOVICE)}
-              className="flex flex-col justify-center items-center sm:flex-row sm:justify-between text-left sm:items-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
+              className="flex flex-col justify-center items-center text-center p-2 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0 min-h-[78px] sm:min-h-[88px]"
               style={{
                 backgroundColor: selectedDiff === PUZZLE_DIFFICULTY.NOVICE ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                 borderColor: selectedDiff === PUZZLE_DIFFICULTY.NOVICE ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
               }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
-                <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.NOVICE ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+              <div className="flex flex-col items-center justify-center w-full gap-2 min-w-0">
+                <span className="text-xs sm:text-sm font-black whitespace-nowrap leading-tight" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.NOVICE ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                   {t('puzzle.components.puzzle.difficulty.select.modal.003')}
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                <span className="text-[10px] font-bold px-1.5 py-1 rounded-full bg-blue-500/10 text-blue-600 inline-flex justify-center items-center whitespace-nowrap max-w-full">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.NOVICE]} {t('puzzle.components.puzzle.difficulty.select.modal.004')}</span>
                 </span>
               </div>
@@ -112,17 +112,17 @@ export default function DifficultySelectModal({
             {/* Beginner Card */}
             <button
               onClick={() => setSelectedDiff(PUZZLE_DIFFICULTY.BEGINNER)}
-              className="flex flex-col justify-center items-center sm:flex-row sm:justify-between text-left sm:items-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
+              className="flex flex-col justify-center items-center text-center p-2 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0 min-h-[78px] sm:min-h-[88px]"
               style={{
                 backgroundColor: selectedDiff === PUZZLE_DIFFICULTY.BEGINNER ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                 borderColor: selectedDiff === PUZZLE_DIFFICULTY.BEGINNER ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
               }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
-                <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.BEGINNER ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+              <div className="flex flex-col items-center justify-center w-full gap-2 min-w-0">
+                <span className="text-xs sm:text-sm font-black whitespace-nowrap leading-tight" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.BEGINNER ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                   {t('puzzle.components.puzzle.difficulty.select.modal.005')}
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                <span className="text-[10px] font-bold px-1.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 inline-flex justify-center items-center whitespace-nowrap max-w-full">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.BEGINNER]} {t('puzzle.components.puzzle.difficulty.select.modal.006')}</span>
                 </span>
               </div>
@@ -131,17 +131,17 @@ export default function DifficultySelectModal({
             {/* Expert Card */}
             <button
               onClick={() => setSelectedDiff(PUZZLE_DIFFICULTY.EXPERT)}
-              className="flex flex-col justify-center items-center sm:flex-row sm:justify-between text-left sm:items-center p-2.5 sm:p-3.5 rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0"
+              className="flex flex-col justify-center items-center text-center p-2 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-200 hover-scale-effect active-scale-effect-95 min-w-0 min-h-[78px] sm:min-h-[88px]"
               style={{
                 backgroundColor: selectedDiff === PUZZLE_DIFFICULTY.EXPERT ? 'var(--puzzle-secondary)' : 'var(--puzzle-glass-bg)',
                 borderColor: selectedDiff === PUZZLE_DIFFICULTY.EXPERT ? 'var(--puzzle-primary)' : 'var(--puzzle-border)',
               }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-1 min-w-0">
-                <span className="text-xs sm:text-sm font-black truncate" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.EXPERT ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
+              <div className="flex flex-col items-center justify-center w-full gap-2 min-w-0">
+                <span className="text-xs sm:text-sm font-black whitespace-nowrap leading-tight" style={{ color: selectedDiff === PUZZLE_DIFFICULTY.EXPERT ? 'var(--puzzle-primary)' : 'var(--puzzle-card-foreground)' }}>
                   {t('puzzle.components.puzzle.difficulty.select.modal.007')}
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 w-auto inline-flex justify-center items-center flex-shrink-0">
+                <span className="text-[10px] font-bold px-1.5 py-1 rounded-full bg-indigo-500/10 text-indigo-600 inline-flex justify-center items-center whitespace-nowrap max-w-full">
                   <span>{PUZZLE_PIECE_COUNT[PUZZLE_DIFFICULTY.EXPERT]} {t('puzzle.components.puzzle.difficulty.select.modal.008')}</span>
                 </span>
               </div>
@@ -151,33 +151,33 @@ export default function DifficultySelectModal({
 
         {/* Ranked Mode Info (Hero Section) */}
         {showRankedInfo && (
-          <div className="mb-6 flex items-start gap-3.5 p-4 rounded-2xl border landscape-short-hide landscape-short-space" style={{ backgroundColor: 'var(--puzzle-secondary)', borderColor: 'var(--puzzle-primary)' }}>
+          <div className="mb-5 sm:mb-6 flex items-start gap-3 p-3 sm:p-4 rounded-2xl border landscape-short-hide landscape-short-space" style={{ backgroundColor: 'var(--puzzle-secondary)', borderColor: 'var(--puzzle-primary)' }}>
             <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
               style={{ backgroundColor: 'var(--puzzle-primary)', color: '#fff' }}
             >
               <Trophy size={18} />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               {completedDifficulties.includes(selectedDiff) ? (
                 <>
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
+                    <span className="text-sm sm:text-base font-black leading-snug" style={{ color: 'var(--puzzle-card-foreground)' }}>
                       {t('puzzle.components.puzzle.difficulty.select.modal.009')}
                     </span>
                   </div>
-                  <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                  <p className="text-xs font-medium mt-1 leading-relaxed break-words" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     {t('puzzle.components.puzzle.difficulty.select.modal.010')}
                   </p>
                 </>
               ) : (
                 <>
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-black" style={{ color: 'var(--puzzle-card-foreground)' }}>
+                    <span className="text-sm sm:text-base font-black leading-snug" style={{ color: 'var(--puzzle-card-foreground)' }}>
                       {t('puzzle.components.puzzle.difficulty.select.modal.011')}
                     </span>
                   </div>
-                  <p className="text-xs font-medium mt-1 leading-relaxed" style={{ color: 'var(--puzzle-muted-foreground)' }}>
+                  <p className="text-xs font-medium mt-1 leading-relaxed break-words" style={{ color: 'var(--puzzle-muted-foreground)' }}>
                     {t('puzzle.components.puzzle.difficulty.select.modal.012')}
                   </p>
                 </>
@@ -213,10 +213,10 @@ export default function DifficultySelectModal({
         )}
 
         {/* Submit Actions */}
-        <div className="flex flex-col-reverse sm:flex-row gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           <button
             onClick={onClose}
-            className="w-full sm:flex-1 py-3.5 rounded-xl border font-bold text-sm transition-colors hover:bg-zinc-50 active:bg-zinc-100"
+            className="w-full order-2 sm:order-1 py-3 rounded-xl border font-bold text-sm whitespace-nowrap transition-colors hover:bg-zinc-50 active:bg-zinc-100"
             style={{
               backgroundColor: 'transparent',
               color: 'var(--puzzle-foreground)',
@@ -227,7 +227,7 @@ export default function DifficultySelectModal({
           </button>
           <button
             onClick={onLaunch}
-            className="w-full sm:flex-1 py-3.5 rounded-xl text-white font-black text-sm transition-all duration-200 hover-scale-effect active-scale-effect-98"
+            className="w-full order-1 sm:order-2 py-3.5 rounded-xl text-white font-black text-sm whitespace-nowrap transition-all duration-200 hover-scale-effect active-scale-effect-98"
             style={{
               backgroundColor: 'var(--puzzle-primary)',
               boxShadow: 'var(--puzzle-shadow-md)',
