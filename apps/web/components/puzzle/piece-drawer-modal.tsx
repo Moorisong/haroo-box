@@ -41,6 +41,7 @@ interface PieceDrawerModalProps {
   handleTouchStart: (e: React.TouchEvent, pieceId: number) => void;
   handleTouchMove: (e: React.TouchEvent) => void;
   handleTouchEnd: (e: React.TouchEvent, pieceId: number) => void;
+  handleTouchCancel: () => void;
   ignoreNextClickRef: React.MutableRefObject<boolean>;
 }
 
@@ -70,6 +71,7 @@ export default function PieceDrawerModal({
   handleTouchStart,
   handleTouchMove,
   handleTouchEnd,
+  handleTouchCancel,
   ignoreNextClickRef,
 }: PieceDrawerModalProps) {
   const { t } = useLanguage();
@@ -243,6 +245,7 @@ export default function PieceDrawerModal({
                     onTouchStart={(e) => handleTouchStart(e, pieceId)}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
+                      onTouchCancel={handleTouchCancel}
                     onContextMenu={(e) => e.preventDefault()}
                     onClick={(e) => {
                       e.stopPropagation();
