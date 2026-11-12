@@ -151,7 +151,7 @@ export default function PieceTray({
         </div>
       </div>
 
-      <div data-testid="puzzle-piece-tray-scroll" className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] justify-items-center gap-2 max-h-[32dvh] min-h-[68px] overflow-y-auto overflow-x-hidden pt-3 pb-2 px-1 sm:flex sm:gap-3 sm:overflow-x-auto sm:overflow-y-hidden sm:max-h-none touch-pan-y sm:touch-pan-x" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
+      <div data-testid="puzzle-piece-tray-scroll" className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] justify-items-center gap-2 max-h-[32dvh] min-h-[68px] overflow-y-auto overflow-x-hidden pt-3 pb-8 px-1 scroll-pb-8 sm:flex sm:gap-3 sm:overflow-x-auto sm:overflow-y-hidden sm:max-h-none touch-pan-y sm:touch-pan-x" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
         {trayPieces.length === 0 && selectedPieceId === null ? (
           <div className="w-full text-center py-4 text-sm font-semibold" style={{ color: 'var(--puzzle-primary)' }}>
             🎉 {t('puzzle.components.puzzle.piece.tray.004')}
