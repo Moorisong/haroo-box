@@ -131,7 +131,7 @@ export default function PieceDrawerModal({
       />
       <div
         ref={drawerRef}
-        className="relative w-full h-[85vh] flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 puzzle-animate-slide-up pb-8"
+        className="relative w-full h-[min(85dvh,900px)] min-w-0 flex flex-col rounded-t-[2rem] border-t shadow-2xl transition-all duration-300 puzzle-animate-slide-up pb-[max(16px,env(safe-area-inset-bottom))] overflow-hidden"
         style={{ backgroundColor: '#1f2937', borderColor: 'var(--puzzle-border)', color: '#f8fafc' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -145,15 +145,15 @@ export default function PieceDrawerModal({
           <div className="w-12 h-1 bg-slate-500/40 rounded-full" />
         </div>
 
-        <div className="flex justify-between items-center px-5 pb-3 border-b select-none" style={{ borderColor: 'var(--puzzle-border)' }}>
+        <div className="flex justify-between items-center gap-2 px-3 sm:px-5 pb-3 border-b select-none min-w-0" style={{ borderColor: 'var(--puzzle-border)' }}>
           <div
-            className="flex-1 cursor-ns-resize py-1 touch-none"
+            className="flex-1 min-w-0 cursor-ns-resize py-1 touch-none"
             onPointerDown={handleDrawerDragStart}
             onPointerMove={handleDrawerDragMove}
             onPointerUp={handleDrawerDragEnd}
             onPointerCancel={handleDrawerDragEnd}
           >
-            <h3 className="text-base font-black flex items-center gap-1.5" style={{ color: '#f8fafc' }}>
+            <h3 className="text-sm sm:text-base font-black flex items-center gap-1.5 min-w-0" style={{ color: '#f8fafc' }}>
               <Folder size={18} className="text-blue-400" />
               <span>{t('puzzle.components.puzzle.piece.drawer.modal.001')}</span>
             </h3>
@@ -174,10 +174,10 @@ export default function PieceDrawerModal({
               </>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <button
               onClick={(e) => { e.stopPropagation(); setIsOrganizeMode(!isOrganizeMode); }}
-              className="px-2.5 py-1 rounded-lg text-xs font-black transition-all border select-none shrink-0"
+              className="px-2 py-1 rounded-lg text-[10px] sm:text-xs font-black whitespace-nowrap transition-all border select-none shrink-0"
               style={{
                 backgroundColor: isOrganizeMode ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                 borderColor: isOrganizeMode ? '#60a5fa' : 'rgba(255, 255, 255, 0.1)',
@@ -220,14 +220,14 @@ export default function PieceDrawerModal({
           selectedPieceId={selectedPieceId}
         />
 
-        <div className={`flex-1 p-4 pb-16 scrollbar-hide ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={`flex-1 min-h-0 p-3 sm:p-4 pb-16 overscroll-contain ${draggedPiece ? 'overflow-hidden' : 'overflow-y-auto'}`}>
           {activeBasketPieces.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-center text-slate-400">
               <span className="text-sm font-black mb-1">{t('puzzle.components.puzzle.piece.drawer.modal.007')}</span>
               <span className="text-xs text-slate-500">{t('puzzle.components.puzzle.piece.drawer.modal.008')}</span>
             </div>
           ) : (
-            <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 gap-2.5 justify-items-center">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-2 sm:gap-2.5 justify-items-center">
               {activeBasketPieces.map((pieceId) => {
                 const isSelected = selectedPieceId === pieceId;
                 return (
