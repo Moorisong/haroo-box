@@ -62,6 +62,7 @@ export default function PieceTray({
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleTouchCancel,
     handlePointerMove,
     handlePointerUp,
     handlePointerCancel,
@@ -199,6 +200,7 @@ export default function PieceTray({
                   onTouchStart={(e) => handleTouchStart(e, pieceId)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={(e) => handleTouchEnd(e, pieceId)}
+                  onTouchCancel={handleTouchCancel}
                   onContextMenu={(e) => e.preventDefault()}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -277,6 +279,7 @@ export default function PieceTray({
         handleTouchStart={handleTouchStart}
         handleTouchMove={handleTouchMove}
         handleTouchEnd={handleTouchEnd}
+        handleTouchCancel={handleTouchCancel}
         ignoreNextClickRef={ignoreNextClickRef}
       />
     </div>
