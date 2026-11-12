@@ -94,16 +94,14 @@ export default async function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-QKK7S8Z3Z5"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-KR27SQBQ"
           strategy="afterInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-tag-manager" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
-            gtag('config', 'G-QKK7S8Z3Z5');
           `}
         </Script>
         <Script
