@@ -308,5 +308,15 @@
     "key": "puzzle.components.puzzle.landscape.landscape.puzzle.layout.006",
     "ko": "퍼즐판이나 가이드를 드래그로 이동 / 우하단 핸들로 크기를 조절",
     "en": "Drag the board or guide to move; use the bottom-right handle to resize"
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.intro.001",
+    "ko": "매주 새로운 퍼즐로 즐기는 소소한 힐링.",
+    "en": "A new puzzle every week, a little moment to unwind."
+  },
+  {
+    "key": "puzzle.components.puzzle.hero.section.intro.002",
+    "ko": "조각을 맞추고 기록 경쟁에도 도전해 보세요.",
+    "en": "Fit the pieces and compete for your best time."
   }
 ]
