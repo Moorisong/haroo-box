@@ -22,6 +22,11 @@ export async function GET(req: NextRequest) {
       return handleCors(req, res);
     }
 
+    if (!user.providerId || (user.provider !== 'google' && user.provider !== 'kakao')) {
+      const res = NextResponse.json({ error: 'Verified social login provider required' }, { status: 401 });
+      return handleCors(req, res);
+    }
+
     const service = req.nextUrl.searchParams.get('service');
     if (!service || (service !== UNIFIED_SERVICES.DUMPIT && service !== UNIFIED_SERVICES.ADVENT)) {
       const res = NextResponse.json({ error: 'Invalid service' }, { status: 400 });
@@ -68,7 +73,7 @@ export async function GET(req: NextRequest) {
         await ensureSupabaseUser({
           service,
           serviceUserId,
-          provider: user.provider || 'kakao',
+          provider: user.provider,
           providerId: user.providerId,
           name: user.name,
           image: user.image,
@@ -94,7 +99,26 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const token = await createSupabaseCustomToken(serviceUserId, jwtSecret);
+    // Repair existing Supabase auth.users metadata on subsequent cross-service logins.
+    if (targetUser?.serviceUserId) {
+      await ensureSupabaseUser({
+        service,
+        serviceUserId,
+        provider: user.provider,
+        providerId: user.providerId,
+        name: user.name,
+        image: user.image,
+        existing: true,
+      });
+    }
+
+    // Also correct any old MongoDB service record without changing the identity.
+    await users.updateOne(
+      { service, providerId: user.providerId },
+      { $set: { provider: user.provider, updatedAt: new Date() } }
+    );
+
+    const token = await createSupabaseCustomToken(serviceUserId, jwtSecret, user.provider);
 
     const res = NextResponse.json({
       success: true,
