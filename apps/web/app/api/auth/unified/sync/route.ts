@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const body: SyncRequestBody = await req.json();
     const { service, serviceUserId, provider, providerId, name, profileImage } = body;
 
-    if (!service || !serviceUserId || !provider || !providerId) {
+    if ((service !== 'dumpit' && service !== 'advent') || !serviceUserId || (provider !== 'google' && provider !== 'kakao') || !providerId) {
       const res = NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
       return handleCors(req, res);
     }
