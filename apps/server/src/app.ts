@@ -18,23 +18,19 @@ const allowedOrigins = [
   'http://127.0.0.1:3001',
   'http://127.0.0.1:5173',
   'https://box.harooo.co.kr',
+  'https://test-box.harooo.co.kr',
   process.env.CLIENT_URL,
 ].filter(Boolean) as string[];
 
-console.log('[DEBUG] Initialized allowedOrigins:', allowedOrigins);
+const HAROOO_SUBDOMAIN_PATTERN = /^https:\/\/([a-zA-Z0-9-]+\.)*harooo\.co\.kr$/;
 
 app.use(cors({
   origin: (origin, callback) => {
-    console.log('Incoming Origin:', origin);
-    console.log('Allowed Origins:', allowedOrigins);
-
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      console.log('Origin allowed');
+    if (allowedOrigins.includes(origin) || HAROOO_SUBDOMAIN_PATTERN.test(origin)) {
       return callback(null, true);
     }
-    console.log('Origin NOT allowed');
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
