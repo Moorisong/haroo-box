@@ -9,13 +9,14 @@ test('createSupabaseCustomToken signs valid Supabase-compatible HS256 JWT', asyn
   const secret = 'test-supabase-jwt-secret-must-be-at-least-32-chars';
   const userId = '0860a303-7425-4090-bbc6-13f74fa37b0f';
 
-  const token = await createSupabaseCustomToken(userId, secret, 3600);
+  const token = await createSupabaseCustomToken(userId, secret, 'google', 3600);
   const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
 
   assert.equal(payload.sub, userId);
   assert.equal(payload.aud, 'authenticated');
   assert.equal(payload.role, 'authenticated');
-  assert.equal(payload.app_metadata?.provider, 'haroo_unified');
+  assert.equal(payload.app_metadata?.provider, 'google');
+  assert.deepEqual(payload.app_metadata?.providers, ['google']);
 });
 
 // sync 엔드포인트가 HttpOnly, SameSite=Lax, Path=/ 보안 속성을 포함한 쿠키를 발급하는지 검증
@@ -48,3 +49,19 @@ test('token route invokes ensureSupabaseUser for newly provisioned serviceUserId
   assert.match(tokenSrc, /ensureSupabaseUser/);
 });
 
+
+test('Supabase provisioning preserves actual OAuth provider and repairs existing users', () => {
+  const src = readFileSync(new URL('../lib/supabase-admin.ts', import.meta.url), 'utf8');
+  assert.match(src, /provider: params\\.provider/);
+  assert.match(src, /providers: \\[params\\.provider\\]/);
+  assert.match(src, /if \\(params\\.existing\\)/);
+  assert.match(src, /method: 'PUT'/);
+  assert.doesNotMatch(src, /provider: 'haroo_unified'/);
+});
+
+test('Service token requires verified provider and includes it in JWT', () => {
+  const src = readFileSync(new URL('../app/api/auth/unified/token/route.ts', import.meta.url), 'utf8');
+  assert.match(src, /user\\.provider !== 'google'/);
+  assert.match(src, /user\\.provider !== 'kakao'/);
+  assert.match(src, /createSupabaseCustomToken\\(serviceUserId, jwtSecret, user\\.provider\\)/);
+});
