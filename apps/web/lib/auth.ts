@@ -174,10 +174,10 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           console.error('유저 정보 조회 오류:', error);
         }
-      } else if (token.providerId && !token.boxProvisioned) {
+      } else if (token.providerId && (token.provider === 'google' || token.provider === 'kakao') && !token.boxProvisioned) {
         try {
           const boxUser = await ensureBoxUser({
-            provider: token.provider || 'kakao',
+            provider: token.provider,
             providerId: token.providerId,
             name: (token.name as string) || null,
             image: (token.image as string) || (token.picture as string) || null,
