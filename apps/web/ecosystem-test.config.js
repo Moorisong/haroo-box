@@ -16,7 +16,15 @@ module.exports = {
                 KAKAO_CLIENT_SECRET: process.env.KAKAO_CLIENT_SECRET,
                 NEXT_PUBLIC_KAKAO_API_KEY: process.env.NEXT_PUBLIC_KAKAO_API_KEY,
                 NEXT_PUBLIC_SIGNATURE_SECRET: process.env.NEXT_PUBLIC_SIGNATURE_SECRET,
-                GAME_SESSION_SECRET: process.env.GAME_SESSION_SECRET
+                GAME_SESSION_SECRET: process.env.GAME_SESSION_SECRET,
+                ADVENT_SUPABASE_JWT_SECRET: process.env.ADVENT_SUPABASE_JWT_SECRET,
+                DUMPIT_SUPABASE_JWT_SECRET: process.env.DUMPIT_SUPABASE_JWT_SECRET,
+                ADVENT_SUPABASE_URL: process.env.ADVENT_SUPABASE_URL,
+                ADVENT_SUPABASE_SERVICE_ROLE_KEY: process.env.ADVENT_SUPABASE_SERVICE_ROLE_KEY,
+                DUMPIT_SUPABASE_URL: process.env.DUMPIT_SUPABASE_URL,
+                DUMPIT_SUPABASE_SERVICE_ROLE_KEY: process.env.DUMPIT_SUPABASE_SERVICE_ROLE_KEY,
+                GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+                GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
             },
         },
     ],
