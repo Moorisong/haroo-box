@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
             $set: {
               service,
               providerId: user.providerId,
-              provider: user.provider || 'kakao',
+              provider: user.provider,
               serviceUserId,
               name: user.name || undefined,
               profileImage: user.image || undefined,
