@@ -8,6 +8,7 @@ import { SignJWT } from 'jose';
 export async function createSupabaseCustomToken(
   supabaseUserId: string,
   jwtSecret: string,
+  provider: 'google' | 'kakao',
   expiresInSeconds: number = 3600 * 24 // 24시간
 ): Promise<string> {
   const secret = new TextEncoder().encode(jwtSecret);
@@ -17,8 +18,8 @@ export async function createSupabaseCustomToken(
     role: 'authenticated',
     sub: supabaseUserId,
     app_metadata: {
-      provider: 'haroo_unified',
-      providers: ['haroo_unified'],
+      provider,
+      providers: [provider],
     },
     user_metadata: {},
   })
