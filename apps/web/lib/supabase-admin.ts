@@ -56,8 +56,8 @@ export async function ensureSupabaseUser(params: EnsureSupabaseUserParams & { ex
       method: 'PUT',
       headers,
       body: JSON.stringify({
+        // Preserve any service-specific nickname or user metadata.
         app_metadata: appMetadata,
-        user_metadata: userMetadata,
       }),
     });
     if (!res.ok) {
