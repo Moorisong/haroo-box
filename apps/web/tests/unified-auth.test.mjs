@@ -52,16 +52,16 @@ test('token route invokes ensureSupabaseUser for newly provisioned serviceUserId
 
 test('Supabase provisioning preserves actual OAuth provider and repairs existing users', () => {
   const src = readFileSync(new URL('../lib/supabase-admin.ts', import.meta.url), 'utf8');
-  assert.match(src, /provider: params\\.provider/);
-  assert.match(src, /providers: \\[params\\.provider\\]/);
-  assert.match(src, /if \\(params\\.existing\\)/);
+  assert.match(src, /provider: params\.provider/);
+  assert.match(src, /providers: \[params\.provider\]/);
+  assert.match(src, /if \(params\.existing\)/);
   assert.match(src, /method: 'PUT'/);
   assert.doesNotMatch(src, /provider: 'haroo_unified'/);
 });
 
 test('Service token requires verified provider and includes it in JWT', () => {
   const src = readFileSync(new URL('../app/api/auth/unified/token/route.ts', import.meta.url), 'utf8');
-  assert.match(src, /user\\.provider !== 'google'/);
-  assert.match(src, /user\\.provider !== 'kakao'/);
-  assert.match(src, /createSupabaseCustomToken\\(serviceUserId, jwtSecret, user\\.provider\\)/);
+  assert.match(src, /user\.provider !== 'google'/);
+  assert.match(src, /user\.provider !== 'kakao'/);
+  assert.match(src, /createSupabaseCustomToken\(serviceUserId, jwtSecret, user\.provider\)/);
 });
