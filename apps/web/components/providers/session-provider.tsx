@@ -2,6 +2,7 @@
 
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
+import SharedSessionSync from './shared-session-sync';
 
 interface Props {
   children: ReactNode;
@@ -10,9 +11,10 @@ interface Props {
 export default function SessionProvider({ children }: Props) {
   return (
     <NextAuthSessionProvider
-      refetchOnWindowFocus={false}
+      refetchOnWindowFocus={true}
       refetchWhenOffline={false}
     >
+      <SharedSessionSync />
       {children}
     </NextAuthSessionProvider>
   );

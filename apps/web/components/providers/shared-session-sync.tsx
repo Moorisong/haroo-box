@@ -1,59 +1,112 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut, getSession } from 'next-auth/react';
 import {
   consumeSharedLoginStarted,
   getSharedSessionStatus,
   setSharedSessionCookie,
 } from '@/lib/shared-session-cookie';
 
+function notifyNextAuthSessionChanged() {
+  const payload = {
+    event: 'session',
+    data: { trigger: 'getSession' },
+    timestamp: Math.floor(Date.now() / 1000),
+  };
+
+  try {
+    if (typeof BroadcastChannel !== 'undefined') {
+      const channel = new BroadcastChannel('next-auth');
+      channel.postMessage(payload);
+      channel.close();
+    }
+  } catch {
+    // BroadcastChannel 미지원 환경 무시
+  }
+
+  try {
+    window.dispatchEvent(
+      new StorageEvent('storage', {
+        key: 'nextauth.message',
+        newValue: JSON.stringify(payload),
+      })
+    );
+  } catch {
+    // StorageEvent 생성 불가 환경 무시
+  }
+}
+
 /**
  * NextAuth와 Supabase는 서로 다른 세션이다.
- * 공유 쿠키는 로그아웃 신호일 뿐이며, 실제 NextAuth 세션도 종료해야 한다.
+ * 창/탭 포커스 전환 시 서버 세션을 기준으로 새로고침 없이 즉시 NextAuth 세션과 UI를 동기화한다.
  */
 export default function SharedSessionSync() {
-  const { status } = useSession();
-  const isSigningOutRef = useRef(false);
+  const { status, update } = useSession();
+  const router = useRouter();
+  const isSyncingRef = useRef(false);
 
   useEffect(() => {
-    if (status !== 'authenticated') return;
+    if (status === 'loading') return;
 
-    const checkRemoteLogout = () => {
-      if (isSigningOutRef.current || getSharedSessionStatus() !== 'false') return;
-      isSigningOutRef.current = true;
-      void signOut({ callbackUrl: window.location.pathname + window.location.search })
-        .catch(error => {
-          console.error('다른 서비스 로그아웃 동기화 실패:', error);
-          isSigningOutRef.current = false;
-        });
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const syncOnFocus = async () => {
+      if (isSyncingRef.current) return;
+      isSyncingRef.current = true;
+      try {
+        const freshSession = await getSession();
+        const hasServerUser = Boolean(freshSession?.user);
+
+        if (status === 'unauthenticated' && hasServerUser) {
+          setSharedSessionCookie(true);
+          notifyNextAuthSessionChanged();
+          await update();
+          router.refresh();
+        } else if (status === 'authenticated' && !hasServerUser) {
+          setSharedSessionCookie(false);
+          await signOut({ redirect: false });
+          notifyNextAuthSessionChanged();
+          router.refresh();
+        } else if (status === 'authenticated' && hasServerUser && getSharedSessionStatus() === 'false') {
+          // 로그아웃 쿠키가 남아있더라도 서버 세션이 유효하면(새 로그인 직후) 쿠키 상태를 복구
+          setSharedSessionCookie(true);
+        }
+      } catch (error) {
+        console.error('창 전환 세션 동기화 오류:', error);
+      } finally {
+        isSyncingRef.current = false;
+      }
     };
 
-    // A fresh OAuth login may legitimately supersede an earlier logout marker.
-    // Existing sessions must NOT overwrite it on mount or when returning to a tab.
-    if (consumeSharedLoginStarted()) {
-      setSharedSessionCookie(true);
-    } else {
-      checkRemoteLogout();
-      if (!isSigningOutRef.current && getSharedSessionStatus() === null) {
-        // Initial rollout / pre-existing session without a shared flag.
+    const scheduleSync = () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        void syncOnFocus();
+      }, 150);
+    };
+
+    if (status === 'authenticated') {
+      if (consumeSharedLoginStarted() || getSharedSessionStatus() !== 'true') {
         setSharedSessionCookie(true);
       }
     }
 
     const handleVisibility = () => {
-      if (!document.hidden) checkRemoteLogout();
+      if (!document.hidden) scheduleSync();
     };
-    const handlePageShow = () => checkRemoteLogout();
-    window.addEventListener('focus', checkRemoteLogout);
+
+    window.addEventListener('focus', scheduleSync);
     document.addEventListener('visibilitychange', handleVisibility);
-    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('pageshow', scheduleSync);
     return () => {
-      window.removeEventListener('focus', checkRemoteLogout);
+      if (debounceTimer) clearTimeout(debounceTimer);
+      window.removeEventListener('focus', scheduleSync);
       document.removeEventListener('visibilitychange', handleVisibility);
-      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('pageshow', scheduleSync);
     };
-  }, [status]);
+  }, [status, update, router]);
 
   return null;
 }
