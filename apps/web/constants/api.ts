@@ -20,6 +20,17 @@ export const getApiBaseUrl = () => {
     return 'http://127.0.0.1:3000';
   }
 
+  // 브라우저 런타임에서 test 도메인인 경우 test API로 자동 라우팅 보장
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname.startsWith('test-') || hostname.includes('test-box')) {
+      return 'https://test-box-api.harooo.co.kr';
+    }
+    if (hostname === 'box.harooo.co.kr') {
+      return 'https://box-api.harooo.co.kr';
+    }
+  }
+
   return process.env.NEXT_PUBLIC_API_URL || 'https://box-api.harooo.co.kr';
 };
 

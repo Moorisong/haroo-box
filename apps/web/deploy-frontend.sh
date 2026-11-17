@@ -11,7 +11,6 @@ REMOTE_DIR="~/srv/box"
 LOCAL_SERVER_ROOT="."
 
 # --- 네트워크 자동 감지 ---
-# 집 LAN IP로 ping 2초 내 응답 시 → 집 환경, 아니면 → 외부 환경
 if ping -c 1 -W 2 "$LOCAL_HOST" > /dev/null 2>&1; then
   REMOTE_HOST="$LOCAL_HOST"
   SSH_PORT="$SSH_PORT_LOCAL"
@@ -25,18 +24,32 @@ else
   echo "🌐 외부 네트워크 감지됨 → WAN($REMOTE_HOST:$SSH_PORT) 배포"
 fi
 
+# 안정적인 SSH 실행 함수 (일시적 WAN 연결 차단 대비 재시도)
+run_ssh() {
+  local max_retries=3
+  local attempt=1
+  while [ $attempt -le $max_retries ]; do
+    if ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "$@"; then
+      return 0
+    fi
+    echo "⚠️ SSH 연결 재시도 중 ($attempt/$max_retries)..."
+    sleep 2
+    attempt=$((attempt + 1))
+  done
+  echo "❌ SSH 연결에 최종 실패했습니다." >&2
+  return 1
+}
+
 # 0. toby 정적 빌드 및 public 동기화
 echo "🔨 TOBY 빌드 및 정적 에셋 동기화 중..."
 (cd ../toby && npm install && npm run build)
 mkdir -p "$LOCAL_SERVER_ROOT/public/toby"
 rsync -av --delete ../toby/dist/ "$LOCAL_SERVER_ROOT/public/toby/"
 
-# 0-1. 서버에 디렉토리가 없으면 생성
-ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "mkdir -p $REMOTE_DIR"
-
 # 1. 로컬 프론트엔드 파일 서버로 동기화 (삭제된 파일도 서버에서 제거)
 echo "📤 파일 동기화 중 (rsync)..."
 rsync -avz --delete --progress -e "$RSYNC_SSH" \
+  --rsync-path="mkdir -p $REMOTE_DIR && rsync" \
   --exclude 'node_modules' \
   --exclude '.next' \
   --exclude '.git' \
@@ -45,9 +58,11 @@ rsync -avz --delete --progress -e "$RSYNC_SSH" \
   --exclude '.antigravity' \
   $LOCAL_SERVER_ROOT/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_DIR
 
+sleep 1
+
 # 2. 서버에서 빌드 및 실행 명령 전달
 echo "🛠️ 서버에서 빌드 및 PM2 실행 중..."
-ssh $SSH_OPT $REMOTE_USER@$REMOTE_HOST "
+run_ssh "
   export NVM_DIR=\"\$HOME/.nvm\"
   [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
   
