@@ -3,6 +3,8 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import GoogleProvider from 'next-auth/providers/google';
 import { getDatabase } from './mongodb';
 import { getSharedCookieDomain } from './cookie-domain';
+import { ensureBoxUser } from './ensure-box-user';
+import { SESSION_MAX_AGE_SECONDS, UNIFIED_SERVICES } from './unified-auth-constants';
 
 declare module 'next-auth' {
   interface Session {
@@ -27,6 +29,7 @@ declare module 'next-auth/jwt' {
     providerId?: string;
     nickname?: string | null;
     nicknameUpdatedAt?: string | null;
+    boxProvisioned?: boolean;
   }
 }
 
@@ -57,7 +60,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30일
+    maxAge: SESSION_MAX_AGE_SECONDS,
   },
   cookies: cookieDomain
     ? {
@@ -161,14 +164,32 @@ export const authOptions: NextAuthOptions = {
         try {
           const db = await getDatabase();
           const users = db.collection('users');
-          const dbUser = await users.findOne({ service: 'box', providerId: providerIdKey });
+          const dbUser = await users.findOne({ service: UNIFIED_SERVICES.BOX, providerId: providerIdKey });
           if (dbUser) {
             token.userId = dbUser._id.toString();
             token.nickname = dbUser.nickname || null;
             token.nicknameUpdatedAt = dbUser.nicknameUpdatedAt?.toISOString() || null;
+            token.boxProvisioned = true;
           }
         } catch (error) {
           console.error('유저 정보 조회 오류:', error);
+        }
+      } else if (token.providerId && !token.boxProvisioned) {
+        try {
+          const boxUser = await ensureBoxUser({
+            provider: token.provider || 'kakao',
+            providerId: token.providerId,
+            name: (token.name as string) || null,
+            image: (token.image as string) || (token.picture as string) || null,
+          });
+          if (boxUser) {
+            token.userId = boxUser.userId;
+            token.nickname = boxUser.nickname;
+            token.nicknameUpdatedAt = boxUser.nicknameUpdatedAt;
+            token.boxProvisioned = true;
+          }
+        } catch (error) {
+          console.error('하루상자 JIT 유저 생성 오류:', error);
         }
       }
 

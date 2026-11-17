@@ -3,6 +3,11 @@ import { getDatabase } from '@/lib/mongodb';
 import { handleCors } from '@/lib/cors';
 import { getSharedCookieDomain } from '@/lib/cookie-domain';
 import { encode } from 'next-auth/jwt';
+import {
+  SECURE_SESSION_COOKIE_NAME,
+  SESSION_COOKIE_NAME,
+  SESSION_MAX_AGE_SECONDS,
+} from '@/lib/unified-auth-constants';
 
 export async function OPTIONS(req: NextRequest) {
   const res = new NextResponse(null, { status: 204 });
@@ -83,13 +88,13 @@ export async function POST(req: NextRequest) {
         image: unifiedUser?.profileImage || profileImage || null,
       },
       secret: process.env.NEXTAUTH_SECRET!,
-      maxAge: 30 * 24 * 60 * 60,
+      maxAge: SESSION_MAX_AGE_SECONDS,
     });
 
     const cookieDomain = getSharedCookieDomain();
     const domainPart = cookieDomain ? `; Domain=${cookieDomain}` : '';
     const securePart = process.env.NODE_ENV === 'production' ? '; Secure' : '';
-    const cookieMaxAge = '; Max-Age=2592000; Path=/; SameSite=Lax';
+    const cookieAttrs = `; Max-Age=${SESSION_MAX_AGE_SECONDS}; Path=/; HttpOnly; SameSite=Lax`;
 
     const res = NextResponse.json({
       success: true,
@@ -99,14 +104,18 @@ export async function POST(req: NextRequest) {
 
     res.headers.append(
       'Set-Cookie',
-      `next-auth.session-token=${token}${cookieMaxAge}${domainPart}${securePart}`
+      `${SESSION_COOKIE_NAME}=${token}${cookieAttrs}${domainPart}${securePart}`
     );
     if (process.env.NODE_ENV === 'production') {
       res.headers.append(
         'Set-Cookie',
-        `__Secure-next-auth.session-token=${token}${cookieMaxAge}${domainPart}; Secure`
+        `${SECURE_SESSION_COOKIE_NAME}=${token}${cookieAttrs}${domainPart}; Secure`
       );
     }
+    res.headers.append(
+      'Set-Cookie',
+      `haroo_session_active=true; Max-Age=${SESSION_MAX_AGE_SECONDS}; Path=/; SameSite=Lax${domainPart}${securePart}`
+    );
 
     return handleCors(req, res);
   } catch (error) {

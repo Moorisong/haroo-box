@@ -60,7 +60,16 @@
 - **목적**: 현재 중앙 로그인 상태 및 대상 서비스의 매핑 UUID(`serviceUserId`) 반환.
 
 ### 4) `GET /api/auth/unified/token?service=[dumpit|advent]`
-- **목적**: 중앙 세션을 기반으로 서브 서비스 Supabase에 즉시 접속 가능한 서명된 Supabase Custom Access Token(JWT) 발급.
+- **목적**: 중앙 세션을 기반으로 서브 서비스 Supabase에 즉시 접속 가능한 서명된 Supabase Custom Access Token(JWT) 발급. 미가입 유저의 경우 신규 UUID 생성 및 Supabase Admin API를 통한 JIT 계정 프로비저닝 수행.
 
 ### 5) `POST /api/auth/unified/session`
 - **목적**: 전역 로그아웃 처리 및 서브도메인 쿠키 무효화.
+
+### 6) `DELETE /api/auth/unified/session?service=[dumpit|advent]`
+- **목적**: 특정 서브 서비스 회원 탈퇴 시 중앙 MongoDB에서 해당 서비스의 레코드만 삭제하고 타 서비스(`box` 등) 계정은 보존.
+
+---
+
+## 4. 계정 충돌 및 예외 처리 정책
+- **로컬 세션 보호 & 계정 전환 띠 배너**: 서브 서비스에 이미 로그인된 로컬 세션이 있고 중앙 세션의 계정이 다를 경우, 로컬 세션을 강제 덮어쓰지 않고 상단 띠 배너(`"이미 [구글|카카오](이름)로 로그인한 이력이 있어요. 해당 계정으로 전환할까요?"`)를 통해 사용자 선택에 따라 전환합니다.
+- **하루상자 JIT 자동 프로비저닝**: 어드벤트/감쓰에서 로그인 후 하루상자에 처음 진입 시 `service: 'box'` 레코드를 자동 생성합니다.

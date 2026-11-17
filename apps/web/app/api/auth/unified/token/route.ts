@@ -5,6 +5,8 @@ import { createSupabaseCustomToken } from '@/lib/supabase-token';
 import { randomUUID } from 'crypto';
 import { handleCors } from '@/lib/cors';
 import { getAuthenticatedUser } from '@/lib/get-token-user';
+import { ensureSupabaseUser } from '@/lib/supabase-admin';
+import { UNIFIED_SERVICES } from '@/lib/unified-auth-constants';
 
 export async function OPTIONS(req: NextRequest) {
   const res = new NextResponse(null, { status: 204 });
@@ -21,7 +23,7 @@ export async function GET(req: NextRequest) {
     }
 
     const service = req.nextUrl.searchParams.get('service');
-    if (!service || (service !== 'dumpit' && service !== 'advent')) {
+    if (!service || (service !== UNIFIED_SERVICES.DUMPIT && service !== UNIFIED_SERVICES.ADVENT)) {
       const res = NextResponse.json({ error: 'Invalid service' }, { status: 400 });
       return handleCors(req, res);
     }
@@ -63,6 +65,14 @@ export async function GET(req: NextRequest) {
     if (!serviceUserId) {
       serviceUserId = randomUUID();
       if (user.providerId) {
+        await ensureSupabaseUser({
+          service,
+          serviceUserId,
+          provider: user.provider || 'kakao',
+          providerId: user.providerId,
+          name: user.name,
+          image: user.image,
+        });
         await users.updateOne(
           { service, providerId: user.providerId },
           {
@@ -95,6 +105,8 @@ export async function GET(req: NextRequest) {
         id: user.id,
         name: user.name,
         image: user.image,
+        provider: user.provider || null,
+        providerId: user.providerId || null,
       },
     });
     return handleCors(req, res);
