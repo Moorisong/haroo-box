@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { getDatabase } from './mongodb';
 import { getSharedCookieDomain } from './cookie-domain';
 import { ensureBoxUser } from './ensure-box-user';
+import { ensureUnifiedUserUniqueIndex } from './unified-service-user';
 import { SESSION_MAX_AGE_SECONDS, UNIFIED_SERVICES } from './unified-auth-constants';
 
 declare module 'next-auth' {
@@ -105,6 +106,7 @@ export const authOptions: NextAuthOptions = {
 
       try {
         const db = await getDatabase();
+        await ensureUnifiedUserUniqueIndex(db);
         const users = db.collection('users');
 
         let displayName = user.name;
