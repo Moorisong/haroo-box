@@ -98,14 +98,14 @@ test('existing Google box accounts are reused across raw and prefixed IDs', () =
 
   // All three paths (OAuth signIn, OAuth JWT, sub-service JIT) must use
   // the same legacy-aware resolver instead of directly inserting box users.
-  assert.match(authSrc, /async signIn[\\s\\S]*?await ensureBoxUser\\(/);
-  assert.match(authSrc, /async jwt[\\s\\S]*?await ensureBoxUser\\(/);
-  assert.doesNotMatch(authSrc, /users\\.updateOne\\(/);
-  assert.match(boxSrc, /canonical\\.slice\\('google:'\\.length\\)/);
-  assert.match(boxSrc, /providerId: \\{ \\$in: aliases \\}/);
-  assert.match(boxSrc, /service: \\{ \\$exists: false \\}/);
-  assert.match(boxSrc, /sort\\(\\{ createdAt: 1, _id: 1 \\}\\)/);
-  assert.match(boxSrc, /updateOne\\(\\{ _id: doc\\._id \\}/);
-  assert.match(boxSrc, /ensureUnifiedUserUniqueIndex\\(db\\)/);
-  assert.match(boxSrc, /\\$setOnInsert/);
+  assert.match(authSrc, /async signIn[\s\S]*?await ensureBoxUser\(/);
+  assert.match(authSrc, /async jwt[\s\S]*?await ensureBoxUser\(/);
+  assert.doesNotMatch(authSrc, /users\.updateOne\(/);
+  assert.match(boxSrc, /canonical\.slice\('google:'\.length\)/);
+  assert.match(boxSrc, /providerId: \{ \$in: aliases \}/);
+  assert.match(boxSrc, /service: \{ \$exists: false \}/);
+  assert.match(boxSrc, /sort\(\{ createdAt: 1, _id: 1 \}\)/);
+  assert.match(boxSrc, /updateOne\(\{ _id: doc\._id \}/);
+  assert.match(boxSrc, /ensureUnifiedUserUniqueIndex\(db\)/);
+  assert.match(boxSrc, /\$setOnInsert/);
 });
