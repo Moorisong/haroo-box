@@ -7,9 +7,15 @@ export type SocialProvider = 'google' | 'kakao';
 export function normalizeProviderId(provider: SocialProvider, providerId: string): string {
   const trimmed = providerId.trim();
   if (!trimmed) throw new Error('Missing social provider ID');
-  return provider === 'google' && !trimmed.startsWith('google:')
-    ? `google:${trimmed}`
-    : trimmed;
+  // A Supabase auth.users UUID must never become a Google OAuth subject.
+  // Google account IDs are decimal strings, not UUIDs.
+  if (provider === 'google') {
+    if (!/^(?:google:)?[0-9]+$/.test(trimmed)) {
+      throw new Error('Invalid Google OAuth subject');
+    }
+    return trimmed.startsWith('google:') ? trimmed : `google:${trimmed}`;
+  }
+  return trimmed;
 }
 
 // A unique database constraint, rather than a find-then-insert check, prevents
