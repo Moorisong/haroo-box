@@ -48,13 +48,20 @@ export async function ensureBoxUser({
   const users = db.collection('users');
   const canonical = normalizeProviderId(provider, providerId);
   const aliases = boxProviderIdAliases(provider, providerId);
+  const identityFields = provider === 'google'
+    ? [{ providerId: { $in: aliases } }, { googleId: { $in: aliases } }]
+    : [{ providerId: { $in: aliases } }];
   const filter = {
-    providerId: { $in: aliases },
-    provider: { $in: [provider, null] },
-    $or: [
-      { service: UNIFIED_SERVICES.BOX },
-      { service: { $exists: false } },
-      { service: null },
+    $and: [
+      { $or: identityFields },
+      { provider: { $in: [provider, null] } },
+      {
+        $or: [
+          { service: UNIFIED_SERVICES.BOX },
+          { service: { $exists: false } },
+          { service: null },
+        ],
+      },
     ],
   };
 
