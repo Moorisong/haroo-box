@@ -65,3 +65,29 @@ test('Service token requires verified provider and includes it in JWT', () => {
   assert.match(src, /user\.provider !== 'kakao'/);
   assert.match(src, /createSupabaseCustomToken\(serviceUserId, jwtSecret, user\.provider\)/);
 });
+
+test('SSO token and native sync share one atomic service-user creation path', () => {
+  const tokenSrc = readFileSync(new URL('../app/api/auth/unified/token/route.ts', import.meta.url), 'utf8');
+  const syncSrc = readFileSync(new URL('../app/api/auth/unified/sync/route.ts', import.meta.url), 'utf8');
+  const sharedSrc = readFileSync(new URL('../lib/unified-service-user.ts', import.meta.url), 'utf8');
+
+  assert.match(tokenSrc, /upsertUnifiedServiceUser\(db,/);
+  assert.match(syncSrc, /upsertUnifiedServiceUser\(db,/);
+  assert.match(sharedSrc, /unique: true/);
+  assert.match(sharedSrc, /\$setOnInsert:/);
+  assert.match(sharedSrc, /serviceUserId: params\.serviceUserId \|\| randomUUID\(\)/);
+  assert.match(sharedSrc, /returnDocument: 'after'/);
+  assert.match(sharedSrc, /isDuplicateKeyError\(error\)/);
+  assert.match(sharedSrc, /normalizeProviderId\(params\.provider, params\.providerId\)/);
+  assert.doesNotMatch(tokenSrc, /users\.updateOne\(/);
+  assert.doesNotMatch(syncSrc, /users\.findOneAndUpdate\(/);
+});
+
+test('native sync never silently overwrites an existing Supabase service UUID', () => {
+  const syncSrc = readFileSync(new URL('../app/api/auth/unified/sync/route.ts', import.meta.url), 'utf8');
+  const sharedSrc = readFileSync(new URL('../lib/unified-service-user.ts', import.meta.url), 'utf8');
+  assert.match(syncSrc, /if \(serviceUserIdConflict\)/);
+  assert.match(syncSrc, /SERVICE_USER_ID_MISMATCH/);
+  assert.match(syncSrc, /status: 409/);
+  assert.match(sharedSrc, /params\.serviceUserId !== user\.serviceUserId/);
+});
