@@ -86,6 +86,14 @@ export default function NavBar() {
 
   return (
     <>
+      {isMenuOpen && (
+        <button
+          type="button"
+          className={styles.mobileMenuBackdrop}
+          aria-label={t('메뉴 닫기', 'Close menu')}
+          onClick={closeMenu}
+        />
+      )}
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
