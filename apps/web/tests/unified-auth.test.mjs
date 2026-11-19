@@ -110,3 +110,12 @@ test('existing Google box accounts are reused across raw and prefixed IDs', () =
   assert.match(boxSrc, /ensureUnifiedUserUniqueIndex\(db\)/);
   assert.match(boxSrc, /\$setOnInsert/);
 });
+
+test('Google OAuth subjects cannot be Supabase auth UUIDs', () => {
+  const resolver = readFileSync(new URL('../lib/unified-service-user.ts', import.meta.url), 'utf8');
+  const sync = readFileSync(new URL('../app/api/auth/unified/sync/route.ts', import.meta.url), 'utf8');
+  assert.match(resolver, /Invalid Google OAuth subject/);
+  assert.match(resolver, /\[0-9\]\+/);
+  assert.match(sync, /INVALID_GOOGLE_PROVIDER_ID/);
+  assert.match(sync, /status: 400/);
+});
