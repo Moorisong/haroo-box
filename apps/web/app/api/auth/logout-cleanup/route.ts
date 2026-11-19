@@ -22,24 +22,10 @@ export async function POST(request: NextRequest) {
   ])) {
     const secure = name.startsWith('__Secure-') || name.startsWith('__Host-');
     // Clear host-only and shared-domain variants separately.
-    response.cookies.set(name, '', {
-      path: '/',
-      maxAge: 0,
-      httpOnly: true,
-      secure,
-      sameSite: 'lax',
-    });
+    const base = `${name}=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax${secure ? '; Secure' : ''}`;
+    response.headers.append('Set-Cookie', base);
     if (sharedDomain && !name.startsWith('__Host-')) {
-      response.cookies.set({
-        name,
-        value: '',
-        path: '/',
-        domain: sharedDomain,
-        maxAge: 0,
-        httpOnly: true,
-        secure,
-        sameSite: 'lax',
-      });
+      response.headers.append('Set-Cookie', `${base}; Domain=${sharedDomain}`);
     }
   }
   response.headers.set('Cache-Control', 'no-store');
