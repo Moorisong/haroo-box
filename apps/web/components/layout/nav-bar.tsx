@@ -47,21 +47,19 @@ export default function NavBar() {
   };
 
   const handleSignOut = async () => {
+    // Mobile Safari can leave IndexedDB operations pending indefinitely.
+    // Never wait for puzzle cleanup before revoking the authentication session.
     closeMenu();
-    try {
-      const { clearAllPuzzleState } = await import('@/lib/puzzle-db');
-      await clearAllPuzzleState();
-    } catch (e) {
-      console.error('Failed to clear puzzle state on signout:', e);
-    }
-    // 자아탐험 관련 페이지에서 로그아웃 시 자아탐험 랜딩 페이지로 이동
     const redirectUrl = pathname.startsWith('/htsm') ? '/htsm' : pathname;
     try {
       await signOut({ redirect: false, callbackUrl: redirectUrl });
       setSharedSessionCookie(false);
-      window.location.assign(redirectUrl);
+      // A full navigation forces the header to read the new server session.
+      window.location.replace(redirectUrl);
     } catch (error) {
       console.error('로그아웃 실패:', error);
+      // Keep the menu available so the user can retry rather than silently
+      // appearing to have signed out.
     }
   };
 
