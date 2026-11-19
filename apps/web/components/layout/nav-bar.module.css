@@ -589,3 +589,24 @@
 .menuItemInline { display: inline-flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; max-width: 100%; }
 .menuEnBadge { display: inline-flex; align-items: center; justify-content: center; flex: none; border-radius: 4px; background: #e6edff; border: 1px solid #b6c8f3; color: #23489f; padding: 2px 5px; font-size: 9px; font-weight: 850; letter-spacing: .04em; line-height: 1.2; }
 @media (max-width: 768px) { .mobileOnly .navLink { display: flex; align-items: center; justify-content: center; width: 100%; white-space: nowrap; } .menuEnBadge { font-size: 9px; } }
+
+/* Mobile menu: intercept outside taps so underlying cards/links cannot open. */
+.mobileMenuBackdrop { display: none; }
+@media (max-width: 768px) {
+  .mobileMenuBackdrop {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: default;
+    z-index: var(--z-sticky);
+    touch-action: manipulation;
+  }
+
+  /* Swap positions: language toggle first, hamburger on the far right. */
+  .languageSwitch { order: 1; margin-left: auto; margin-right: 2px; }
+  .hamburger { order: 2; margin-left: 0; }
+}
