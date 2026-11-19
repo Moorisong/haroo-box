@@ -1,11 +1,10 @@
 import { NextAuthOptions } from 'next-auth';
 import KakaoProvider from 'next-auth/providers/kakao';
 import GoogleProvider from 'next-auth/providers/google';
-import { getDatabase } from './mongodb';
 import { getSharedCookieDomain } from './cookie-domain';
 import { ensureBoxUser } from './ensure-box-user';
-import { ensureUnifiedUserUniqueIndex } from './unified-service-user';
-import { SESSION_MAX_AGE_SECONDS, UNIFIED_SERVICES } from './unified-auth-constants';
+import { normalizeProviderId } from './unified-service-user';
+import { SESSION_MAX_AGE_SECONDS } from './unified-auth-constants';
 
 declare module 'next-auth' {
   interface Session {
@@ -100,15 +99,14 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async signIn({ user, account, profile }) {
-      if (!account?.provider || !account?.providerAccountId) {
+      if (
+        (account?.provider !== 'google' && account?.provider !== 'kakao') ||
+        !account.providerAccountId
+      ) {
         return false;
       }
 
       try {
-        const db = await getDatabase();
-        await ensureUnifiedUserUniqueIndex(db);
-        const users = db.collection('users');
-
         let displayName = user.name;
         let profileImg = user.image;
 
@@ -121,56 +119,44 @@ export const authOptions: NextAuthOptions = {
           profileImg = kakaoProfile?.kakao_account?.profile?.profile_image_url || user.image;
         }
 
-        const providerIdKey =
-          account.provider === 'google'
-            ? `google:${account.providerAccountId}`
-            : account.providerAccountId;
-
-        await users.updateOne(
-          { service: 'box', providerId: providerIdKey },
-          {
-            $set: {
-              providerId: providerIdKey,
-              provider: account.provider,
-              service: 'box',
-              name: displayName,
-              profileImage: profileImg,
-              updatedAt: new Date(),
-            },
-            $setOnInsert: {
-              createdAt: new Date(),
-            },
-          },
-          { upsert: true }
-        );
-
-        return true;
+        // Resolve old Google IDs (raw and google:-prefixed) before inserting.
+        // Never create a new box _id when a matching legacy account exists.
+        const boxUser = await ensureBoxUser({
+          provider: account.provider,
+          providerId: account.providerAccountId,
+          name: displayName,
+          image: profileImg,
+        });
+        return Boolean(boxUser);
       } catch (error) {
         console.error('MongoDB 유저 저장 오류:', error);
         return false;
       }
     },
     async jwt({ token, user, account }) {
-      if (account?.provider && account?.providerAccountId) {
-        const providerIdKey =
-          account.provider === 'google'
-            ? `google:${account.providerAccountId}`
-            : account.providerAccountId;
-
-        token.provider = account.provider as 'kakao' | 'google';
+      if (
+        (account?.provider === 'google' || account?.provider === 'kakao') &&
+        account.providerAccountId
+      ) {
+        const providerIdKey = normalizeProviderId(account.provider, account.providerAccountId);
+        token.provider = account.provider;
         token.providerId = providerIdKey;
         if (account.provider === 'kakao') {
           token.kakaoId = account.providerAccountId;
         }
 
         try {
-          const db = await getDatabase();
-          const users = db.collection('users');
-          const dbUser = await users.findOne({ service: UNIFIED_SERVICES.BOX, providerId: providerIdKey });
-          if (dbUser) {
-            token.userId = dbUser._id.toString();
-            token.nickname = dbUser.nickname || null;
-            token.nicknameUpdatedAt = dbUser.nicknameUpdatedAt?.toISOString() || null;
+          // Use exactly the same legacy-aware lookup as signIn and JIT.
+          const boxUser = await ensureBoxUser({
+            provider: account.provider,
+            providerId: providerIdKey,
+            name: user?.name || (token.name as string) || null,
+            image: user?.image || (token.picture as string) || null,
+          });
+          if (boxUser) {
+            token.userId = boxUser.userId;
+            token.nickname = boxUser.nickname;
+            token.nicknameUpdatedAt = boxUser.nicknameUpdatedAt;
             token.boxProvisioned = true;
           }
         } catch (error) {
