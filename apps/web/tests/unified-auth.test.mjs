@@ -103,6 +103,7 @@ test('existing Google box accounts are reused across raw and prefixed IDs', () =
   assert.doesNotMatch(authSrc, /users\.updateOne\(/);
   assert.match(boxSrc, /canonical\.slice\('google:'\.length\)/);
   assert.match(boxSrc, /providerId: \{ \$in: aliases \}/);
+  assert.match(boxSrc, /googleId: \{ \$in: aliases \}/);
   assert.match(boxSrc, /service: \{ \$exists: false \}/);
   assert.match(boxSrc, /sort\(\{ createdAt: 1, _id: 1 \}\)/);
   assert.match(boxSrc, /updateOne\(\{ _id: doc\._id \}/);
