@@ -51,6 +51,10 @@ export default function NavBar() {
     // Never wait for puzzle cleanup before revoking the authentication session.
     closeMenu();
     const redirectUrl = pathname.startsWith('/htsm') ? '/htsm' : pathname;
+    // Best-effort cleanup: do not let a stalled IndexedDB request block logout.
+    void import('@/lib/puzzle-db')
+      .then(({ clearAllPuzzleState }) => clearAllPuzzleState())
+      .catch(error => console.error('Failed to clear puzzle state on signout:', error));
     try {
       await signOut({ redirect: false, callbackUrl: redirectUrl });
       setSharedSessionCookie(false);
