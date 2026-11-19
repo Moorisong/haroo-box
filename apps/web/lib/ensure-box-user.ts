@@ -1,5 +1,6 @@
 import { getDatabase } from './mongodb';
 import { UNIFIED_SERVICES } from './unified-auth-constants';
+import { ensureUnifiedUserUniqueIndex } from './unified-service-user';
 
 interface EnsureBoxUserParams {
   provider: 'kakao' | 'google';
@@ -21,6 +22,7 @@ export async function ensureBoxUser({
   if (!providerId) return null;
 
   const db = await getDatabase();
+  await ensureUnifiedUserUniqueIndex(db);
   const users = db.collection('users');
 
   const existing = await users.findOne({ service: UNIFIED_SERVICES.BOX, providerId });
