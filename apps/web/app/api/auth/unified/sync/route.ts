@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/mongodb';
+import { upsertUnifiedServiceUser, normalizeProviderId } from '@/lib/unified-service-user';
 import { handleCors } from '@/lib/cors';
 import { getSharedCookieDomain } from '@/lib/cookie-domain';
 import { encode } from 'next-auth/jwt';
@@ -48,35 +49,31 @@ export async function POST(req: NextRequest) {
     }
 
     const db = await getDatabase();
-    const users = db.collection('users');
+    const providerIdKey = normalizeProviderId(provider, providerId);
+    const {
+      user: unifiedUser,
+      serviceUserId: storedServiceUserId,
+      serviceUserIdConflict,
+    } = await upsertUnifiedServiceUser(db, {
+      service,
+      provider,
+      providerId: providerIdKey,
+      serviceUserId,
+      name,
+      image: profileImage,
+    });
 
-    const providerIdKey =
-      provider === 'google' && !providerId.startsWith('google:')
-        ? `google:${providerId}`
-        : providerId;
+    if (serviceUserIdConflict) {
+      // An SSO request may already have provisioned this identity. Never
+      // overwrite its UUID: doing so would orphan existing Supabase content.
+      const res = NextResponse.json(
+        { error: 'Service user ID mismatch', code: 'SERVICE_USER_ID_MISMATCH' },
+        { status: 409 }
+      );
+      return handleCors(req, res);
+    }
 
-    const userResult = await users.findOneAndUpdate(
-      { service, providerId: providerIdKey },
-      {
-        $set: {
-          providerId: providerIdKey,
-          provider,
-          service,
-          serviceUserId,
-          name: name || undefined,
-          profileImage: profileImage || undefined,
-          updatedAt: new Date(),
-        },
-        $setOnInsert: {
-          createdAt: new Date(),
-        },
-      },
-      { upsert: true, returnDocument: 'after' }
-    );
-
-    const unifiedUser = userResult || (await users.findOne({ service, providerId: providerIdKey }));
-    const unifiedUserObjId = unifiedUser?._id;
-    const unifiedUserId = unifiedUserObjId?.toString();
+    const unifiedUserId = unifiedUser._id.toString();
 
     const token = await encode({
       token: {
@@ -99,7 +96,7 @@ export async function POST(req: NextRequest) {
     const res = NextResponse.json({
       success: true,
       unifiedUserId,
-      serviceUserId,
+      serviceUserId: storedServiceUserId,
     });
 
     res.headers.append(
