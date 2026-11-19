@@ -57,14 +57,26 @@ export default function NavBar() {
       .catch(error => console.error('Failed to clear puzzle state on signout:', error));
     try {
       await signOut({ redirect: false, callbackUrl: redirectUrl });
-      setSharedSessionCookie(false);
-      // A full navigation forces the header to read the new server session.
-      window.location.replace(redirectUrl);
     } catch (error) {
-      console.error('로그아웃 실패:', error);
-      // Keep the menu available so the user can retry rather than silently
-      // appearing to have signed out.
+      console.error('NextAuth 로그아웃 실패:', error);
     }
+
+    // Expire both legacy host-only tokens and current shared-domain tokens.
+    // Mobile browsers may retain a legacy cookie after NextAuth signs out.
+    try {
+      const response = await fetch('/api/auth/logout-cleanup', {
+        method: 'POST',
+        credentials: 'same-origin',
+        cache: 'no-store',
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } catch (error) {
+      console.error('로그아웃 쿠키 정리 실패:', error);
+      return;
+    }
+
+    setSharedSessionCookie(false);
+    window.location.replace(redirectUrl);
   };
 
   // Toby 및 puzzle 서비스에서는 헤더를 보이지 않게 처리
