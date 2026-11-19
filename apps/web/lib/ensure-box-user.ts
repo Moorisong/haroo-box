@@ -1,3 +1,4 @@
+import type { Document, WithId } from 'mongodb';
 import { getDatabase } from './mongodb';
 import { UNIFIED_SERVICES } from './unified-auth-constants';
 import {
@@ -71,7 +72,7 @@ export async function ensureBoxUser({
     .toArray();
 
   let matches = await findExisting();
-  let doc = matches[0];
+  let doc: WithId<Document> | null = matches[0] ?? null;
 
   if (!doc) {
     // New accounts need a unique index so simultaneous sign-in and JIT
@@ -93,13 +94,13 @@ export async function ensureBoxUser({
           },
         },
         { upsert: true, returnDocument: 'after' }
-      ) || undefined;
+      );
     } catch (error) {
       if (!isDuplicateKeyError(error)) throw error;
     }
     // Another request may have inserted the account while we were waiting.
     matches = await findExisting();
-    doc = matches[0] || doc;
+    doc = matches[0] ?? doc;
   }
 
   if (!doc) return null;
