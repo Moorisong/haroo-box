@@ -18,18 +18,32 @@ let uniqueIndexPromise: Promise<string> | undefined;
 
 export async function ensureUnifiedUserUniqueIndex(db: Db): Promise<void> {
   if (!uniqueIndexPromise) {
-    uniqueIndexPromise = db.collection('users').createIndex(
-      { service: 1, providerId: 1 },
-      {
-        name: 'uniq_users_service_providerId',
-        unique: true,
-        // Legacy documents without either identity field must not all collide.
-        partialFilterExpression: {
-          service: { $type: 'string' },
-          providerId: { $type: 'string' },
-        },
-      }
-    ).catch((error) => {
+    uniqueIndexPromise = (async () => {
+      const users = db.collection('users');
+      // Mongoose may already have created this unique compound index under
+      // its default name. Reuse it instead of raising IndexOptionsConflict.
+      const indexes = await users.listIndexes().toArray();
+      const existing = indexes.find((index) =>
+        index.unique === true &&
+        index.key?.service === 1 &&
+        index.key?.providerId === 1 &&
+        Object.keys(index.key).length === 2
+      );
+      if (existing) return existing.name || 'service_1_providerId_1';
+
+      return users.createIndex(
+        { service: 1, providerId: 1 },
+        {
+          name: 'uniq_users_service_providerId',
+          unique: true,
+          // Legacy documents without either identity field must not all collide.
+          partialFilterExpression: {
+            service: { $type: 'string' },
+            providerId: { $type: 'string' },
+          },
+        }
+      );
+    })().catch((error) => {
       uniqueIndexPromise = undefined;
       console.error(
         '[UnifiedAuth] Cannot enforce unique (service, providerId). ' +
