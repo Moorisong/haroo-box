@@ -34,6 +34,17 @@ export async function POST(req: NextRequest) {
       return handleCors(req, res);
     }
 
+    // Never persist a Supabase user UUID as a Google OAuth provider ID.
+    // Older Advent clients used user.id / email identity.id as a fallback.
+    // This also prevents a bogus shared JWT from creating a second box user.
+    if (provider === 'google' && !/^(?:google:)?[0-9]+$/.test(providerId.trim())) {
+      const res = NextResponse.json(
+        { error: 'Invalid Google OAuth subject', code: 'INVALID_GOOGLE_PROVIDER_ID' },
+        { status: 400 }
+      );
+      return handleCors(req, res);
+    }
+
     // 모의/테스트용 더미 계정(owner-123, friend-456 등)은 DB에 영구 저장하지 않고 통과 처리
     const isMockAccount =
       /^(owner-|friend-|timezone-|mock-|test-)/i.test(serviceUserId) ||
