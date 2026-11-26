@@ -42,5 +42,6 @@ export default getClientPromise;
 
 export async function getDatabase(): Promise<Db> {
   const client = await getClientPromise();
-  return client.db('haroo-box');
+  const dbName = process.env.MONGODB_DB_NAME || 'haroo-box';
+  return client.db(dbName);
 }
