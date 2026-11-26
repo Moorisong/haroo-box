@@ -1,4 +1,4 @@
-# 통합 실행 기본값; 이번 사용자 명시 요청이 우선
+# 탭별 독립 실행 기본값; 이번 사용자 명시 요청이 우선
 target:
   types: ["교회", "청소년부"]
   region: "아시아 (대한민국 제외)"
@@ -7,7 +7,7 @@ target:
   suitability: "크리스마스·연말 참여형 행사, 청소년·가족 프로그램"
 spreadsheet:
   id: "1A6D4en55_K8jFBy8h57ar8UV3gXqbWF7mgOQ9ER5SQA"
-  discovery: "all_supported_lead_tabs"
+  discovery: "registered_single_tab"
 channels:
   email:
     enabled: true
@@ -15,7 +15,6 @@ channels:
     tab: "email"
     gid: 159292601
     target_count: 20
-    priority: 1
     write_columns: ["A", "B", "C", "D", "E", "F"]
     evidence_note_column: "F"
     contact_history_columns: ["G", "H", "I"]
@@ -25,15 +24,11 @@ channels:
     tab: "ig"
     gid: 387666668
     target_count: 20
-    priority: 2
     write_columns: ["A", "B", "C", "D", "E", "F"]
     evidence_note_column: "F"
     contact_history_columns: ["G", "H", "I"]
 execution:
-  mode: "parallel_research_serial_writes"
-  max_research_workers_total: 4
-  max_research_workers_per_channel: 2
-  fair_channel_allocation: true
+  mode: "single_channel"
   adaptive_candidate_batches: true
   candidate_batch_size_initial: 30
   write_batch_size_min: 5
