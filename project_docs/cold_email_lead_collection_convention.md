@@ -13,7 +13,7 @@
 ## 0. 고정 저장 대상
 
 - 스프레드시트: https://docs.google.com/spreadsheets/d/1A6D4en55_K8jFBy8h57ar8UV3gXqbWF7mgOQ9ER5SQA/edit
-- 대상 탭: `new` (gid: 159292601)
+- 대상 탭: `email` (gid: 159292601)
 - 탭 직접 링크: https://docs.google.com/spreadsheets/d/1A6D4en55_K8jFBy8h57ar8UV3gXqbWF7mgOQ9ER5SQA/edit?gid=159292601#gid=159292601
 
 매 실행 시 위 주소와 탭을 사용한다. 사용자에게 주소를 다시 질문하지 않는다. 사용자가 명시적으로 다른 대상을 지정한 경우에만 변경한다. `ig` 탭에는 입력하지 않는다.
