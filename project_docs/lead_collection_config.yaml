@@ -1,0 +1,37 @@
+# 사용자 요청에서 명시한 조건이 이 기본값보다 우선한다.
+# 아래 기본값은 초기 운영 제안이며 필요시 변경 가능하다.
+target:
+  types: ["교회", "청소년부"]
+  region: "아시아 (대한민국 제외)"
+  language: "영어"
+  service: "하루상자 어드벤트 캘린더"
+  suitability: "크리스마스·연말 참여형 행사, 청소년·가족 프로그램"
+
+spreadsheet:
+  id: "1A6D4en55_K8jFBy8h57ar8UV3gXqbWF7mgOQ9ER5SQA"
+
+channels:
+  email:
+    enabled: true
+    convention: "cold_email_lead_collection_convention.md"
+    tab: "email"
+    gid: 159292601
+    target_count: 20
+    priority: 1
+    contact_history_columns: ["G", "H", "I"]
+  instagram:
+    enabled: true
+    convention: "cold_ig_lead_collection_convention.md"
+    tab: "ig"
+    gid: 387666668
+    target_count: 20
+    priority: 2
+    contact_history_columns: ["M", "N"]
+
+execution:
+  cross_channel_deduplication: true
+  sequential_writes: true
+  auto_save: true
+  auto_send: false
+  report: final_only
+  initial_candidate_multiplier: 2
